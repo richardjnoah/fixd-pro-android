@@ -57,7 +57,7 @@ public class HorizontalScrollApplianceAdapter extends ArrayAdapter<JobAppliances
 
         // Populate the text
 
-        imageLoader.loadImage(getItem(position).getImg_original(), new SimpleImageLoadingListener() {
+        imageLoader.loadImage(getItem(position).getAppliance_type_image_original(), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 // Do whatever you want with Bitmap

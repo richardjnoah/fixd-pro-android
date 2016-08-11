@@ -20,6 +20,16 @@
             android:layout_height="wrap_content" />
         <TextView
             android:padding="@dimen/padding_header_items"
+            android:id="@+id/txtTitle"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+
+            android:textSize="@dimen/text_size_header_items"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:padding="@dimen/padding_header_items"
             android:id="@+id/txtDone"
             android:layout_alignParentRight="true"
             android:text="@string/done"
@@ -136,6 +146,7 @@
                    android:layout_height="wrap_content"
                    />
                <EditText
+                   android:visibility="gone"
                    android:singleLine="true"
                    android:id="@+id/txtCompany"
                    android:textSize="@dimen/edittext_size"
@@ -167,6 +178,38 @@
                <EditText
                    android:padding="@dimen/edittext_padding"
                    android:singleLine="true"
+                   android:id="@+id/txtAddress2"
+                   android:textColor="@android:color/white"
+                   android:imeOptions="actionNext"
+                   android:textSize="@dimen/edittext_size"
+                   android:gravity="center_horizontal"
+                   android:textCursorDrawable="@drawable/cursor_drawable"
+                   android:background="@android:color/transparent"
+                   android:textColorHint="@android:color/white"
+                   android:hint="@string/address2"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   />
+               <EditText
+                   android:padding="@dimen/edittext_padding"
+                   android:singleLine="true"
+                   android:id="@+id/txtZip"
+                   android:textColor="@android:color/white"
+                   android:imeOptions="actionDone"
+                   android:textSize="@dimen/edittext_size"
+                   android:inputType="number"
+
+                   android:gravity="center_horizontal"
+                   android:textCursorDrawable="@drawable/cursor_drawable"
+                   android:background="@android:color/transparent"
+                   android:textColorHint="@android:color/white"
+                   android:hint="@string/zip_code"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   />
+               <TextView
+                   android:padding="@dimen/edittext_padding"
+                   android:singleLine="true"
                    android:id="@+id/txtCity"
                    android:textSize="@dimen/edittext_size"
                    android:textColor="@android:color/white"
@@ -179,22 +222,35 @@
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    />
-               <EditText
+               <TextView
                    android:padding="@dimen/edittext_padding"
                    android:singleLine="true"
-                   android:id="@+id/txtZip"
-                   android:textColor="@android:color/white"
-                   android:imeOptions="actionDone"
+                   android:id="@+id/txtState"
                    android:textSize="@dimen/edittext_size"
-                   android:inputType="number"
+                   android:textColor="@android:color/white"
+                   android:imeOptions="actionNext"
                    android:gravity="center_horizontal"
                    android:textCursorDrawable="@drawable/cursor_drawable"
                    android:background="@android:color/transparent"
                    android:textColorHint="@android:color/white"
-                   android:hint="@string/zip_code"
+                   android:hint="@string/state"
                    android:layout_width="match_parent"
                    android:layout_height="wrap_content"
                    />
+               <TextView
+                   android:padding="@dimen/edittext_padding"
+                   android:id="@+id/txtTradeskill"
+                   android:textColor="@android:color/white"
+                   android:imeOptions="actionNext"
+                   android:singleLine="true"
+                   android:textSize="@dimen/edittext_size"
+                   android:gravity="center_horizontal"
+                   android:textCursorDrawable="@drawable/cursor_drawable"
+                   android:background="@android:color/transparent"
+                   android:textColorHint="@android:color/white"
+                   android:hint="@string/tradeskill"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content" />
            </LinearLayout>
 
 

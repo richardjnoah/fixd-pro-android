@@ -8,11 +8,22 @@ import java.util.ArrayList;
  */
 public class InstallOrRepairModal implements Serializable{
     RepairInfo repairInfo = new RepairInfo();
-    RepairType repairType = new RepairType();
+    RepairType repairType = new RepairType(); //repai |maintain | Install
+//    Equipment Info replaces Whats Wrong
+    EquipmentInfo equipmentInfo = new EquipmentInfo();
+//    now no use of Whats Wrong
     WhatsWrong whatsWrong = new WhatsWrong();
     Signature signature = new Signature();
     WorkOrder workOrder = new WorkOrder();
-    ArrayList<Parts> partsArrayList = new ArrayList<Parts>();
+    PartsContainer partsContainer = new PartsContainer();
+
+    public EquipmentInfo getEquipmentInfo() {
+        return equipmentInfo;
+    }
+
+    public void setEquipmentInfo(EquipmentInfo equipmentInfo) {
+        this.equipmentInfo = equipmentInfo;
+    }
 
     public RepairInfo getRepairInfo() {
         return repairInfo;
@@ -54,11 +65,11 @@ public class InstallOrRepairModal implements Serializable{
         this.workOrder = workOrder;
     }
 
-    public ArrayList<Parts> getPartsArrayList() {
-        return partsArrayList;
+    public PartsContainer getPartsContainer() {
+        return partsContainer;
     }
 
-    public void setPartsArrayList(ArrayList<Parts> partsArrayList) {
-        this.partsArrayList = partsArrayList;
+    public void setPartsContainer(PartsContainer partsContainer) {
+        this.partsContainer = partsContainer;
     }
 }

@@ -83,6 +83,7 @@
                             android:id="@+id/address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="22sp"
                             android:textColor="@color/register_button_text" />
                     </LinearLayout>
                     <View
@@ -104,8 +105,10 @@
                             android:id="@+id/timeinterval"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:textSize="22sp"
                             android:textColor="@color/register_button_text" />
                         <TextView
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
@@ -118,11 +121,22 @@
                         android:layout_height="2dp"
                         android:background="@color/register_button_text"/>
                     <LinearLayout
+                        android:id="@+id/layoutServiceDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:visibility="gone"
                         android:id="@+id/appliance_layout"
                         android:layout_width="match_parent"
                         android:gravity="center"
                         android:layout_height="wrap_content">
+
+
                         <HorizontalScrollView
+                            android:visibility="gone"
                             android:id="@+id/horizontal_Scroll_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -130,7 +144,6 @@
                             >
 
                             <LinearLayout
-
                                 android:id="@+id/scrollViewLatout"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -151,14 +164,37 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtPickup"
+            android:padding="12dp"
+            android:textColor="@android:color/white"
+            android:background="@color/orange_signin_back"
+            android:text="Pick up"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:textSize="22sp"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtDecline"
+            android:textSize="22sp"
+            android:padding="12dp"
+            android:background="@android:color/white"
+            android:textColor="@color/orange_signin_back"
+            android:gravity="center"
+            android:text="Decline"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
         <ImageView
+            android:visibility="gone"
             android:id="@+id/pickupimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/pickup"/>
         <ImageView
+            android:visibility="gone"
             android:id="@+id/declineimg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

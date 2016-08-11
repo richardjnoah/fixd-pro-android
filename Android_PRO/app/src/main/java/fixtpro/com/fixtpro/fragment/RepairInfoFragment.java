@@ -9,10 +9,14 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +27,26 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.ResponseListener;
+import fixtpro.com.fixtpro.adapters.RepairTypeAdapter;
 import fixtpro.com.fixtpro.beans.install_repair_beans.RepairInfo;
 import fixtpro.com.fixtpro.imageupload.ImageHelper2;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.ExceptionListener;
+import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncMutipart;
+import fixtpro.com.fixtpro.utilites.MultipartUtility;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,11 +76,13 @@ public class RepairInfoFragment extends Fragment {
     Context _context = null ;
     private static final int CAMERA_REQUEST = 1;
     private static final int GALLERY_REQUEST = 2;
-    public String Path,path;
+    public String Path = "",path;
     public Uri selectedImageUri;
     int finalHeight, finalWidth;
     String unit_manufacturer = "",modal_number = "",serial_number = "",description = "";
     RepairInfo repairInfo = null ;
+    MultipartUtility multipart = null;
+    String error_message = "";
     public RepairInfoFragment() {
         // Required empty public constructor
     }
@@ -93,7 +113,7 @@ public class RepairInfoFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
         singleTon = CurrentScheduledJobSingleTon.getInstance();
-        repairInfo = singleTon.getInstallOrRepairModal().getRepairInfo();
+        repairInfo = singleTon.getJobApplianceModal().getInstallOrRepairModal().getRepairInfo();
         _context = getActivity() ;
     }
     @Override
@@ -185,17 +205,10 @@ public class RepairInfoFragment extends Fragment {
             showAlertDialog("Fixd-Pro","please enter serial number");
         }else if (description.length() == 0){
             showAlertDialog("Fixd-Pro","please enter unit work description");
-        }else if (path != null){
+        }else if (Path.length() == 0){
             showAlertDialog("Fixd-Pro","please add image");
         }else{
-            repairInfo.setImage(path);
-            repairInfo.setUnitManufacturer(unit_manufacturer);
-            repairInfo.setModalNumber(modal_number);
-            repairInfo.setSerialNumber(serial_number);
-            repairInfo.setWorkDescription(description);
-            singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
-            CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setRepairInfo(repairInfo);
-            ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.REPAIR_INFO_FRAGMENT);
+            executeRepairInfoSaveingRequest();
         }
 
     }
@@ -324,4 +337,95 @@ public class RepairInfoFragment extends Fragment {
         // show it
         alertDialog.show();
     }
+    public void executeRepairInfoSaveingRequest(){
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
+                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
+                        multipart.addFormField("api", "install_info");
+                        multipart.addFormField("object", "install_flow");
+
+                    }else{
+                        multipart.addFormField("api", "repair_info");
+                        multipart.addFormField("object", "repair_flow");
+
+                    }
+                    multipart.addFilePart("data[image]", new File(Path));
+                    multipart.addFormField("data[model_number]", modal_number);
+                    multipart.addFormField("data[unit_manufacturer]", unit_manufacturer);
+                    multipart.addFormField("data[serial_number]", serial_number);
+                    multipart.addFormField("data[work_description]", description);
+                    multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, repairTypeResponseListener,repairTypeexceptionListener, getActivity(), "Saving");
+                getApiResponseAsync.execute();
+            }
+        }.execute();
+    }
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:{
+
+                    break;
+                }case 1:{
+                    showAlertDialog("Fixd-Pro", error_message);
+                    break;
+                }case 2:{
+                    repairInfo.setImage(path);
+                    repairInfo.setUnitManufacturer(unit_manufacturer);
+                    repairInfo.setModalNumber(modal_number);
+                    repairInfo.setSerialNumber(serial_number);
+                    repairInfo.setWorkDescription(description);
+                    singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+                    CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setRepairInfo(repairInfo);
+                    ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.REPAIR_INFO_FRAGMENT);
+                    break;
+                }
+            }
+        }
+    };
+    ResponseListener repairTypeResponseListener = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    handler.sendEmptyMessage(2);
+                }
+                else{
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        handler.sendEmptyMessage(1);
+                    }
+                }
+
+            }catch (JSONException e){
+
+            }
+        }
+    };
+    ExceptionListener repairTypeexceptionListener= new ExceptionListener() {
+        @Override
+        public void handleException(int exceptionStatus) {
+            handler.sendEmptyMessage(exceptionStatus);
+        }
+    };
 }

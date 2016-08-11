@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,6 +7,7 @@
     android:orientation="vertical"
     tools:context="fixtpro.com.fixtpro.fragment.SettingsFragment">
     <ScrollView
+        android:layout_above="@+id/txtSignOut"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <LinearLayout
@@ -122,7 +123,33 @@
                 android:layout_marginRight="2dp"
                 android:layout_height="1dp"/>
             <LinearLayout
-                android:id="@+id/layout_edit_tech"
+            android:id="@+id/layout_edit_tech"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:text="@string/edittechnicians"
+                android:textColor="@color/register_button_text"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/setting_next"/>
+        </LinearLayout>
+            <View
+                android:id="@+id/edit_tech_divider"
+                android:background="@color/register_button_text"
+                android:layout_width="match_parent"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:layout_height="1dp"/>
+            <LinearLayout
+                android:id="@+id/layout_change_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -132,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/edittechnicians"
+                    android:text="@string/change_radius"
                     android:textColor="@color/register_button_text"/>
                 <ImageView
                     android:layout_width="wrap_content"
@@ -141,13 +168,15 @@
                     android:src="@drawable/setting_next"/>
             </LinearLayout>
             <View
-                android:id="@+id/edit_tech_divider"
+                android:visibility="gone"
+                android:id="@+id/change_radius_divider"
                 android:background="@color/register_button_text"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_height="1dp"/>
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -182,12 +211,14 @@
                     />
             </LinearLayout>
             <View
+                android:visibility="gone"
                 android:background="@color/register_button_text"
                 android:layout_width="match_parent"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:layout_height="1dp"/>
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
@@ -451,4 +482,16 @@
 
         </LinearLayout>
     </ScrollView>
-</LinearLayout>
+    <TextView
+        android:id="@+id/txtSignOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10sp"
+        android:layout_alignParentBottom="true"
+        android:singleLine="true"
+        android:text="Sign Out"
+        android:textColor="@android:color/white"
+        android:background="@color/orange_signin_back"
+        android:textSize="22sp"/>
+</RelativeLayout>

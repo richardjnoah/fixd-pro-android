@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -68,6 +69,7 @@ public class TradeSkillAdapter extends BaseAdapter {
 
         public TextView TradeSkill;
         public LinearLayout skill_container;
+        public ImageView imgCheck;
     }
 
     /****** Depends upon data size called for each row , Create each ListView row *****/
@@ -79,13 +81,14 @@ public class TradeSkillAdapter extends BaseAdapter {
         if(convertView==null){
 
             /****** Inflate tabitem.xml file for each row ( Defined below ) *******/
-            vi = inflater.inflate(R.layout.trade_skill_item, null);
+            vi = inflater.inflate(R.layout.trade_skill_item_new, null);
 
             /****** View Holder Object to contain tabitem.xml file elements ******/
 
             holder = new ViewHolder();
             holder.TradeSkill = (TextView) vi.findViewById(R.id.txtSkill);
             holder.skill_container = (LinearLayout)vi.findViewById(R.id.skill_container);
+            holder.imgCheck = (ImageView)vi.findViewById(R.id.imgCheck);
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
         }
@@ -105,9 +108,9 @@ public class TradeSkillAdapter extends BaseAdapter {
             holder.TradeSkill.setText(tempValues.getTitle());
             holder.TradeSkill.setTypeface(fontfamily);
             if (tempValues.isChecked()){
-                holder.TradeSkill.setBackgroundColor(res.getColor(R.color.grey_skill_back));
+                holder.imgCheck.setVisibility(View.VISIBLE);
             }else{
-                holder.TradeSkill.setBackgroundColor(res.getColor(android.R.color.transparent));
+                holder.imgCheck.setVisibility(View.GONE);
             }
             /************  Set Model values in Holder elements ***********/
 

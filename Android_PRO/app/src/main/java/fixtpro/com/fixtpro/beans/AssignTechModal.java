@@ -10,8 +10,17 @@ public class AssignTechModal implements Serializable {
     String FirstName = "";
     String LasttName = "";
     String Rating = "";
-    String JobSchedule = "";
+    String JobScheduleCount = "";
     String TechId = "";
+    String Tech_User_id = "";
+
+    public String getTech_User_id() {
+        return Tech_User_id;
+    }
+
+    public void setTech_User_id(String tech_User_id) {
+        Tech_User_id = tech_User_id;
+    }
 
     public String getTechId() {
         return TechId;
@@ -54,10 +63,10 @@ public class AssignTechModal implements Serializable {
     }
 
     public String getJobSchedule() {
-        return JobSchedule;
+        return JobScheduleCount;
     }
 
-    public void setJobSchedule(String jobSchedule) {
-        JobSchedule = jobSchedule;
+    public void setJobSchedule(String JobScheduleCount) {
+        this.JobScheduleCount = JobScheduleCount;
     }
 }

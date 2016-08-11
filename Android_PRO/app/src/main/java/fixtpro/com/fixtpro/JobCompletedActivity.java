@@ -3,18 +3,25 @@ package fixtpro.com.fixtpro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import fixtpro.com.fixtpro.adapters.HorizontalScrollApplianceAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
@@ -38,7 +45,8 @@ public class JobCompletedActivity extends AppCompatActivity {
     private HorizontalListView mHlvCustomList;
     HorizontalScrollApplianceAdapter horizontalScrollApplianceAdapter = null;
     LinearLayout appliance_layout ;
-
+    ArrayList<Bitmap> arrayList = new ArrayList<>();
+    int count = 0 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,28 +58,71 @@ public class JobCompletedActivity extends AppCompatActivity {
         if (getIntent() != null){
             availableJobModal = (AvailableJobModal)getIntent().getSerializableExtra("CompletedJobObject");
             jobapplianceslist = availableJobModal.getJob_appliances_arrlist();
-            horizontalScrollApplianceAdapter = new HorizontalScrollApplianceAdapter(this,jobapplianceslist);
-            mHlvCustomList.setAdapter(horizontalScrollApplianceAdapter);
+//            horizontalScrollApplianceAdapter = new HorizontalScrollApplianceAdapter(this,jobapplianceslist);
+//            mHlvCustomList.setAdapter(horizontalScrollApplianceAdapter);
             setValues();
+            appliance_layout.removeAllViews();
+            getBitamap();
         }
     }
+    private void showLayout(){
+
+        for (int i = 0 ; i < jobapplianceslist.size() ; i++){
+            LayoutInflater layoutInflater =
+                    (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            final View addView = layoutInflater.inflate(R.layout.jobs_image_title_item, null);
+            ImageView imageView = (ImageView)addView.findViewById(R.id.imgType);
+            TextView txtTypeTitle = (TextView)addView.findViewById(R.id.txtTypeTitle);
+            txtTypeTitle.setText(jobapplianceslist.get(i).getAppliance_type_name());
+            imageView.setImageBitmap(arrayList.get(i));
+            appliance_layout.addView(addView);
+        }
+    }
+    private void getBitamap(){
+        Picasso.with(this)
+                .load(jobapplianceslist.get(count).getAppliance_type_image_original()).into(new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                arrayList.add(bitmap);
+                ++count;
+                if (count < jobapplianceslist.size()){
+                    getBitamap();
+                }else {
+                    showLayout();
+                }
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        });
+    }
     private void setValues(){
-        appliance_layout = (LinearLayout)findViewById(R.id.appliance_layout);
+        appliance_layout = (LinearLayout)findViewById(R.id.layout_appliances);
         txtName.setText(availableJobModal.getContact_name());
         txtAddress.setText(availableJobModal.getJob_customer_addresses_address()+" - "+availableJobModal.getJob_customer_addresses_city()+","+availableJobModal.getJob_customer_addresses_state());
         txtDateTime.setText(Utilities.convertDate(availableJobModal.getRequest_date()));
-        txtArrivaltime.setText("Arrival Time: "+Utilities.Am_PMFormat(availableJobModal.getTimeslot_start()));
-        txtCompletedTime.setText("Completed Time: "+Utilities.Am_PMFormat(availableJobModal.getTimeslot_end()));
-        txtTechName.setText("(null)");
-        txtTotalJobScheduled.setText("(null)");
-        txtTotal.setText("Total................$"+availableJobModal.getCost_details_pro_earned());
+        txtArrivaltime.setText("Arrival Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_start()));
+        txtCompletedTime.setText("Completed Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_end()));
+        txtTechName.setText(availableJobModal.getTechnician_fname() +" "+availableJobModal.getTechnician_lname());
+        txtTotalJobScheduled.setText(availableJobModal.getTechnician_fname() +" has" +availableJobModal.getTechnician_pickup_jobs() +" jobs scheduled at this time." );
+        txtTotal.setText("Total................$" + availableJobModal.getTotal_cost());
+        custom_ratingbar_tech.setStar((int)Float.parseFloat(availableJobModal.getTechnician_avg_rating()),true);
+        if (availableJobModal.getTechnician_profile_image().length() > 0)
+        Picasso.with(this).load(availableJobModal.getTechnician_profile_image()).into(circleImage);
     }
     private void setClickListner() {
         txtServceTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(context,ServiceTicketActivity.class);
-                i.putExtra("jobId",availableJobModal.getId());
+                i.putExtra("modal",availableJobModal);
                 startActivity(i);
             }
         });
@@ -112,6 +163,7 @@ public class JobCompletedActivity extends AppCompatActivity {
         custom_ratingbar_tech.setClickable(false);
 
         mHlvCustomList = (HorizontalListView) findViewById(R.id.hlvImageList);
+        circleImage = (CircleImageView)findViewById(R.id.circleImage);
     }
 
     private void setToolBar() {

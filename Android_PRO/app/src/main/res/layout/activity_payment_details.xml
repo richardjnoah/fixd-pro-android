@@ -1,47 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     android:background="@drawable/background_grey_blur"
     tools:context="fixtpro.com.fixtpro.PaymentDetailsActivity">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/actionbar_bg"
+        app:popupTheme="@style/AppTheme.PopupOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:background="@color/actionbar_bg"
-            android:layout_height="?attr/actionBarSize"
-            app:popupTheme="@style/AppTheme.PopupOverlay">
-            <RelativeLayout
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_Cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:id="@+id/img_Cancel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/screen_cross"
-                    android:text="@string/done"/>
-                <TextView
-                    android:id="@+id/titletext"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/register_button_text"
-                    android:textSize="20sp"
-                    android:gravity="center"
-                    android:text="@string/paymentdetails"/>
-            </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+                android:layout_height="wrap_content"
+                android:src="@drawable/screen_cross"
+                android:text="@string/done" />
 
-    </android.support.design.widget.AppBarLayout>
+            <TextView
+                android:id="@+id/titletext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/paymentdetails"
+                android:textColor="@color/register_button_text"
+                android:textSize="20sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
-    <include layout="@layout/content_payment_details" />
+    <include
+        layout="@layout/content_payment_details"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_below="@+id/toolbar"></include>
 
-
-</android.support.design.widget.CoordinatorLayout>
+</RelativeLayout>

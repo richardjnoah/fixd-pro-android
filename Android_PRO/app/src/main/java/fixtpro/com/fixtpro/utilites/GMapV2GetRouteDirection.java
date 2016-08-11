@@ -3,7 +3,9 @@ package fixtpro.com.fixtpro.utilites;
 /**
  * Created by sahil on 31-03-2016.
  */
+import java.io.BufferedReader;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +16,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
+import org.apache.http.util.EntityUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -25,24 +28,34 @@ public class GMapV2GetRouteDirection {
     public final static String MODE_DRIVING = "driving";
     public final static String MODE_WALKING = "walking";
     public final static String API_KEY = "AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g";
+    StringBuilder total = new StringBuilder();
+    String responseStr = "";
 
     public GMapV2GetRouteDirection() { }
 
-    public Document getDocument(LatLng start, LatLng end, String mode) {
-        String url = "http://maps.googleapis.com/maps/api/directions/xml?"
+    public String getDocument(LatLng start, LatLng end, String mode) {
+        String url = "http://maps.googleapis.com/maps/api/directions/json?"
                 + "origin=" + start.latitude + "," + start.longitude
                 + "&destination=" + end.latitude + "," + end.longitude
-                + "&sensor=false&units=metric&mode="+mode+"&key" + API_KEY;
+                + "&sensor=false&units=imperial&mode="+mode+"&key" + API_KEY;
 
         try {
             HttpClient httpClient = new DefaultHttpClient();
             HttpContext localContext = new BasicHttpContext();
             HttpPost httpPost = new HttpPost(url);
             HttpResponse response = httpClient.execute(httpPost, localContext);
-            InputStream in = response.getEntity().getContent();
-            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document doc = builder.parse(in);
-            return doc;
+            responseStr = EntityUtils.toString(response.getEntity());
+//            InputStream in = response .getEntity().getContent();
+//            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+//            Document doc = builder.parse(in);
+//            BufferedReader r = new BufferedReader(new InputStreamReader(in));
+//
+//            String line;
+//            while ((line = r.readLine()) != null) {
+//                total.append(line).append('\n');
+//            }
+
+            return responseStr;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,7 +88,16 @@ public class GMapV2GetRouteDirection {
         Log.i("DistanceText", node2.getTextContent());
         return node2.getTextContent();
     }
-
+    public String getDistanceTextNew (Document doc) {
+        NodeList nl1 = doc.getElementsByTagName("leg");
+        Node node1 = nl1.item(0);
+        NodeList nl2 = node1.getChildNodes();
+        Node node2 = nl2.item(getNodeIndex(nl2, "distance"));
+        NodeList nl3 = node2.getChildNodes();
+        Log.i("DistanceText", node2.getTextContent());
+        Node lngNode = nl3.item(getNodeIndex(nl3, "text"));
+        return node2.getTextContent();
+    }
     public int getDistanceValue (Document doc) {
         NodeList nl1 = doc.getElementsByTagName("distance");
         Node node1 = nl1.item(0);

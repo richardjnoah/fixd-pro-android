@@ -31,6 +31,9 @@ import fixtpro.com.fixtpro.adapters.AvailableJobsPagingAdaper;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
 import fixtpro.com.fixtpro.beans.JobPartsUsedModal;
+import fixtpro.com.fixtpro.beans.install_repair_beans.InstallOrRepairModal;
+import fixtpro.com.fixtpro.beans.install_repair_beans.Parts;
+import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
@@ -46,11 +49,19 @@ public class ServiceTicketActivity extends AppCompatActivity {
     TextView txtToolbar,txttop,txtCustomer,txtCustomerSet,txtJobName,txtJobNameSet,txtType,txtTypeSet,
             txtUnit1,txtUnit1Set,txtcustomerCompaint,txtcustomerCompaintSet,txtGarInstall,txtGarDoller,txtIceInstall,txtTax,
             txtTexDoller,txtTotalDoller,txtContractor,txtContractoeDoller,txtIceDoller;
+    TextView txtCustomerComplaint,txtDisplaingError,txtDescriptionOfWork,txtDescriptionTExt,txtRepairType,txtRepairTypeText,txtPartsType,txtHomeandConnectionText,txtPartsDollerTxxt;
+
     String nextComplete = "null";
     String error_message =  "";
     Context _context = this;
     LinearLayout layoutAppliances,layoutPartsUsed ;
     LayoutInflater inflater = null;
+    float Jobtotal = 0;
+    AvailableJobModal availableJobModal ;
+    View layout_workorder;
+    boolean isWorkorderShown = false;
+    LinearLayout layout_appliances;
+    ImageView imgArrow ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,27 +72,45 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
         setWidgets();
 
+        setListeners();
+
         setTypeface();
         if (getIntent() != null){
-            jobId = getIntent().getStringExtra("jobId");
+            availableJobModal = (AvailableJobModal)getIntent().getSerializableExtra("modal");
+            jobId = availableJobModal.getId();
             GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerCompleted, this, "Loading");
             responseAsyncCompleted.execute(getRequestParams(jobId));
         }
 
     }
+    private void setListeners(){
+        layout_appliances.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isWorkorderShown) {
+                    layout_workorder.setVisibility(View.GONE);
+                    imgArrow.setImageResource(R.drawable.next_arrow_orange);
+                    isWorkorderShown = false ;
 
+                } else {
+                    layout_workorder.setVisibility(View.VISIBLE);
+                    imgArrow.setImageResource(R.drawable.down_arrow_orange);
+                    isWorkorderShown = true ;
+                }
+            }
+        });
+    }
 
     ResponseListener responseListenerCompleted = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
             Log.e("","Response"+Response.toString());
             try {
-                if(Response.getString("STATUS").equals("SUCCESS"))
-                {
+                if (Response.getString("STATUS").equals("SUCCESS")) {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextComplete = pagination.getString("next");
-                    for(int i = 0; i < results.length(); i++){
+//                    nextScheduled = pagination.getString("next");
+                    for (int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
                         model.setContact_name(obj.getString("contact_name"));
@@ -91,15 +120,15 @@ public class ServiceTicketActivity extends AppCompatActivity {
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
@@ -109,48 +138,165 @@ public class ServiceTicketActivity extends AppCompatActivity {
                         model.setUpdated_at(obj.getString("updated_at"));
                         model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
-                        JSONArray job_part_userd = obj.getJSONArray("job_parts_used");
-                        ArrayList<JobPartsUsedModal> job_parts_used_list = new ArrayList<JobPartsUsedModal>();
-                        if (job_part_userd != null){
-                            for (int j = 0; j < job_part_userd.length(); j++) {
-                                JobPartsUsedModal jobPartsUsedModal = new JobPartsUsedModal();
-                                JSONObject jsonObject = job_part_userd.getJSONObject(j);
-                                jobPartsUsedModal.setId(jsonObject.getString("id"));
-                                jobPartsUsedModal.setPart_num(jsonObject.getString("part_num"));
-                                jobPartsUsedModal.setPart_desc(jsonObject.getString("part_desc"));
-                                jobPartsUsedModal.setQty(jsonObject.getString("qty"));
-                                jobPartsUsedModal.setPart_cost(jsonObject.getString("part_cost"));
-                                job_parts_used_list.add(jobPartsUsedModal);
-                            }
-                        }
-                        model.setJob_parts_used_list(job_parts_used_list);
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                         ArrayList<JobAppliancesModal> jobapplianceslist = new ArrayList<JobAppliancesModal>();
-                        if(jobAppliances != null){
+                        if (jobAppliances != null) {
                             for (int j = 0; j < jobAppliances.length(); j++) {
                                 JSONObject jsonObject = jobAppliances.getJSONObject(j);
                                 JobAppliancesModal mod = new JobAppliancesModal();
+                                mod.setJob_appliances_id(jsonObject.getString("id"));
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                if (!jsonObject.isNull("description")) {
+                                    mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("service_type")) {
+                                    mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
 
-                                JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
-                                mod.setAppliance_type_id(appliance_type_obj.getString("id"));
-                                mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
-                                mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
-                                mod.setAppliance_type_name(appliance_type_obj.getString("name"));
-                                mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
-                                if (jsonObject.isNull("image")){
-                                    JSONObject image_obj = appliance_type_obj.getJSONObject("image");
-                                    if (!image_obj.isNull("original")){
-                                        mod.setImg_original(image_obj.getString("original"));
-                                        mod.setImg_160x170(image_obj.getString("160x170"));
-                                        mod.setImg_150x150(image_obj.getString("150x150"));
-                                        mod.setImg_75x75(image_obj.getString("75x75"));
-                                        mod.setImg_30x30(image_obj.getString("30x30"));
+                                    InstallOrRepairModal installOrRepairModal = mod.getInstallOrRepairModal();
+
+                                    if (jsonObject.getString("service_type").equals("Repair")){
+
+                                        if (!jsonObject.isNull("job_appliance_repair_whats_wrong")){
+                                            JSONObject whatsWrongObject = jsonObject.getJSONObject("job_appliance_repair_whats_wrong");
+                                            if (!whatsWrongObject.isNull("image")){
+                                                JSONObject image = whatsWrongObject.getJSONObject("image");
+                                                if (!image.isNull("original"))
+                                                    installOrRepairModal.getWhatsWrong().setImage(image.getString("original"));
+                                            }
+
+                                            installOrRepairModal.getWhatsWrong().setDiagnosis_and_resolution(whatsWrongObject.getString("diagnosis_and_resolution"));
+
+                                        }
+
+                                        if (!jsonObject.isNull("job_appliance_repair_types")){
+                                            JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_repair_types");
+                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
+                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+
+                                        }
+
+                                        if (!jsonObject.isNull("job_appliance_repair_info")){
+                                            JSONObject jsonObjectRepairInfo  = jsonObject.getJSONObject("job_appliance_repair_info");
+
+                                            installOrRepairModal.getRepairInfo().setModalNumber(jsonObjectRepairInfo.getString("model_number"));
+                                            installOrRepairModal.getRepairInfo().setSerialNumber(jsonObjectRepairInfo.getString("serial_number"));
+                                            installOrRepairModal.getRepairInfo().setUnitManufacturer(jsonObjectRepairInfo.getString("unit_manufacturer"));
+                                            installOrRepairModal.getRepairInfo().setWorkDescription(jsonObjectRepairInfo.getString("work_description"));
+
+                                        }
+
+                                    }else if(jsonObject.getString("service_type").equals("Install")){
+
+                                        if (!jsonObject.isNull("job_appliance_install_types")){
+                                            JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_install_types");
+                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
+                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+
+
+                                        }
+
+                                        if (!jsonObject.isNull("job_appliance_install_info")){
+                                            JSONObject jsonObjectRepairInfo  = jsonObject.getJSONObject("job_appliance_install_info");
+
+                                            installOrRepairModal.getRepairInfo().setModalNumber(jsonObjectRepairInfo.getString("model_number"));
+                                            installOrRepairModal.getRepairInfo().setSerialNumber(jsonObjectRepairInfo.getString("serial_number"));
+                                            installOrRepairModal.getRepairInfo().setUnitManufacturer(jsonObjectRepairInfo.getString("unit_manufacturer"));
+                                            installOrRepairModal.getRepairInfo().setWorkDescription(jsonObjectRepairInfo.getString("work_description"));
+
+
+                                        }
+
+
+                                    }else {
+                                        // for maintain
+                                        if (!jsonObject.isNull("job_appliance_maintain_types")){
+                                            JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_maintain_types");
+                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
+                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                            installOrRepairModal.getRepairType().setIsCompleted(true);
+
+                                        }
+
+                                        if (!jsonObject.isNull("job_appliance_maintain_info")){
+                                            JSONObject jsonObjectRepairInfo  = jsonObject.getJSONObject("job_appliance_maintain_info");
+
+                                            installOrRepairModal.getRepairInfo().setModalNumber(jsonObjectRepairInfo.getString("model_number"));
+                                            installOrRepairModal.getRepairInfo().setSerialNumber(jsonObjectRepairInfo.getString("serial_number"));
+                                            installOrRepairModal.getRepairInfo().setUnitManufacturer(jsonObjectRepairInfo.getString("unit_manufacturer"));
+                                            installOrRepairModal.getRepairInfo().setWorkDescription(jsonObjectRepairInfo.getString("work_description"));
+                                            installOrRepairModal.getRepairInfo().setIsCompleted(true);
+                                            installOrRepairModal.getWorkOrder().setIsCompleted(true);
+                                        }
+
+                                    }
+                                    if (!jsonObject.isNull("equipment_info")){
+                                        JSONObject equipment_info = jsonObject.getJSONObject("equipment_info");
+                                        installOrRepairModal.getEquipmentInfo().setIsCompleted(true);
+                                    }
+                                    JSONArray jsonArray = jsonObject.getJSONArray("job_parts_used");
+                                    ArrayList<Parts> partsArrayList = new ArrayList<Parts>();
+                                    for (int k = 0 ; k < jsonArray.length() ; k++){
+                                        JSONObject partsObject = jsonArray.getJSONObject(k);
+                                        Parts parts = new Parts();
+                                        parts.setCost(partsObject.getString("part_cost"));
+                                        parts.setDescription(partsObject.getString("part_desc"));
+                                        parts.setQuantity(partsObject.getString("qty"));
+                                        parts.setNumber(partsObject.getString("part_num"));
+                                        partsArrayList.add(parts);
+
+                                    }
+                                    installOrRepairModal.getPartsContainer().setPartsArrayList(partsArrayList);
+
+                                    if(!jsonObject.isNull("work_order")){
+                                        JSONObject workorderObject = jsonObject.getJSONObject("work_order");
+                                        installOrRepairModal.getWorkOrder().setTotal(workorderObject.getString("total"));
+                                        installOrRepairModal.getWorkOrder().setTax(workorderObject.getString("tax"));
+                                        if (workorderObject.has("sub_total"))
+                                            installOrRepairModal.getWorkOrder().setSub_total(workorderObject.getString("sub_total"));
+                                        Jobtotal = Jobtotal + Float.parseFloat(workorderObject.getString("total"));
+                                        installOrRepairModal.getWorkOrder().setIsCompleted(true);
+                                    }
+                                    if (partsArrayList.size()>0){
+                                        installOrRepairModal.getPartsContainer().setIsCompleted(true);
+                                    }
+                                    if (!jsonObject.isNull("customer_signature")) {
+                                        installOrRepairModal.getSignature().setSignature_path(jsonObject.getString("customer_signature"));
+                                        if (jsonObject.getString("customer_signature").length() > 0) {
+                                            installOrRepairModal.getSignature().setSignature_path(jsonObject.getString("customer_signature"));
+                                            installOrRepairModal.getSignature().setIsCompleted(true);
+                                            mod.setIsProcessCompleted(true);
+                                        }
                                     }
                                 }
-
-
+                                if (!jsonObject.isNull("customer_complaint")) {
+                                    mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                                }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")) {
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        Log.e("", "-----" + image_obj.toString());
+                                        if (!image_obj.isNull("original")) {
+                                            mod.setImg_original(image_obj.getString("original"));
+                                            mod.setImg_160x170(image_obj.getString("160x170"));
+                                            mod.setImg_150x150(image_obj.getString("150x150"));
+                                            mod.setImg_75x75(image_obj.getString("75x75"));
+                                            mod.setImg_30x30(image_obj.getString("30x30"));
+                                        }
+                                    }
+                                }
 //                                JSONObject services_obj = jsonObject.getJSONObject("services");
 //                                mod.setService_id(services_obj.getString("id"));
 //                                mod.setService_name(services_obj.getString("name"));
@@ -161,43 +307,43 @@ public class ServiceTicketActivity extends AppCompatActivity {
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
                         }
-                        JSONObject time_slot_obj = obj.getJSONObject("time_slots");
-                        model.setTime_slot_id(time_slot_obj.getString("id"));
-                        model.setTimeslot_start(time_slot_obj.getString("start"));
-                        model.setTimeslot_end(time_slot_obj.getString("end"));
-                        model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        if (!obj.isNull("technicians")) {
+                            JSONObject technician_object = obj.getJSONObject("technicians");
+                            model.setTechnician_id(technician_object.getString("id"));
+                            model.setTechnician_fname(technician_object.getString("first_name"));
+                            model.setTechnician_lname(technician_object.getString("last_name"));
+                            model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
+                            model.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            model.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                            model.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
+                            if (!technician_object.isNull("profile_image")) {
+                                JSONObject object_profile_image = technician_object.getJSONObject("profile_image");
+                                if (!object_profile_image.isNull("original"))
+                                    model.setTechnician_profile_image(object_profile_image.getString("original"));
 
-                        if (!obj.isNull("job_repair")){
-                            JSONObject job_repair_obj = obj.getJSONObject("job_repair");
-                            if (!job_repair_obj.isNull("repair_types")){
-                                JSONObject job_repair_repair_type_obj  = job_repair_obj.getJSONObject("repair_types");
-                                model.setJob_repair_job_types_cost(job_repair_repair_type_obj.getString("cost"));
-                                model.setJob_repair_job_types_name(job_repair_repair_type_obj.getString("name"));
                             }
 
                         }
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+                        if (!obj.isNull("cost_details")) {
+                            JSONObject cost_details_obj = obj.getJSONObject("cost_details");
 
-                        JSONObject cost_details_obj = obj.getJSONObject("cost_details");
-                        if (!cost_details_obj.isNull("repair")){
-                            JSONObject cost_details_repair  = cost_details_obj.getJSONObject("repair");
-                            Iterator<?> keys = cost_details_repair.keys();
-                            if (keys.hasNext()){
-                                String key = (String)keys.next();
-                                String value = cost_details_repair.getString(key);
-                                model.setCost_details_repair_type(key);
-                                model.setCost_details_repair_value(value);
-                            }
+                            model.setCost_details_tripcharges(cost_details_obj.getString("trip_charges"));
+                            model.setCost_details_tax(cost_details_obj.getString("tax"));
+                            model.setCost_details_tripcharges(cost_details_obj.getString("trip_charges"));
+                            model.setCost_details_fixd_fee_percentage(cost_details_obj.getString("fixd_fee_percentage"));
+                            model.setCost_details_fixd_fee(cost_details_obj.getString("fixd_fee"));
+                            model.setCost_details_pro_earned(cost_details_obj.getString("pro_earned"));
+                            model.setCost_details_customer_payment(cost_details_obj.getString("customer_payment"));
                         }
 
-                        model.setCost_details_tripcharges(cost_details_obj.getString("trip_charges"));
-                        model.setCost_details_tax(cost_details_obj.getString("tax"));
-
-                        model.setCost_details_fixd_fee_percentage(cost_details_obj.getString("fixd_fee_percentage"));
-                        model.setCost_details_fixd_fee(cost_details_obj.getString("fixd_fee"));
-                        model.setCost_details_pro_earned(cost_details_obj.getString("pro_earned"));
-                        model.setCost_details_customer_payment(cost_details_obj.getString("customer_payment"));
-
-                        if (!obj.isNull("job_customer_addresses")){
+                        if (!obj.isNull("job_customer_addresses")) {
                             JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
                             model.setJob_customer_addresses_id(job_customer_addresses_obj.getString("id"));
                             model.setJob_customer_addresses_zip(job_customer_addresses_obj.getString("zip"));
@@ -208,20 +354,21 @@ public class ServiceTicketActivity extends AppCompatActivity {
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
-                        completedjoblist.add(model);
+                        handler.sendEmptyMessage(4);
                     }
-
-                    handler.sendEmptyMessage(4);
-                }else {
+                } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
-                    if (keys.hasNext()){
-                        String key = (String)keys.next();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
                         error_message = errors.getString(key);
                     }
                     handler.sendEmptyMessage(1);
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -263,44 +410,62 @@ public class ServiceTicketActivity extends AppCompatActivity {
         txtContractoeDoller = (TextView)findViewById(R.id.txtContractoeDoller);
         layoutAppliances = (LinearLayout)findViewById(R.id.layout4);
         layoutPartsUsed = (LinearLayout)findViewById(R.id.layout7);
+
+        layout_workorder = (View)findViewById(R.id.layout_workorder);
+        layout_workorder.setVisibility(View.GONE);
+
+        layout_appliances = (LinearLayout)findViewById(R.id.layout_appliances);
+
+        imgArrow = (ImageView)findViewById(R.id.imgArrow);
+
+        txtCustomerComplaint = (TextView)findViewById(R.id.txtCustomerComplaint);
+        txtDisplaingError = (TextView)findViewById(R.id.txtDisplaingError);
+        txtDescriptionOfWork = (TextView)findViewById(R.id.txtDescriptionOfWork);
+        txtDescriptionTExt = (TextView)findViewById(R.id.txtDescriptionTExt);
+        txtRepairType = (TextView)findViewById(R.id.txtRepairType);
+        txtRepairTypeText = (TextView)findViewById(R.id.txtRepairTypeText);
+        txtPartsType = (TextView)findViewById(R.id.txtPartsType);
+        txtHomeandConnectionText = (TextView)findViewById(R.id.txtHomeandConnectionText);
+        txtPartsDollerTxxt = (TextView)findViewById(R.id.txtPartsDollerTxxt);
     }
     private void setTypeface() {
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
         italicfontfamily = Typeface.createFromAsset(getAssets(),"HelveticaNeueLTStd-It.otf");
 
         txtToolbar.setTypeface(fontfamily);
-        txttop.setTypeface(fontfamily);
-        txtCustomer.setTypeface(fontfamily);
-        txtCustomerSet.setTypeface(fontfamily);
-        txtJobName.setTypeface(fontfamily);
-        txtJobNameSet.setTypeface(fontfamily);
-        txtType.setTypeface(fontfamily);
-        txtTypeSet.setTypeface(fontfamily);
-
-
-        txtcustomerCompaint.setTypeface(fontfamily);
-        txtcustomerCompaintSet.setTypeface(fontfamily);
-
-        txtGarInstall.setTypeface(fontfamily);
-        txtGarDoller.setTypeface(fontfamily);
-
-        txtTax.setTypeface(fontfamily);
-        txtTexDoller.setTypeface(fontfamily);
-        txtTotalDoller.setTypeface(fontfamily);
-
-        txtContractor.setTypeface(italicfontfamily);
-        txtContractoeDoller.setTypeface(italicfontfamily);
+//        txttop.setTypeface(fontfamily);
+//        txtCustomer.setTypeface(fontfamily);
+//        txtCustomerSet.setTypeface(fontfamily);
+//        txtJobName.setTypeface(fontfamily);
+//        txtJobNameSet.setTypeface(fontfamily);
+//        txtType.setTypeface(fontfamily);
+//        txtTypeSet.setTypeface(fontfamily);
+//
+//
+//        txtcustomerCompaint.setTypeface(fontfamily);
+//        txtcustomerCompaintSet.setTypeface(fontfamily);
+//
+//        txtGarInstall.setTypeface(fontfamily);
+//        txtGarDoller.setTypeface(fontfamily);
+//
+//        txtTax.setTypeface(fontfamily);
+//        txtTexDoller.setTypeface(fontfamily);
+//        txtTotalDoller.setTypeface(fontfamily);
+//
+//        txtContractor.setTypeface(italicfontfamily);
+//        txtContractoeDoller.setTypeface(italicfontfamily);
     }
 
     private HashMap<String,String> getRequestParams(String Jobid){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api", "read");
         hashMap.put("object","jobs");
-        if (Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro"))
-        hashMap.put("select", "^*,job_parts_used.^*,job_images.^*,job_repair.^*,job_repair.repair_types.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
-        else
-        hashMap.put("select", "^*,job_parts_used.^*,job_images.^*,job_repair.^*,job_repair.repair_types.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+//        if (Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro"))
+        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.equipment_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+//        else
+//        hashMap.put("select", "^*,job_parts_used.^*,job_images.^*,job_repair.^*,job_repair.repair_types.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         hashMap.put("where[id]", Jobid);
+        hashMap.put("expand[0]", "work_order");
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", 1+"");
         hashMap.put("per_page", "15");
@@ -316,7 +481,6 @@ public class ServiceTicketActivity extends AppCompatActivity {
                     showAlertDialog("Fixd-Pro",error_message);
                     break;
                 }
-
                 case 4:{
                     setValues();
                     break;
@@ -366,6 +530,18 @@ public class ServiceTicketActivity extends AppCompatActivity {
                 txtpartNumDSet.setText(completedjoblist.get(0).getJob_parts_used_list().get(i).getPart_num());
                 layoutPartsUsed.addView(view);
             }
+
+//            JobAppliancesModal modal = new JobAppliancesModal();
+//            txtDisplaingError.setText(modal.getJob_appliances_customer_compalint());
+//            txtDescriptionTExt.setText(modal.getJob_appliances_appliance_description());
+//            txtRepairTypeText.setText();
+//            for (int i = 0; i < partsArrayList.)
+//            txtHomeandConnectionText.setText();//setarray
+//            txtPartsDollerTxxt.setText();
+
+
+
+
         }
 
 

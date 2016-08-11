@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/txtTitle"
+                android:layout_width="0dp"
+                android:layout_weight="0.7"
+                android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/allmargins"
+                android:textSize="@dimen/textsizenoti"
+                android:paddingTop="5dp"
+                android:minLines="2"
+                android:paddingBottom="5dp"
+                android:textColor="@android:color/white"/>
+            <TextView
+                android:id="@+id/txtDateTime"
+                android:layout_width="0dp"
+                android:layout_weight="0.3"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:paddingRight="@dimen/allmargins"
+                android:gravity="right"
+                android:textSize="@dimen/textsizenoti"
+                android:textColor="@color/orange_signin_back"/>
+        </LinearLayout>
+    <!--</LinearLayout>-->
+</LinearLayout>

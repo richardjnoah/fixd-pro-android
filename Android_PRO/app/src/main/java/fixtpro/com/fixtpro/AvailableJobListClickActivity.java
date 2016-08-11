@@ -1,11 +1,13 @@
 package fixtpro.com.fixtpro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -48,33 +50,36 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import fixtpro.com.fixtpro.adapters.AvailableJobsPagingAdaper;
 import fixtpro.com.fixtpro.adapters.HorizontalScrollApplianceAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
+import fixtpro.com.fixtpro.fragment.ProblemImageActivity;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 public class AvailableJobListClickActivity extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback {
-    TextView contactName, address, date, timeinterval;
+    TextView contactName, address, date, timeinterval, txtDecline, txtPickup;
     ImageView cancel, pickupimg, declineimg, appliance_type_img,transparentImageView;
     AvailableJobModal model;
     private static GoogleMap mMap;
     HorizontalScrollView horizontal_Scroll_view ;
     HorizontalScrollApplianceAdapter horizontalScrollApplianceAdapter = null;
-    LinearLayout appliance_layout,scrollViewLatout ;
+    LinearLayout appliance_layout,scrollViewLatout, layoutServiceDescription ;
     View divider_scrollview;
     LayoutInflater inflater ;
     ImageLoader imageLoader ;
     DisplayImageOptions defaultOptions;
     SupportMapFragment mMapFragment = null ;
+    String error_message = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_job_list_click);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisc(true).cacheInMemory(true)
                 .imageScaleType(ImageScaleType.EXACTLY)
@@ -90,25 +95,26 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
         setWidgets();
         setListeners();
         model = (AvailableJobModal) getIntent().getSerializableExtra("JOB_DETAIL");
-        FixdProApplication.SelectedAvailableJobId = model.getJob_id() ;
+        FixdProApplication.SelectedAvailableJobId = model.getId();
         Log.e("Avail CONTACT NAME PICK", model.getContact_name());
 
         contactName.setText(model.getContact_name());
-        address.setText(model.getJob_customer_addresses_address() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
+        address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
         date.setText(Utilities.convertDate(model.getRequest_date()));
-        timeinterval.setText(Utilities.Am_PMFormat(model.getTimeslot_start())+" - "+Utilities.Am_PMFormat(model.getTimeslot_end()));
+        timeinterval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
 
-        setupAppliancesImages();
+//        setupAppliancesImages();
+          setUpApplianceDescription();
     }
 
     private void setUpMap() {
         // For showing a move to my loction button
-        mMap.setMyLocationEnabled(true);
+//        mMap.setMyLocationEnabled(true);
         // For dropping a marker at a point on the Map
-        mMap.addMarker(new MarkerOptions().position(new LatLng(model.getLatitude(), model.getLongitude())).title("My Home").snippet("Home Address"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(model.getJob_customer_addresses_latitude(), model.getJob_customer_addresses_longitude())).title("My Home").snippet("Home Address"));
         // For zooming automatically to the Dropped PIN Location
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(model.getLatitude(),
-                model.getLongitude()), 12.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(model.getJob_customer_addresses_latitude(),
+                model.getJob_customer_addresses_longitude()), 12.0f));
     }
 
     public void setWidgets(){
@@ -125,6 +131,8 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
         address = (TextView) findViewById(R.id.address);
         date = (TextView) findViewById(R.id.date);
         timeinterval = (TextView) findViewById(R.id.timeinterval);
+        txtDecline = (TextView) findViewById(R.id.txtDecline);
+        txtPickup = (TextView) findViewById(R.id.txtPickup);
 
         transparentImageView = (ImageView) findViewById(R.id.transparent_image);
         appliance_type_img = (ImageView) findViewById(R.id.appliance_type_img);
@@ -132,12 +140,15 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
         appliance_layout = (LinearLayout)findViewById(R.id.appliance_layout);
         divider_scrollview =(View)findViewById(R.id.divider_scrollview);
         scrollViewLatout = (LinearLayout)findViewById(R.id.scrollViewLatout);
+        layoutServiceDescription = (LinearLayout)findViewById(R.id.layoutServiceDescription);
     }
 
     public void setListeners(){
         cancel.setOnClickListener(this);
         pickupimg.setOnClickListener(this);
         declineimg.setOnClickListener(this);
+        txtDecline.setOnClickListener(this);
+        txtPickup.setOnClickListener(this);
         transparentImageView.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
@@ -214,6 +225,23 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                 startActivity(i);
                 finish();
                 break;
+            case R.id.txtPickup:
+                if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro"))
+                {
+                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerProPickup, this, "Loading");
+                    responseAsync.execute(getRequestParamsPro());
+                }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("technician")){
+                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerTechnicianPickup, this, "Loading");
+                    responseAsync.execute(getRequestParamsTechnician());
+                }
+                break;
+            case R.id.txtDecline:
+                Intent intent = new Intent(AvailableJobListClickActivity.this, DeclineJobActivity.class);
+                intent.putExtra("JobType","Available");
+                intent.putExtra("JobId",model.getId());
+                startActivity(intent);
+                finish();
+                break;
         }
     }
 
@@ -224,8 +252,18 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
-                    handler.sendEmptyMessage(0);
+                    handler.sendEmptyMessage(1);
                 }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        if (key.equals("168")){
+                            handler.sendEmptyMessage(3);
+                            return;
+                        }
+                    }
                     handler.sendEmptyMessage(1);
                 }
             } catch (JSONException e) {
@@ -237,12 +275,21 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
     ResponseListener responseListenerProPickup = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
-            Log.e("", "Response" + Response.toString());
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
                     handler.sendEmptyMessage(0);
                 }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        if (key.equals("168")){
+                            handler.sendEmptyMessage(3);
+                            return;
+                        }
+                    }
                     handler.sendEmptyMessage(1);
                 }
             } catch (JSONException e) {
@@ -258,10 +305,15 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
             switch (msg.what){
                 case 0:{
                     Intent j = new Intent(AvailableJobListClickActivity.this, ConfirmationActivity.class);
+                    j.putExtra("JOB_DETAIL",model);
                     startActivity(j);
                     break;
                 }
                 case 1:{
+                    showAlertDialog("Fixd-Pro",error_message);
+                    break;
+                }
+                case 3:{
                     Intent j = new Intent(AvailableJobListClickActivity.this, BeatActivity.class);
                     startActivity(j);
                     break;
@@ -269,7 +321,28 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
             }
         }
     };
+    private void showAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        // set title
+        alertDialogBuilder.setTitle(Title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
 
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
     private HashMap<String,String> getRequestParamsPro(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","jobs");
@@ -314,6 +387,45 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
             appliance_layout.setVisibility(View.GONE);
             divider_scrollview.setVisibility(View.GONE);
         }
+    }
+    private void setUpApplianceDescription(){
+        final ArrayList<JobAppliancesModal> arrayList = model.getJob_appliances_arrlist();
+        if (arrayList.size() > 0){
+            inflater =  (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            for (int i = 0 ; i <arrayList.size() ; i++){
+                View child = getLayoutInflater().inflate(R.layout.item_available_job_service_desc, null);
+                TextView txtServiceType = (TextView)child.findViewById(R.id.txtServiceType);
+                TextView txtPowerSourceName = (TextView)child.findViewById(R.id.txtPowerSourceName);
+                TextView txtApplianceName = (TextView)child.findViewById(R.id.txtApplianceName);
+                TextView txtProblem = (TextView)child.findViewById(R.id.txtProblem);
+                TextView txtBrand = (TextView)child.findViewById(R.id.txtBrand);
+                TextView txtDesc = (TextView)child.findViewById(R.id.txtDesc);
+                View divider = (View)child.findViewById(R.id.divider);
+                final ImageView imgShowProblem = (ImageView)child.findViewById(R.id.imgShowProblem);
+                imgShowProblem.setTag(i + "");
+                txtServiceType.setText( arrayList.get(i).getJob_appliances_service_type() +":");
+                txtPowerSourceName.setText(" "+arrayList.get(i).getJob_appliances_power_source());
+                txtApplianceName.setText(" "+arrayList.get(i).getAppliance_type_name());
+                txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
+                txtDesc.setText(arrayList.get(i).getJob_appliances_appliance_description());
+                txtProblem.setText(" " + arrayList.get(i).getJob_appliances_customer_compalint());
+                if (arrayList.get(i).getImg_original().length() == 0)
+                    imgShowProblem.setVisibility(View.GONE);
+                imgShowProblem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(AvailableJobListClickActivity.this,ProblemImageActivity.class);
+                        intent.putExtra("problemImageURL", arrayList.get(Integer.parseInt((String)imgShowProblem.getTag())).getImg_original());
+                        startActivity(intent);
+
+                    }
+                });
+                if (i == arrayList.size() - 1)
+                    divider.setVisibility(View.GONE);
+                layoutServiceDescription.addView(child);
+            }
+        }
+
     }
     @Override
     public void onMapReady(GoogleMap googleMap) {

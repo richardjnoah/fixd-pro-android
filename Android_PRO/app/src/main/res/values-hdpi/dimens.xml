@@ -26,7 +26,7 @@
  
  
  
-<dimen name="profile_pic_hei_wid">100dp</dimen>
+<dimen name="profile_pic_hei_wid">102dp</dimen>
 <dimen name="edittext_size">20sp</dimen>
 <dimen name="add_photo_size">20sp</dimen>
 <dimen name="edittext_padding">6dp</dimen>
@@ -78,7 +78,7 @@
  <dimen name="serviceleftright">16dp</dimen>
  <dimen name="servicepadding">5dp</dimen>
  <dimen name="servicedes">55dp</dimen>
- <dimen name="jobcompleteratesize">34dp</dimen>
+ <dimen name="jobcompleteratesize">28dp</dimen>
 
  <!--Rating Fragment....-->
  <dimen name="ratingleft">17dp</dimen>
@@ -140,5 +140,15 @@
  <!--Install Information Screen-->
  <dimen name="left_right_margin">16dp</dimen>
  <dimen name="picheight">160dp</dimen>
+ <!-- Cancel Scheduled Job-->
+ <dimen name="sure_cancel_text">15sp</dimen>
 
+ <dimen name="allmargins">8dp</dimen>
+ <dimen name="textsizenoti">17sp</dimen>
+ <dimen name="imgheght">90dp</dimen>
+ <dimen name="imgwid">85dp</dimen>
+
+
+ <!--Home Activity With Fragment Drawer-->
+ <dimen name="drawerwidth">100px</dimen>
 </resources>

@@ -17,6 +17,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -42,8 +44,10 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import fixtpro.com.fixtpro.adapters.TechnicianAdapter;
+import fixtpro.com.fixtpro.beans.AssignTechModal;
 import fixtpro.com.fixtpro.beans.TechnicianModal;
 import fixtpro.com.fixtpro.imageupload.ImageHelper2;
+import fixtpro.com.fixtpro.singleton.TechniciansListSinglton;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.ExceptionListener;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
@@ -56,7 +60,7 @@ public class Add_TechScreen extends AppCompatActivity {
     private Context _context = this;
     private String TAG = "Add_Driver_LicScreen";
     Typeface fontfamily;
-    TextView txtBack, txtDone, text_add_account;
+    TextView txtBack, txtDone, text_add_account, txtInfo;
     ImageView img_add;
     String token = "",phone = "",first_name = "",last_name = "",email = "",technician_id ="";
     boolean ispickUp_jobs = false;
@@ -68,7 +72,7 @@ public class Add_TechScreen extends AppCompatActivity {
     public String Path,path;
     public Uri selectedImageUri;
     ImageView imgTech =  null ;
-    ArrayList<TechnicianModal> technicianModalsList = new ArrayList<TechnicianModal>();
+    ArrayList<TechnicianModal> technicianModalsList = TechniciansListSinglton.getInstance().technicianModalsList;
     ListView lstTechnicians;
     public int position = -1;
     public boolean toEdit = false;
@@ -78,6 +82,8 @@ public class Add_TechScreen extends AppCompatActivity {
     String Error = "";
     private  boolean isEditSetting = false ;
     MultipartUtility multipart = null;
+    String error_message = "";
+    String next = "";
 //    dilogWidgets
 
     @Override
@@ -91,8 +97,61 @@ public class Add_TechScreen extends AppCompatActivity {
         setClickListner();
         if (getIntent() != null){
             isEditSetting = getIntent().getBooleanExtra("isEdit",false) ;
+            if (technicianModalsList.size() != 0){
+                handler.sendEmptyMessage(0);
+            }else{
+                GetApiResponseAsync getApiResponseAsync = new GetApiResponseAsync("POST",getTechniciansListener,Add_TechScreen.this,"Getting.");
+                getApiResponseAsync.execute(getTechnicianRequestParams());
+            }
+
         }
     }
+    ResponseListener getTechniciansListener = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "" + Response.toString());
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
+                    JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
+                    next = pagination.getString("next");
+                    for (int i = 0 ; i < results.length() ; i++){
+                        TechnicianModal modal = new TechnicianModal();
+                        JSONObject jsonObject = results.getJSONObject(i);
+                        modal.setId(jsonObject.getString("id"));
+                        modal.setFirstName(jsonObject.getString("first_name"));
+                        modal.setLastName(jsonObject.getString("last_name"));
+                        if (jsonObject.getString("pickup_jobs").equals("0"))
+                            modal.setIspickjob(false);
+                        else
+                            modal.setIspickjob(true);
+                        JSONObject users = jsonObject.getJSONObject("users");
+                        modal.setEmail(users.getString("email"));
+                        modal.setPhone(users.getString("phone"));
+                        if (!jsonObject.isNull("profile_image")){
+                            JSONObject profile_image = jsonObject.getJSONObject("profile_image");
+                            if (!profile_image.isNull("original"))
+                            modal.setProfile_image(profile_image.getString("original"));
+                        }
+                        technicianModalsList.add(modal);
+                    }
+                    handler.sendEmptyMessage(0);
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                    }
+                    handler.sendEmptyMessage(1);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
 
     private void setClickListner() {
 
@@ -100,8 +159,11 @@ public class Add_TechScreen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!isEditSetting){
-                    Intent i = new Intent(getApplicationContext(), SetupCompleteScreen.class);
+                    Intent i = new Intent(getApplicationContext(), HomeScreenNew.class);
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
                     startActivity(i);
+                    finish();
                 }else {
                     finish();
                 }
@@ -153,37 +215,39 @@ public class Add_TechScreen extends AppCompatActivity {
     }
     private HashMap<String,String> getAddTechParam(){
         HashMap<String,String> paramHashMap = new HashMap<String,String>();
-        paramHashMap.put("object", "technician");
+        paramHashMap.put("object", "technicians");
         paramHashMap.put("api", "register");
         paramHashMap.put("token", token);
 //        if (profile_image_file  != null)
 //        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
-        paramHashMap.put("first_name", first_name);
-        paramHashMap.put("last_name", last_name);
-        paramHashMap.put("email", email);
-        paramHashMap.put("phone", phone);
+        paramHashMap.put("data[first_name]", first_name);
+        paramHashMap.put("data[last_name]", last_name);
+        paramHashMap.put("data[email]", email);
+        paramHashMap.put("data[phone]", phone);
         if (ispickUp_jobs)
-            paramHashMap.put("pickup_jobs", "1");
+            paramHashMap.put("data[pickup_jobs]", "1");
         else
-            paramHashMap.put("pickup_jobs", "0");
+            paramHashMap.put("data[pickup_jobs]", "0");
         return paramHashMap;
     }
     private HashMap<String,String> getUpdateTechParam(){
         HashMap<String,String> paramHashMap = new HashMap<String,String>();
-        paramHashMap.put("object", "technician");
+        paramHashMap.put("object", "technicians");
+
+        paramHashMap.put("data[first_name]", first_name);
+        paramHashMap.put("data[last_name]", last_name);
         paramHashMap.put("api", "update");
-        paramHashMap.put("technician_id", technician_id);
+        paramHashMap.put("data[user_id]", technician_id);
         paramHashMap.put("token", token);
-        if (profile_image_file  != null)
-        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
-        paramHashMap.put("first_name", first_name);
-        paramHashMap.put("last_name", last_name);
-        paramHashMap.put("email", email);
-        paramHashMap.put("phone", phone);
+//        if (profile_image_file  != null)
+//        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
+
+//        paramHashMap.put("data[email]", email);
+//        paramHashMap.put("data[phone]", phone);
         if (ispickUp_jobs)
-            paramHashMap.put("pickup_jobs", "1");
+            paramHashMap.put("data[pickup_jobs]", "1");
         else
-            paramHashMap.put("pickup_jobs", "0");
+            paramHashMap.put("data[pickup_jobs]", "0");
         return paramHashMap;
     }
 
@@ -269,7 +333,9 @@ public class Add_TechScreen extends AppCompatActivity {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog components - text, image and button
         ImageView img_close = (ImageView) dialog.findViewById(R.id.img_close);
+        ImageView imgCardType = (ImageView) dialog.findViewById(R.id.imgCardType);
         pro_pic = (CircleImageView) dialog.findViewById(R.id.pro_pic);
+//        pro_pic.setScaleType(ImageView.ScaleType.FIT_CENTER);
         ImageView img_add_tech = (ImageView) dialog.findViewById(R.id.img_add_tech);
         imgTech = pro_pic ;
         CheckBox check_id = (CheckBox) dialog.findViewById(R.id.check_id);
@@ -284,13 +350,32 @@ public class Add_TechScreen extends AppCompatActivity {
         txtEmail.setText(email);
         check_id.setChecked(ispickUp_jobs);
         TextView check_text = (TextView) dialog.findViewById(R.id.check_text);
-
+        TextView txtInfo = (TextView) dialog.findViewById(R.id.txtInfo);
+        TextView txtCardNunber = (TextView) dialog.findViewById(R.id.txtCardNunber);
+        TextView txtEditCard = (TextView) dialog.findViewById(R.id.txtEditCard);
+        String CardNumber = _prefs.getString(Preferences.CREDIT_CARD_NUMBER,"");
+        String cardtoshow ="";
+        if (CardNumber.length() > 0){
+            cardtoshow = CardNumber.substring(CardNumber.length()-4,CardNumber.length());
+        }
+        txtCardNunber.setText("****"+cardtoshow);
         txtFirstName.setTypeface(fontfamily);
         txtLastName.setTypeface(fontfamily);
         txtPhone.setTypeface(fontfamily);
         txtEmail.setTypeface(fontfamily);
         check_text.setTypeface(fontfamily);
+        txtInfo.setTypeface(fontfamily);
+        txtCardNunber.setTypeface(fontfamily);
+        txtEditCard.setTypeface(fontfamily);
+        txtInfo.setText(Html.fromHtml(getResources().getString(R.string.charge_fifty)));
 
+        txtEditCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Add_TechScreen.this,AddCardScreen.class);
+                startActivity(intent);
+            }
+        });
 
         img_add_tech.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,6 +450,11 @@ public class Add_TechScreen extends AppCompatActivity {
                     technicianModal.setPhone(phone);
                     technicianModal.setFirstName(fname);
                     technicianModal.setLastName(lname);
+                    if (!technicians.isNull("profile_image")){
+                        JSONObject profile_image = technicians.getJSONObject("profile_image");
+                        if (!profile_image.isNull("original"))
+                        technicianModal.setProfile_image(profile_image.getString("original"));
+                    }
                     if (pick_up.equals("1")){
                         technicianModal.setIspickjob(true);
                     }else{
@@ -399,7 +489,8 @@ public class Add_TechScreen extends AppCompatActivity {
             switch (msg.what){
                 case 0:{
 //                    set ADAPTER
-                    dialog.dismiss();
+                    if (dialog != null)
+                        dialog.dismiss();
                     adapter = new TechnicianAdapter(Add_TechScreen.this,technicianModalsList,getResources());
                     lstTechnicians.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
@@ -407,7 +498,8 @@ public class Add_TechScreen extends AppCompatActivity {
                 }
                 case 1:{
 //                    noty
-                    dialog.dismiss();
+                    if (dialog != null)
+                        dialog.dismiss();
                     adapter.notifyDataSetChanged();
                     break;
                 }
@@ -473,7 +565,7 @@ public class Add_TechScreen extends AppCompatActivity {
                 Log.e(""+key,""+hashMap.get(key));
             }
             if (Path != null){
-                multipart.addFilePart("profile_image",new File(Path));
+                multipart.addFilePart("data[profile_image]",new File(Path));
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -485,6 +577,7 @@ public class Add_TechScreen extends AppCompatActivity {
 
             @Override
             protected String doInBackground(Void... params) {
+
                 createMultiPartRequest(getUpdateTechParam());
                 return null;
             }
@@ -514,6 +607,7 @@ public class Add_TechScreen extends AppCompatActivity {
             }
         }.execute();
     }
+
     ExceptionListener exceptionListener = new ExceptionListener(){
 
         @Override
@@ -521,4 +615,44 @@ public class Add_TechScreen extends AppCompatActivity {
             handler.sendEmptyMessage(exceptionStatus);
         }
     };
+
+    /**
+     * [03-06-2016 15:12:51]  Somal GS: PRO APP CH:
+     @"read", @"api", @"technicians", @"object", api hai
+     [03-06-2016 15:12:56]  Somal GS: it is used at two places.
+     [03-06-2016 15:13:06]  Somal GS: one is Settings > Edit Technicians
+     [03-06-2016 15:13:19] Jatinder Arora: yes
+     [03-06-2016 15:13:26]  Somal GS: other assign tehnician to job
+     [03-06-2016 15:14:03] Jatinder Arora: yes
+     [03-06-2016 15:14:06]  Somal GS: 2 k parameters add hoe ne, is ch, here is my latest params:
+
+     if (isForAssign)
+     postDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"read", @"api", @"technicians", @"object", @"^*", @"select",  @"999", @"per_page", @"1", @"page", @"1",  @"where[verified]", self.mUserData.mUserToken, @"token", nil];
+     else
+     postDict = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"read", @"api", @"technicians", @"object", @"^*,users.email,users.phone", @"select",  @"999", @"per_page", @"1", @"page",  self.mUserData.mUserToken, @"token",  self.mUserData.mID, @"where[user_id@!=]", nil];
+     [03-06-2016 15:14:52]  Somal GS: please update at your end also..
+     above, if condition ch, assign technician list lai
+
+     And else wali, for settings> Edit technician list lai..
+     please change kr lao, 2 min lake, bhul na jana
+     */
+    @Override
+    public void onBackPressed() {
+
+        if (isEditSetting){
+            super.onBackPressed();
+        }
+    }
+    private HashMap<String,String> getTechnicianRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","read");
+        hashMap.put("object","technicians");
+        hashMap.put("select","^*,users.email,users.phone");
+        hashMap.put("token",Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("per_page","999");
+        hashMap.put("where[user_id@!=]",Utilities.getSharedPreferences(this).getString(Preferences.ID,""));
+        hashMap.put("page", "1");
+        return hashMap;
+    }
+
 }

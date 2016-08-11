@@ -2,8 +2,13 @@ package fixtpro.com.fixtpro.utilites;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -13,9 +18,11 @@ import com.google.android.gms.maps.model.LatLng;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -38,7 +45,7 @@ public class Utilities {
     }
     public static long  getTimeInMilliseconds(String Time) throws ParseException {
         String input = Time;
-        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(input);
+        Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",Locale.ENGLISH).parse(input);
         long milliseconds = date.getTime();
         return milliseconds;
 
@@ -69,6 +76,40 @@ public class Utilities {
             e1.printStackTrace();
         }
         return  b;
+    }
+    public static String getFormattedTimeSlots(String Time){
+        if (Time ==  null || Time.equals("null")){
+            return "";
+        }
+        if (Time.equals("8:00:00"))
+            return "08:00AM";
+        else if (Time.equals("9:00:00"))
+            return "09:00AM";
+        else if (Time.equals("10:00:00"))
+            return "10:00AM";
+        else if (Time.equals("11:00:00"))
+            return "11:00AM";
+        else if (Time.equals("12:00:00"))
+            return "12:00PM";
+        else if (Time.equals("13:00:00"))
+            return "01:00PM";
+        else if (Time.equals("14:00:00"))
+            return "02:00PM";
+        else if (Time.equals("15:00:00"))
+            return "03:00PM";
+        else if (Time.equals("16:00:00"))
+            return "04:00PM";
+        else if (Time.equals("17:00:00"))
+            return "05:00PM";
+        else if (Time.equals("18:00:00"))
+            return "06:00PM";
+        else if (Time.equals("19:00:00"))
+            return "07:00PM";
+        else if (Time.equals("20:00:00"))
+            return "08:00PM";
+        else if (Time.equals("21:00:00"))
+            return "09:00PM";
+        return "";
     }
     public static  String Am_PMFormat(String Time){
         if (Time ==  null || Time.equals("null")){
@@ -156,4 +197,17 @@ public class Utilities {
         }
 
     }
+    public static  ArrayList<String> getStateList(){
+        ArrayList arrayList = new ArrayList();
+        arrayList.add("AL");arrayList.add("AK");arrayList.add("AZ");arrayList.add("AR");arrayList.add("CA");arrayList.add("CO");arrayList.add("CT");arrayList.add("DE");arrayList.add("DC");arrayList.add("FL");arrayList.add("GA");arrayList.add("HI");arrayList.add("ID");arrayList.add("IL");arrayList.add("IN");arrayList.add("IA");arrayList.add("KS");arrayList.add("KY");arrayList.add("LA");arrayList.add("ME");arrayList.add("MD");arrayList.add("MA");arrayList.add("MI");arrayList.add("MN");arrayList.add("MS");arrayList.add("MO");arrayList.add("MT");arrayList.add("NE");arrayList.add("NV");arrayList.add("NH");arrayList.add("NJ");arrayList.add("NM");arrayList.add("NY");arrayList.add("NC");arrayList.add("ND");arrayList.add("OH");arrayList.add("OK");arrayList.add("OR");arrayList.add("PA");arrayList.add("RI");arrayList.add("SC");arrayList.add("SD");arrayList.add("TN");arrayList.add("TX");arrayList.add("UT");arrayList.add("VT");arrayList.add("VA");arrayList.add("WA");arrayList.add("WV");arrayList.add("WI");arrayList.add("WY");arrayList.add("AS");arrayList.add("GU");arrayList.add("MP");arrayList.add("PR");arrayList.add("UM");arrayList.add("VI");
+        return arrayList;
+    }
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+
 }

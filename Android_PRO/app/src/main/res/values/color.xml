@@ -10,4 +10,37 @@
     <color name="actionbar_bg">#414141</color>
     <color name="calendar_day_color">#9fa1a2</color>
     <color name="transperant">#00000000</color>
+    <color name="colorinvite">#c6c6cc</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
+
+
+    <color name="color_grey">#d3d3d3</color>
+
+    <color name="background_chat_color">#f5f6f5</color>
+
+    <color name="divider_color">#e0e0e0</color>
+    <color name="selected_list_item_color">#e0e0e0</color>
+
+
+
+    <color name="color_primary">@color/white</color>
+    <color name="color_primary_dark">#d0d0d0</color>
+    <color name="color_accent">@color/color_green_qb</color>
+
+    <color name="background_app_color">#ffffff</color>
+
+    <color name="color_blue_qb">#046ad0</color>
+    <color name="color_green_qb">#4ad24d</color>
+    <color name="color_username_rectangle">#99000000</color>
+
+    <color name="text_color_primary">#212121</color>
+    <color name="text_color_white">#ffffff</color>
+    <color name="text_color_black">#000000</color>
+    <color name="text_color_light_grey">#dedede</color>
+    <color name="text_color_medium_grey">#b1b1b1</color>
+    <color name="text_color_medium_dark_grey">#747474</color>
+    <color name="text_color_dark_grey">#6e6e6e</color>
+    <color name="text_color_green">@color/color_green_qb</color>
 </resources>

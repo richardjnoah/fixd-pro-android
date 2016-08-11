@@ -13,4 +13,9 @@
     <dimen name="settings_toggle_circle_diameter">22dp</dimen>
     <dimen name="settings_toggle_circle_radius">11dp</dimen>
     <dimen name="search_bar_height">48dp</dimen>
+
+    <!-- GENERAL -->
+    <dimen name="default_stroke_width">7dp</dimen>
+    <dimen name="default_background_stroke_width">3dp</dimen>
+
 </resources>

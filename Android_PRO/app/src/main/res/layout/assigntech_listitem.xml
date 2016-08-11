@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="@dimen/edittext_padding"
                     android:singleLine="true"
-                    android:text="Testing Testing  Testing  Testing Testing Testing Testing Testing Testing "
+                    android:text=""
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"
                     android:textSize="@dimen/assigntextsmall" />

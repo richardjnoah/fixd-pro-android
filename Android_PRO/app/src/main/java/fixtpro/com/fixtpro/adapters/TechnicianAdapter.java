@@ -3,7 +3,10 @@ package fixtpro.com.fixtpro.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.util.ArrayList;
 
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.beans.TechnicianModal;
+import fixtpro.com.fixtpro.utilites.Preferences;
 
 /**
  * Created by sony on 11-02-2016.
@@ -78,7 +85,7 @@ public class TechnicianAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View vi = convertView;
-        ViewHolder holder;
+        final ViewHolder holder;
 
         if(convertView==null){
 
@@ -115,13 +122,13 @@ public class TechnicianAdapter extends BaseAdapter {
             holder.txtTechname.setText(tempValues.getFirstName() +" " +tempValues.getLastName());
             holder.txtPhone.setText(tempValues.getPhone());
             holder.txtEmail.setText(tempValues.getEmail());
+            if (tempValues.getProfile_image().length() > 0)
+            Picasso.with(activity).load(tempValues.getProfile_image())
+                    .resize(60, 60)
+                    .centerInside()
+                    .into(holder.imgTech);
 
-//            holder.TradeSkill.setTypeface(fontfamily);
-//            if (tempValues.isChecked()){
-//                holder.TradeSkill.setBackgroundColor(res.getColor(R.color.grey_skill_back));
-//            }else{
-//                holder.TradeSkill.setBackgroundColor(res.getColor(android.R.color.transparent));
-//            }
+//            Picasso.with(activity).load(_prefs.getString(Preferences.PROFILE_IMAGE,null)).into(loadtarget);
             /************  Set Model values in Holder elements ***********/
 
         }
@@ -129,5 +136,4 @@ public class TechnicianAdapter extends BaseAdapter {
     }
 
 }
-
 

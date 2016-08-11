@@ -107,7 +107,10 @@ public class WhatsWrongAdapter extends BaseAdapter {
             holder.Name.setText(tempValues.getName());
             holder.Name.setTypeface(fontfamily);
             if (tempValues.isCompleted()){
+                holder.imgStatus.setVisibility(View.VISIBLE);
                 holder.imgStatus.setBackgroundResource(R.drawable.green_check);
+            }else {
+                holder.imgStatus.setVisibility(View.GONE);
             }
             /************  Set Model values in Holder elements ***********/
 

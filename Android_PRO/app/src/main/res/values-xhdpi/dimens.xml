@@ -21,7 +21,7 @@
     *
     *add tech Dialog.....
     -->
-    <dimen name="profile_pic_hei_wid">120dp</dimen>
+    <dimen name="profile_pic_hei_wid">122dp</dimen>
     <dimen name="edittext_size">22sp</dimen>
     <dimen name="add_photo_size">23sp</dimen>
     <dimen name="edittext_padding">8dp</dimen>
@@ -67,7 +67,7 @@
     <dimen name="largetext">20sp</dimen>
     <dimen name="smallltext">14sp</dimen>
     <dimen name="mediumtxts">16sp</dimen>
-    <dimen name="jobcompleteratesize">40dp</dimen>
+    <dimen name="jobcompleteratesize">36dp</dimen>
     <dimen name="imgheiwid">73dp</dimen>
 
     <!-- Service Ticket dimen-->
@@ -138,4 +138,61 @@
     <!--Install Information Screen-->
     <dimen name="left_right_margin">18dp</dimen>
     <dimen name="picheight">175dp</dimen>
+
+    <!-- Cancel Scheduled Job-->
+    <dimen name="sure_cancel_text">18sp</dimen>
+
+    <dimen name="allmargins">10dp</dimen>
+    <dimen name="textsizenoti">18sp</dimen>
+    <dimen name="imgheght">95dp</dimen>
+    <dimen name="imgwid">90dp</dimen>
+
+    <!--Home Activity With Fragment Drawer-->
+    <!--<dimen name="drawerwidth">270dp</dimen>-->
+
+    <!-- Chat Dimenssions-->
+    <dimen name="unread_counter_text_size">13sp</dimen>
+
+    <dimen name="chat_date_text_size">13sp</dimen>
+    <dimen name="chat_date_header_top_margin">30dp</dimen>
+
+    <dimen name="chat_author_text_size">16sp</dimen>
+    <dimen name="chat_attachment_preview_size">80dp</dimen>
+
+    <dimen name="chat_message_body_text_size">16sp</dimen>
+    <dimen name="chat_message_info_text_size">13sp</dimen>
+    <dimen name="chat_message_content_margin">4dp</dimen>
+    <dimen name="chat_message_username_margin">@dimen/chat_message_content_margin</dimen>
+
+    <dimen name="chat_message_attachment_username_margin">12dp</dimen>
+    <dimen name="chat_message_attachment_size">160dp</dimen>
+    <dimen name="padding_common_twice">20dp</dimen>
+    <dimen name="padding_common">10dp</dimen>
+
+    <dimen name="list_item_side_margin">@dimen/padding_common_twice</dimen>
+
+  <dimen name="fab_margin">16dp</dimen>
+
+  <dimen name="size_48">48dp</dimen>
+  <dimen name="size_23sp">23sp</dimen>
+  <dimen name="size_22dp">22dp</dimen>
+  <dimen name="size_20sp">20sp</dimen>
+  <dimen name="size_17sp">17sp</dimen>
+  <dimen name="size_20dp">20dp</dimen>
+  <dimen name="size_24dp">20dp</dimen>
+  <dimen name="size_16sp">16sp</dimen>
+  <dimen name="size_12sp">12sp</dimen>
+  <dimen name="size_14">14dp</dimen>
+  <dimen name="size_12">12dp</dimen>
+  <dimen name="size_10">10dp</dimen>
+  <dimen name="size_25">25dp</dimen>
+  <dimen name="size_14sp">14sp</dimen>
+  <dimen name="size_57">57dp</dimen>
+  <dimen name="size_30">30dp</dimen>
+  <dimen name="size_5">5dp</dimen>
+  <dimen name="size_8">8dp</dimen>
+  <dimen name="size_220">220dp</dimen>
+  <dimen name="size_200">200dp</dimen>
+  <dimen name="size_110">110dp</dimen>
+  <dimen name="size_70">70dp</dimen>
 </resources>

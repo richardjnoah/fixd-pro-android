@@ -4,11 +4,23 @@ import android.graphics.Bitmap;
 
 import java.io.Serializable;
 
+import fixtpro.com.fixtpro.beans.install_repair_beans.InstallOrRepairModal;
+
 /**
  * Created by sony on 17-02-2016.
  */
 public class JobAppliancesModal implements Serializable{
     //    job_appliances Array
+
+    public InstallOrRepairModal installOrRepairModal = new InstallOrRepairModal() ;
+
+    public InstallOrRepairModal getInstallOrRepairModal() {
+        return installOrRepairModal;
+    }
+
+    public void setInstallOrRepairModal(InstallOrRepairModal installOrRepairModal) {
+        this.installOrRepairModal = installOrRepairModal;
+    }
 
     public String getJob_appliances_id() {
         return job_appliances_id;
@@ -32,6 +44,33 @@ public class JobAppliancesModal implements Serializable{
 
     String job_appliances_appliance_description;
     String job_appliances_service_type = "";
+    String job_appliances_power_source = "";
+    String job_appliances_brand_name = "";
+    String job_appliances_brand_id = "";
+
+    public String getJob_appliances_brand_id() {
+        return job_appliances_brand_id;
+    }
+
+    public void setJob_appliances_brand_id(String job_appliances_brand_id) {
+        this.job_appliances_brand_id = job_appliances_brand_id;
+    }
+
+    public String getJob_appliances_brand_name() {
+        return job_appliances_brand_name;
+    }
+
+    public String getJob_appliances_power_source() {
+        return job_appliances_power_source;
+    }
+
+    public void setJob_appliances_power_source(String job_appliances_power_source) {
+        this.job_appliances_power_source = job_appliances_power_source;
+    }
+
+    public void setJob_appliances_brand_name(String job_appliances_brand_name) {
+        this.job_appliances_brand_name = job_appliances_brand_name;
+    }
 
     public String getJob_appliances_customer_compalint() {
         return job_appliances_customer_compalint;
@@ -65,6 +104,15 @@ public class JobAppliancesModal implements Serializable{
     }
 
     String appliance_type_soft_deleted = "";
+    String appliance_type_image_original = "";
+
+    public String getAppliance_type_image_original() {
+        return appliance_type_image_original;
+    }
+
+    public void setAppliance_type_image_original(String appliance_type_image_original) {
+        this.appliance_type_image_original = appliance_type_image_original;
+    }
 
     // image object in job_appliances Array
     String img_original = "";

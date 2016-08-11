@@ -4,6 +4,8 @@ package fixtpro.com.fixtpro.fragment;
  * Created by sony on 15/02/16.
  */
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -19,6 +21,8 @@ import android.widget.TextView;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.utilites.Constants;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 
 
 public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
@@ -27,10 +31,12 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
 
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
-    LinearLayout home, myjobs, payments, myratings, settings, contactus, logout;
-    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title;
+    LinearLayout home, myjobs, payments, message, myratings, settings, notifications, contactus, logout;
+    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title, message_title, notifications_title;
     private FragmentDrawerListener drawerListener;
     View containerView;
+    SharedPreferences _prefs = null;
+    Context _context = null;
     Typeface fontfamily;
 
     public FragmentDrawer1() {
@@ -42,10 +48,11 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
     }
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        _context = getActivity();
+        _prefs = Utilities.getSharedPreferences(_context);
     }
 
     @Override
@@ -59,8 +66,10 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         home = (LinearLayout) layout.findViewById(R.id.home);
         myjobs = (LinearLayout) layout.findViewById(R.id.myjobs);
         payments = (LinearLayout) layout.findViewById(R.id.payments);
+        message = (LinearLayout) layout.findViewById(R.id.message);
         myratings = (LinearLayout) layout.findViewById(R.id.myratings);
         settings = (LinearLayout) layout.findViewById(R.id.settings);
+        notifications = (LinearLayout) layout.findViewById(R.id.notifications);
         contactus = (LinearLayout) layout.findViewById(R.id.contactus);
         logout = (LinearLayout) layout.findViewById(R.id.logout);
         home_title = (TextView) layout.findViewById(R.id.home_title);
@@ -68,8 +77,10 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         payments_title = (TextView) layout.findViewById(R.id.payments_title);
         myratings_title = (TextView) layout.findViewById(R.id.myratings_title);
         settings_title = (TextView) layout.findViewById(R.id.settings_title);
+        notifications_title = (TextView) layout.findViewById(R.id.notifications_title);
         contactus_title = (TextView) layout.findViewById(R.id.contactus_title);
         logout_title = (TextView) layout.findViewById(R.id.logout_title);
+        message_title = (TextView) layout.findViewById(R.id.message_title);
 
 //        Setting TypeFace
         home_title.setTypeface(fontfamily);
@@ -77,6 +88,8 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         payments_title.setTypeface(fontfamily);
         myratings_title.setTypeface(fontfamily);
         settings_title.setTypeface(fontfamily);
+        notifications_title.setTypeface(fontfamily);
+        message_title.setTypeface(fontfamily);
         contactus_title.setTypeface(fontfamily);
         logout_title.setTypeface(fontfamily);
 
@@ -85,8 +98,12 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         payments.setOnClickListener(this);
         myratings.setOnClickListener(this);
         settings.setOnClickListener(this);
+        notifications.setOnClickListener(this);
+        message.setOnClickListener(this);
         contactus.setOnClickListener(this);
         logout.setOnClickListener(this);
+
+        logout.setVisibility(View.GONE);
 
         return layout;
     }
@@ -129,38 +146,53 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Fragment fragment = null;
         Bundle b = new Bundle();
-        switch (v.getId())
-        {
+        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO")) {
+            if (v.getId() != R.id.home && v.getId() != R.id.logout && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+                ((HomeScreenNew) getActivity()).accoutSetUpDialog();
+                return;
+            }
+        }
+        switch (v.getId()) {
             case R.id.home:
                 fragment = new HomeFragment();
                 b.putString("title", getString(R.string.welcomedroid));
-                ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.HOME_FRAGMENT,false,b);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.HOME_FRAGMENT, false, b);
                 break;
             case R.id.myjobs:
                 fragment = new MyJobsFragment();
                 b.putString("title", getString(R.string.nav_item_myjobs));
-                ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.MYJOB_FRAGMENT,false,b);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.MYJOB_FRAGMENT, false, b);
                 break;
             case R.id.payments:
                 fragment = new PaymentsFragment();
-                b.putString("title",  getString(R.string.nav_item_payments));
-                ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.PAYMENT_FRAGMENT,false,b);
+                b.putString("title", getString(R.string.nav_item_payments));
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.PAYMENT_FRAGMENT, false, b);
+                break;
+            case R.id.message:
+                fragment = new ChatUserFragment();
+                b.putString("title", getString(R.string.nav_item_payments));
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.CHATUSER_FRAGMENT, false, b);
                 break;
             case R.id.myratings:
                 fragment = new RatingFragment();
                 b.putString("title", getString(R.string.nav_item_myratings));
-                ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.RATING_FRAGMENT,false,b);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.RATING_FRAGMENT, false, b);
                 break;
             case R.id.settings:
                 fragment = new SettingsFragment();
                 b.putString("title", getString(R.string.nav_item_settings));
-                ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.SETTING_FRAGMENT,false,b);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SETTING_FRAGMENT, false, b);
+                break;
+            case R.id.notifications:
+                fragment = new NotificationListFragment();
+                b.putString("title", getString(R.string.nav_item_notifications));
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.NOTIFICATION_LIST_FRAGMENT, false, b);
                 break;
             case R.id.contactus:
-                ((HomeScreenNew)getActivity()).contactUs();
+                ((HomeScreenNew) getActivity()).contactUs();
                 break;
             case R.id.logout:
-                ((HomeScreenNew)getActivity()).logOut();
+                ((HomeScreenNew) getActivity()).logOut();
                 break;
         }
     }

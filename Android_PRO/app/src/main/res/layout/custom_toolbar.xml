@@ -1,20 +1,19 @@
 <RelativeLayout
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="60dp"
     android:background="@color/actionbar_bg"
-    android:minHeight="?attr/actionBarSize"
     android:gravity="center"
-    android:padding="10dp"
     xmlns:android="http://schemas.android.com/apk/res/android">
     <ImageView
+        android:padding="12dp"
         android:id="@+id/img_Toggle"
         android:layout_centerVertical="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/menu_icon"
+        android:src="@drawable/ico_menu"
         />
     <TextView
-        android:padding="@dimen/padding_header_items"
+        android:padding="12sp"
         android:layout_centerVertical="true"
         android:id="@+id/txtBack"
         android:layout_width="wrap_content"
@@ -24,25 +23,30 @@
         android:visibility="gone"
         android:textSize="@dimen/text_size_header_items" />
     <TextView
+        android:text="Title"
+        android:padding="12sp"
+        android:gravity="center"
+        android:maxLength="15"
         android:layout_centerInParent="true"
         android:id="@+id/titletext"
+        android:singleLine="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/register_button_text"
-        android:textSize="20sp"
-
+        android:textSize="22sp"
         />
     <ImageView
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:id="@+id/img_Right"
+        android:padding="12sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/refresh"
         android:text="@string/done"/>
     <TextView
         android:layout_centerVertical="true"
-        android:padding="@dimen/padding_header_items"
+        android:padding="12sp"
         android:id="@+id/txtDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

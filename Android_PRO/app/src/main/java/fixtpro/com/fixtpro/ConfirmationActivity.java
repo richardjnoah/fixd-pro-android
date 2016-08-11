@@ -2,12 +2,14 @@ package fixtpro.com.fixtpro;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
@@ -16,11 +18,15 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     private String TAG = "ConfirmationActivity";
     TextView done, date, time_interval, contact_name, address;
     ImageView action;
+    SharedPreferences _prefs = null;
+    AvailableJobModal model;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
+        _prefs = Utilities.getSharedPreferences(context);
+        model = (AvailableJobModal) getIntent().getSerializableExtra("JOB_DETAIL");
         setWidgets();
         setListeners();
         if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro")){
@@ -30,6 +36,10 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
             action.setImageResource(R.drawable.view_in_calendar);
             done.setVisibility(View.VISIBLE);
         }
+        date.setText(Utilities.convertDate(model.getRequest_date()));
+        time_interval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
+        contact_name.setText(model.getContact_name());
+        address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
     }
 
     public void setWidgets(){
@@ -52,8 +62,16 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
             case R.id.done:
                 break;
             case R.id.action:
-                Intent i = new Intent(context,AssignTechnicianActivity.class);
-                startActivity(i);
+                if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro")){
+                    Intent i = new Intent(context,AssignTechnicianActivity.class);
+                    i.putExtra("isAvailable",true);
+                    i.putExtra("api","assign");
+                    i.putExtra("JOB_DETAIL",model);
+                    startActivity(i);
+                }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("technician")){
+                    Intent i = new Intent(context,CalendarActivity.class);
+                    startActivity(i);
+                }
                 break;
         }
     }

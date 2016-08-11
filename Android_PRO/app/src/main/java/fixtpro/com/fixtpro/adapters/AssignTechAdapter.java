@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -81,17 +83,19 @@ public class AssignTechAdapter extends BaseAdapter {
 //        holder.circleImage.setImageResource(modal.getImage());
         holder.textTitleName.setText(modal.getFirstName());
 //        holder.cusRatingbar.setStar(modal.getRating());
-        holder.textJobSchedule.setText(modal.getJobSchedule());
-        holder.textAssign.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, ConfirmAssignTechActivity.class);
-                intent.putExtra("TechInfo",modal);
-                context.startActivity(intent);
-            }
-        });
-        holder.cusRatingbar.setStar((int)Float.parseFloat(modal.getRating()),true);
+        if (modal.getJobSchedule().length() > 0){
+            if (modal.getJobSchedule().equals("1"))
+                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs schedule count");
+            else
+                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs schedule count");
+        }else
+            holder.textJobSchedule.setText(modal.getFirstName());
+        holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" job schedule count");
 
+        holder.cusRatingbar.setStar((int) Float.parseFloat(modal.getRating()),true);
+        if (modal.getImage().length() > 0)
+            Picasso.with(context).load(modal.getImage())
+                    .into(holder.circleImage);
         return convertView;
     }
 }

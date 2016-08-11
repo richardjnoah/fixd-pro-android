@@ -1,9 +1,11 @@
 package fixtpro.com.fixtpro;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -11,6 +13,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,6 +38,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fixtpro.com.fixtpro.gcm_components.MessageReceivingService;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.ExceptionListener;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
@@ -66,11 +70,12 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
     private static final int MY_SCAN_REQUEST_CODE = 200 ;
     String card_number = "",month = "",year = "",cvv = "",zip_code = "",first_name = "" ,last_name = "";
     EditText editCardNo,editYear,editMonth,editCw,editZipCode,editFirstName,editLastName;
+    String token = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_background_safty_check_screen);
-
+//        startService(new Intent(this, MessageReceivingService.class));
 
         _prefs = Utilities.getSharedPreferences(_context);
         editor = Utilities.getSharedPreferences(_context).edit();
@@ -120,13 +125,15 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                     showAlertDialog("Fixd-Pro", "please read the terms below and accept those before proceeding.");
                     return;
                 } else {
+                    String temp_securiyt_number = security_number.substring(0,3) +"-"+security_number.substring(3,5)+"-"+security_number.substring(5,security_number.length() );
                     if (isPro){
-                        finalRequestParams.put("data[technicians][social_security_number]", security_number);
+                        finalRequestParams.put("data[technicians][social_security_number]", temp_securiyt_number);
                         finalRequestParams.put("data[technicians][years_in_business]", "10");
                     }
 
                     else{
-                        finalRequestParams.put("social_security_number", security_number);
+
+                        finalRequestParams.put("social_security_number", temp_securiyt_number);
                         finalRequestParams.put("years_in_business", "10");
                     }
                     if (isPro)
@@ -206,21 +213,76 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                 String STATUS = Response.getString("STATUS");
                 if (STATUS.equals("SUCCESS")) {
                     JSONObject RESPONSE = Response.getJSONObject("RESPONSE");
-
-                    Utilities.getSharedPreferences(_context).edit().putString(Preferences.REGISTER_JSON_DATA, RESPONSE.toString()).commit();
-
                     String Token = Response.getJSONObject("RESPONSE").getString("token");
+                    String id = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("id");
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
+                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
                     JSONObject pro_settings;
+                    SharedPreferences.Editor editor = _prefs.edit();
+                    editor.putString(Preferences.ID, id);
                     editor.putString(Preferences.ROLE, role);
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    if (role.equals("pro")) {
+                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+                    editor.putString(Preferences.ACCOUNT_STATUS, account_status);
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
+                        JSONObject pros = null;
+                        pros = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pros");
+                        String city = pros.getString("city");
+                        String state = pros.getString("state");
+                        String zip = pros.getString("zip");
+                        String address = pros.getString("address");
+                        String address2 = pros.getString("address_2");
+                        String hourly_rate = pros.getString("hourly_rate");
+                        String company_name = pros.getString("company_name");
+                        String ein_number="" ;
+                        if (!pros.isNull("ein_number"))
+                            ein_number = pros.getString("ein_number");
+                        String bank_name = pros.getString("bank_name");
+                        String bank_routing_number = pros.getString("bank_routing_number");
+                        String bank_account_number = pros.getString("bank_account_number");
+                        String bank_account_type = pros.getString("bank_account_type");
+                        String insurance = pros.getString("insurance");
+                        String insurance_policy = pros.getString("insurance_policy");
+                        String isvarified = pros.getString("verified");
+                        String working_radius_miles = pros.getString("working_radius_miles");
+                        String is_pre_registered = pros.getString("is_pre_registered");
+                        String latitude = pros.getString("latitude");
+                        String longitude = pros.getString("longitude");
+                        String avg_rating = pros.getString("avg_rating");
+                        editor.putString(Preferences.CITY, city);
+                        editor.putString(Preferences.STATE, state);
+                        editor.putString(Preferences.ZIP, zip);
+                        editor.putString(Preferences.ADDRESS, address);
+                        editor.putString(Preferences.ADDRESS2, address2);
+                        editor.putString(Preferences.HOURLY_RATE, hourly_rate);
+                        editor.putString(Preferences.COMPANY_NAME, company_name);
+                        editor.putString(Preferences.EIN_NUMEBR, ein_number);
+                        editor.putString(Preferences.BANK_NAME, bank_name);
+                        editor.putString(Preferences.BANK_ROUTING_NUMBER, bank_routing_number);
+                        editor.putString(Preferences.BANK_ACCOUNT_NUMBER, bank_account_number);
+                        editor.putString(Preferences.BANK_ACCOUNT_TYPE, bank_account_type);
+                        editor.putString(Preferences.INSURANCE, insurance);
+                        editor.putString(Preferences.INSURANCE_POLICY, insurance_policy);
+                        editor.putString(Preferences.IS_VARIFIED, isvarified);
+                        editor.putString(Preferences.WORKING_RADIUS_MILES, working_radius_miles);
+                        editor.putString(Preferences.IS_PRE_REGISTERED, is_pre_registered);
+                        editor.putString(Preferences.LATITUDE, latitude);
+                        editor.putString(Preferences.LONGITUDE, longitude);
+                        editor.putString(Preferences.AVERAGE_RATING, avg_rating);
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("services")){
+                        JSONArray services = null;
+                        services = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONArray("services");
+                        editor.putString(Preferences.SERVICES_JSON_ARRAY, services.toString());
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pro_settings")) {
                         pro_settings = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pro_settings");
                         editor.putString(Preferences.SETTING_ID, pro_settings.getString("id"));
                         editor.putString(Preferences.LOCATION_SERVICE, pro_settings.getString("location_services"));
@@ -231,73 +293,52 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                         editor.putString(Preferences.JOB_RESECHDULED, pro_settings.getString("job_rescheduled"));
                         editor.putString(Preferences.JOB_CANCELLED, pro_settings.getString("job_canceled"));
 
-                        JSONObject profile_image = null;
-                        profile_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("profile_image");
-                        if (profile_image.has("original")) {
-                            String image_original = profile_image.getString("original");
-                            editor.putString(Preferences.PROFILE_IMAGE, image_original);
-                        }
-
-                        editor.putString(Preferences.LOGIN_JSON_DATA, Response.toString());
-
-                        JSONObject pros = null;
-                        pros = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pros");
-                        String city = pros.getString("city");
-                        String state = pros.getString("state");
-                        String zip = pros.getString("zip");
-                        String address = pros.getString("address");
-                        String hourly_rate = pros.getString("hourly_rate");
-                        String company_name = pros.getString("company_name");
-                        String ein_number = pros.getString("ein_number");
-                        String bank_name = pros.getString("bank_name");
-                        String bank_routing_number = pros.getString("bank_routing_number");
-                        String bank_account_number = pros.getString("bank_account_number");
-                        String bank_account_type = pros.getString("bank_account_type");
-                        String insurance = pros.getString("insurance");
-                        String insurance_policy = pros.getString("insurance_policy");
-                        editor.putString(Preferences.CITY, city);
-                        editor.putString(Preferences.STATE, state);
-                        editor.putString(Preferences.ZIP, zip);
-                        editor.putString(Preferences.ADDRESS, address);
-                        editor.putString(Preferences.HOURLY_RATE, hourly_rate);
-                        editor.putString(Preferences.COMPANY_NAME, company_name);
-                        editor.putString(Preferences.EIN_NUMEBR, ein_number);
-                        editor.putString(Preferences.BANK_NAME, bank_name);
-                        editor.putString(Preferences.BANK_ROUTING_NUMBER, bank_routing_number);
-                        editor.putString(Preferences.BANK_ACCOUNT_NUMBER, bank_account_number);
-                        editor.putString(Preferences.BANK_ACCOUNT_TYPE, bank_account_type);
-                        editor.putString(Preferences.INSURANCE, insurance);
-                        editor.putString(Preferences.INSURANCE_POLICY, insurance_policy);
                     }
-                    JSONArray services = null;
-                    services = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONArray("services");
-                    editor.putString(Preferences.SERVICES_JSON_ARRAY, services.toString());
-                    JSONObject technicians = null;
-                    technicians = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians");
-                    String first_name = technicians.getString("first_name");
-                    String last_name = technicians.getString("last_name");
-                    String social_security_number = technicians.getString("social_security_number");
-                    String years_in_business = technicians.getString("years_in_business");
-                    String trade_license_number = technicians.getString("trade_license_number");
-                    editor.putString(Preferences.FIRST_NAME, first_name);
-                    editor.putString(Preferences.LAST_NAME, last_name);
-                    editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
-                    editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
-                    editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
-                    editor.putBoolean(Preferences.ISLOGIN, true);
-                    editor.commit();
-//                    Get Json Data from prefs
-//                    String strJson =  Utilities.getSharedPreferences(_context).getString("jsondata", "0");
-//                    if(strJson != null){
-//                        JSONObject jsonData = new JSONObject(strJson);}
-
-                    String token = RESPONSE.getString("token");
-                    if (_prefs.edit().putString(Preferences.AUTH_TOKEN, token).commit()) {
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("technicians")){
+                        JSONObject technicians = null;
+                        technicians = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians");
+                        String first_name = technicians.getString("first_name");
+                        String last_name = technicians.getString("last_name");
+                        String social_security_number = technicians.getString("social_security_number");
+                        String years_in_business = technicians.getString("years_in_business");
+                        String trade_license_number = technicians.getString("trade_license_number");
+                        editor.putString(Preferences.FIRST_NAME, first_name);
+                        editor.putString(Preferences.LAST_NAME, last_name);
+                        editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
+                        editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
+                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
+                        editor.putBoolean(Preferences.ISLOGIN, true);
+                        if (!Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").isNull("profile_image")){
+                            JSONObject profile_image = null;
+                            profile_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("profile_image");
+                            if (profile_image.has("original")) {
+                                String image_original = profile_image.getString("original");
+                                editor.putString(Preferences.PROFILE_IMAGE, image_original);
+                            }
+                        }
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("quickblox_accounts")) {
+                        JSONObject quickblox_accounts = null;
+                        quickblox_accounts = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("quickblox_accounts");
+                        String account_id = quickblox_accounts.getString("account_id");
+                        String login = quickblox_accounts.getString("login");
+                        String password = quickblox_accounts.getString("qb_password");
+                        editor.putString(Preferences.QB_ACCOUNT_ID, account_id);
+                        editor.putString(Preferences.QB_LOGIN, login);
+                        editor.putString(Preferences.QB_PASSWORD, password);
+                    }
+                    editor.putString(Preferences.CREDIT_CARD_NUMBER,card_number);
+                    editor.putString(Preferences.CREDIT_CARD_MONTH,month);
+                    editor.putString(Preferences.CREDIT_CARD_YEAR,year);
+                    editor.putString(Preferences.CREDIT_CARD_CVV,cvv);
+                    editor.putString(Preferences.CREDIT_CARD_FIRST_NAME,first_name);
+                    editor.putString(Preferences.CREDIT_CARD_LAST_NAME,last_name);
+                    if (editor.commit()) {
                         if (_prefs.getString(Preferences.ROLE,"").equals("pro")){
                             Intent intent = new Intent(BackgroundSaftyCheckScreen.this, Add_TechScreen.class);
                             startActivity(intent);
                         }else{
-                            Intent intent = new Intent(BackgroundSaftyCheckScreen.this, SetupCompleteScreen.class);
+                            Intent intent = new Intent(BackgroundSaftyCheckScreen.this, HomeScreenNew.class);
                             startActivity(intent);
                         }
 
@@ -423,7 +464,7 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
         editLastName.setTypeface(fontfamily);
         editZipCode.setTypeface(fontfamily);
         txtScanCard.setTypeface(fontfamily);
-
+        editZipCode.setVisibility(View.GONE);
         txtScanCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -466,7 +507,7 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                     showAlertDialog("Fixd-pro","please enter CVV");
                 }else if (cvv.length() < 3){
                     showAlertDialog("Fixd-pro","please enter a valid a CVV number");
-                }else if (zip_code.length() ==0){
+                }else if (false){
                     showAlertDialog("Fixd-pro","please enter Zip");
                 }else if (first_name.length() ==0){
                     showAlertDialog("Fixd-pro","please enter first name");
@@ -479,7 +520,7 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                     finalRequestParams.put("data[credit_card][last_name]",last_name);
                     finalRequestParams.put("data[credit_card][month]",month);
                     finalRequestParams.put("data[credit_card][year]",year);
-                    finalRequestParams.put("data[credit_card][zip]",zip_code);
+//                    finalRequestParams.put("data[credit_card][zip]",zip_code);
                     sendRequest();
                 }
 
@@ -487,8 +528,6 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
         });
 
         dialog.show();
-
-
     }
 
     public void onScanPress(View v) {
@@ -544,5 +583,32 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
             // resultTextView.setText(resultDisplayStr);
         }
         // else handle other activity results
+    }
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            if (intent != null){
+                token = intent.getStringExtra("token");
+            }
+        }
+    };
+    @Override
+    protected void onPause() {
+        // Unregister since the activity is paused.
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+//                mMessageReceiver);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // Register to receive messages.
+        // We are registering an observer (mMessageReceiver) to receive Intents
+        // with actions named "custom-event-name".
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                mMessageReceiver, new IntentFilter("gcm_token_receiver"));
+        super.onResume();
     }
 }

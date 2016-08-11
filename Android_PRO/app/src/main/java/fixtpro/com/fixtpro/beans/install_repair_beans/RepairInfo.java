@@ -11,7 +11,14 @@ public class RepairInfo  implements Serializable{
     String ModalNumber = "";
     String SerialNumber = "";
     String WorkDescription = "";
+    boolean isCompleted = false ;
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
     public String getImage() {
         return image;
     }

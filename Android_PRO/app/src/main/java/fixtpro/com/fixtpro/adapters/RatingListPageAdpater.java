@@ -117,6 +117,7 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             long difference = time1 - time2 ;
             Log.e("", "difference" + difference);
             if (!tempValues.getCreated_at().equals("0000-00-00 00:00:00"))
+
             holder.txtRateingInterval.setText(Utilities.timeMedthod(difference/1000l));
             else
             holder.txtRateingInterval.setVisibility(View.INVISIBLE);

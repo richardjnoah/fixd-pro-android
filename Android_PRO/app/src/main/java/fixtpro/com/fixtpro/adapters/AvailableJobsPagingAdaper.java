@@ -97,14 +97,16 @@ public class AvailableJobsPagingAdaper extends PagingBaseAdapter<AvailableJobMod
             tempValues=null;
             tempValues =  items.get( position );
             /************  Set Model values in Holder elements ***********/
-            holder.contactName.setText(tempValues.getContact_name());
+            String contactname = tempValues.getContact_name();
+
+            holder.contactName.setText(contactname);
             holder.day_request_date.setText(Utilities.convertDate(tempValues.getRequest_date()));
-            holder.timeinterval.setText(Utilities.Am_PMFormat(tempValues.getTimeslot_start())+" - "+Utilities.Am_PMFormat(tempValues.getTimeslot_end()));
+            holder.timeinterval.setText(Utilities.getFormattedTimeSlots(tempValues.getTimeslot_start())+" - "+Utilities.getFormattedTimeSlots(tempValues.getTimeslot_end()));
             holder.address.setText(tempValues.getJob_customer_addresses_address()+" - "+tempValues.getJob_customer_addresses_city()+","+tempValues.getJob_customer_addresses_state());
             String STR_appliance_types_name_and_service_type = "";
             for(int j = 0; j < tempValues.getJob_appliances_arrlist().size(); j++)
             {
-                STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getAppliance_type_name()+" "+tempValues.getService_type()+" ";
+                STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getAppliance_type_name()+" "+tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type()+" ";
             }
             holder.appliance_types_name_and_service_type.setText(STR_appliance_types_name_and_service_type);
             STR_appliance_types_name_and_service_type = "";

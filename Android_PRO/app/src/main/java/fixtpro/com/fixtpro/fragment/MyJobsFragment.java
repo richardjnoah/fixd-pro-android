@@ -1,10 +1,13 @@
 package fixtpro.com.fixtpro.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,20 +20,19 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import com.paging.listview.PagingListView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import fixtpro.com.fixtpro.AvailableJobListClickActivity;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.JobCompletedActivity;
@@ -69,6 +71,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
     Fragment fragment = null ;
     String role = "pro";
     SharedPreferences _prefs = null;
+    private Dialog dialog;
     public MyJobsFragment() {
         // Required empty public constructor
     }
@@ -128,7 +131,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         setupToolBar();
     }
     private void setupToolBar(){
-        ((HomeScreenNew)getActivity()).hideRight();
+        ((HomeScreenNew)getActivity()).setRightToolBarImage(R.drawable.search_white);
         ((HomeScreenNew)getActivity()).setTitletext("My Jobs");
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
@@ -148,6 +151,11 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // send where details is object
+                if (_prefs.getString(Preferences.IS_VARIFIED,"").equals("0")){
+                    showAlertBackGroundSaftyDialog();
+                    return;
+                }
+
                 AvailableJobModal job_detail = new AvailableJobModal();
                 job_detail = availablejoblist.get(position);
                 Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
@@ -165,8 +173,10 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 //                bundle.putSerializable("SCHEDULED_JOB_DETAIL",job_detail);
                 fragment = new ScheduledListDetailsFragment();
 //                fragment.setArguments(bundle);
-                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
-                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, null);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("modal",job_detail);
+//                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
             }
         });
     }
@@ -255,16 +265,22 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 
     private HashMap<String,String> getRequestParams(String Status){
         HashMap<String,String> hashMap = new HashMap<String,String>();
+        if (!Status.equals("Open"))
         hashMap.put("api","read");
+        else
+            hashMap.put("api","read_open");
         hashMap.put("object","jobs");
         if (!role.equals("pro"))
             hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         else
             hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
-        if (!Status.equals("Scheduled"))
+        if (Status.equals("Scheduled"))
+            hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
+
+        else if (Status.equals("Complete")){
             hashMap.put("where[status]", Status);
-        else
-            hashMap.put("where[status@NOT_IN]", "Complete,Open");
+        }
+
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         if (MODE.equals("Complete"))
             hashMap.put("page", pagecomplted+"");
@@ -296,15 +312,15 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
@@ -313,7 +329,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
                         model.setWarranty(obj.getString("warranty"));
-//                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
+//                      if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                         ArrayList<JobAppliancesModal> jobapplianceslist = new ArrayList<JobAppliancesModal>();
                         for (int j = 0; j < jobAppliances.length(); j++) {
@@ -321,29 +337,50 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             JobAppliancesModal mod = new JobAppliancesModal();
                             mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                             mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                            mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
 
-                            JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
-                            mod.setAppliance_type_id(appliance_type_obj.getString("id"));
-                            mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
-                            mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
-                            mod.setAppliance_type_name(appliance_type_obj.getString("name"));
-                            mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                            if (!jsonObject.isNull("description")){
+                                mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                            }
+                            if (!jsonObject.isNull("service_type")){
+                                mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                            }
+                            if (!jsonObject.isNull("customer_complaint")) {
+                                mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                            }
+                            if (!jsonObject.isNull("power_source")) {
+                                mod.setJob_appliances_power_source(jsonObject.getString("power_source"));
+                            }
                             if (!jsonObject.isNull("image")){
                                 JSONObject image_obj = jsonObject.getJSONObject("image");
-                                mod.setImg_original(image_obj.getString("original"));
-                                mod.setImg_160x170(image_obj.getString("160x170"));
-                                mod.setImg_150x150(image_obj.getString("150x150"));
-                                mod.setImg_75x75(image_obj.getString("75x75"));
-                                mod.setImg_30x30(image_obj.getString("30x30"));
+                                if(!image_obj.isNull("original")){
+                                    mod.setImg_original(image_obj.getString("original"));
+                                    mod.setImg_160x170(image_obj.getString("160x170"));
+                                    mod.setImg_150x150(image_obj.getString("150x150"));
+                                    mod.setImg_75x75(image_obj.getString("75x75"));
+                                    mod.setImg_30x30(image_obj.getString("30x30"));
+                                }
                             }
+                            if (!jsonObject.isNull("appliance_types")){
+                                JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                if (!appliance_type_obj.isNull("image")){
+                                    JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
+                                        mod.setAppliance_type_image_original(image_obj.getString("original"));
 
-
+                                    }
+                                }
+                            }
 //                                JSONObject services_obj = jsonObject.getJSONObject("services");
 //                                mod.setService_id(services_obj.getString("id"));
 //                                mod.setService_name(services_obj.getString("name"));
 //                                mod.setService_created_at(services_obj.getString("created_at"));
 //                                mod.setService_updated_at(services_obj.getString("updated_at"));
-
                             jobapplianceslist.add(mod);
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
@@ -365,6 +402,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         availablejoblist.add(model);
                     }
@@ -494,7 +533,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
                     nextScheduled = pagination.getString("next");
-                    for(int i = 0; i < results.length(); i++){
+                    for(int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
                         model.setContact_name(obj.getString("contact_name"));
@@ -504,15 +543,15 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
@@ -540,21 +579,29 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                                 if (!jsonObject.isNull("customer_complaint")) {
                                     mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
                                 }
-                                JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
-                                mod.setAppliance_type_id(appliance_type_obj.getString("id"));
-                                mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
-                                mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
-                                mod.setAppliance_type_name(appliance_type_obj.getString("name"));
-                                mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
-                                if (!appliance_type_obj.isNull("image")){
-                                JSONObject image_obj = appliance_type_obj.getJSONObject("image");
-                                Log.e("", "-----" + image_obj.toString());
-                                    if (!image_obj.isNull("original")) {
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
                                         mod.setImg_original(image_obj.getString("original"));
                                         mod.setImg_160x170(image_obj.getString("160x170"));
                                         mod.setImg_150x150(image_obj.getString("150x150"));
                                         mod.setImg_75x75(image_obj.getString("75x75"));
                                         mod.setImg_30x30(image_obj.getString("30x30"));
+                                    }
+                                }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")){
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        if(!image_obj.isNull("original")){
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
+                                        }
                                     }
                                 }
 //
@@ -571,7 +618,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         }
                         if (!obj.isNull("technicians")){
                             JSONObject technician_object  =  obj.getJSONObject("technicians");
-                            model.setTechnician_id(technician_object.getString("id"));
+                            model.setTechnician_technicians_id(technician_object.getString("id"));
+                            model.setTechnician_user_id(technician_object.getString("user_id"));
                             model.setTechnician_fname(technician_object.getString("first_name"));
                             model.setTechnician_lname(technician_object.getString("last_name"));
                             model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
@@ -585,11 +633,13 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             }
 
                         }
-                        JSONObject time_slot_obj = obj.getJSONObject("time_slots");
-                        model.setTime_slot_id(time_slot_obj.getString("id"));
-                        model.setTimeslot_start(time_slot_obj.getString("start"));
-                        model.setTimeslot_end(time_slot_obj.getString("end"));
-                        model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
                         if (!obj.isNull("cost_details")){
                             JSONObject cost_details_obj = obj.getJSONObject("cost_details");
                             if (!cost_details_obj.isNull("repair")){
@@ -623,6 +673,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         schedulejoblist.add(model);
                     }
@@ -664,15 +716,15 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
@@ -719,11 +771,30 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
                         }
-                        JSONObject time_slot_obj = obj.getJSONObject("time_slots");
-                        model.setTime_slot_id(time_slot_obj.getString("id"));
-                        model.setTimeslot_start(time_slot_obj.getString("start"));
-                        model.setTimeslot_end(time_slot_obj.getString("end"));
-                        model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        if (!obj.isNull("technicians")){
+                            JSONObject technician_object  =  obj.getJSONObject("technicians");
+                            model.setTechnician_technicians_id(technician_object.getString("id"));
+                            model.setTechnician_user_id(technician_object.getString("user_id"));
+                            model.setTechnician_fname(technician_object.getString("first_name"));
+                            model.setTechnician_lname(technician_object.getString("last_name"));
+                            model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
+                            model.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            model.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                            model.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
+                            if (!technician_object.isNull("profile_image")){
+                                JSONObject object_profile_image  = technician_object.getJSONObject("profile_image");
+                                if (!object_profile_image.isNull("original"))
+                                    model.setTechnician_profile_image(object_profile_image.getString("original"));
+                            }
+
+                        }
+                        if(!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
 
                         if (!obj.isNull("job_repair")){
                             JSONObject job_repair_obj = obj.getJSONObject("job_repair");
@@ -767,6 +838,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         completedjoblist.add(model);
                     }
@@ -812,6 +885,23 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         // show it
         alertDialog.show();
     }
-
-
+    private void showAlertBackGroundSaftyDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_alert_background_check);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setVisibility(View.GONE);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public void submitPost(){
+        ((HomeScreenNew)getActivity()).switchFragment(new JobSearchFragment(),Constants.JOB_SEARCH_FRAGMENT,true,null);
+    }
 }

@@ -1,11 +1,17 @@
 package fixtpro.com.fixtpro.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +19,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.ResponseListener;
+import fixtpro.com.fixtpro.adapters.RepairTypeAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.install_repair_beans.Parts;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.ExceptionListener;
+import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncMutipart;
+import fixtpro.com.fixtpro.utilites.MultipartUtility;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +63,8 @@ public class PartsFragment extends Fragment {
     LinearLayout container_layout;
     ArrayList<Parts> partsArrayList = new ArrayList<Parts>();
     CurrentScheduledJobSingleTon singleTon = null;
+    String error_message = "";
+    MultipartUtility multipart = null;
     public PartsFragment() {
         // Required empty public constructor
     }
@@ -75,7 +95,7 @@ public class PartsFragment extends Fragment {
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
         singleTon = CurrentScheduledJobSingleTon.getInstance();
-        partsArrayList = singleTon.getInstallOrRepairModal().getPartsArrayList();
+        partsArrayList = singleTon.getJobApplianceModal().getInstallOrRepairModal().getPartsContainer().getPartsArrayList();
     }
 
     @Override
@@ -232,9 +252,8 @@ public class PartsFragment extends Fragment {
         mListener = null;
     }
     public void submitPost(){
-        singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+        executeAddPartsRequest();
 
-        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.PARTS_FRAGMENT);
     }
     public void clearList(){
         partsArrayList.clear();
@@ -252,5 +271,113 @@ public class PartsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    public void executeAddPartsRequest(){
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
+                    multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
+//                        multipart.addFormField("object", "install_flow");
+//                    }else{
+                        multipart.addFormField("object", "job_parts_used");
+//                    }
+                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFormField("api", "save");
+                    for (int i = 0 ; i < partsArrayList.size() ; i++){
+                        multipart.addFormField("data[items][" + i + "][part_num]", partsArrayList.get(i).getNumber());
+                        multipart.addFormField("data[items][" + i + "][part_cost]", partsArrayList.get(i).getCost());
+                        multipart.addFormField("data[items][" + i + "][qty]", partsArrayList.get(i).getQuantity());
+                        multipart.addFormField("data[items][" + i + "][part_desc]", partsArrayList.get(i).getDescription());
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, repairTypeResponseListener,repairTypeexceptionListener, getActivity(), "Saving");
+                getApiResponseAsync.execute();
+            }
+        }.execute();
+    }
+    ResponseListener repairTypeResponseListener = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    handler.sendEmptyMessage(2);
+                }
+                else{
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        handler.sendEmptyMessage(1);
+                    }
+                }
+
+            }catch (JSONException e){
+
+            }
+        }
+    };
+    ExceptionListener repairTypeexceptionListener= new ExceptionListener() {
+        @Override
+        public void handleException(int exceptionStatus) {
+            handler.sendEmptyMessage(exceptionStatus);
+        }
+    };
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:{
+                    break;
+                }case 1:{
+                    showAlertDialog("Fixd-Pro",error_message);
+                    break;
+                }case 2:{
+                     singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+                    ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.PARTS_FRAGMENT);
+                    break;
+                }
+            }
+        }
+    };
+    private void showAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
+
+        // set title
+        alertDialogBuilder.setTitle(Title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
+
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
     }
 }

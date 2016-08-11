@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#00000000">
+    android:background="#fc7506">
 
     <LinearLayout
-        android:background="@drawable/orange_background"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -73,10 +73,12 @@
         </LinearLayout>
         <!--Date Time Picker-->
         <RelativeLayout
+            android:id="@+id/date_and_time_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <DatePicker
+                android:calendarTextColor="@android:color/white"
                 android:id="@+id/datePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,6 +89,7 @@
                 ></DatePicker>
 
             <TimePicker
+                android:calendarTextColor="@android:color/white"
                 android:id="@+id/timePicker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -97,22 +100,21 @@
                 ></TimePicker>
 
         </RelativeLayout>
-
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_alignParentBottom="true"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/img_Reschedule"
+        <LinearLayout
+            android:layout_below="@+id/date_and_time_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/reschedule" />
+            android:orientation="vertical">
 
+            <ImageView
+                android:id="@+id/img_Reschedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/reschedule" />
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </RelativeLayout>

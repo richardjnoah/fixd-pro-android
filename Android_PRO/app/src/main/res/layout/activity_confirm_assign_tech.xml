@@ -140,7 +140,7 @@
                 android:background="@android:color/transparent"
                 android:paddingLeft="@dimen/edittext_padding"
                 android:singleLine="true"
-                android:text="sdfgsdfgs"
+
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="@dimen/assigntextnormal" />

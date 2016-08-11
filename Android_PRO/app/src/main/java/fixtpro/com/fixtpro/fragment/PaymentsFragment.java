@@ -240,10 +240,10 @@ public class PaymentsFragment extends Fragment {
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));

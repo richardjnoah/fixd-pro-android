@@ -7,7 +7,14 @@ import java.io.Serializable;
  */
 public class Signature implements Serializable{
     String signature_path = null;
+    boolean isCompleted = false ;
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
     public String getSignature_path() {
         return signature_path;
     }

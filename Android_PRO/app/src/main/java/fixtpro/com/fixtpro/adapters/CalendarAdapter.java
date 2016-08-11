@@ -24,7 +24,9 @@ import java.util.List;
 import java.util.Locale;
 
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.CalendarCollection;
+import fixtpro.com.fixtpro.beans.CalenderScheduledJobList;
 
 public class CalendarAdapter extends BaseAdapter {
     private Context context;
@@ -90,18 +92,28 @@ public class CalendarAdapter extends BaseAdapter {
 
     // create a new view for each item referenced by the Adapter
     public View getView(int position, View convertView, ViewGroup parent) {
-        View v = convertView;
+//        View v = convertView;
+        ViewHolder holder = null;
+//        View convertView = view;
         TextView dayView;
+        TextView event_indicator;
         if (convertView == null) { // if it's not recycled, initialize some
             // attributes
+
             LayoutInflater vi = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.cal_item, null);
+            convertView = vi.inflate(R.layout.cal_item, null);
+            holder = new ViewHolder();
+          
+//            convertView.setTag(holder);
 
+        } else {
+//            holder = (ViewHolder) convertView.getTag();
         }
 
+        dayView = (TextView) convertView.findViewById(R.id.date);
+        event_indicator = (TextView) convertView.findViewById(R.id.event_indicator);
 
-        dayView = (TextView) v.findViewById(R.id.date);
         String[] separatedTime = day_string.get(position).split("-");
 
 
@@ -120,14 +132,14 @@ public class CalendarAdapter extends BaseAdapter {
         }
 
 
+
+
         if (day_string.get(position).equals(curentDateString)) {
-
-            v.setBackgroundResource(R.drawable.rounded_calender_item);
+            dayView.setTextColor(Color.parseColor("#fc7506"));
+//            dayView.setBackgroundResource(R.drawable.rounded_calender_item);
         } else {
-            v.setBackgroundColor(Color.parseColor("#00000000"));
+            convertView.setBackgroundColor(Color.parseColor("#00000000"));
         }
-
-
         dayView.setText(gridvalue);
 
         // create date string for comparison
@@ -150,32 +162,75 @@ public class CalendarAdapter extends BaseAdapter {
         }
         */
 
-        setEventView(v, position,dayView);
+//        if (setEventView(convertView, position,event_indicator)){
+////            event_indicator.setVisibility(View.VISIBLE);
+//        }else {
+////            event_indicator.setVisibility(View.GONE);
+//        }
+        setEventView(convertView, position,event_indicator);
 
-        return v;
+        return convertView;
     }
-
-    public View setSelected(View view,int pos) {
+    private class ViewHolder {
+      
+    }
+    public View setSelected(View view,int pos,boolean hasEvent) {
         if (previousView != null) {
             previousView.setBackgroundColor(Color.parseColor("#00000000"));
+            if(previousView.getTag().equals("1")){
+                TextView date = (TextView)previousView.findViewById(R.id.date);
+                date.setTextColor(Color.parseColor("#fc7506"));
+                TextView indicator = (TextView)previousView.findViewById(R.id.event_indicator);
+                indicator.setTextColor(Color.parseColor("#fc7506"));
+            }else if(previousView.getTag().equals("2")){
+                TextView date = (TextView)previousView.findViewById(R.id.date);
+                date.setTextColor(Color.parseColor("#fc7506"));
+            }else if(previousView.getTag().equals("3")){
+                TextView date = (TextView)previousView.findViewById(R.id.date);
+                date.setTextColor(Color.parseColor("#ffffff"));
+                TextView indicator = (TextView)previousView.findViewById(R.id.event_indicator);
+                indicator.setTextColor(Color.parseColor("#fc7506"));
+            }
+            else if(previousView.getTag().equals("4")){
+                TextView date = (TextView)previousView.findViewById(R.id.date);
+                date.setTextColor(Color.parseColor("#ffffff"));
+            }
+// else{
+//                TextView date = (TextView)previousView.findViewById(R.id.date);
+//                date.setTextColor(Color.parseColor("#ffffff"));
+//                TextView indicator = (TextView)previousView.findViewById(R.id.event_indicator);
+//                indicator.setTextColor(Color.parseColor("#ffffff"));
+//            }
         }
-
         view.setBackgroundResource(R.drawable.rounded_calender_item);
 
         int len=day_string.size();
         if (len>pos) {
-            if (day_string.get(pos).equals(curentDateString)) {
+            previousView = view;
+            TextView txtIndicator = (TextView)view.findViewById(R.id.event_indicator);
+            TextView txtDate = (TextView)view.findViewById(R.id.date);
+            txtIndicator.setTextColor(Color.parseColor("#ffffff"));
+            txtDate.setTextColor(Color.parseColor("#ffffff"));
+            if (day_string.get(pos).equals(curentDateString) && hasEvent) {
+                previousView.setTag("1");
 
-            }else{
+            }else if (day_string.get(pos).equals(curentDateString) && !hasEvent){
 
-                previousView = view;
+                previousView.setTag("2");
+            }else if (!day_string.get(pos).equals(curentDateString) && hasEvent){
 
+                previousView.setTag("3");
+            }else if (!day_string.get(pos).equals(curentDateString) && !hasEvent){
+
+                previousView.setTag("4");
             }
 
         }
 
-
+//
         return view;
+
+
     }
 
     public void refreshDays() {
@@ -229,7 +284,10 @@ public class CalendarAdapter extends BaseAdapter {
         return maxP;
     }
 
+    public boolean hasEvent(String date){
 
+        return false;
+    }
 
 
     public void setEventView(View v,int pos,TextView txt){
@@ -242,47 +300,47 @@ public class CalendarAdapter extends BaseAdapter {
             if (len1>pos) {
 
                 if (day_string.get(pos).equals(date)) {
-                    v.setBackgroundColor(Color.parseColor("#343434"));
-                    v.setBackgroundResource(R.drawable.rounded_calender_item);
+                    txt.setVisibility(View.VISIBLE);
+                    break;
+//                    return  true;
+//                    txt.setBackgroundColor(Color.parseColor("#343434"));
+//                    txt.setBackgroundResource(R.drawable.rounded_calender_item);
+//
+//                    txt.setTextColor(Color.WHITE);
+                }else {
+//                    return  false;
+                    txt.setVisibility(View.GONE);
 
-                    txt.setTextColor(Color.WHITE);
+//                    txt.setTag(pos);
                 }
-            }}
+            }
+        }
 
 
-
+//    return false;
     }
 
 
-    public void getPositionList(String date,final Activity act){
-
+    public ArrayList<AvailableJobModal> getPositionList(String date,final Activity act){
+        ArrayList<AvailableJobModal> list = new ArrayList<AvailableJobModal>();
         int len=CalendarCollection.date_collection_arr.size();
         for (int i = 0; i < len; i++) {
             CalendarCollection cal_collection=CalendarCollection.date_collection_arr.get(i);
             String event_date=cal_collection.date;
 
-            String event_message=cal_collection.event_message;
+            String event_message = cal_collection.event_message;
 
             if (date.equals(event_date)) {
+                list = CalendarCollection.date_collection_arr.get(i).list;
+                Toast.makeText(context, "You have event on this date: " + event_date, Toast.LENGTH_LONG).show();
 
-                Toast.makeText(context, "You have event on this date: "+event_date, Toast.LENGTH_LONG).show();
-                new AlertDialog.Builder(context)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setTitle("Date: "+event_date)
-                        .setMessage("Event: "+event_message)
-                        .setPositiveButton("OK",new DialogInterface.OnClickListener(){
-                            public void onClick(DialogInterface dialog, int which)
-                            {
-                                act.finish();
-                            }
-                        }).show();
                 break;
             }else{
 
 
             }}
 
-
+        return  list;
 
     }
 

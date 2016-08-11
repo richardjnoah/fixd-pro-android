@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout_chat_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    tools:ignore="RtlHardcoded">
+    <RelativeLayout
+        android:id="@+id/layoutToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/drawer_bg_color">
+        <TextView
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="10dp"
+            android:text="Back" />
+        <TextView
+            android:layout_centerInParent="true"
+            android:id="@+id/txtToolbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:gravity="center_horizontal"
+            android:text=""
+            android:padding="@dimen/edittext_padding"
+            android:singleLine="true"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/commonxlargetxt" />
+
+        <ProgressBar
+            android:visibility="invisible"
+            android:layout_alignParentRight="true"
+            android:layout_centerInParent="true"
+            android:id="@+id/progress_message_attachment"
+            android:layout_height="32dp"
+            android:layout_width="32dp"
+            android:theme="@style/AppTheme.BlueAccent"/>
+    </RelativeLayout>
+
+    <fixtpro.com.fixtpro.views.StickyListHeadersListView
+        android:layout_below="@+id/layoutToolbar"
+        android:id="@+id/list_chat_messages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_attachment_preview_container"
+        android:listSelector="@android:color/transparent"
+        android:stackFromBottom="true" />
+
+    <ProgressBar
+        android:layout_centerInParent="true"
+        android:id="@+id/progress_chat"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:theme="@style/AppTheme.BlueAccent"/>
+
+    <LinearLayout
+        android:id="@+id/layout_attachment_preview_container"
+        android:layout_width="match_parent"
+
+        android:layout_height="96dp"
+        android:layout_above="@+id/layout_chat_send_container"
+        android:background="?attr/colorPrimary"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <!--<View-->
+        <!--android:id="@+id/divider_chat_attachments"-->
+        <!--style="@style/HorizontalDividerStyle" />-->
+
+        <fixtpro.com.fixtpro.views.AttachmentPreviewAdapterView
+            android:id="@+id/adapter_view_attachment_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!--<View-->
+    <!--android:id="@+id/divider_chat"-->
+    <!--style="@style/HorizontalDividerStyle"-->
+    <!--android:layout_above="@+id/layout_chat_send_container" />-->
+
+    <LinearLayout
+        android:id="@+id/layout_chat_send_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/grey_skill_back"
+        android:padding="5dp"
+        android:weightSum="3"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/button_chat_attachment"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/transperant"
+            android:onClick="onAttachmentsClick"
+            android:layout_margin="5dp"
+            android:src="@drawable/camra_chat" />
+
+        <EditText
+            android:background="@drawable/message_txt_back"
+            android:id="@+id/edit_chat_message"
+            android:layout_width="0dp"
+            android:layout_weight="2.2"
+            android:layout_height="wrap_content"
+            android:hint="@string/chat_edit_text_hint"
+            android:padding="7dp"
+            android:layout_margin="3dp"
+            android:layout_gravity="center_vertical"
+            android:inputType="textShortMessage"
+            android:maxLength="1024" />
+
+        <ImageButton
+            android:id="@+id/button_chat_send"
+            android:layout_width="0dp"
+            android:layout_weight="0.4"
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:background="@color/transperant"
+            android:onClick="onSendChatClick"
+            android:src="@drawable/chat_chat"
+            android:text="@string/chat_send" />
+    </LinearLayout>
+</RelativeLayout>

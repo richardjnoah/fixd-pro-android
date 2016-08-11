@@ -54,6 +54,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_marginTop="10dp"
+        android:textSize="@dimen/sure_cancel_text"
         android:textColor="@color/register_button_text"
         android:text="@string/areusure_decline"/>
     <TextView

@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
-                android:padding="@dimen/layout_padding"
+                android:paddingTop="@dimen/layout_padding"
                 android:layout_centerHorizontal="true"
                 android:orientation="vertical"
                 android:gravity="center"
@@ -73,26 +73,69 @@
                 </LinearLayout>
                 <LinearLayout
                     android:layout_marginTop="@dimen/top_margin"
-                    android:padding="@dimen/layout_padding"
+
                     android:layout_below="@+id/picture_container"
                     android:layout_centerHorizontal="true"
                     android:orientation="vertical"
                     android:id="@+id/user_info_container"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <EditText
                         android:padding="@dimen/edittext_padding"
-                        android:id="@+id/txtTradeLiNo"
+                        android:id="@+id/txtCompany"
                         android:textColor="@android:color/white"
                         android:imeOptions="actionNext"
                         android:singleLine="true"
-                        android:inputType="number"
                         android:textSize="@dimen/edittext_size"
                         android:gravity="center_horizontal"
                         android:textCursorDrawable="@drawable/cursor_drawable"
                         android:background="@android:color/transparent"
                         android:textColorHint="@android:color/white"
-                        android:hint="@string/tradelinenceno"
+                        android:hint="@string/company_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                    <EditText
+                        android:padding="@dimen/edittext_padding"
+                        android:id="@+id/txtDrivingLiNo"
+                        android:textColor="@android:color/white"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textSize="@dimen/edittext_size"
+                        android:gravity="center_horizontal"
+                        android:textCursorDrawable="@drawable/cursor_drawable"
+                        android:background="@android:color/transparent"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/drivinglinenceno"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:padding="@dimen/edittext_padding"
+                        android:id="@+id/txtDrivingLiState"
+                        android:textColor="@android:color/white"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textSize="@dimen/edittext_size"
+                        android:gravity="center_horizontal"
+                        android:textCursorDrawable="@drawable/cursor_drawable"
+                        android:background="@android:color/transparent"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/drivinglinencestate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:padding="@dimen/edittext_padding"
+                        android:id="@+id/txtDOB"
+                        android:textColor="@android:color/white"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textSize="@dimen/edittext_size"
+                        android:gravity="center_horizontal"
+                        android:textCursorDrawable="@drawable/cursor_drawable"
+                        android:background="@android:color/transparent"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/date_of_birth"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <EditText
@@ -111,6 +154,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <TextView
+                        android:visibility="gone"
                         android:padding="@dimen/edittext_padding"
                         android:id="@+id/txtTradeskill"
                         android:textColor="@android:color/white"
@@ -122,6 +166,20 @@
                         android:background="@android:color/transparent"
                         android:textColorHint="@android:color/white"
                         android:hint="@string/tradeskill"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:padding="@dimen/edittext_padding"
+                        android:id="@+id/txtTradeLiNo"
+                        android:textColor="@android:color/white"
+                        android:imeOptions="actionNext"
+                        android:singleLine="true"
+                        android:textSize="@dimen/edittext_size"
+                        android:gravity="center_horizontal"
+                        android:textCursorDrawable="@drawable/cursor_drawable"
+                        android:background="@android:color/transparent"
+                        android:textColorHint="@android:color/white"
+                        android:hint="@string/tradelinenceno"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content" />
                     <EditText

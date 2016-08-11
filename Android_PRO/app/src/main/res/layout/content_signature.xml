@@ -94,8 +94,8 @@
                 android:id="@+id/imgAccept"
                 android:layout_gravity="right"
                 android:src="@drawable/accept"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="120dp"
+                android:layout_height="50dp" />
         </LinearLayout>
         <LinearLayout
             android:orientation="vertical"
@@ -106,8 +106,8 @@
             <ImageView
                 android:id="@+id/imgClear"
                 android:src="@drawable/clear"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="120dp"
+                android:layout_height="50dp" />
         </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

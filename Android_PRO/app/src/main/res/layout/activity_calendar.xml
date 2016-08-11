@@ -40,7 +40,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="8dp" >
+            android:padding="2dp" >
 
             <FrameLayout
                 android:layout_width="45dp"
@@ -181,7 +181,7 @@
             android:gravity="center"
             android:listSelector="@android:color/transparent"
             android:numColumns="7"
-            android:padding="2dp"
+            android:padding="1dp"
             android:stretchMode="columnWidth"
             android:textAlignment="gravity" >
 
@@ -191,7 +191,14 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="@color/register_button_text"/>
+        <ListView
+            android:dividerHeight="1dp"
+            android:divider="@android:color/white"
+            android:id="@+id/lstScheduledJobs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></ListView>
         <TextView
+            android:visibility="gone"
             android:id="@+id/txtRescheduleDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

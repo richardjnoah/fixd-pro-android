@@ -4,11 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
    android:shape="ring"
 android:innerRadius="0dp"
-android:thickness="18dp"
+android:thickness="13dp"
 android:useLevel="false">
 
    <solid 
        android:color="@color/drawer_text_color"/>
-
-   
 </shape>

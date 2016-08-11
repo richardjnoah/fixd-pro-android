@@ -53,16 +53,18 @@ public class AddBankAccountActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_bank_account);
         _prefs = Utilities.getSharedPreferences(_context);
         setWidgets();
-        if (_prefs.getBoolean(Preferences.ISLOGIN,false)){
-            isEditMode = true;
-            intLayout();
-        }else {
-            if (getIntent() != null) {
+//        if (_prefs.getBoolean(Preferences.ISLOGIN,false)){
+//
+//        }else {
+            if (getIntent().getExtras() != null) {
                 finalRequestParams = (HashMap<String, String>) getIntent().getSerializableExtra("finalRequestParams");
                 image_profile = getIntent().getStringExtra("image_profile");
                 image_driver = getIntent().getStringExtra("image_driver");
+            }else{
+                isEditMode = true;
+                intLayout();
             }
-        }
+//        }
 
         setTypeface();
         setListeners();
@@ -123,16 +125,19 @@ public class AddBankAccountActivity extends AppCompatActivity {
                 }else if (account_number.length() == 0){
                     showAlertDialog("Fixd-Pro","Please enter the account number.");
                     return;
-                }else if (account_type.length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the account type.");
-                    return;
-                }else {
+                }
+//                else if (account_type.length() == 0){
+//                    showAlertDialog("Fixd-Pro","Please enter the account type.");
+//                    return;
+//                }
+                else {
                     if (!isEditMode){
                         Intent intent = new Intent(_context,BackgroundSaftyCheckScreen.class);
                         finalRequestParams.put("data[pros][bank_name]",bank_name);
-                        finalRequestParams.put("data[pros][bank_routing_number]",routing_number);
+                        finalRequestParams.put("data[pros][bank_routing_number]","011103093");
+//                        finalRequestParams.put("data[pros][bank_routing_number]",routing_number);
                         finalRequestParams.put("data[pros][bank_account_number]",account_number);
-                        finalRequestParams.put("data[pros][bank_account_type]",account_type);
+//                        finalRequestParams.put("data[pros][bank_account_type]",account_type);
                         intent.putExtra("finalRequestParams", finalRequestParams);
                         intent.putExtra("image_driver",image_driver);
                         intent.putExtra("image_profile",image_profile);
@@ -158,7 +163,7 @@ public class AddBankAccountActivity extends AppCompatActivity {
                     editor.putString(Preferences.BANK_NAME,bank_name);
                     editor.putString(Preferences.BANK_ROUTING_NUMBER,routing_number);
                     editor.putString(Preferences.BANK_ACCOUNT_NUMBER,account_number);
-                    editor.putString(Preferences.BANK_ACCOUNT_TYPE,account_type);
+//                    editor.putString(Preferences.BANK_ACCOUNT_TYPE,account_type);
                     editor.commit();
                     finish();
                 }else {

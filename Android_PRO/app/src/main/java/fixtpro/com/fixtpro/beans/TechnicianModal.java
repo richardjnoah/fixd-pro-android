@@ -11,8 +11,18 @@ public class TechnicianModal implements Serializable{
     String role = "" ;
     String phone = "" ;
     String firstName = "";
+    String profile_image = "";
     String lastName = "";
     boolean ispickjob = false;
+
+    public String getProfile_image() {
+        return profile_image;
+    }
+
+    public void setProfile_image(String profile_image) {
+        this.profile_image = profile_image;
+    }
+
     public String getFirstName() {
         return firstName;
     }

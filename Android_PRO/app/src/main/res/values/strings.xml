@@ -34,8 +34,17 @@
     <string name="email">Email Address</string>
     <string name="company_name">Company Name</string>
     <string name="address">Address</string>
+    <string name="address2">Address2</string>
     <string name="city">City</string>
-    <string name="zip_code">Zip Code</string>
+    <string name="state">State</string>
+    <string name="zip_code">Zip</string>
+    <string name="any_correction">Any correction needed?</string>
+
+    <string name="companyinfo">Company Information</string>
+    <string name="companyname">Company Name</string>
+    <string name="yearinbusi">Year in Business</string>
+    <string name="eninumber">ENI Number</string>
+    <string name="insurancecarrer">Insurance Carrier</string>
 
     <!--Add_Driver_LicScreen-->
     <string name="title_activity_driver__info_">Driver_Info_Activity</string>
@@ -44,6 +53,9 @@
     <string name="txtinsurance">Insurance Carrier</string>
     <string name="policyno">Policy Number</string>
     <string name="tradelinenceno">Trade License Number</string>
+    <string name="drivinglinenceno">Driving License Number</string>
+    <string name="drivinglinencestate">Driving License State</string>
+    <string name="date_of_birth">Date of Birth</string>
     <string name="yearsin">Years In Business</string>
     <string name="tradeskill">Trade Skill</string>
     <string name="hourlyrate">Hourly Rate</string>
@@ -90,8 +102,10 @@
     <string name="nav_item_home">Home</string>
     <string name="nav_item_myjobs">My Jobs</string>
     <string name="nav_item_payments">Payment Details</string>
+    <string name="nav_item_message">Message</string>
     <string name="nav_item_myratings">My Ratings</string>
     <string name="nav_item_settings">Settings</string>
+    <string name="nav_item_notifications">Notifications</string>
     <string name="nav_item_contactus">Contact Us</string>
     <string name="nav_item_logout">Logout</string>
 
@@ -105,6 +119,7 @@
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_my_jobs_search">MyJobsSearchActivity</string>
 
+    <string name="google_app_id">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>
     <string name="cancel">Cancel</string>
     <string name="search">Search</string>
     <string name="searchresults">Search Jobs</string>
@@ -115,6 +130,7 @@
     <string name="editcompanyinfo">Edit Company Info</string>
     <string name="editbankinfo">Edit Bank Account Info</string>
     <string name="edittechnicians">Edit Technicians</string>
+    <string name="change_radius">Change Radius</string>
     <string name="locationservices">Location Services</string>
     <string name="textmessaging">Text Messaging</string>
     <string name="notifications">NOTIFICATIONS</string>
@@ -124,6 +140,7 @@
     <string name="jobrescheduled">Job Rescheduled</string>
     <string name="jobcancelled">Job Cancelled</string>
     <string name="title_activity_contact_us">ContactUsActivity</string>
+    <string name="charge_fifty">"<![CDATA[<font color='#ffffff'>The <b>$50</> fee for the background safety check will be charged to:</font>]]>"</string>
 
     <!-- Contact US screen-->
     <string name="contactus">Contact Us</string>
@@ -132,6 +149,7 @@
 
     <!-- AvailableJobListClickActivity-->
     <string name="availablejob">Available Job</string>
+    <string name="problem_image">Problem Image</string>
 
     <!-- ScheduledJobListClickActivity-->
     <string name="scheduledjob">Scheduled Job</string>
@@ -146,7 +164,7 @@
     <string name="canceljob">Cancel Job</string>
     <string name="areusure_cancel">Are you sure you want to cancel this job?</string>
     <string name="backup_cancel">Once you cancel a job, you cannot pick it back up.</string>
-    <string name="canceledittext">Tell us why you are\ncancelling.</string>
+    <string name="canceledittext">Tell us why you are cancelling.</string>
 
 
     <!-- Confirmation Activity-->
@@ -160,6 +178,7 @@
     <!--Job Completed...Activity-->
     <string name="job_complete">Job Completed</string>
     <string name="serviceticket">Service Ticket</string>
+    <string name="jobinfo">Job Info</string>
 
     <!--Service Ticket-->
     <string name="customer">Customer:</string>
@@ -183,6 +202,7 @@
     <!--Working Radius Activity-->
     <string name="workingradius">Working Radius</string>
     <string name="howfarareyou">How far are you willing to travel for job\'s?</string>
+    <string name="howfarareyouwilling">How far are you willing to travel from 75283</string>
 
     <!--Background Safty Check Dialog..........Strings-->
     <string name="almostdone">Almost Done!</string>
@@ -236,15 +256,24 @@
     <string name="neednew">Need new washer installed</string>
     <string name="repairtype">Repair Type:</string>
     <string name="diagnostic">Diagnostic:</string>
+
     <!--Pop UP-->
     <string name="doyouhave">Do You Have What You Need?</string>
+    <string name="owner_approval">We need homeowner approval!</string>
+    <string name="owner_approval_desc">Please select an option to\nprocees and get work order\napproval for this job/</string>
     <string name="ifyouhave">If you do not have the necessary parts or if\nparts need to be ordered please reschedule\njob now.</string>
     <string name="completejobnow">Complete Job Now</string>
+    <string name="complete_here">Complete Here</string>
+    <string name="edit_job">Edit job</string>
+    <string name="send_to_Owner">Send To Owner</string>
+    <string name="resend_to_Owner">Re-Send Work Order</string>
     <string name="resechedule">Reschedule</string>
+    <string name="going_to_get_parts">Going to get Parts</string>
 
     <!--Install Information-->
     <string name="takeapic">Take a picture of the problem</string>
     <string name="unitman">Unit Manufacturer</string>
+    <string name="brand">Brand</string>
     <string name="modalno">Model Number</string>
     <string name="serialno">Serial Number</string>
     <string name="descriptionofwork">Description of work</string>
@@ -259,7 +288,7 @@
     <string name="title_activity_tech_profile_screen">TechProfileScreen</string>
 
     <!--Reschedule Popup-->
-    <string name="choosetime">Choose A Time</string>
+    <string name="choosetime">Choose a time</string>
     <string name="selectdate">Set Date</string>
     <string name="selecttime">Set Time</string>
     <string name="title_activity_sliding_menu">SlidingMenuActivity</string>
@@ -273,4 +302,170 @@
     <string name="acknowledge">i acknowledge and accept receipt of goods and/or services performed and agree to the total amount listed</string>
     <string name="title_activity_beat">BeatActivity</string>
     <string name="title_activity_confirm_assign_tech">ConfirmAssignTechActivity</string>
+    <string name="title_activity_cancel_scheduled_job">CancelScheduledJob</string>
+
+    <!-- Reschedule Cancel-->
+    <string name="cancel_job">Cancel Job</string>
+    <string name="sure_cancel"> Are you sure you want to cancel this job?</string>
+    <string name="charge_customer"> The customer will still be charged a diagnostic fee</string>
+    <string name="owner_signature"> Tap for Owner Signature</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <!-- GCM Strings-->
+    <string name="project_number">44977128671</string>
+    <string name="introduction">Welcome! </string>
+    <string name="clear_screen">Clear Screen</string>
+    <string name="first_launch">First Launch</string>
+    <string name="num_of_missed_messages">MissedMessageCount</string>
+    <string name="lines_of_message_count">LinesOfMessageCount</string>
+    <string name="preferences">PreferencesFile</string>
+    <string name="notification_number">1337</string>
+
+    <string name="wewilldeposit">We Will deposit payment into your account.</string>
+    <string name="jobtotal">Job Total</string>
+    <string name="ourfee">Our Fee(10%)</string>
+    <string name="govtcut">Government Cut</string>
+    <string name="yourcut11">Your Cut</string>
+
+    <string name="alert_title">Fixd!</string>
+
+    <!-- Chat Strings-->
+    <string name="chat_sample">Chat Sample</string>
+
+    <string name="menu_new_chat">New Chat</string>
+    <string name="menu_chat_info">Chat info</string>
+    <string name="menu_add_users_to_chat">Add Users to Chat</string>
+    <string name="menu_leave_chat">Leave Chat</string>
+    <string name="menu_delete_chat">Delete Chat</string>
+    <string name="menu_dialogs_logout">Logout</string>
+    <string name="menu_dialogs_delete">Delete</string>
+    <string name="menu_select_people_done">Done</string>
+
+    <!--<string name="dlg_loading">Loading</string>-->
+    <string name="dlg_restoring_chat_session">Restoring chat session…</string>
+    <string name="dlg_restoring_chat_session_logout">Restoring session and logout</string>
+    <string name="create_chat">Creating chat…</string>
+    <string name="dlg_login">Login…</string>
+
+    <string name="placeholder_username_you">%s (you)</string>
+    <string name="error_recreate_session">Login Chat error</string>
+
+    <string name="login_title">@string/chat_sample</string>
+
+    <string name="splash_app_title">@string/chat_sample</string>
+    <string name="splash_create_session_error">Create session errors:</string>
+
+    <string name="login_select_user_for_login">Select User for Login to Chat</string>
+    <string name="login_cant_obtain_users">Can\'t obtain users errors</string>
+    <string name="login_chat_login_error">Login Chat error. Please relogin. Error</string>
+
+    <string name="dialogs_logged_in_as">Logged in as %s</string>
+    <string name="dialogs_creation_error">Dialog creation errors</string>
+    <string name="dialogs_deletion_error">Dialog deletion errors</string>
+    <string name="dialogs_list_hint">Select a Dialog to Chat</string>
+    <string name="dialogs_get_error">Get dialogs errors</string>
+
+    <string name="select_users_list_hint">Select Users you want to chat</string>
+    <string name="select_users_create_chat">Create new chat</string>
+    <string name="select_users_edit_chat">Add Users to chat</string>
+    <string name="select_users_get_users_error">Get users errors</string>
+    <string name="select_users_choose_users">Please, choose at least one participant</string>
+
+    <string name="chat_sticker">Sticker</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_edit_text_hint">Message</string>
+    <string name="chat_me">Me</string>
+    <string name="chat_friend">Friend</string>
+    <string name="chat_join_error">Error join group chat</string>
+    <string name="chat_send_message_error">Failed to send a message</string>
+    <string name="chat_load_history_error">Load chat history errors</string>
+    <string name="chat_load_users_error">Load chat users errors</string>
+    <string name="chat_attachment_error">Can\'t load chosen file</string>
+    <string name="chat_attachment">Attachment</string>
+    <string name="chat_empty_you_are_alone_here">You\'re all alone out here.</string>
+    <string name="chat_empty_start_new_chat">Start new chat.</string>
+    <string name="chat_unsupported_type">Unsupported dialog type</string>
+    <string name="chat_wait_for_attachments_to_upload">Wait for all attachments to upload</string>
+    <string name="notification_title">Quickblox Chat Notification</string>
+    <string name="connection_error">Chat connection has been dropped</string>
+    <string name="reconnect_alert">Reconnecting in %s seconds</string>
+
+    <string name="chat_info">Chat info</string>
+    <string name="chat_info_add_people_error">Add people errors</string>
+
+    <string name="group_chat_join_error">Could not join chat, errors:</string>
+    <string name="public_group_chat_cannot_be_deleted">Public Group chat can be deleted only by owner</string>
+    <string name="error_leave_chat">Error leaving room</string>
+
+    <string name="please_wait">Please wait…</string>
+
+    <string name="dlg_error">Error</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_loading">Loading…</string>
+    <string name="dlg_choose_image_from">Select photo from…</string>
+    <string name="dlg_retry">Retry</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="addresshint">Address</string>
+    <string name="thisisyour">This is your company headquarers.</string>
+    <string name="poweredbygoogle">powered by Google</string>
+
+    <!--TradeSkillsActivity-->
+    <string name="tradeskills">Trade Skills</string>
+    <string name="pleaseselect">Please select the skills your company is licensed for.</string>
+    <string name="finish">Finish</string>
+    <string name="backgroundcheck">Background Check</string>
+    <string name="would">Would you like to add additional technicians under\nyour account?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="taptosign">TAP TO SIGN</string>
+
+    <string name="middlename">Middle Name</string>
+    <string name="idonthave">I don\'t have a middle name</string>
+    <string name="birthday">Birth Day</string>
+    <string name="mm_dd_yyy">mm/dd/yyy</string>
+    <string name="driverliecenseno">Driver License Number</string>
+    <string name="driverliecensestate">Driver License State</string>
+    <string name="socialsecurityno">Social Security Number</string>
+    <string name="informationfor">Information for</string>
+    <string name="yourrights">Your Rights Under</string>
+    <string name="iacknowledge">I acknowledge receipt of the summery of Your Rights Under the Fair Credit Reporting A(FCRA) and certify that i have read and understand this document </string>
+
+    <!--SignUp_AddressActivity -->
+    <string name="emailonly">Email</string>
+    <string name="submit">Submit</string>
+    <string name="dang">Dang!</string>
+    <string name="itlookslike">It looks like we are not servicing this area yet. Please enter your email to be notified when we came to your city.</string>
+
+    <string name="techcanpick">Tech can pick up jobs through the app.</string>
+    <string name="note">Note: A $50 fee for the background safty check will be charged for every technician. </string>
+    <string name="laststep">Last Step!</string>
+    <string name="pleaseprovideavalid">Please provide a valid credit card for the background check(s). We will not charge you for any thing else, especially jobs!</string>
+    <string name="apply">Apply</string>
+    <string name="discountcode">Discount Code</string>
+    <string name="cardnumber">Card Number</string>
+    <string name="expiration">Expiration</string>
+    <string name="securitycode">Security Code</string>
+    <string name="backgroundchecks2">Background Check (2)</string>
+
+
+    <string name="liecensepic">License and Picture</string>
+    <string name="addprofilepic">Add ProfilePicture</string>
+    <string name="adddriverliecense">Add Driver License</string>
+    <string name="tradeliecenseno">Trade License Numbers</string>
+    <string name="mobile">Mobile Number</string>
+    <string name="accountinfo">Account Information</string>
+
+
+    <string name="techniciansinfo">Technician Information</string>
+    <string name="appliance">APPLIANCE</string>
+    <string name="hvac">HVAC</string>
+
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="add_phote">Add Photo</string>
+    <string name="email_phone">Email/Phone</string>
+    <string name="address11">Address 1</string>
+    <string name="address22">Address 2</string>
+    <string name="zip_code11">Zip Code</string>
 </resources>

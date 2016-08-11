@@ -1,13 +1,16 @@
 package fixtpro.com.fixtpro;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -15,12 +18,20 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.model.QBSession;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
+import com.quickblox.users.model.QBUser;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import fixtpro.com.fixtpro.gcm_components.MessageReceivingService;
+import fixtpro.com.fixtpro.utilites.ChatService;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
@@ -32,14 +43,34 @@ public class LoginActivity extends AppCompatActivity {
     Context _context =  this;
     Typeface fontfamily;
     SharedPreferences.Editor editor;
+    String token = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+//        startService(new Intent(this, MessageReceivingService.class));
         setWidgets();
         setListeners();
         setTypeface();
         editor = Utilities.getSharedPreferences(_context).edit();
+
+    }
+    @Override
+    protected void onPause() {
+        // Unregister since the activity is paused.
+//        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+//                mMessageReceiver);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        // Register to receive messages.
+        // We are registering an observer (mMessageReceiver) to receive Intents
+        // with actions named "custom-event-name".
+//        LocalBroadcastManager.getInstance(this).registerReceiver(
+//                mMessageReceiver, new IntentFilter("gcm_token_receiver"));
+        super.onResume();
     }
     private  void setTypeface(){
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
@@ -91,71 +122,57 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleResponse(JSONObject Response) {
             try {
-                String Status = Response.getString("STATUS");
-                Log.e("LOGIN ACTIVITY RESPONSE", Response + "");
-
-
-                if (Status.equals("SUCCESS")){
+                String STATUS = Response.getString("STATUS");
+                if (STATUS.equals("SUCCESS")) {
+                    JSONObject RESPONSE = Response.getJSONObject("RESPONSE");
                     String Token = Response.getJSONObject("RESPONSE").getString("token");
+                    String id = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("id");
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
-                    String id = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("id");
+                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
                     JSONObject pro_settings;
+//                    SharedPreferences.Editor editor = prefs.edit();
+                    editor.putString(Preferences.ID, id);
                     editor.putString(Preferences.ROLE, role);
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    editor.putString(Preferences.ID, id);
-                    if(role.equals("pro")){
-                        pro_settings = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pro_settings");
-                        editor.putString(Preferences.SETTING_ID, pro_settings.getString("id"));
-                        editor.putString(Preferences.LOCATION_SERVICE, pro_settings.getString("location_services"));
-                        editor.putString(Preferences.TEXT_MESSAGING, pro_settings.getString("text_messaging"));
-                        editor.putString(Preferences.AVAILABLE_JOBS_NOTIFICATION, pro_settings.getString("available_jobs_notification"));
-                        editor.putString(Preferences.JOB_WON_NOTIFICATION, pro_settings.getString("job_won_notification"));
-                        editor.putString(Preferences.JOB_LOST_NOTIFICATION, pro_settings.getString("job_lost_notification") );
-                        editor.putString(Preferences.JOB_RESECHDULED, pro_settings.getString("job_rescheduled"));
-                        editor.putString(Preferences.JOB_CANCELLED, pro_settings.getString("job_canceled"));
-
-                        JSONObject profile_image = null ;
-                        profile_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("profile_image");
-                        if (!profile_image.isNull("original")){
-                            String image_original =  profile_image.getString("original");
-                            editor.putString(Preferences.PROFILE_IMAGE, image_original);
-                        }
-
-                        JSONObject profile_image_diver_licence = null ;
-                        profile_image_diver_licence = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("driver_license_image");
-                        if (!profile_image_diver_licence.isNull("original")){
-                            String image_original =  profile_image_diver_licence.getString("original");
-                            editor.putString(Preferences.DRIVER_LICENSE_IMAGE, image_original);
-                        }
-
-
-                        editor.putString(Preferences.LOGIN_JSON_DATA, Response.toString());
-
-                        JSONObject pros =  null ;
+                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+                    editor.putString(Preferences.ACCOUNT_STATUS, account_status);
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
+                        JSONObject pros = null;
                         pros = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pros");
-                        String city  = pros.getString("city");
+                        String city = pros.getString("city");
                         String state = pros.getString("state");
                         String zip = pros.getString("zip");
                         String address = pros.getString("address");
+                        String address2 = pros.getString("address_2");
                         String hourly_rate = pros.getString("hourly_rate");
                         String company_name = pros.getString("company_name");
-                        String ein_number  = pros.getString("ein_number");
-                        String bank_name  = pros.getString("bank_name");
-                        String bank_routing_number  = pros.getString("bank_routing_number");
-                        String bank_account_number  = pros.getString("bank_account_number");
-                        String bank_account_type  = pros.getString("bank_account_type");
+                        String ein_number="" ;
+                        if (!pros.isNull("ein_number"))
+                            ein_number = pros.getString("ein_number");
+                        String bank_name = pros.getString("bank_name");
+                        String bank_routing_number = pros.getString("bank_routing_number");
+                        String bank_account_number = pros.getString("bank_account_number");
+                        String bank_account_type = pros.getString("bank_account_type");
                         String insurance = pros.getString("insurance");
                         String insurance_policy = pros.getString("insurance_policy");
+//                        String isvarified = pros.getString("verified");
+                        String working_radius_miles = pros.getString("working_radius_miles");
+                        String is_pre_registered = pros.getString("is_pre_registered");
+                        String latitude = pros.getString("latitude");
+                        String longitude = pros.getString("longitude");
+                        String avg_rating = pros.getString("avg_rating");
                         editor.putString(Preferences.CITY, city);
                         editor.putString(Preferences.STATE, state);
                         editor.putString(Preferences.ZIP, zip);
                         editor.putString(Preferences.ADDRESS, address);
+                        editor.putString(Preferences.ADDRESS2, address2);
                         editor.putString(Preferences.HOURLY_RATE, hourly_rate);
                         editor.putString(Preferences.COMPANY_NAME, company_name);
                         editor.putString(Preferences.EIN_NUMEBR, ein_number);
@@ -165,25 +182,102 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(Preferences.BANK_ACCOUNT_TYPE, bank_account_type);
                         editor.putString(Preferences.INSURANCE, insurance);
                         editor.putString(Preferences.INSURANCE_POLICY, insurance_policy);
-                    }
-                    JSONArray services = null;
-                    services = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONArray("services");
-                    editor.putString(Preferences.SERVICES_JSON_ARRAY,services.toString());
-                    JSONObject technicians = null;
-                    technicians = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians");
-                    String first_name = technicians.getString("first_name");
-                    String last_name = technicians.getString("last_name");
-                    String social_security_number = technicians.getString("social_security_number");
-                    String years_in_business = technicians.getString("years_in_business");
-                    String trade_license_number = technicians.getString("trade_license_number");
-                    editor.putString(Preferences.FIRST_NAME, first_name);
-                    editor.putString(Preferences.LAST_NAME, last_name);
-                    editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
-                    editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
-                    editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
-                    editor.putBoolean(Preferences.ISLOGIN, true);
-                    editor.commit();
 
+                        editor.putString(Preferences.WORKING_RADIUS_MILES, working_radius_miles);
+                        editor.putString(Preferences.IS_PRE_REGISTERED, is_pre_registered);
+                        editor.putString(Preferences.LATITUDE, latitude);
+                        editor.putString(Preferences.LONGITUDE, longitude);
+                        editor.putString(Preferences.AVERAGE_RATING, avg_rating);
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("services")){
+                        JSONArray services = null;
+                        services = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONArray("services");
+                        editor.putString(Preferences.SERVICES_JSON_ARRAY, services.toString());
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pro_settings")) {
+                        pro_settings = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("pro_settings");
+                        editor.putString(Preferences.SETTING_ID, pro_settings.getString("id"));
+                        editor.putString(Preferences.LOCATION_SERVICE, pro_settings.getString("location_services"));
+                        editor.putString(Preferences.TEXT_MESSAGING, pro_settings.getString("text_messaging"));
+                        editor.putString(Preferences.AVAILABLE_JOBS_NOTIFICATION, pro_settings.getString("available_jobs_notification"));
+                        editor.putString(Preferences.JOB_WON_NOTIFICATION, pro_settings.getString("job_won_notification"));
+                        editor.putString(Preferences.JOB_LOST_NOTIFICATION, pro_settings.getString("job_lost_notification"));
+                        editor.putString(Preferences.JOB_RESECHDULED, pro_settings.getString("job_rescheduled"));
+                        editor.putString(Preferences.JOB_CANCELLED, pro_settings.getString("job_canceled"));
+
+                    }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("technicians")){
+                        JSONObject technicians = null;
+                        technicians = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians");
+                        String first_name = technicians.getString("first_name");
+                        String last_name = technicians.getString("last_name");
+                        String social_security_number = technicians.getString("social_security_number");
+                        String years_in_business = technicians.getString("years_in_business");
+                        String trade_license_number = technicians.getString("trade_license_number");
+                        String driver_license_number = technicians.getString("driver_license_number");
+                        String driver_license_state = technicians.getString("driver_license_state");
+                        String dob = technicians.getString("dob");
+                        String isvarified = technicians.getString("verified");
+                        editor.putString(Preferences.IS_VARIFIED, isvarified);
+                        editor.putString(Preferences.FIRST_NAME, first_name);
+                        editor.putString(Preferences.LAST_NAME, last_name);
+                        editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
+                        editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
+                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
+                        editor.putString(Preferences.DRIVER_LICENSE_NUMBER, driver_license_number);
+                        editor.putString(Preferences.DRIVER_LICENSE_STATE, driver_license_state);
+                        editor.putString(Preferences.DOB, dob);
+                        editor.putBoolean(Preferences.ISLOGIN, true);
+                        if (!Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").isNull("profile_image")){
+                            JSONObject profile_image = null;
+                            profile_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("profile_image");
+                            if (profile_image.has("original")) {
+                                String image_original = profile_image.getString("original");
+                                editor.putString(Preferences.PROFILE_IMAGE, image_original);
+                            }
+                        }
+                    }
+
+                    JSONObject quickblox_accounts = null;
+                    quickblox_accounts = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("quickblox_accounts");
+                    String account_id = quickblox_accounts.getString("account_id");
+                    String login = quickblox_accounts.getString("login");
+                    String password = quickblox_accounts.getString("qb_password");
+                    editor.putString(Preferences.QB_ACCOUNT_ID, account_id);
+                    editor.putString(Preferences.QB_LOGIN, login);
+                    editor.putString(Preferences.QB_PASSWORD, password);
+                    editor.commit();
+//                    loginToQuickBlox(login, password);
+
+
+                    // Login to REST API
+                    //
+                    final QBUser user = new QBUser();
+//                    user.setLogin(login);
+//                    user.setPassword(password);
+                    user.setLogin(login);
+                    user.setPassword(password);
+
+
+                    ChatService.getInstance().login(user, new QBEntityCallback<Void>() {
+
+                        @Override
+                        public void onSuccess(Void result, Bundle bundle) {
+                            // Go to Dialogs screen
+                            //
+                            Log.e("","success");
+//                            Intent intent = new Intent(SplashActivity.this, DialogsActivity.class);
+//                            startActivity(intent);
+//                            finish();
+                        }
+
+                        @Override
+                        public void onError(QBResponseException errors) {
+//                            AlertDialog.Builder dialog = new AlertDialog.Builder(SplashActivity.this);
+//                            dialog.setMessage("chat login errors: " + errors).create().show();
+                            Log.e("","error");
+                        }
+                    });
                     Log.e("LOGIN ACTIVITY RESPONSE from prefs", Utilities.getSharedPreferences(_context).getString(Preferences.LOGIN_JSON_DATA, "0"));
 
                     handler.sendEmptyMessage(1);
@@ -195,6 +289,49 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     };
+    private void loginToQuickBlox(final String login, final String password){
+//        QBAuth.createSession(new QBUser(login, password), new QBEntityCallback<QBSession>() {
+//            @Override
+//            public void onSuccess(QBSession session, Bundle params) {
+//                // success
+//                Log.e("","");
+//            }
+//
+//            @Override
+//            public void onError(QBResponseException error) {
+//                // errors
+//                Log.e("","");
+//            }
+//        });
+        QBAuth.createSession(new QBEntityCallback<QBSession>() {
+
+            @Override
+            public void onSuccess(QBSession session, Bundle params) {
+                // You have successfully created the session
+                //
+                // Now you can use QuickBlox API!
+                Log.e("","Session Success");
+                QBUser user = new QBUser(login, password);
+
+                QBUsers.signIn(user, new QBEntityCallback<QBUser>() {
+                    @Override
+                    public void onSuccess(QBUser user, Bundle params) {
+                        Log.e("","Login Success");
+                    }
+
+                    @Override
+                    public void onError(QBResponseException errors) {
+                        Log.e("","Login Error");
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException errors) {
+            Log.e("","Session Error");
+            }
+        });
+    }
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -251,9 +388,25 @@ public class LoginActivity extends AppCompatActivity {
     }
     private HashMap<String,String> getLoginRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
-        hashMap.put("api", "login");
-        hashMap.put("phone",Phone);
-        hashMap.put("password", Password);
+
+		 hashMap.put("api", "login");
+        hashMap.put("data[phone_email]", Phone);
+        hashMap.put("object","users");
+        hashMap.put("data[password]", Password);
+        hashMap.put("data[role]", "pro");
         return hashMap;
     }
+    // Our handler for received Intents. This will be called whenever an Intent
+    // with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            if (intent != null){
+                token = intent.getStringExtra("token");
+            }
+        }
+    };
+
 }

@@ -8,8 +8,9 @@ import java.io.Serializable;
 public class ReapirInstallProcessModal implements Serializable{
     String name = "";
     boolean isCompleted = false ;
-    public ReapirInstallProcessModal(String name){
+    public ReapirInstallProcessModal(String name,boolean isCompleted){
         this.name = name ;
+        this.isCompleted = isCompleted ;
     }
     public String getName() {
         return name;

@@ -56,7 +56,7 @@ public class Register_Activity extends AppCompatActivity {
         txtPassword.setTypeface(fontfamily);
         txtConfirmPassword.setTypeface(fontfamily);
         txtPhone.setText(_prefs.getString(Preferences.PHONE,""));
-        if (_prefs.getString(Preferences.PHONE,"").length() > 0){
+        if (_prefs.getString(Preferences.ROLE,"").length() > 0){
             txtPhone.setEnabled(false);
             isPro = false ;
         }
@@ -79,7 +79,7 @@ public class Register_Activity extends AppCompatActivity {
                 if (Phone.length() == 0) {
                     showAlertDialog("Fixd-Pro", "Please enter the phone number.");
                     return;
-                } else if (Phone.length() < 8) {
+                } else if (Phone.length() < 10) {
                     showAlertDialog("Fixd-Pro", "Your phone number seems to invalid, Please try again.");
                     return;
                 } else if (Password.length() == 0) {
@@ -98,8 +98,11 @@ public class Register_Activity extends AppCompatActivity {
                     showAlertDialog("Fixd-Pro", "Password did not match,Please try again.");
                     return;
                 } else {
-//                    do it
+/**
+ * If pro need to varify the number if is technician, is Already Verified
+ */
                     if (isPro){
+
                         Utilities.hideKeyBoad(_context, Register_Activity.this.getCurrentFocus());
                         GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST",checkIfPhoneExistsListener,Register_Activity.this,"Loading");
                         responseAsync.execute(getCheckPhoneRequestParams());
@@ -153,20 +156,22 @@ public class Register_Activity extends AppCompatActivity {
                 case 0:{
                     Intent intent = new Intent(_context,UserProfileScreen.class);
                     if (!isPro){
-                        finalRequestParams.put("object","update_by_code");
-                        finalRequestParams.put("api","technician");
+                        finalRequestParams.put("object","technicians");
+                        finalRequestParams.put("api","update_by_code");
                         finalRequestParams.put("invite_code",_prefs.getString(Preferences.TECH_INVITE_CODE,""));
                         finalRequestParams.put("password",Password);
                     }else {
 
-                        finalRequestParams.put("api","signup");
+                        finalRequestParams.put("api","signup_demo");
                         finalRequestParams.put("with_token","1");
-                        finalRequestParams.put("data[phone]",Phone);
-                        finalRequestParams.put("data[password]",Password);
+                        finalRequestParams.put("data[users][phone]",Phone);
+                        finalRequestParams.put("data[users][password]",Password);
                         finalRequestParams.put("object","pros");
+                        finalRequestParams.put("data[pros][working_radius_miles]","100");
                     }
 
                     intent.putExtra("finalRequestParams",finalRequestParams);
+                    intent.putExtra("ispro",isPro);
                     startActivity(intent);
                     break;
                 }

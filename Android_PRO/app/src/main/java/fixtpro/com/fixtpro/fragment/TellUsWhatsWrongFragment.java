@@ -9,7 +9,10 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
@@ -25,11 +28,24 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.imageupload.ImageHelper2;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.ExceptionListener;
+import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncMutipart;
+import fixtpro.com.fixtpro.utilites.MultipartUtility;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +77,10 @@ public class TellUsWhatsWrongFragment extends Fragment {
     public String Path,path;
     public Uri selectedImageUri;
     int finalHeight, finalWidth;
+
+    MultipartUtility multipart = null;
+    String DiagnosAndResolution = "";
+    String  error_message = "";
     public TellUsWhatsWrongFragment() {
         // Required empty public constructor
     }
@@ -112,7 +132,6 @@ public class TellUsWhatsWrongFragment extends Fragment {
                 imgMain.getViewTreeObserver().removeOnPreDrawListener(this);
                 finalHeight = imgMain.getMeasuredHeight();
                 finalWidth = imgMain.getMeasuredWidth();
-
                 return true;
             }
         });
@@ -276,10 +295,9 @@ public class TellUsWhatsWrongFragment extends Fragment {
         }else if (editDescription.getText().toString().length() == 0){
             showAlertDialog("Fixd-Pro","Please enter diagnosis and resolution");
         }else {
-            CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().getWhatsWrong().setDiagnosis_and_resolution(editDescription.getText().toString());
-            CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().getWhatsWrong().setImage(Path);
-            CurrentScheduledJobSingleTon.getInstance().getCurrentReapirInstallProcessModal().setIsCompleted(true);
-            ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.TELL_US_WHATS_WRONG_FRAGMENT);
+            DiagnosAndResolution = editDescription.getText().toString();
+            executeWhatsWrongDetailsSavingRequest();
+
         }
     }
     private void showAlertDialog(String Title,String Message){
@@ -308,4 +326,93 @@ public class TellUsWhatsWrongFragment extends Fragment {
         // show it
         alertDialog.show();
     }
+    public void executeWhatsWrongDetailsSavingRequest(){
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
+                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install"))
+                        multipart.addFormField("object", "install_flow");
+                    else
+                        multipart.addFormField("object", "repair_flow");
+                    multipart.addFormField("api", "whats_wrong");
+                    multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN,""));
+                    multipart.addFormField("data[diagnosis_and_resolution]", DiagnosAndResolution);
+                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFilePart("data[image]", new File(Path));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, whatsWrongResponseListener,whatsWrongexceptionListener, getActivity(), "Saving");
+                getApiResponseAsync.execute();
+            }
+        }.execute();
+    }
+    ResponseListener whatsWrongResponseListener = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("","Response"+Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    handler.sendEmptyMessage(0);
+                }
+            else{
+                JSONObject errors = Response.getJSONObject("ERRORS");
+                Iterator<String> keys = errors.keys();
+                if (keys.hasNext()){
+                    String key = (String)keys.next();
+                    error_message = errors.getString(key);
+                    handler.sendEmptyMessage(2);
+                }
+            }
+
+        }catch (JSONException e){
+
+        }
+        }
+    };
+    ExceptionListener whatsWrongexceptionListener= new ExceptionListener() {
+        @Override
+        public void handleException(int exceptionStatus) {
+            handler.sendEmptyMessage(exceptionStatus);
+        }
+    };
+    Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:{
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getWhatsWrong().setDiagnosis_and_resolution(editDescription.getText().toString());
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getWhatsWrong().setImage(Path);
+                    CurrentScheduledJobSingleTon.getInstance().getCurrentReapirInstallProcessModal().setIsCompleted(true);
+                    ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.TELL_US_WHATS_WRONG_FRAGMENT);
+                    break;
+                }
+                case 1:{
+                    break;
+                }
+                case 2:{
+                    showAlertDialog("Fixd-Pro", error_message);
+                    break;
+                }
+                case 500: {
+                    showAlertDialog("Fixd-pro", "Server Error 500");
+                    break;
+                }
+                default:{
+                    showAlertDialog("Fixd-Pro",error_message);
+                }
+            }
+        }
+    };
+
 }

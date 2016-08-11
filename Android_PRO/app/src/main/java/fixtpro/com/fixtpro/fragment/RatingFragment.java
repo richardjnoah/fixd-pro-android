@@ -237,9 +237,12 @@ public class RatingFragment extends Fragment {
         ratingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent i = new Intent(getActivity(), RatingDetailsActivity.class);
-                i.putExtra("RatingObject", ratingListModalArrayList.get(position - 1));
-                startActivity(i);
+                if (position > 0){
+                    Intent i = new Intent(getActivity(), RatingDetailsActivity.class);
+                    i.putExtra("RatingObject", ratingListModalArrayList.get(position - 1));
+                    startActivity(i);
+                }
+
             }
         });
 

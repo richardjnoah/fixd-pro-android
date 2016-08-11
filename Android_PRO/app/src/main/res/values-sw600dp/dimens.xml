@@ -21,7 +21,7 @@
     *
     *add tech Dialog.....
     -->
-    <dimen name="profile_pic_hei_wid">180dp</dimen>
+    <dimen name="profile_pic_hei_wid">172dp</dimen>
     <dimen name="edittext_size">35sp</dimen>
     <dimen name="add_photo_size">28sp</dimen>
     <dimen name="edittext_padding">14dp</dimen>

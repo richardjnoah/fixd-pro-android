@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_grey_blur"
     tools:context="fixtpro.com.fixtpro.RatingDetailsActivity">
+
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
@@ -218,11 +219,12 @@
                     android:text="Technician"
                     android:textColor="@color/lb_tv_white"
                     android:textSize="@dimen/ratingxlargetext" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/all_margintop"
                     android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/all_margintop"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -244,27 +246,30 @@
                             android:id="@+id/txtTechName"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:singleLine="true"
                             android:text="Georges Erre"
                             android:textColor="@color/lb_tv_white"
                             android:textSize="@dimen/ratingtxtlarge" />
+
                         <TextView
                             android:id="@+id/txtAverage"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center"
                             android:layout_weight="1"
+                            android:gravity="center"
                             android:singleLine="true"
                             android:text="Average Rating"
                             android:textColor="@color/lb_tv_white"
                             android:textSize="@dimen/ratingtxtlarge" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="@dimen/all_margintop"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/all_margintop">
+
                             <fixtpro.com.fixtpro.views.RatingBarView
                                 android:id="@+id/customrating_tech"
                                 android:layout_width="match_parent"
@@ -290,25 +295,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/txtcomment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:singleLine="true"
+                    android:gravity="center"
                     android:padding="12dp"
+                    android:singleLine="true"
                     android:text="Comments"
                     android:textColor="@color/lb_tv_white"
                     android:textSize="@dimen/ratingtxtlarge" />
+
                 <TextView
                     android:id="@+id/txtDetailss"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:singleLine="false"
+                    android:gravity="center"
                     android:padding="12dp"
+                    android:singleLine="false"
                     android:text="Comments"
                     android:textColor="@color/lb_tv_white"
                     android:textSize="@dimen/ratingtxtlarge" />

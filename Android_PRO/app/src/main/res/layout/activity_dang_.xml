@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange_signin_back"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="12dp"
+            android:src="@drawable/back_arrow" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtlogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_14"
+                android:text="@string/dang"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_23sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginRight="@dimen/size_22dp"
+        android:layout_marginTop="@dimen/size_22dp"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="@string/itlookslike"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_16sp" />
+
+
+    <RelativeLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text1"
+        android:layout_marginTop="@dimen/size_30"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/size_22dp"
+            android:layout_marginRight="@dimen/size_22dp"
+            android:background="@drawable/whitebox_fill"
+            android:gravity="left"
+            android:hint="@string/emailonly"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/size_14"
+            android:singleLine="true"
+            android:textColor="@color/color_grey"
+            android:textColorHint="@color/color_grey"
+            android:textCursorDrawable="@drawable/cursor_drawable"
+            android:textSize="@dimen/size_20sp" />
+
+        <LinearLayout
+            android:id="@+id/layoutSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtEmail"
+            android:layout_marginTop="@dimen/size_30"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/signup_arrow" />
+
+            <TextView
+                android:id="@+id/txtSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/submit"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_16sp" />
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

@@ -21,7 +21,7 @@
     *
     *add tech Dialog.....
     -->
-    <dimen name="profile_pic_hei_wid">70dp</dimen>
+    <dimen name="profile_pic_hei_wid">72dp</dimen>
     <dimen name="edittext_size">19sp</dimen>
     <dimen name="add_photo_size">17sp</dimen>
     <dimen name="edittext_padding">4dp</dimen>
@@ -64,7 +64,7 @@
     <dimen name="largetext">15sp</dimen>
     <dimen name="smallltext">12sp</dimen>
     <dimen name="mediumtxts">14sp</dimen>
-    <dimen name="jobcompleteratesize">28dp</dimen>
+    <dimen name="jobcompleteratesize">22dp</dimen>
     <dimen name="imgheiwid">50dp</dimen>
 
     <!-- Service Ticket dimen-->

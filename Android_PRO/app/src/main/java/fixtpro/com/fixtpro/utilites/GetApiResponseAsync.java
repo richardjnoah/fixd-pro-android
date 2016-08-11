@@ -1,8 +1,10 @@
 package fixtpro.com.fixtpro.utilites;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.view.Window;
 
 import org.json.JSONObject;
 
@@ -11,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 
+import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 
 /**
@@ -18,7 +21,7 @@ import fixtpro.com.fixtpro.ResponseListener;
  */
 public class GetApiResponseAsync extends AsyncTask<HashMap<String, String>, Void, JSONObject> {
 
-    ProgressDialog progressDialog;
+    Dialog progressDialog;
     ResponseListener listener;
     String Method;
     String Text;
@@ -27,8 +30,9 @@ public class GetApiResponseAsync extends AsyncTask<HashMap<String, String>, Void
         this.Method = Method;
         this.listener = listener;
         this.Text = Text;
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage(Text);
+        progressDialog = new Dialog(activity);
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setContentView(R.layout.dialog_progress_simple);
         progressDialog.setCancelable(false);
         progressDialog.show();
     }

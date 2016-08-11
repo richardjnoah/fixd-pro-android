@@ -8,7 +8,14 @@ import java.io.Serializable;
 public class WhatsWrong implements Serializable{
     String image = "";
     String diagnosis_and_resolution = "";
+    boolean isCompleted = false ;
+    public boolean isCompleted() {
+        return isCompleted;
+    }
 
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
     public String getImage() {
         return image;
     }

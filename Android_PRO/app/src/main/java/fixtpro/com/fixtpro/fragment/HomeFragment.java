@@ -1,14 +1,23 @@
 package fixtpro.com.fixtpro.fragment;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,7 +26,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -32,14 +44,18 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.paging.listview.PagingListView;
+import com.quickblox.core.exception.BaseServiceException;
+import com.quickblox.core.server.BaseService;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import fixtpro.com.fixtpro.AvailableJobListClickActivity;
 import fixtpro.com.fixtpro.CalendarActivity;
@@ -47,6 +63,8 @@ import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
+import fixtpro.com.fixtpro.UserProfileScreen;
+import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
 import fixtpro.com.fixtpro.adapters.AvailableJobsPagingAdaper;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
@@ -79,6 +97,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     SharedPreferences _prefs = null;
     String role = "pro";
     Fragment fragment = null ;
+    private Dialog dialog;
+    int PERMISSION_ACCESS_FINE_LOCATION, PERMISSION_ACCESS_COARSE_LOCATION;
+    final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 101;
+    List<String> permissionsNeeded = new ArrayList<String>();
+    Bundle savedInstanceState = null ;
+    private CoordinatorLayout coordinatorLayout;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -101,17 +125,51 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
         _prefs = Utilities.getSharedPreferences(_context);
-        role = _prefs.getString(Preferences.ROLE,"pro");
+        role = _prefs.getString(Preferences.ROLE, "pro");
         setWidgets(rootView);
+        this.savedInstanceState = savedInstanceState;
+        // Check for permissions on runtime for android 6.0
+//        if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1){
+//            PERMISSION_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(getActivity(),
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION);
+//            PERMISSION_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(getActivity(),
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION);
+//            if (PERMISSION_ACCESS_FINE_LOCATION !=  PackageManager.PERMISSION_GRANTED)
+//                permissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+//            if (PERMISSION_ACCESS_COARSE_LOCATION !=  PackageManager.PERMISSION_GRANTED)
+//                permissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+//
+//            if (permissionsNeeded.size() > 0){
+//                requestPermissions(permissionsNeeded.toArray(new String[permissionsNeeded.size()]),
+//                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//            }else {
+//                setMap(savedInstanceState);
+//            }
+//        }else {
+            setMap(savedInstanceState);
+//        }
 
-        setMap(savedInstanceState);
 
         setListeners();
+        try {
+            String token = BaseService.getBaseService().getToken();
+            Date expirationDate = BaseService.getBaseService().getTokenExpirationDate();
+        } catch (BaseServiceException e) {
+            e.printStackTrace();
+        }
 
         availableJob_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // send where details is object
+                if (_prefs.getString(Preferences.ACCOUNT_STATUS,"").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE,"pro").equals("pro")) {
+                    showAccountSetupDialog();
+                    return;
+                }
+                if (_prefs.getString(Preferences.IS_VARIFIED,"").equals("0")){
+                    showAlertBackGroundSaftyDialog();
+                    return;
+                }
                 AvailableJobModal job_detail = new AvailableJobModal();
                 job_detail = availablejoblist.get(position);
                 Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
@@ -126,8 +184,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 AvailableJobModal job_detail = new AvailableJobModal();
                 job_detail = schedulejoblist.get(position);
                 fragment = new ScheduledListDetailsFragment();
-                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
-                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, null);
+//                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("modal",job_detail);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
             }
         });
         availablejoblist = singleton.getAvailablejoblist();
@@ -135,14 +195,49 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         if (availablejoblist.size() > 0){
             handler.sendEmptyMessage(0);
         }else {
-            GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
-            responseAsync.execute(getRequestParams("Open"));
+            if (getInternetStatus()){
+                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                responseAsync.execute(getRequestParams("Open"));
+            }
+
         }
 
 
         return rootView;
     }
 
+    private HashMap<String,String> getIncompleteAccountParams(){
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("api", "signup_complete");
+        hashMap.put("object","pros");
+        hashMap.put("with_token","1");
+
+        return hashMap;
+    }
+    private void showAccountSetupDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_hang_tight);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CompanyInformation_Activity.class);
+                intent.putExtra("finalRequestParams", getIncompleteAccountParams());
+                intent.putExtra("ispro", true);
+                startActivity(intent);
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -155,14 +250,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             map.clear();
             pageAvaileble  = 1 ;
             availablejoblist.clear();
-            GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
-            responseAsync.execute(getRequestParams("Open"));
+            if (getInternetStatus()){
+                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                responseAsync.execute(getRequestParams("Open"));
+            }
+
         }else{
             map.clear();
             pageSheduled  = 1 ;
             schedulejoblist.clear();
-            GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
-            responseAsync1.execute(getRequestParams("Scheduled"));
+            if (getInternetStatus()){
+                GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
+                responseAsync1.execute(getRequestParams("Scheduled"));
+            }
+
         }
     }
     @Override
@@ -178,14 +279,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 map.clear();
                 pageAvaileble  = 1 ;
                 availablejoblist.clear();
-                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
-                responseAsync.execute(getRequestParams("Open"));
+                if (Utilities.isNetworkAvailable(getActivity())) {
+                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                    responseAsync.execute(getRequestParams("Open"));
+                }
+
             }else{
                 map.clear();
                 pageSheduled  = 1 ;
                 schedulejoblist.clear();
-                GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
-                responseAsync1.execute(getRequestParams("Scheduled"));
+                if (Utilities.isNetworkAvailable(getActivity())) {
+                    GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
+                    responseAsync1.execute(getRequestParams("Scheduled"));
+                }
+
             }
 
             return true;
@@ -204,6 +311,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         scheduleJob_listView = (PagingListView) view.findViewById(R.id.scheduleJob_list_view);
         scheduleLayout = (RelativeLayout) view.findViewById(R.id.schedulelayout);
         calenderviewall = (LinearLayout) view.findViewById(R.id.viewall);
+        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
+                .coordinatorLayout);
     }
 
     void setMap(Bundle savedInstanceState){
@@ -211,8 +320,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // Gets to GoogleMap from the MapView and does initialization stuff
         map = mapView.getMap();
-        map.getUiSettings().setMyLocationButtonEnabled(false);
-        map.setMyLocationEnabled(true);
+//        map.getUiSettings().setMyLocationButtonEnabled(false);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
@@ -237,6 +345,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onResume() {
+//        if (mapView.isActivated())
         mapView.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.HOME_FRAGMENT);
         setupToolBar();
@@ -244,7 +353,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).setRightToolBarImage(R.drawable.refresh);
-        ((HomeScreenNew)getActivity()).setTitletext("Home");
+        ((HomeScreenNew)getActivity()).setTitletext("Welcome "+_prefs.getString(Preferences.FIRST_NAME,""));
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
     @Override
@@ -281,21 +390,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
                         model.setTime_slot_id(obj.getString("time_slot_id"));
                         model.setTitle(obj.getString("title"));
-                        model.setTotal_cost(obj.getString("total_cost"));
+//                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
                         model.setWarranty(obj.getString("warranty"));
 //                      if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
@@ -306,6 +415,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 JobAppliancesModal mod = new JobAppliancesModal();
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+
+                                if (!jsonObject.isNull("description")){
+                                    mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("service_type")){
+                                    mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                                }
+                                if (!jsonObject.isNull("customer_complaint")) {
+                                    mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                                }
+                                if (!jsonObject.isNull("power_source")) {
+                                    mod.setJob_appliances_power_source(jsonObject.getString("power_source"));
+                                }
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
+                                        mod.setImg_original(image_obj.getString("original"));
+                                        mod.setImg_160x170(image_obj.getString("160x170"));
+                                        mod.setImg_150x150(image_obj.getString("150x150"));
+                                        mod.setImg_75x75(image_obj.getString("75x75"));
+                                        mod.setImg_30x30(image_obj.getString("30x30"));
+                                    }
+                                }
                                 if (!jsonObject.isNull("appliance_types")){
                                     JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
                                     mod.setAppliance_type_id(appliance_type_obj.getString("id"));
@@ -316,11 +449,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     if (!appliance_type_obj.isNull("image")){
                                         JSONObject image_obj = appliance_type_obj.getJSONObject("image");
                                         if(!image_obj.isNull("original")){
-                                            mod.setImg_original(image_obj.getString("original"));
-                                            mod.setImg_160x170(image_obj.getString("160x170"));
-                                            mod.setImg_150x150(image_obj.getString("150x150"));
-                                            mod.setImg_75x75(image_obj.getString("75x75"));
-                                            mod.setImg_30x30(image_obj.getString("30x30"));
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
                                         }
                                     }
                                 }
@@ -350,6 +480,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         availablejoblist.add(model);
                     }
@@ -372,7 +504,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            super.handleMessage(msg);
+             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
                     AvailableJobsPagingAdaper adapter = new AvailableJobsPagingAdaper(getActivity(),availablejoblist,getResources());
@@ -398,7 +530,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             }
                         }
                     });
-
+                    if (_prefs.getBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,false)){
+                        showAccountSetupCompletdDialog();
+                    }
                     break;
                 }
                 case 1:{
@@ -409,14 +543,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     AvailableJobsPagingAdaper adapter = new AvailableJobsPagingAdaper(getActivity(),schedulejoblist,getResources());
                     scheduleJob_listView.setAdapter(adapter);
                     setMarkers(schedulejoblist);
-
                     scheduleJob_listView.onFinishLoading(true, schedulejoblist);
                     if (!nextScheduled.equals("null")) {
                         scheduleJob_listView.setHasMoreItems(true);
                     }else {
                         scheduleJob_listView.setHasMoreItems(false);
                     }
-
                     scheduleJob_listView.setPagingableListener(new PagingListView.Pagingable() {
                         @Override
                         public void onLoadMoreItems() {
@@ -459,21 +591,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         model.setFinished_at(obj.getString("finished_at"));
                         model.setId(obj.getString("id"));
                         model.setJob_id(obj.getString("job_id"));
-                        model.setLatitude(obj.getDouble("latitude"));
+//                        model.setLatitude(obj.getDouble("latitude"));
                         model.setLocked_by(obj.getString("locked_by"));
                         model.setLocked_on(obj.getString("locked_on"));
-                        model.setLongitude(obj.getDouble("longitude"));
+//                        model.setLongitude(obj.getDouble("longitude"));
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
                         model.setTime_slot_id(obj.getString("time_slot_id"));
                         model.setTitle(obj.getString("title"));
-                        model.setTotal_cost(obj.getString("total_cost"));
+//                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
                         model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
@@ -486,7 +618,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 mod.setJob_appliances_id(jsonObject.getString("id"));
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
-                                JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+
                                 if (!jsonObject.isNull("description")){
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
                                 }
@@ -496,16 +628,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                 if (!jsonObject.isNull("customer_complaint")) {
                                     mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
                                 }
-                                mod.setAppliance_type_id(appliance_type_obj.getString("id"));
-                                mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
-                                mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
-                                mod.setAppliance_type_name(appliance_type_obj.getString("name"));
-                                mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
-
-                                if (!appliance_type_obj.isNull("image")){
-                                    JSONObject image_obj = appliance_type_obj.getJSONObject("image");
-                                    Log.e("", "-----" + image_obj.toString());
-                                    if (!image_obj.isNull("original")) {
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
                                         mod.setImg_original(image_obj.getString("original"));
                                         mod.setImg_160x170(image_obj.getString("160x170"));
                                         mod.setImg_150x150(image_obj.getString("150x150"));
@@ -513,6 +638,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mod.setImg_30x30(image_obj.getString("30x30"));
                                     }
                                 }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")){
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        if( !image_obj.isNull("original")){
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
+                                        }
+                                    }
+                                }
+
 
 //                                JSONObject services_obj = jsonObject.getJSONObject("services");
 //                                mod.setService_id(services_obj.getString("id"));
@@ -526,7 +667,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         }
                         if (!obj.isNull("technicians")){
                             JSONObject technician_object  =  obj.getJSONObject("technicians");
-                            model.setTechnician_id(technician_object.getString("id"));
+                            model.setTechnician_technicians_id(technician_object.getString("id"));
+                            model.setTechnician_user_id(technician_object.getString("user_id"));
                             model.setTechnician_fname(technician_object.getString("first_name"));
                             model.setTechnician_lname(technician_object.getString("last_name"));
                             model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
@@ -540,11 +682,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             }
 
                         }
-                        JSONObject time_slot_obj = obj.getJSONObject("time_slots");
-                        model.setTime_slot_id(time_slot_obj.getString("id"));
-                        model.setTimeslot_start(time_slot_obj.getString("start"));
-                        model.setTimeslot_end(time_slot_obj.getString("end"));
-                        model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+
 
                         if (!obj.isNull("job_customer_addresses")){
                             JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
@@ -557,6 +702,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         schedulejoblist.add(model);
                     }
@@ -570,25 +717,53 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         }
     };
+    private boolean getInternetStatus(){
+        if (!Utilities.isNetworkAvailable(getActivity())){
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                        }
+                    });
 
+            // Changing message text color
+            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+
+            snackbar.show();
+            return false;
+        }else {
+            return true ;
+        }
+    }
     private HashMap<String,String> getRequestParams(String Status){
         HashMap<String,String> hashMap = new HashMap<String,String>();
-        hashMap.put("api","read");
+        if (Status.equals("Open"))
+         hashMap.put("api","read_open");
+        else {
+            hashMap.put("api","read");
+            if (!Status.equals("Scheduled"))
+                hashMap.put("where[status]", Status);
+            else
+                hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
+        }
         hashMap.put("object","jobs");
         if (!role.equals("pro"))
             hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         else
             hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
-        if (!Status.equals("Scheduled"))
-            hashMap.put("where[status]", Status);
-        else
-            hashMap.put("where[status@NOT_IN]", "Complete,Open");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         if (isStateAvailable)
         hashMap.put("page", pageAvaileble+"");
         else
         hashMap.put("page", pageSheduled+"");
         hashMap.put("per_page", "20");
+
         return hashMap;
     }
 
@@ -597,6 +772,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         switch (v.getId()){
             case R.id.available:
 //                pageAvaileble = 1;
+                if (map != null)
                 map.clear();
                 isStateAvailable  = true ;
                 availScheduleLayout.setBackgroundResource(R.drawable.scheduled);
@@ -605,6 +781,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 setMarkers(availablejoblist);
                 break;
             case R.id.scheduled:
+                if (map != null)
                 map.clear();
                 isStateAvailable  = false ;
                 availScheduleLayout.setBackgroundResource(R.drawable.available);
@@ -621,17 +798,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.viewall:
                 Intent i = new Intent(getActivity(), CalendarActivity.class);
+                i.putExtra("Rescheduling","0");
                 startActivity(i);
                 break;
         }
     }
 
     public void setMarkers(ArrayList<AvailableJobModal> arrayList){
+        if (map == null)
+            return;
         double intLatitude = 0, intLongitude = 0;
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for(int k = 0; k < arrayList.size(); k++){
-            intLatitude = arrayList.get(k).getLatitude();
-            intLongitude = arrayList.get(k).getLongitude();
+            intLatitude = arrayList.get(k).getJob_customer_addresses_latitude();
+            intLongitude = arrayList.get(k).getJob_customer_addresses_longitude();
             // Add a marker
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(intLatitude, intLongitude)));
@@ -677,5 +857,69 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // show it
         alertDialog.show();
+    }
+
+    private void showAccountSetupCompletdDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_setup_complete);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
+                dialog.dismiss();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private void showAlertBackGroundSaftyDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_alert_background_check);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setVisibility(View.GONE);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    setMap(savedInstanceState);
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

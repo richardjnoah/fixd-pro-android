@@ -21,7 +21,7 @@
     *
     *add tech Dialog.....
     -->
-    <dimen name="profile_pic_hei_wid">90dp</dimen>
+    <dimen name="profile_pic_hei_wid">92dp</dimen>
     <dimen name="edittext_size">18sp</dimen>
     <dimen name="add_photo_size">19sp</dimen>
     <dimen name="edittext_padding">4dp</dimen>
@@ -65,7 +65,7 @@
     <dimen name="largetext">17sp</dimen>
     <dimen name="smallltext">12sp</dimen>
     <dimen name="mediumtxts">14sp</dimen>
-    <dimen name="jobcompleteratesize">33dp</dimen>
+    <dimen name="jobcompleteratesize">28dp</dimen>
     <dimen name="imgheiwid">55dp</dimen>
 
     <!-- Service Ticket dimen-->
@@ -136,4 +136,13 @@
     <dimen name="left_right_margin">16dp</dimen>
     <dimen name="picheight">155dp</dimen>
 
+    <!-- Cancel Scheduled Job-->
+    <dimen name="sure_cancel_text">12sp</dimen>
+
+    <dimen name="allmargins">7dp</dimen>
+    <dimen name="textsizenoti">16sp</dimen>
+    <dimen name="imgheght">85dp</dimen>
+    <dimen name="imgwid">80dp</dimen>
+    <!--Home Activity With Fragment Drawer-->
+    <!--<dimen name="drawerwidth">240dp</dimen>-->
 </resources>

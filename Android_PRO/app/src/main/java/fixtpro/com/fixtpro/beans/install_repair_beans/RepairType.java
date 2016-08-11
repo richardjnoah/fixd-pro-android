@@ -9,9 +9,27 @@ public class RepairType implements Serializable {
     String Type = "";
     String Price = "0";
     String Id  = "";
+    String labor_hours  = "";
      public RepairType(){
 
      }
+
+    public String getLabor_hours() {
+        return labor_hours;
+    }
+
+    public void setLabor_hours(String labor_hours) {
+        this.labor_hours = labor_hours;
+    }
+
+    boolean isCompleted = false ;
+    public boolean isCompleted() {
+        return isCompleted;
+    }
+
+    public void setIsCompleted(boolean isCompleted) {
+        this.isCompleted = isCompleted;
+    }
     public RepairType(String Type){
         this.Type = Type ;
     }

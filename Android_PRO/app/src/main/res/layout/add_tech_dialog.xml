@@ -12,7 +12,14 @@
         android:gravity="center"
         android:background="@drawable/orange_background"
         android:orientation="vertical">
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:gravity="center"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/pro_pic"
             android:layout_width="@dimen/profile_pic_hei_wid"
@@ -79,15 +86,18 @@
             android:textColorHint="@android:color/white"
             android:textCursorDrawable="@drawable/white_cursor"
             android:textSize="@dimen/edittext_size" />
+        </LinearLayout>
+        </ScrollView>
         <LinearLayout
             android:layout_below="@+id/layout_details"
-            android:layout_marginTop="@dimen/text_between_margin"
+
             android:id="@+id/layout_check"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal">
             <CheckBox
+                android:gravity="top"
                 android:id="@+id/check_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,6 +117,52 @@
                 android:textColorHint="@android:color/white"/>
 
         </LinearLayout>
+        <TextView
+            android:layout_marginTop="4dp"
+            android:id="@+id/txtInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white"
+            android:padding="@dimen/edittext_padding"
+            android:textSize="18sp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textCursorDrawable="@drawable/white_cursor"
+            android:background="@android:color/transparent"
+            android:textColorHint="@android:color/white" />
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/imgCardType"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:src="@drawable/card_default"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtCardNunber"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="******78964"
+                    android:textSize="22sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/txtEditCard"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:textSize="22sp"
+                    android:textColor="@android:color/white"
+                    android:text="Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         <ImageView
             android:id="@+id/img_add_tech"
             android:layout_width="fill_parent"
@@ -114,13 +170,15 @@
             android:scaleType="centerCrop"
             android:src="@drawable/popup_addtech"/>
     </LinearLayout>
+
+
     <ImageView
         android:id="@+id/img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        android:src="@drawable/cross"
-        android:padding="10dp"
+        android:src="@drawable/popup_cross"
+        android:padding="14dp"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"/>
 

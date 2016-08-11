@@ -23,7 +23,7 @@
                 android:id="@+id/imgThumbLuck"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:src="@drawable/setting_wi" />
+                android:src="@drawable/thumb" />
         </LinearLayout>
 
         <LinearLayout
@@ -82,9 +82,39 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="10dp"></View>
         <!-- resechedule Now...-->
         <LinearLayout
+            android:id="@+id/layout_gettingParts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@android:color/white"
+            android:weightSum="2">
+            <TextView
+                android:id="@+id/going_to_get_parts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:text="@string/going_to_get_parts"
+                android:padding="@dimen/commonpadding"
+                android:singleLine="true"
+                android:textColor="@color/orange_signin_back"
+                android:textSize="@dimen/commonxlargetxt" />
+            <ImageView
+                android:id="@+id/img_nextgoing_to_get_parts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:src="@drawable/right_job_arrow"
+                android:layout_gravity="center" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"></View>
+        <!-- resechedule Now...-->
+        <LinearLayout
+            android:id="@+id/layout_reschedule"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -110,9 +140,10 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="10dp"></View>
         <!--Cancel JOb-->
         <LinearLayout
+            android:id="@+id/layout_cancel_job"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -138,7 +169,7 @@
         </LinearLayout>
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="16dp"></View>
 
     </LinearLayout>
 

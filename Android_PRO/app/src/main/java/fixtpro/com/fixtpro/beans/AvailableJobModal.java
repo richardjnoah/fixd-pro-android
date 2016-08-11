@@ -7,30 +7,32 @@ import java.util.ArrayList;
  * Created by sony on 16-02-2016.
  */
 public class AvailableJobModal implements Serializable{
-    String contact_name;
-    String created_at;
-    String customer_id;
-    String customer_notes;
-    String finished_at;
-    String id;
-    String job_id;
-    double latitude;
-    String locked_by;
-    String locked_on;
-    double longitude;
-    String phone;
-    String pro_id;
-    String request_date;
-    String service_id;
-    String service_type;
-    String started_at;
-    String status;
+    String contact_name = "";
+    String created_at = "";
+    String customer_id = "";
+    String customer_notes = "";
+    String finished_at = "";
+    String id = "";
+    String job_id = "";
+    double latitude = 0.0;
+    String locked_by = "";
+    String locked_on = "";
+    double longitude = 0.0 ;
+    String phone = "";
+    String pro_id = "";
+    String request_date = "";
+    String service_id = "";
+    String service_type = "";
+    String started_at = "";
+    String status = "";
 
-    String time_slot_id;
-    String title;
-    String total_cost;
-    String updated_at;
-    String warranty;
+    String time_slot_id = "";
+    String title = "";
+    String total_cost = "";
+    String updated_at = "";
+    String warranty = "";
+
+    String technician_id = "";
 
     public ArrayList<JobPartsUsedModal> getJob_parts_used_list() {
         return job_parts_used_list;
@@ -58,8 +60,12 @@ public class AvailableJobModal implements Serializable{
     String job_customer_addresses_updated_at = "(null)";
     String job_customer_addresses_created_at = "(null)";
     String job_customer_addresses_job_id = "(null)";
+    Double job_customer_addresses_latitude = 0.0;
+    Double job_customer_addresses_longitude = 0.0;
 
-//    Cost Details of Job Completed
+
+
+    //    Cost Details of Job Completed
     String cost_details_tripcharges = "0.00";
     String cost_details_tax = "0.00";
     String cost_details_installation = "";
@@ -71,7 +77,25 @@ public class AvailableJobModal implements Serializable{
     String cost_details_repair_value = "0.00";
 
 //    Technician information
-    String technician_id = "";
+    String technician_user_id = "";
+    String technician_technicians_id = "";
+
+    public String getTechnician_user_id() {
+        return technician_user_id;
+    }
+
+    public void setTechnician_user_id(String technician_user_id) {
+        this.technician_user_id = technician_user_id;
+    }
+
+    public String getTechnician_technicians_id() {
+        return technician_technicians_id;
+    }
+
+    public void setTechnician_technicians_id(String technician_technicians_id) {
+        this.technician_technicians_id = technician_technicians_id;
+    }
+
     String technician_fname = "";
     String technician_lname = "";
     String technician_pickup_jobs = "";
@@ -536,5 +560,21 @@ public class AvailableJobModal implements Serializable{
 
     public void setJob_customer_addresses_job_id(String job_customer_addresses_job_id) {
         this.job_customer_addresses_job_id = job_customer_addresses_job_id;
+    }
+
+    public Double getJob_customer_addresses_latitude() {
+        return job_customer_addresses_latitude;
+    }
+
+    public void setJob_customer_addresses_latitude(Double job_customer_addresses_latitude) {
+        this.job_customer_addresses_latitude = job_customer_addresses_latitude;
+    }
+
+    public Double getJob_customer_addresses_longitude() {
+        return job_customer_addresses_longitude;
+    }
+
+    public void setJob_customer_addresses_longitude(Double job_customer_addresses_longitude) {
+        this.job_customer_addresses_longitude = job_customer_addresses_longitude;
     }
 }

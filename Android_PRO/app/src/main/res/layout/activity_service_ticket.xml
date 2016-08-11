@@ -14,6 +14,7 @@
         android:layout_alignParentTop="true"
         android:background="@color/actionbar_bg"
         android:minHeight="?attr/actionBarSize"
+        android:visibility="gone"
         local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
@@ -39,24 +40,192 @@
     </android.support.v7.widget.Toolbar>
 
     <TextView
-        android:id="@+id/txttop"
+        android:id="@+id/txtBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:padding="5dp"
+        android:text="Back"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtTotalCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="18dp"
+        android:padding="5dp"
+        android:text="$125.2"
+        android:textColor="@color/orange_signin_back"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTotalCost"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:text="Jatinder Arora"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/txtAddresss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtName"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        android:text="Jatinder Arora"
+        android:textColor="@android:color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtJobId"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+        android:layout_below="@+id/txtAddresss"
         android:layout_gravity="left"
         android:background="@color/orange_signin_back"
+        android:gravity="center"
         android:padding="@dimen/servicepadding"
         android:paddingLeft="@dimen/servicepadding"
         android:singleLine="true"
         android:text="Job #000001"
         android:textColor="#ffffff"
-        android:textSize="@dimen/serviclarge_text" />
+        android:textSize="@dimen/serviclarge_text"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txtJobId"
+        android:background="@android:color/white"></View>
+
+    <LinearLayout
+        android:id="@+id/layout_appliances"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtJobId"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Air Conditionar Repair"
+                android:textColor="@android:color/white"
+                android:textSize="24sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imgArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:src="@drawable/next_arrow_orange" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/layout_workorder"
+        layout="@layout/layout_worker_anim"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_appliances"></include>
+
+    <View
+        android:id="@+id/divider_cost"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/layout_workorder"
+        android:background="@android:color/white"></View>
+
+
+    <LinearLayout
+        android:id="@+id/subTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/divider_cost"
+        android:layout_marginLeft="@dimen/commonpadding"
+        android:layout_marginRight="@dimen/commonpadding"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtSubTotal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="@string/subtotal"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/commonmediumtxt" />
+
+        <TextView
+            android:id="@+id/txtSubTotalDoller"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="$ 75.00"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/commonmediumtxt" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/subTotal"
+        android:layout_marginLeft="@dimen/commonpadding"
+        android:layout_marginRight="@dimen/commonpadding"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtTax"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.6"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="@string/tax"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/commonlargetxt" />
+
+        <TextView
+            android:id="@+id/txtTaxDoller"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.4"
+            android:gravity="right"
+            android:singleLine="true"
+            android:text="$ 75.00"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/commonmediumtxt" />
+    </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/txttop">
+        android:visibility="gone">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -174,7 +343,6 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/layout6"
                 android:layout_width="match_parent"
@@ -223,18 +391,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/layout7"
-                android:orientation="horizontal"
                 android:layout_marginTop="@dimen/serviceleftright"
+                android:orientation="horizontal"
                 android:weightSum="2">
 
                 <TextView
                     android:id="@+id/txtGarInstall"
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:gravity="right"
                     android:layout_marginTop="@dimen/serviceleftright"
+                    android:layout_weight="1.5"
+                    android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="@string/installation"
                     android:textColor="@color/lb_tv_white"
@@ -243,18 +411,17 @@
                 <TextView
                     android:id="@+id/txtGarDoller"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
-                    android:gravity="right"
                     android:layout_marginTop="@dimen/serviceleftright"
+                    android:layout_weight="0.5"
+                    android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="$567"
                     android:textColor="@color/lb_tv_white"
                     android:textSize="@dimen/serviclarge_text" />
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -266,11 +433,11 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:id="@+id/txtTax"
+
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="@string/tax"
@@ -280,46 +447,50 @@
                 <TextView
                     android:id="@+id/txtTexDoller"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="0.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="$567"
                     android:textColor="@color/lb_tv_white"
                     android:textSize="@dimen/serviclarge_text" />
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/layout11"
-                android:layout_below="@+id/layout10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/layout10"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="1.5dp"
                     android:layout_weight="1" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="1.5dp"
                     android:layout_weight="1"
-                    android:background="@color/lb_tv_white"/>
+                    android:background="@color/lb_tv_white" />
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/layout12"
-                android:layout_below="@+id/layout11"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/layout11"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:id="@+id/txtTotal"
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="@string/total"
@@ -329,9 +500,9 @@
                 <TextView
                     android:id="@+id/txtTotalDoller"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="0.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="$567"
@@ -342,17 +513,18 @@
 
             <LinearLayout
                 android:id="@+id/layout13"
-                android:layout_below="@+id/layout12"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/layout12"
                 android:orientation="horizontal"
                 android:weightSum="2">
+
                 <TextView
                     android:id="@+id/txtContractor"
                     android:layout_width="0dp"
-                    android:layout_weight="1.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="1.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="@string/contractor"
@@ -362,9 +534,9 @@
                 <TextView
                     android:id="@+id/txtContractoeDoller"
                     android:layout_width="0dp"
-                    android:layout_weight="0.5"
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
+                    android:layout_weight="0.5"
                     android:gravity="right"
                     android:padding="@dimen/servicepadding"
                     android:text="$567"

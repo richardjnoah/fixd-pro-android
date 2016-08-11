@@ -6,7 +6,6 @@
     android:background="@drawable/background_blur"
     tools:context="fixtpro.com.fixtpro.Driver_Info_Activity">
     <RelativeLayout
-
         android:orientation="horizontal"
         android:id="@+id/header_items"
         android:layout_alignParentTop="true"
@@ -93,6 +92,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/security_checkbox_padding"
+                    android:inputType="number"
                     android:textColor="@android:color/white"
                     android:imeOptions="actionNext"
                     android:textSize="@dimen/edittext_size"

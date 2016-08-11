@@ -3,6 +3,7 @@ package fixtpro.com.fixtpro.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -15,13 +16,28 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import fixtpro.com.fixtpro.CalendarActivity;
+import fixtpro.com.fixtpro.CancelScheduledJob;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.SignatureActivity;
 import fixtpro.com.fixtpro.adapters.WhatsWrongAdapter;
+import fixtpro.com.fixtpro.beans.Brands;
 import fixtpro.com.fixtpro.beans.install_repair_beans.ReapirInstallProcessModal;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.singleton.BrandNamesSingleton;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.JSONParser;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,10 +61,11 @@ public class WhatsWrongFragment extends Fragment {
     ProgressBar progressBar ;
     ListView listWhatsWrong ;
     Fragment fragment = null ;
-    TextView txtProgress;
+    TextView txtProgress, txtCancelJOb,txtRescheduleJob;
     WhatsWrongAdapter adapter = null ;
     float progressText = 0 ;
     int progress = 0;
+    ArrayList<Brands> arrayListBrands = BrandNamesSingleton.getInstance().getBrands();
     public WhatsWrongFragment() {
         // Required empty public constructor
     }
@@ -86,7 +103,7 @@ public class WhatsWrongFragment extends Fragment {
         setupToolBar();
         if (adapter != null){
             adapter.notifyDataSetChanged();
-            if (CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().getSignature().getSignature_path() != null){
+            if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getSignature().getSignature_path() != null){
                 ((HomeScreenNew) getActivity()).setRightToolBarText("Done");
             }
         }
@@ -97,6 +114,7 @@ public class WhatsWrongFragment extends Fragment {
         ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name());
         ((HomeScreenNew) getActivity()).setLeftToolBarText("Back");
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -107,6 +125,8 @@ public class WhatsWrongFragment extends Fragment {
         setProgress();
         adapter = new WhatsWrongAdapter(getActivity(),CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList(),getResources());
         listWhatsWrong.setAdapter(adapter);
+        if (arrayListBrands.size() <= 1)
+            getBrands();
         return view;
     }
     private void setProgress(){
@@ -114,13 +134,12 @@ public class WhatsWrongFragment extends Fragment {
                 int completedCount = 0;
                 for (int i = 0 ; i < size ; i++){
                     if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(i).isCompleted()){
-                        completedCount++;
+                        ++completedCount;
                     }
                 }
-
                 if (completedCount>0){
-                    progress = (int)(100 / (size + 1) * completedCount);
-                    progressText =  (float)(100 / (size + 1) * completedCount);
+                    progress = (int)(100 / (size) * completedCount);
+                    progressText =  (float)(100 / (size) * completedCount);
                     txtProgress.setText(progressText + "%");
 
                     new Handler().postDelayed(new Runnable() {
@@ -137,6 +156,8 @@ public class WhatsWrongFragment extends Fragment {
         progressBar.setScaleY(5f);
         listWhatsWrong = (ListView)view.findViewById(R.id.listWhatsWrong);
         txtProgress = (TextView)view.findViewById(R.id.txtProgress);
+        txtRescheduleJob = (TextView)view.findViewById(R.id.txtRescheduleJob);
+        txtCancelJOb = (TextView)view.findViewById(R.id.txtCancelJOb);
     }
     private void setListeners(){
         listWhatsWrong.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -144,24 +165,18 @@ public class WhatsWrongFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ReapirInstallProcessModal modal = CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position);
                 CurrentScheduledJobSingleTon.getInstance().setCurrentReapirInstallProcessModal(modal);
-                if (modal.getName().equals(Constants.WHATS_WRONG) && position == 0){
+                if (modal.getName().equals(Constants.EQUIPMENT_INFO)){
 //                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position).isCompleted()) {
 
-                        fragment = new TellUsWhatsWrongFragment();
-                        ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.TELL_US_WHATS_WRONG_FRAGMENT, true, null);
+                        fragment = new EquipmentInfoFragment();
+                        ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.EQUIPMENT_FRAGMENT, true, null);
 //                    }
 
-                }else if (modal.getName().equals(Constants.REPAIR_TYPE) && position == 0){
+                }else if (modal.getName().equals(Constants.REPAIR_TYPE) || modal.getName().equals(Constants.INSTALL_TYPE) || modal.getName().equals(Constants.MAINTAIN_TYPE)){
 //                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position).isCompleted()) {
                         fragment = new RepairFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.REPAIR_TYPE_FRAGMENT, true, null);
 //                    }
-
-                }else if (modal.getName().equals(Constants.REPAIR_TYPE) && position == 1){
-                            if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
-                                fragment = new RepairFragment();
-                                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.REPAIR_TYPE_FRAGMENT, true, null);
-                            }
 
                 }else if (modal.getName().equals(Constants.PARTS)){
                     if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
@@ -175,7 +190,7 @@ public class WhatsWrongFragment extends Fragment {
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WORK_ORDER_FRAGMENT, true, null);
                     }
 
-                }else if (modal.getName().equals(Constants.REPAIR_INFO)){
+                }else if (modal.getName().equals(Constants.REPAIR_INFO) || modal.getName().equals(Constants.INSTALL_INFO) || modal.getName().equals(Constants.MAINTAIN_INFO)){
                     if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
                         fragment = new RepairInfoFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.REPAIR_INFO_FRAGMENT, true, null);
@@ -190,6 +205,21 @@ public class WhatsWrongFragment extends Fragment {
                     }
                 }
 
+            }
+        });
+        txtRescheduleJob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CalendarActivity.class);
+                intent.putExtra("Rescheduling","1");
+                startActivity(intent);
+            }
+        });
+        txtCancelJOb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), CancelScheduledJob.class);
+                startActivity(intent);
             }
         });
     }
@@ -247,4 +277,52 @@ public class WhatsWrongFragment extends Fragment {
         ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
         CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().setIsProcessCompleted(true);
     }
+    private HashMap<String, String> getBrandsRequestParams() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "read");
+        hashMap.put("object", "brands");
+        hashMap.put("select", "^*");
+        hashMap.put("per_page", "999");
+        hashMap.put("page", "1");
+        hashMap.put("service", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        return hashMap;
+    }
+    private void getBrands(){
+        new AsyncTask<Void, Void, Void>() {
+            JSONObject jsonObject = null;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                JSONParser jsonParser = new JSONParser();
+                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getBrandsRequestParams());
+                if (jsonObject != null) {
+                    try {
+                        String STATUS = jsonObject.getString("STATUS");
+                        if (STATUS.equals("SUCCESS")) {
+//                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+                            JSONArray results = jsonObject.getJSONArray("RESPONSE");
+                            for (int i = 0; i < results.length(); i++) {
+                                Brands brands = new Brands();
+                                if (!results.getJSONObject(i).getString("brand_name").equals(""))
+                                {
+                                    brands.setBrand_name(results.getJSONObject(i).getString("brand_name"));
+                                    brands.setId(results.getJSONObject(i).getString("id"));
+                                    arrayListBrands.add(brands);
+                                }
+
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                return null;
+            }
+        }.execute();
+    }
 }
+

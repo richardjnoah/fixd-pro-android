@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:orientation="horizontal">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/roomImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+
+        android:src="@drawable/addphoto_img"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:textStyle="bold"
+        android:id="@+id/roomName"
+        android:layout_toRightOf="@+id/roomImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@android:color/white"
+        android:id="@+id/lastMessage"
+        android:layout_below="@+id/roomName"
+        android:layout_toRightOf="@+id/roomImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:textSize="20sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/white"
+        android:id="@+id/textViewGroupType"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/roomImage"
+         />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@android:color/white"
+        android:id="@+id/time"
+        android:layout_alignParentRight="true"
+        android:layout_alignRight="@+id/roomImage"
+        />
+</RelativeLayout>

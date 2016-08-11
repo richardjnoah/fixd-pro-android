@@ -1,17 +1,35 @@
 package fixtpro.com.fixtpro;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.Notification;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,10 +41,18 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
+import fixtpro.com.fixtpro.beans.NotificationModal;
+import fixtpro.com.fixtpro.beans.SkillTrade;
+import fixtpro.com.fixtpro.beans.install_repair_beans.EquipmentInfo;
 import fixtpro.com.fixtpro.fragment.AddServiceFragment;
+import fixtpro.com.fixtpro.fragment.ChatUserFragment;
+import fixtpro.com.fixtpro.fragment.EquipmentInfoFragment;
 import fixtpro.com.fixtpro.fragment.HasPowerSourceFragment;
 import fixtpro.com.fixtpro.fragment.HomeFragment;
 import fixtpro.com.fixtpro.fragment.InstallorRepairFragment;
+import fixtpro.com.fixtpro.fragment.JobSearchFragment;
+import fixtpro.com.fixtpro.fragment.MyJobsFragment;
 import fixtpro.com.fixtpro.fragment.PartsFragment;
 import fixtpro.com.fixtpro.fragment.RepairFragment;
 import fixtpro.com.fixtpro.fragment.RepairInfoFragment;
@@ -38,8 +64,16 @@ import fixtpro.com.fixtpro.fragment.WhatTypeOfServiceFragment;
 import fixtpro.com.fixtpro.fragment.WhatsWrongFragment;
 import fixtpro.com.fixtpro.fragment.WhichApplianceAddServiceFragment;
 import fixtpro.com.fixtpro.fragment.WorkOrderFragment;
+import fixtpro.com.fixtpro.gcm_components.MessageReceivingService;
+import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
+import fixtpro.com.fixtpro.utilites.ChatService;
 import fixtpro.com.fixtpro.utilites.Constants;
+import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.JSONParser;
+import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
+import fixtpro.com.fixtpro.utilites.chat_utils.SharedPreferencesUtil;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -47,19 +81,37 @@ import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListe
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.model.QBSession;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.model.QBUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 //http://stackoverflow.com/questions/13895149/sliding-menu-locks-touch-event-on-upper-view
-public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsFragment.OnFragmentInteractionListener,FragmentManager.OnBackStackChangedListener, StartJobFragment.OnFragmentInteractionListener,ConnectionCallbacks, OnConnectionFailedListener, LocationListener , InstallorRepairFragment.OnFragmentInteractionListener, AddServiceFragment.OnFragmentInteractionListener, WhatTypeOfServiceFragment.OnFragmentInteractionListener, WhichApplianceAddServiceFragment.OnFragmentInteractionListener, HasPowerSourceFragment.OnFragmentInteractionListener, WhatsWrongFragment.OnFragmentInteractionListener, TellUsWhatsWrongFragment.OnFragmentInteractionListener, RepairFragment.OnFragmentInteractionListener, PartsFragment.OnFragmentInteractionListener, WorkOrderFragment.OnFragmentInteractionListener, RepairInfoFragment.OnFragmentInteractionListener, SignatureFragment.OnFragmentInteractionListener,
+public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener, StartJobFragment.OnFragmentInteractionListener, ConnectionCallbacks,
+        OnConnectionFailedListener, LocationListener, InstallorRepairFragment.OnFragmentInteractionListener, AddServiceFragment.OnFragmentInteractionListener, WhatTypeOfServiceFragment.OnFragmentInteractionListener, WhichApplianceAddServiceFragment.OnFragmentInteractionListener, HasPowerSourceFragment.OnFragmentInteractionListener,
+        WhatsWrongFragment.OnFragmentInteractionListener, TellUsWhatsWrongFragment.OnFragmentInteractionListener, RepairFragment.OnFragmentInteractionListener, PartsFragment.OnFragmentInteractionListener, WorkOrderFragment.OnFragmentInteractionListener, RepairInfoFragment.OnFragmentInteractionListener, SignatureFragment.OnFragmentInteractionListener,
+        ChatUserFragment.OnFragmentInteractionListener, EquipmentInfoFragment.OnFragmentInteractionListener, JobSearchFragment.OnFragmentInteractionListener,
         ResultCallback<LocationSettingsResult> {
     public String currentFragmentTag = "";
     int CONTACTUS_REQUESTCODE = 1;
     private ImageView img_Toggle, img_Right;
-    private TextView titletext, txtDone, txtBack;
-    FragmentManager fragmentManager ;
-    SlidingMenu slidingMenu = null ;
+    private TextView titletext, txtDone, txtBack, continue_job;
+    FragmentManager fragmentManager;
+    SlidingMenu slidingMenu = null;
+    String token = "";
+    public static Boolean inBackground = true;
 
     //    Location Service Variable Declaration
-    protected static final String TAG = "location-updates-sample";
-
+    protected static final String TAG = "location-updates";
     /**
      * Constant used in the location settings dialog.
      */
@@ -112,11 +164,24 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
     protected LocationSettingsRequest mLocationSettingsRequest;
 
-    private LocationResponseListener locationResponseListener = null ;
+    private LocationResponseListener locationResponseListener = null;
+
+    Fragment continue_job_fragment = null;
+    String continue_job_tag = "";
+    private Dialog dialog;
+    private Context _context = this;
 
     public HomeScreenNew() {
         super();
     }
+
+    SharedPreferences _prefs = null;
+    final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS_BY_START_JOB_CLASS = 100;
+    int PERMISSION_ACCESS_FINE_LOCATION, PERMISSION_ACCESS_COARSE_LOCATION, PERMISSION_PRIORITY_HIGH_ACCURACY;
+    final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 101;
+
+    Fragment fragment;
+    private CoordinatorLayout coordinatorLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,6 +191,20 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         setContentView(R.layout.activity_home_screen_new);
 
+        if (Build.VERSION.SDK_INT < 16) { //ye olde method
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        } else { // Jellybean and up, new hotness
+            View decorView = getWindow().getDecorView();
+            // Hide the status bar.
+            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+            decorView.setSystemUiVisibility(uiOptions);
+            // Remember that you should never show the action bar if the
+            // status bar is hidden, so hide that too if necessary.
+//            ActionBar actionBar = getActionBar();
+//            actionBar.hide();
+        }
+        _prefs = Utilities.getSharedPreferences(_context);
         fragmentManager = getSupportFragmentManager();
         setWidgets();
         setListeners();
@@ -135,25 +214,97 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
         // Kick off the process of building a GoogleApiClient and requesting the LocationServices
         // API.
+//        if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1){
+//            PERMISSION_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this,
+//                    android.Manifest.permission.ACCESS_FINE_LOCATION);
+//            PERMISSION_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(this,
+//                    android.Manifest.permission.ACCESS_COARSE_LOCATION);
+//            if (PERMISSION_ACCESS_FINE_LOCATION !=  PackageManager.PERMISSION_GRANTED)
+//                permissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+//            if (PERMISSION_ACCESS_COARSE_LOCATION !=  PackageManager.PERMISSION_GRANTED)
+//                permissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+//
+//            if (permissionsNeeded.size() > 0){
+//                requestPermissions(permissionsNeeded.toArray(new String[permissionsNeeded.size()]),
+//                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+//            }else {
         buildGoogleApiClient();
         createLocationRequest();
         buildLocationSettingsRequest();
+//            }
+//        }else {
+//            buildGoogleApiClient();
+//            createLocationRequest();
+//            buildLocationSettingsRequest();
+//        }
+        QBLogin();
+    }
+    private void QBLogin(){
+        QBAuth.createSession(new QBEntityCallback<QBSession>() {
+            @Override
+            public void onSuccess(QBSession session, Bundle params) {
+                // success
+                Log.e("", "params.getString(\"token\")" + params.getString("token"));
+                _prefs.edit().putString(Preferences.QB_TOKEN, session.getToken()).commit();
+//                    _prefs.edit().putString()
+                createSession();
+            }
 
+            @Override
+            public void onError(QBResponseException error) {
+                // errors
+                Log.e("", "");
+
+            }
+        });
+    }
+
+
+    private void createSession() {
+        final QBUser user = new QBUser();
+//                    user.setLogin(login);
+//                    user.setPassword(password);
+        user.setLogin(_prefs.getString(Preferences.QB_LOGIN, ""));
+        user.setPassword(_prefs.getString(Preferences.QB_PASSWORD, ""));
+
+
+        ChatService.getInstance().login(user, new QBEntityCallback<Void>() {
+
+            @Override
+            public void onSuccess(Void result, Bundle bundle) {
+                // Go to Dialogs screen
+                //
+                Log.e("" + bundle, "success" + result);
+                SharedPreferencesUtil.saveQbUser(user);
+//                            Intent intent = new Intent(SplashActivity.this, DialogsActivity.class);
+//                            startActivity(intent);
+//                            finish();
+
+            }
+
+            @Override
+            public void onError(QBResponseException errors) {
+//                            AlertDialog.Builder dialog = new AlertDialog.Builder(SplashActivity.this);
+//                            dialog.setMessage("chat login errors: " + errors).create().show();
+                Log.e("", "error");
+            }
+        });
 
     }
-    private void initLayout(){
+    private void initLayout() {
         Bundle b = new Bundle();
         b.putString("title", getString(R.string.app_name));
         titletext.setText(b.getString("title", ""));
-        HomeFragment fragment = new HomeFragment();
+        fragment = new HomeFragment();
         if (fragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container_body, fragment,Constants.HOME_FRAGMENT);
+            fragmentTransaction.replace(R.id.container_body, fragment, Constants.HOME_FRAGMENT);
             fragmentTransaction.commit();
             fragmentManager.executePendingTransactions();
         }
     }
-    public void hideRight(){
+
+    public void hideRight() {
         img_Right.setVisibility(View.INVISIBLE);
         txtDone.setVisibility(View.INVISIBLE);
     }
@@ -175,7 +326,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popStack();
+                handleLeftClick();
             }
         });
         txtDone.setOnClickListener(new View.OnClickListener() {
@@ -184,72 +335,110 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 handleRightClick();
             }
         });
+        continue_job.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                continue_job.setVisibility(View.GONE);
+                if (fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT) != null) {
+                    switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+                } else {
+                    switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+                }
+//                popInclusiveFragment(CurrentScheduledJobSingleTon.getInstance().LastFragment);
+//                    if (CurrentScheduledJobSingleTon.getInstance().LastFragment.equals(Constants.START_JOB_FRAGMENT))
+//                        switchFragment(new StartJobFragment(),Constants.START_JOB_FRAGMENT,true,null);
+//                    else if (CurrentScheduledJobSingleTon.getInstance().LastFragment.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT))
+//                        switchFragment(new InstallorRepairFragment(),Constants.INSTALL_OR_REPAIR_FRAGMENT,true,null);
 
+            }
+        });
     }
-    public void popStack(){
+
+    public void popStack() {
         fragmentManager.popBackStack();
     }
-    private void handleLeftClick(){
+
+    private void handleLeftClick() {
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT) || currentFragmentTag.equals(Constants.MYJOB_FRAGMENT)
                 || currentFragmentTag.equals(Constants.PAYMENT_FRAGMENT) || currentFragmentTag.equals(Constants.RATING_FRAGMENT)
-                || currentFragmentTag.equals(Constants.SETTING_FRAGMENT) || currentFragmentTag.equals(Constants.START_JOB_FRAGMENT )
-                || currentFragmentTag.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT )){
+                || currentFragmentTag.equals(Constants.SETTING_FRAGMENT) || currentFragmentTag.equals(Constants.START_JOB_FRAGMENT)
+                || currentFragmentTag.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)) {
             toggle();
-        }else if (currentFragmentTag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)){
+        } else if (currentFragmentTag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
             popStack();
-        } else if (currentFragmentTag.equals(Constants.PARTS_FRAGMENT)){
-            ((PartsFragment)fragmentManager.findFragmentByTag(Constants.PARTS_FRAGMENT)).clearList();
+        } else if (currentFragmentTag.equals(Constants.PARTS_FRAGMENT)) {
+            ((PartsFragment) fragmentManager.findFragmentByTag(Constants.PARTS_FRAGMENT)).clearList();
+            popStack();
+        } else {
+            popStack();
         }
     }
-    private void handleRightClick(){
-        if (currentFragmentTag.equals(Constants.HOME_FRAGMENT)){
-            Log.e("","-----"+((HomeFragment)fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)));
-            ((HomeFragment)fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)).refresh();
-        }else if(currentFragmentTag.equals(Constants.START_JOB_FRAGMENT)){
+
+    private void handleRightClick() {
+        if (currentFragmentTag.equals(Constants.HOME_FRAGMENT)) {
+            Log.e("", "-----" + ((HomeFragment) fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)));
+            ((HomeFragment) fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)).refresh();
+        } else if (currentFragmentTag.equals(Constants.START_JOB_FRAGMENT)) {
             //Show start job dialog
-            ((StartJobFragment)fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT)).showStartJobDialog();
-        }else if (currentFragmentTag.equals(Constants.TELL_US_WHATS_WRONG_FRAGMENT)){
-            ((TellUsWhatsWrongFragment)fragmentManager.findFragmentByTag(Constants.TELL_US_WHATS_WRONG_FRAGMENT)).submitPost();
-        }
-        else if (currentFragmentTag.equals(Constants.PARTS_FRAGMENT)){
-            ((PartsFragment)fragmentManager.findFragmentByTag(Constants.PARTS_FRAGMENT)).submitPost();
-        }else if (currentFragmentTag.equals(Constants.WORK_ORDER_FRAGMENT)){
-            ((WorkOrderFragment)fragmentManager.findFragmentByTag(Constants.WORK_ORDER_FRAGMENT)).submitPost();
-        }else if (currentFragmentTag.equals(Constants.REPAIR_INFO_FRAGMENT)){
-            ((RepairInfoFragment)fragmentManager.findFragmentByTag(Constants.REPAIR_INFO_FRAGMENT)).submitPost();
-        }else if (currentFragmentTag.equals(Constants.WHATS_WRONG_FRAGMENT)){
-            ((WhatsWrongFragment)fragmentManager.findFragmentByTag(Constants.WHATS_WRONG_FRAGMENT)).submitPost();
+            ((StartJobFragment) fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT)).showStartJobDialog();
+        } else if (currentFragmentTag.equals(Constants.TELL_US_WHATS_WRONG_FRAGMENT)) {
+            ((TellUsWhatsWrongFragment) fragmentManager.findFragmentByTag(Constants.TELL_US_WHATS_WRONG_FRAGMENT)).submitPost();
+        } else if (currentFragmentTag.equals(Constants.PARTS_FRAGMENT)) {
+            ((PartsFragment) fragmentManager.findFragmentByTag(Constants.PARTS_FRAGMENT)).submitPost();
+        } else if (currentFragmentTag.equals(Constants.WORK_ORDER_FRAGMENT)) {
+            ((WorkOrderFragment) fragmentManager.findFragmentByTag(Constants.WORK_ORDER_FRAGMENT)).submitPost();
+        } else if (currentFragmentTag.equals(Constants.EQUIPMENT_FRAGMENT)) {
+            ((EquipmentInfoFragment) fragmentManager.findFragmentByTag(Constants.EQUIPMENT_FRAGMENT)).submitPost();
+        } else if (currentFragmentTag.equals(Constants.WHATS_WRONG_FRAGMENT)) {
+            ((WhatsWrongFragment) fragmentManager.findFragmentByTag(Constants.WHATS_WRONG_FRAGMENT)).submitPost();
+        } else if (currentFragmentTag.equals(Constants.MYJOB_FRAGMENT)) {
+            ((MyJobsFragment) fragmentManager.findFragmentByTag(Constants.MYJOB_FRAGMENT)).submitPost();
         }
     }
+
     private void setWidgets() {
         img_Toggle = (ImageView) findViewById(R.id.img_Toggle);
         img_Right = (ImageView) findViewById(R.id.img_Right);
-        titletext = (TextView)findViewById(R.id.titletext);
-        txtBack = (TextView)findViewById(R.id.txtBack);
-        txtDone = (TextView)findViewById(R.id.txtDone);
+        titletext = (TextView) findViewById(R.id.titletext);
+        txtBack = (TextView) findViewById(R.id.txtBack);
+        txtDone = (TextView) findViewById(R.id.txtDone);
+        continue_job = (TextView) findViewById(R.id.continue_job);
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
     }
 
-    public void switchFragment(final Fragment fragment, final String Tag , final boolean addToStack,Bundle bundle) {
+    public void switchFragment(final Fragment fragment, final String Tag, final boolean addToStack, final Bundle bundle) {
         if (slidingMenu.isMenuShowing())
-        toggle();
+            toggle();
         if (Tag.equals(currentFragmentTag))
             return;
+        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) {
+            if (Tag.equals(Constants.HOME_FRAGMENT) || Tag.equals(Constants.MYJOB_FRAGMENT) || Tag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
+                continue_job.setVisibility(View.VISIBLE);
+            } else {
+                continue_job.setVisibility(View.GONE);
+            }
+        }
+
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (fragment != null) {
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.container_body, fragment,Tag);
+                    fragmentTransaction.replace(R.id.container_body, fragment, Tag);
                     if (addToStack)
                         fragmentTransaction.addToBackStack(Tag);
+                    if (bundle != null)
+                        fragment.setArguments(bundle);
                     fragmentTransaction.commit();
                     fragmentManager.executePendingTransactions();
                 }
             }
-        },500);
+        }, 500);
 
     }
-    public void logOut(){
+
+    public void logOut() {
         toggle();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -262,7 +451,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         }, 500);
 
     }
-    public void contactUs(){
+
+    public void contactUs() {
         toggle();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -272,17 +462,53 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
         }, 500);
     }
-    public void setCurrentFragmentTag(String currentFragmentTag){
-        this.currentFragmentTag = currentFragmentTag ;
+
+    public void accoutSetUpDialog() {
+        toggle();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                showAccountSetupDialog();
+            }
+        }, 200);
+    }
+
+    private void showAccountSetupDialog() {
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_hang_tight);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView) dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button) dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenNew.this, CompanyInformation_Activity.class);
+                intent.putExtra("finalRequestParams", getIncompleteAccountParams());
+                intent.putExtra("ispro", true);
+                startActivity(intent);
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void setCurrentFragmentTag(String currentFragmentTag) {
+        this.currentFragmentTag = currentFragmentTag;
 //        setToolBar(currentFragmentTag);
     }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
-
     }
-    private void setToolBar(String Tag){
-        if (Tag.equals(Constants.HOME_FRAGMENT)){
+
+    private void setToolBar(String Tag) {
+        if (Tag.equals(Constants.HOME_FRAGMENT)) {
             txtBack.setVisibility(View.GONE);
             txtDone.setVisibility(View.GONE);
             img_Right.setVisibility(View.VISIBLE);
@@ -290,15 +516,15 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             img_Toggle.setImageResource(R.drawable.menu_icon);
             img_Right.setImageResource(R.drawable.refresh);
 
-        }else if (Tag.equals(Constants.MYJOB_FRAGMENT)
+        } else if (Tag.equals(Constants.MYJOB_FRAGMENT)
                 || Tag.equals(Constants.PAYMENT_FRAGMENT) || Tag.equals(Constants.RATING_FRAGMENT)
-                || Tag.equals(Constants.SETTING_FRAGMENT)){
+                || Tag.equals(Constants.SETTING_FRAGMENT)) {
             txtBack.setVisibility(View.GONE);
             txtDone.setVisibility(View.GONE);
             img_Right.setVisibility(View.GONE);
             img_Toggle.setVisibility(View.VISIBLE);
             img_Toggle.setImageResource(R.drawable.menu_icon);
-        }else if (Tag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)){
+        } else if (Tag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
             img_Toggle.setImageResource(R.drawable.screen_cross);
         }
     }
@@ -307,34 +533,40 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     public void onBackStackChanged() {
 //        setToolBar(currentFragmentTag);
     }
-    public void setTitletext(String Text){
+
+    public void setTitletext(String Text) {
         titletext.setText(Text);
     }
-    public void setLeftToolBarText(String Text){
+
+    public void setLeftToolBarText(String Text) {
 
         img_Toggle.setVisibility(View.GONE);
         txtBack.setVisibility(View.VISIBLE);
         txtBack.setText(Text);
     }
-    public void setRightToolBarText(String Text){
+
+    public void setRightToolBarText(String Text) {
         img_Right.setVisibility(View.GONE);
         txtDone.setVisibility(View.VISIBLE);
         txtDone.setText(Text);
     }
-    public void setLeftToolBarImage(int resId){
+
+    public void setLeftToolBarImage(int resId) {
         txtBack.setVisibility(View.GONE);
         img_Toggle.setVisibility(View.VISIBLE);
         img_Toggle.setImageResource(resId);
     }
-    public void setRightToolBarImage(int resId){
+
+    public void setRightToolBarImage(int resId) {
         txtDone.setVisibility(View.GONE);
         img_Right.setVisibility(View.VISIBLE);
         img_Right.setImageResource(resId);
     }
 
-//    @Override
-//    public void onBackPressed() {
+    @Override
+    public void onBackPressed() {
 //        super.onBackPressed();
+        handleLeftClick();
 //        int count = getFragmentManager().getBackStackEntryCount();
 //
 //        if (count == 0) {
@@ -343,7 +575,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 //        } else {
 //            getFragmentManager().popBackStack();
 //        }
-//    }
+    }
 
 
     /**
@@ -388,6 +620,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
+
     /**
      * Builds a GoogleApiClient. Uses the {@code #addApi} method to request the
      * LocationServices API.
@@ -430,49 +663,113 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
+
     /**
      * Requests location updates from the FusedLocationApi.
      */
     protected void startLocationUpdates() {
+
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
+            PERMISSION_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_FINE_LOCATION);
+            PERMISSION_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(this,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION);
+            List<String> permissionsNeeded = new ArrayList<String>();
+            if (PERMISSION_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED)
+                permissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
+            if (PERMISSION_ACCESS_COARSE_LOCATION != PackageManager.PERMISSION_GRANTED)
+                permissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
+
+            if (permissionsNeeded.size() > 0) {
+                requestPermissions(permissionsNeeded.toArray(new String[permissionsNeeded.size()]),
+                        REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
+
+            } else {
+                LocationServices.FusedLocationApi.requestLocationUpdates(
+                        mGoogleApiClient, mLocationRequest, this);
+            }
+        } else {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                    mGoogleApiClient, mLocationRequest, this);
+        }
     }
+
     @Override
     protected void onStart() {
         super.onStart();
-        mGoogleApiClient.connect();
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.connect();
     }
+
     @Override
     public void onResume() {
+
         super.onResume();
         // Within {@code onPause()}, we pause location updates, but leave the
         // connection to GoogleApiClient intact.  Here, we resume receiving
         // location updates if the user has requested them.
-
+        if (Utilities.getSharedPreferences(_context).getString(Preferences.GCM_TOKEN, "").equals(""))
+            startService(new Intent(this, MessageReceivingService.class));
         if (mGoogleApiClient != null) {
             mGoogleApiClient.connect();
         }
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mMessageReceiver, new IntentFilter("gcm_token_receiver"));
+        inBackground = false;
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                mGcmPushReceiver, new IntentFilter("gcm_push_notification_receiver"));
 //        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
 //            startLocationUpdates();
 //        }
+        if (!Utilities.isNetworkAvailable(_context)) {
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+                    .setAction("OK", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
+
+            // Changing message text color
+            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
+
+            // Changing action button text color
+            View sbView = snackbar.getView();
+            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextColor(Color.WHITE);
+
+            snackbar.show();
+        } else {
+
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         // Stop location updates to save battery, but don't disconnect the GoogleApiClient object.
-        if (mGoogleApiClient.isConnected()) {
-            stopLocationUpdates();
+        if (mGoogleApiClient != null) {
+            if (mGoogleApiClient.isConnected()) {
+                stopLocationUpdates();
+            }
         }
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                mMessageReceiver);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(
+                mGcmPushReceiver);
     }
+
     @Override
     protected void onStop() {
-        mGoogleApiClient.disconnect();
-
+        if (mGoogleApiClient != null)
+            mGoogleApiClient.disconnect();
+        inBackground = true;
         super.onStop();
     }
+
     /**
      * Runs when a GoogleApiClient object successfully connects.
      */
@@ -497,22 +794,24 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         // If the user presses the Start Updates button before GoogleApiClient connects, we set
         // mRequestingLocationUpdates to true (see startUpdatesButtonHandler()). Here, we check
         // the value of mRequestingLocationUpdates and if it is true, we start location updates.
-            startLocationUpdates();
+        startLocationUpdates();
 
     }
+
     /**
      * Callback that fires when the location changes.
      */
     @Override
     public void onLocationChanged(Location location) {
         mCurrentLocation = location;
-        if (locationResponseListener != null){
+        if (locationResponseListener != null) {
             locationResponseListener.handleLocationResponse(location);
-            locationResponseListener = null ;
+            locationResponseListener = null;
         }
 
 
     }
+
     @Override
     public void onConnectionSuspended(int cause) {
         // The connection to Google Play services was lost for some reason. We call connect() to
@@ -520,6 +819,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
+
     /**
      * Stores activity data in the Bundle.
      */
@@ -529,6 +829,24 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         // onConnectionFailed.
         Log.i(TAG, "Connection failed: ConnectionResult.getErrorCode() = " + result.getErrorCode());
     }
+
+    private BroadcastReceiver mGcmPushReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            if (intent != null) {
+                NotificationModal notificationModal = (NotificationModal) intent.getSerializableExtra("data");
+                if (notificationModal.getType().equals("woa") || notificationModal.getType().equals("wod")) {
+                    Intent intent1 = new Intent("gcm_push_notification_work_order_approved");
+                    // You can also include some extra data.
+                    intent1.putExtra("data", notificationModal);
+//                MessageReceivingService.sendToApp(extras, context);
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent1);
+                }
+            }
+        }
+    };
 //    public void onSaveInstanceState(Bundle savedInstanceState) {
 //        if (savedInstanceState != null) {
 //            savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
@@ -549,6 +867,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         builder.addLocationRequest(mLocationRequest).setAlwaysShow(true);
         mLocationSettingsRequest = builder.build();
     }
+
     /**
      * Check if the device's location settings are adequate for the app's needs using the
      * {@link com.google.android.gms.location.SettingsApi#checkLocationSettings(GoogleApiClient,
@@ -562,6 +881,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 );
         result.setResultCallback(this);
     }
+
     /**
      * The callback invoked when
      * {@link com.google.android.gms.location.SettingsApi#checkLocationSettings(GoogleApiClient,
@@ -609,17 +929,114 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                         startLocationUpdates();
                         break;
                     case Activity.RESULT_CANCELED:
-                        Log.i(TAG, "User chose not to make required location settings changes.");
+                        Log.i(TAG, "User choose not to make required location settings changes.");
                         break;
                 }
                 break;
         }
     }
-    public void getLocation(LocationResponseListener locationResponseListener){
-        this. locationResponseListener = locationResponseListener ;
+
+    public void getLocation(LocationResponseListener locationResponseListener) {
+        this.locationResponseListener = locationResponseListener;
         checkLocationSettings();
     }
-    public  void popInclusiveFragment(String TAG){
-        fragmentManager.popBackStack(TAG,FragmentManager.POP_BACK_STACK_INCLUSIVE);
+
+    public void popInclusiveFragment(String TAG) {
+        fragmentManager.popBackStack(TAG, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+    }
+
+    private HashMap<String, String> getIncompleteAccountParams() {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("api", "signup_complete");
+        hashMap.put("object", "pros");
+        hashMap.put("with_token", "1");
+        return hashMap;
+    }
+
+
+    // Our handler for received Intents. This will be called whenever an Intent
+    // with an action named "custom-event-name" is broadcasted.
+    private BroadcastReceiver mMessageReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // TODO Auto-generated method stub
+            // Get extra data included in the Intent
+            if (intent != null) {
+                token = intent.getStringExtra("token");
+                updateToken();
+            }
+        }
+    };
+
+    private void updateToken() {
+        new AsyncTask<Void, Void, Void>() {
+            JSONObject jsonObject = null;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                JSONParser jsonParser = new JSONParser();
+                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getTokenUpdateParameters());
+                if (jsonObject != null) {
+                    try {
+                        String STATUS = jsonObject.getString("STATUS");
+                        if (STATUS.equals("SUCCESS")) {
+                            if (token != null) {
+                                if (!token.equals("null") && !token.equals("")) {
+                                    Utilities.getSharedPreferences(_context).edit().putString(Preferences.GCM_TOKEN, token).commit();
+                                }
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                return null;
+            }
+        }.execute();
+    }
+
+    public Location getCurrentLocation() {
+        return mCurrentLocation;
+    }
+
+    private HashMap<String, String> getTokenUpdateParameters() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "update");
+        if (_prefs.getString(Preferences.ROLE, "").equals("pro"))
+            hashMap.put("object", "pros");
+        else
+            hashMap.put("object", "technicians");
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("data[technicians][gcm_token]", token);
+        return hashMap;
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS_BY_START_JOB_CLASS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    startLocationUpdates();
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

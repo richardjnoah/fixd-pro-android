@@ -1,18 +1,26 @@
 package fixtpro.com.fixtpro.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.renderscript.Int3;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,17 +43,37 @@ import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.ImageScaleType;
 import com.nostra13.universalimageloader.core.display.FadeInBitmapDisplayer;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import com.quickblox.chat.model.QBDialog;
+import com.quickblox.chat.model.QBDialogType;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
+import fixtpro.com.fixtpro.AssignTechnicianActivity;
+import fixtpro.com.fixtpro.ChatActivity;
+import fixtpro.com.fixtpro.ChatActivityNew;
 import fixtpro.com.fixtpro.DeclineJobActivity;
+import fixtpro.com.fixtpro.FixdProApplication;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
+import fixtpro.com.fixtpro.utilites.ChatService;
+import fixtpro.com.fixtpro.utilites.ChatSingleton;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
+import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.HorizontalListView;
 import fixtpro.com.fixtpro.views.RatingBarView;
@@ -72,17 +100,24 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
     AvailableJobModal model;
     private static GoogleMap mMap;
-    TextView contactName, address, date, timeinterval, txtUserName, txtJobDetails;
-    ImageView  en_routeimg, cancel_jobimg, transparentImageView ;
+    TextView contactName, address, date, timeinterval, txtUserName, txtJobDetails, txtCancelJob, txtEnrouteJob;
+    ImageView  en_routeimg, cancel_jobimg, transparentImageView ,img_Edit, img_Pic, imgChat;
     HorizontalScrollView horizontalScrollView  = null ;
     LayoutInflater inflater ;
     ImageLoader imageLoader = null ;
     DisplayImageOptions defaultOptions;
-    LinearLayout scrollViewLatout,layout_problem ;
+    LinearLayout scrollViewLatout,layout_problem ,techView,layoutServiceDescription;
     ScrollView scrollViewParent  ;
     RatingBarView custom_ratingbar ;
     Fragment fragment = null ;
     SupportMapFragment mMapFragment = null ;
+    View techDivider;
+    SharedPreferences _prefs = null ;
+    Context _context = null ;
+    String error_message = "";
+    String room_id  = "";
+    Dialog progressDialog;
+    private static final String EXTRA_DIALOG = "dialog";
     public ScheduledListDetailsFragment() {
         // Required empty public constructor
     }
@@ -108,10 +143,10 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        if (getArguments() != null) {
-//            model = (AvailableJobModal) getArguments().getSerializable("SCHEDULED_JOB_DETAIL");
-            model = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
-//        }
+        if (getArguments() != null) {
+            model = (AvailableJobModal) getArguments().getSerializable("modal");
+//            model = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+        }
 //        / UNIVERSAL IMAGE LOADER SETUP
         defaultOptions = new DisplayImageOptions.Builder()
                 .cacheOnDisc(true).cacheInMemory(true)
@@ -125,6 +160,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 .discCacheSize(100 * 1024 * 1024).build();
         ImageLoader.getInstance().init(config);
         imageLoader = ImageLoader.getInstance();
+        _context = getActivity();
         // Create configuration for ImageLoader (all options are optional)
 
     }
@@ -133,19 +169,31 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_scheduled_list_details, container, false);
+        View rootView = inflater.inflate(R.layout.schedule_list_details, container, false);
+        _prefs = Utilities.getSharedPreferences(_context);
         setWidgets(rootView);
         setListeners();
-
+//        img_Pic
+        if (model.getTechnician_profile_image().length() > 0){
+            imageLoader.loadImage(model.getTechnician_profile_image(), defaultOptions, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    // Do whatever you want with Bitmap
+                    img_Pic.setImageBitmap(loadedImage);
+                }
+            });
+        }
         contactName.setText(model.getContact_name());
-        address.setText(model.getJob_customer_addresses_address() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
+        address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
         date.setText(Utilities.convertDate(model.getRequest_date()));
-        timeinterval.setText(Utilities.Am_PMFormat(model.getTimeslot_start())+" - "+Utilities.Am_PMFormat(model.getTimeslot_end()));
+        timeinterval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
+
         custom_ratingbar.setClickable(false);
-        custom_ratingbar.setStar(3, true);
+        custom_ratingbar.setStar((int) Float.parseFloat(model.getTechnician_avg_rating()), true);
         txtUserName.setText(model.getTechnician_fname() + " " + model.getTechnician_lname());
         txtJobDetails.setText(model.getTechnician_fname() + " has " + model.getTechnician_scheduled_job_count() + " jobs scheduled for this time");
-        setUpHorizontalScrollView();
+//        setUpHorizontalScrollView();
+        setUpApplianceDescription();
         return rootView;
     }
 
@@ -217,10 +265,26 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         custom_ratingbar = (RatingBarView)view.findViewById(R.id.custom_ratingbar);
         txtJobDetails = (TextView) view.findViewById(R.id.txtJobDetails);
         txtUserName = (TextView) view.findViewById(R.id.txtUserName);
+
+        txtCancelJob = (TextView) view.findViewById(R.id.txtcancelJob);
+        txtEnrouteJob = (TextView) view.findViewById(R.id.txtEnrouteJob);
+        techView = (LinearLayout)view.findViewById(R.id.techView);
+        layoutServiceDescription = (LinearLayout)view.findViewById(R.id.layoutServiceDescription);
+        techDivider = (View)view.findViewById(R.id.techDivider);
+        if (!_prefs.getString(Preferences.ROLE,"").equals("pro")){
+            techView.setVisibility(View.GONE);
+            techDivider.setVisibility(View.GONE);
+        }
+        img_Edit = (ImageView)view.findViewById(R.id.img_Edit);
+        img_Pic = (ImageView)view.findViewById(R.id.img_Pic);
+        imgChat = (ImageView)view.findViewById(R.id.imgChat);
     }
     public void setListeners(){
+        imgChat.setOnClickListener(this);
         en_routeimg.setOnClickListener(this);
         cancel_jobimg.setOnClickListener(this);
+        txtCancelJob.setOnClickListener(this);
+        txtEnrouteJob.setOnClickListener(this);
 
         transparentImageView.setOnTouchListener(new View.OnTouchListener() {
 
@@ -248,15 +312,26 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 }
             }
         });
+        img_Edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AssignTechnicianActivity.class);
+                intent.putExtra("api", "re_assign");
+                intent.putExtra("isAvailable", false);
+                FixdProApplication.SelectedAvailableJobId = model.getId();
+                startActivity(intent);
+            }
+        });
+
     }
     private void setUpMap() {
         // For showing a move to my loction button
-        mMap.setMyLocationEnabled(true);
+//        mMap.setMyLocationEnabled(true);
         // For dropping a marker at a point on the Map
-        mMap.addMarker(new MarkerOptions().position(new LatLng(model.getLatitude(), model.getLongitude())).title("My Home").snippet("Home Address"));
+        mMap.addMarker(new MarkerOptions().position(new LatLng(model.getJob_customer_addresses_latitude(), model.getJob_customer_addresses_longitude())).title("My Home").snippet("Home Address"));
         // For zooming automatically to the Dropped PIN Location
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(model.getLatitude(),
-                model.getLongitude()), 12.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(model.getJob_customer_addresses_latitude(),
+                model.getJob_customer_addresses_longitude()), 12.0f));
     }
     @Override
     public void onResume() {
@@ -276,9 +351,19 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 //                finish();
                 ((HomeScreenNew)getActivity()).popStack();
                 break;
+            case R.id.imgChat:
+//                finish();
+                GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerChatDetails,exceptionListener, getActivity(), "Loading");
+                responseAsync.execute(getRequestParams());
+                break;
             case R.id.enroute_job:
-                fragment = new StartJobFragment();
-                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
+                if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
+                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
+                }else {
+                    fragment = new StartJobFragment();
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
+                }
+
 
                 break;
             case R.id.canceljob:
@@ -288,7 +373,179 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 startActivity(i);
 
                 break;
+            case R.id.txtEnrouteJob:
+                if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
+                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
+                }else {
+                    // check if already enrouted job.
+                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
+                         // check if the same job is already enrouted
+                        if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
+                            showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
+                        }else{
+                            enrouteJob();
+                        }
+                    }else {
+                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+                        enrouteJob();
+                    }
+                }
+
+
+                break;
+            case R.id.txtcancelJob:
+                Intent intent = new Intent(getActivity(), DeclineJobActivity.class);
+                intent.putExtra("JobType","Scheduled");
+                intent.putExtra("JobId",model.getId());
+                startActivity(intent);
+
+                break;
         }
+    }
+
+    IHttpResponseListener responseListenerChatDetails = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    room_id = Response.getJSONObject("RESPONSE").getString("room_id");
+
+
+                    handler.sendEmptyMessage(0);
+                }else {
+
+                    handler.sendEmptyMessage(1);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+    };
+    private void getChatUsers(String id){
+        // Get dialogs
+        //
+
+        ChatService.getInstance().getDialogs(new QBEntityCallback<ArrayList<QBDialog>>() {
+            @Override
+            public void onSuccess(ArrayList<QBDialog> dialogs, Bundle bundle1) {
+               Log.e("","");
+                handler.sendEmptyMessage(3);
+                QBDialog selectedDialog = dialogs.get(0);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ChatActivity.EXTRA_DIALOG, selectedDialog);
+                try {
+                    JSONObject jsonObject = new JSONObject(selectedDialog.getPhoto());
+                    Iterator<String> iter = jsonObject.keys();
+                    while (iter.hasNext()) {
+                        String key = iter.next();
+                        try {
+                            Object value = jsonObject.get(key);
+                            JSONObject object = new JSONObject(value.toString());
+                            bundle.putSerializable("name", object.getString("name"));
+                            break;
+                        } catch (JSONException e) {
+                            // Something went wrong!
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+//                 Open chat activity
+
+                Intent i = new Intent(getActivity(), ChatActivityNew.class);
+                i.putExtra(EXTRA_DIALOG,selectedDialog);
+                startActivity(i);
+
+            }
+
+            @Override
+            public void onError(QBResponseException errors) {
+                Log.e("","");
+            }
+        },id);
+    }
+    IHttpExceptionListener exceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            error_message = exception ;
+        }
+    };
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:{
+                    progressDialog = new Dialog(getActivity());
+                    progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    progressDialog.setContentView(R.layout.dialog_progress_simple);
+                    progressDialog.setCancelable(false);
+                    progressDialog.show();
+                    getChatUsers(room_id);
+                    break;
+                }
+                case 1:{
+                    break;
+                }
+                case 2:{
+                    break;
+                } case 3:{
+                    if (progressDialog != null && progressDialog.isShowing()){
+                        progressDialog.dismiss();
+                    }
+                    break;
+                }
+
+            }
+        }
+    };
+    private HashMap<String,String> getRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "chatroom");
+        hashMap.put("object", "jobs");
+        hashMap.put("job_id", model.getId());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+
+        return hashMap;
+    }
+
+    private void enrouteJob(){
+        if (model.getStarted_at().equals("0000-00-00 00:00:00")){
+            fragment = new StartJobFragment();
+
+            ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
+        }else {
+            fragment = new InstallorRepairFragment();
+            ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+        }
+    }
+    private void showAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                _context);
+
+        // set title
+        alertDialogBuilder.setTitle(Title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
+
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
     private void setUpHorizontalScrollView(){
         if (model.getJob_appliances_arrlist().size() > 0){
@@ -312,5 +569,44 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 });
             }
         }
+    }
+    private void setUpApplianceDescription(){
+        final ArrayList<JobAppliancesModal> arrayList = model.getJob_appliances_arrlist();
+        if (arrayList.size() > 0){
+            inflater =  (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            for (int i = 0 ; i <arrayList.size() ; i++){
+                View child = getActivity().getLayoutInflater().inflate(R.layout.item_available_job_service_desc, null);
+                TextView txtServiceType = (TextView)child.findViewById(R.id.txtServiceType);
+                TextView txtPowerSourceName = (TextView)child.findViewById(R.id.txtPowerSourceName);
+                TextView txtApplianceName = (TextView)child.findViewById(R.id.txtApplianceName);
+                TextView txtProblem = (TextView)child.findViewById(R.id.txtProblem);
+                TextView txtBrand = (TextView)child.findViewById(R.id.txtBrand);
+                TextView txtDesc = (TextView)child.findViewById(R.id.txtDesc);
+                final ImageView imgShowProblem = (ImageView)child.findViewById(R.id.imgShowProblem);
+                View divider = (View)child.findViewById(R.id.divider);
+                imgShowProblem.setTag(i+"");
+                txtServiceType.setText( arrayList.get(i).getJob_appliances_service_type() +":");
+                txtPowerSourceName.setText(" "+arrayList.get(i).getJob_appliances_power_source());
+                txtApplianceName.setText(" "+arrayList.get(i).getAppliance_type_name());
+                txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
+                txtDesc.setText(arrayList.get(i).getJob_appliances_appliance_description());
+                txtProblem.setText(" "+arrayList.get(i).getJob_appliances_customer_compalint());
+                if (arrayList.get(i).getImg_original().length() == 0)
+                    imgShowProblem.setVisibility(View.GONE);
+                imgShowProblem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(getActivity(),ProblemImageActivity.class);
+                        intent.putExtra("problemImageURL", arrayList.get(Integer.parseInt((String)imgShowProblem.getTag())).getImg_original());
+                        startActivity(intent);
+
+                    }
+                });
+                if (i == arrayList.size() - 1)
+                    divider.setVisibility(View.GONE);
+                layoutServiceDescription.addView(child);
+            }
+        }
+
     }
 }

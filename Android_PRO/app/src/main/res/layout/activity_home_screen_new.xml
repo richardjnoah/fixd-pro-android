@@ -1,16 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
-    tools:context="fixtpro.com.fixtpro.AssignTechnicianActivity">
-    <include layout="@layout/custom_toolbar" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_alignParentTop="true" android:id="@+id/custom_toolbar"></include>
+    tools:context="fixtpro.com.fixtpro.HomeScreenNew">
+
+    <TextView
+        android:id="@+id/continue_job"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/orange_signin_back"
+        android:gravity="center"
+        android:padding="5dp"
+        android:text="Return to En route Job"
+        android:textColor="@android:color/white"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/custom_toolbar"
+        layout="@layout/custom_toolbar"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_below="@+id/continue_job"></include>
+
     <FrameLayout
-        android:layout_below="@+id/custom_toolbar"
         android:id="@+id/container_body"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        />
+        android:layout_below="@+id/custom_toolbar" />
 </RelativeLayout>

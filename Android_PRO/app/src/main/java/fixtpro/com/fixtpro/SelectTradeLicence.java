@@ -112,6 +112,7 @@ public class SelectTradeLicence extends AppCompatActivity {
         hashMap.put("select","^*");
         hashMap.put("per_page","999");
         hashMap.put("page","1");
+        hashMap.put("where[status]", "ACTIVE");
         return hashMap;
     }
     private void setAddHeader(){

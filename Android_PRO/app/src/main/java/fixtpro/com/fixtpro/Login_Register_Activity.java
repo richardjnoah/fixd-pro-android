@@ -31,11 +31,12 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixtpro.com.fixtpro.activities.SignUp_AddressActivity;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncBatch;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
-
+//376647 iNVITE cODE
 public class Login_Register_Activity extends AppCompatActivity implements View.OnTouchListener {
 
     TextView txtVarification;
@@ -73,7 +74,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
         Register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(_context, Register_Activity.class);
+                Intent intent = new Intent(_context, SignUp_AddressActivity.class);
                 _prefs.edit().clear().commit();
                 //Intent intent = new Intent(_context, Add_TechScreen.class);
                 startActivity(intent);

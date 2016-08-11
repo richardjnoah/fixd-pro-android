@@ -10,6 +10,8 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,10 +33,16 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Locale;
 
+import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
+import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.WheelView;
 
@@ -42,7 +50,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
     private Context context = WorkingRadiusActivity.this;
     private String TAG = "WorkingRadiusActivity";
     private TextView txtBack, txtDone,txtWorkingradius,txthowfar,txtcode,txtMiles;
-    private String working_radius = "";
+    private String working_radius = "",error_message = "";
     
     GoogleMap mMap;
     private Typeface fontfamily;
@@ -54,21 +62,28 @@ public class WorkingRadiusActivity extends AppCompatActivity {
     String city = "";
     String zip = "" ;
     double zoomLevel = 14 ;
-    double radius = 25000;
-    String radius_to_send  = null ;
+    double radius = 100000*1.6;
+    String radius_to_send  = "100" ;
+    int selectedIndexMain = 3;
+    boolean isEditing = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_working_radius);
         _prefs = Utilities.getSharedPreferences(_context);
+        radius = Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"));
+        radius = radius * 1000 * 1.6;
+        latLng = new LatLng(Double.parseDouble(_prefs.getString(Preferences.LATITUDE, "40.712784")),Double.parseDouble(_prefs.getString(Preferences.LONGITUDE,"-74.005941")));
         setWidgets();
-        if (getIntent() != null) {
+        if (getIntent().getExtras() != null) {
             finalRequestParams = (HashMap<String, String>) getIntent().getSerializableExtra("finalRequestParams");
             image_profile = getIntent().getStringExtra("image_profile");
             image_driver = getIntent().getStringExtra("image_driver");
             city = finalRequestParams.get("data[pros][city]");
             zip = finalRequestParams.get("data[pros][zip]");
             txtcode.setText(zip);
+        }else {
+            isEditing = true ;
         }
 
         setTypeface();
@@ -78,7 +93,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
 
             @Override
             protected Void doInBackground(Void... params) {
-                latLng = Utilities.getLocationFromAddress(_context,(city + zip).replace(" ","%20"));
+//                latLng = Utilities.getLocationFromAddress(_context,(city + zip).replace(" ","%20"));
                 return null;
             }
 
@@ -86,6 +101,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 setUpMap();
+
             }
         }.execute();
 
@@ -101,7 +117,8 @@ public class WorkingRadiusActivity extends AppCompatActivity {
         txthowfar = (TextView)findViewById(R.id.txthowfar);
         txtcode = (TextView)findViewById(R.id.txtcode);
         txtMiles = (TextView)findViewById(R.id.txtMiles);
-
+        txtMiles.setText(Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"))+" Miles");
+        txtcode.setText(_prefs.getString(Preferences.ZIP,""));
         mMap = ((SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.location_map)).getMap();
     }
@@ -111,7 +128,6 @@ public class WorkingRadiusActivity extends AppCompatActivity {
 
         txtBack.setTypeface(fontfamily);
         txtDone.setTypeface(fontfamily);
-
         txtWorkingradius.setTypeface(fontfamily);
         txthowfar.setTypeface(fontfamily);
         txtcode.setTypeface(fontfamily);
@@ -128,16 +144,22 @@ public class WorkingRadiusActivity extends AppCompatActivity {
         txtDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (radius_to_send == null) {
-                    showAlertDialog("Fixd-Pro","please select radius");
-                    return;
+//                if (radius_to_send == null) {
+//                    showAlertDialog("Fixd-Pro","please select radius");
+//                    return;
+//                }
+                if (!isEditing) {
+                    Intent intent = new Intent(_context, AddBankAccountActivity.class);
+                    finalRequestParams.put("data[pros][working_radius_miles]", radius_to_send);
+                    intent.putExtra("finalRequestParams", finalRequestParams);
+                    intent.putExtra("image_driver", image_driver);
+                    intent.putExtra("image_profile", image_profile);
+                    startActivity(intent);
+                } else {
+//                    Update radius and finish
+                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerSettings, WorkingRadiusActivity.this, "Loading");
+                    responseAsync.execute(getSettingRadiusParameters());
                 }
-                Intent intent = new Intent(_context, AddBankAccountActivity.class);
-                finalRequestParams.put("data[pros][working_radius_miles]", radius_to_send);
-                intent.putExtra("finalRequestParams", finalRequestParams);
-                intent.putExtra("image_driver", image_driver);
-                intent.putExtra("image_profile", image_profile);
-                startActivity(intent);
             }
         });
         txtMiles.setOnClickListener(new View.OnClickListener() {
@@ -147,12 +169,72 @@ public class WorkingRadiusActivity extends AppCompatActivity {
             }
         });
     }
+    ResponseListener responseListenerSettings = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    JSONObject pro_settings = Response.getJSONObject("RESPONSE");
+                    SharedPreferences.Editor editor = _prefs.edit();
 
+
+                    editor.commit();
+                    handler.sendEmptyMessage(0);
+                }else{
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                    }
+
+                    handler.sendEmptyMessage(1);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0:{
+                    finish();
+                    break;
+                }
+                case 1:{
+//                    initSettings();
+                    showAlertDialog("Fixd-Pro",error_message);
+                    break;
+                }
+                default:{
+                    break;
+                }
+            }
+        }
+    };
+    private HashMap<String,String> getSettingRadiusParameters(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "update");
+        hashMap.put("object", "pros");
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("data[pros][working_radius_miles]", radius_to_send);
+
+        return hashMap;
+    }
     private void setUpMap() {
 
         // For showing a move to my loction button
         mMap.setMyLocationEnabled(true);
-
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                drawCircle();
+            }
+        }, 300);
         // For dropping a marker at a point on the Map
         //mMap.addMarker(new MarkerOptions().position(new LatLng(model.getLatitude(), model.getLongitude())).title("My Home").snippet("Home Address"));
         // For zooming automatically to the Dropped PIN Location
@@ -175,14 +257,14 @@ public class WorkingRadiusActivity extends AppCompatActivity {
 // Get back the mutable Circle
             Circle circle =  mMap.addCircle(circleOptions);
 
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, (float)(getZoomLevel(circle) - 0.8)));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, (float)(getZoomLevel(circle) - 0.9)));
         }else{
-            Location location  = mMap.getMyLocation();
-            if (location != null){
-                latLng = new LatLng(location.getLatitude(),location.getLongitude());
-            }else {
-                latLng = new LatLng(52.636397,-107.402344);
-            }
+//            Location location  = mMap.getMyLocation();
+//            if (location != null){
+//                latLng = new LatLng(location.getLatitude(),location.getLongitude());
+//            }else {
+//                latLng = new LatLng(52.636397,-107.402344);
+//            }
 
             mMap.clear();
             CircleOptions circleOptions = new CircleOptions()
@@ -218,6 +300,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
         wheelView.setOffset(1);
 //        wheelView.setSeletion(2);
         wheelView.setItems(Arrays.asList(TYPES));
+        wheelView.setSeletion(selectedIndexMain);
         if (working_radius.length() == 0){
             working_radius = TYPES[1].toString();
             txtMiles.setText(working_radius);
@@ -231,6 +314,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
                 txtMiles.setText(working_radius);
                 radius = RADIUS[selectedIndex - 1] ;
                 radius_to_send = RADIUS_TO_SEND[selectedIndex - 1] ;
+                selectedIndexMain = selectedIndex - 1;
             }
         });
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -263,7 +347,6 @@ public class WorkingRadiusActivity extends AppCompatActivity {
 
         // set title
         alertDialogBuilder.setTitle(Title);
-
         // set dialog message
         alertDialogBuilder
                 .setMessage(Message)
@@ -275,7 +358,6 @@ public class WorkingRadiusActivity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
-
 
         // create alert dialog
         AlertDialog alertDialog = alertDialogBuilder.create();

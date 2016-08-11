@@ -44,7 +44,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decline_job);
-        getSupportActionBar().hide();
+//        getSupportActionBar().hide();
         setWidgets();
         setListeners();
         JobType = getIntent().getStringExtra("JobType");

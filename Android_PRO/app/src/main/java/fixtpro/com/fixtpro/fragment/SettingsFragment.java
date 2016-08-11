@@ -1,10 +1,11 @@
-package fixtpro.com.fixtpro.fragment;
+ package fixtpro.com.fixtpro.fragment;
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -17,25 +18,28 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Switch;
+import android.widget.TextView;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Iterator;
-
-
 import fixtpro.com.fixtpro.AddBankAccountActivity;
 import fixtpro.com.fixtpro.Add_Driver_LicScreen;
 import fixtpro.com.fixtpro.Add_TechScreen;
 import fixtpro.com.fixtpro.ChangePassword;
 import fixtpro.com.fixtpro.HomeScreenNew;
+import fixtpro.com.fixtpro.Login_Register_Activity;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.UserProfileScreen;
+import fixtpro.com.fixtpro.WorkingRadiusActivity;
+import fixtpro.com.fixtpro.beans.SkillTrade;
+import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
+import fixtpro.com.fixtpro.utilites.JSONParser;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.SwitchButton;
@@ -45,7 +49,7 @@ public class SettingsFragment extends Fragment {
     public SettingsFragment() {
         // Required empty public constructor
     }
-    LinearLayout layout_change_password, layout_edit_profile, layout_edit_comp_info, layout_edit_bank_info, layout_edit_tech ;
+    LinearLayout layout_change_password, layout_edit_profile, layout_edit_comp_info, layout_edit_bank_info, layout_edit_tech, layout_change_radius;
     SwitchButton swhLocation, swhTextMessaging ;
     ImageView img_available_jobs_email, img_available_jobs_phone, img_job_won_email, img_job_won_phone,
               img_job_lost_email, img_job_lost_phone, img_job_reschduled_email, img_job_reschduled_phone,
@@ -64,6 +68,7 @@ public class SettingsFragment extends Fragment {
            text_Settings = "0";
     Context _context ;
     String error_message =  "";
+    TextView txtSignOut;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,14 +79,17 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View roootView  = inflater.inflate(R.layout.fragment_settings, container, false);
+        View rootView  = inflater.inflate(R.layout.fragment_settings, container, false);
         _prefs = Utilities.getSharedPreferences(_context);
         userRole  = _prefs.getString(Preferences.ROLE, null);
         authToken  = _prefs.getString(Preferences.AUTH_TOKEN, null);
-        setWidgets(roootView);
+        setWidgets(rootView);
         setListeners();
         initSettings();
-        return roootView;
+        if (_prefs.getString(Preferences.CREDIT_CARD_NUMBER,"").length() == 0){
+            getPrimaryCard();
+        }
+        return rootView;
     }
 
     private  void  setWidgets(View view){
@@ -90,13 +98,16 @@ public class SettingsFragment extends Fragment {
         layout_edit_comp_info  =  (LinearLayout) view.findViewById(R.id.layout_edit_comp_info);
         layout_edit_bank_info  =  (LinearLayout) view.findViewById(R.id.layout_edit_bank_info);
         layout_edit_tech =  (LinearLayout) view.findViewById(R.id.layout_edit_tech);
+        layout_change_radius =  (LinearLayout) view.findViewById(R.id.layout_change_radius);
         bank_account_divider = (View)view.findViewById(R.id.bank_account_divider);
+        txtSignOut = (TextView)view.findViewById(R.id.txtSignOut);
         edit_tech_divider = (View)view.findViewById(R.id.edit_tech_divider);
         if (!_prefs.getString(Preferences.ROLE,"").equals("pro")){
             layout_edit_bank_info.setVisibility(View.GONE);
             bank_account_divider.setVisibility(View.GONE);
             layout_edit_tech.setVisibility(View.GONE);
             edit_tech_divider.setVisibility(View.GONE);
+            layout_change_radius.setVisibility(View.GONE);
         }
         swhLocation  = (SwitchButton)view.findViewById(R.id.swhLocation);
         swhTextMessaging  = (SwitchButton)view.findViewById(R.id.swhTextMessaging);
@@ -206,6 +217,13 @@ public class SettingsFragment extends Fragment {
         }
     }
     private  void setListeners(){
+        txtSignOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showcheckAlert(getActivity(), "SIGN OUT", "Are you sure you want to Sign Out?");
+            }
+        });
         layout_change_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,6 +251,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent =  new Intent(getActivity(), AddBankAccountActivity.class);
+                startActivity(intent);
+
+            }
+        });
+        layout_change_radius.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent =  new Intent(getActivity(), WorkingRadiusActivity.class);
                 startActivity(intent);
 
             }
@@ -528,5 +554,93 @@ public class SettingsFragment extends Fragment {
         ((HomeScreenNew)getActivity()).hideRight();
         ((HomeScreenNew)getActivity()).setTitletext("Settings");
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
+    }
+    public void showcheckAlert(final Activity context,final String title, final String message) {
+        // define alert...
+        android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(context);
+        //set title
+        dialog.setTitle(title);
+        // set message...
+        dialog.setMessage(message);
+        // set button status..onclick
+        dialog.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+
+                dialog.dismiss();
+                if (_prefs.edit().clear().commit()){
+                    Intent intent = new Intent(getActivity(), Login_Register_Activity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    getActivity().startActivity(intent);
+                    getActivity().finish();
+                }
+            }
+        });
+        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+
+                dialog.dismiss();
+
+            }
+        });
+        android.app.AlertDialog alert = dialog.create();
+        alert.setCanceledOnTouchOutside(false);
+        alert.setCancelable(false);
+        alert.show();
+    }
+    private void getPrimaryCard(){
+        //         Getting Trade Skills on App Start
+        new AsyncTask<Void, Void, Void>() {
+            JSONObject jsonObject = null;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                JSONParser jsonParser = new JSONParser();
+                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getPrimaryCardParams());
+                if (jsonObject != null) {
+                    try {
+                        String STATUS = jsonObject.getString("STATUS");
+                        if (STATUS.equals("SUCCESS")) {
+                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+                            String id = RESPONSE.getString("id");
+                            String card_number = RESPONSE.getString("card_number");
+                            String firstname = RESPONSE.getString("firstname");
+                            String cvv = RESPONSE.getString("cvv");
+                            String lastname = RESPONSE.getString("lastname");
+                            String month = RESPONSE.getString("month");
+                            String year = RESPONSE.getString("year");
+                            SharedPreferences.Editor editor = _prefs.edit() ;
+                            editor.putString(Preferences.CREDIT_CARD_ID,id);
+                            editor.putString(Preferences.CREDIT_CARD_NUMBER,card_number);
+                            editor.putString(Preferences.CREDIT_CARD_FIRST_NAME,firstname);
+                            editor.putString(Preferences.CREDIT_CARD_LAST_NAME,lastname);
+                            editor.putString(Preferences.CREDIT_CARD_CVV,cvv);
+                            editor.putString(Preferences.CREDIT_CARD_MONTH,month);
+                            editor.putString(Preferences.CREDIT_CARD_YEAR,year);
+                            editor.commit();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                return null;
+            }
+        }.execute();
+    }
+
+    private HashMap<String, String> getPrimaryCardParams() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "primary_card");
+        hashMap.put("object", "cards");
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
+
+        return hashMap;
     }
 }
