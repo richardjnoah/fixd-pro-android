@@ -15,8 +15,6 @@ import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -31,9 +29,11 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixtpro.com.fixtpro.activities.LicensePicture_Activity;
+import fixtpro.com.fixtpro.activities.SignUp_Account_Activity;
 import fixtpro.com.fixtpro.activities.SignUp_AddressActivity;
+import fixtpro.com.fixtpro.round_img_ropper.ImageCropActivity;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
-import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncBatch;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 //376647 iNVITE cODE
@@ -47,6 +47,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
     String error_message = "";
     String varification_code = "";
     SharedPreferences _prefs = null ;
+    HashMap <String,String> finalRequestParams  = new HashMap<String,String>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +76,11 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(_context, SignUp_AddressActivity.class);
+//                Intent intent = new Intent(_context, LicensePicture_Activity.class);
                 _prefs.edit().clear().commit();
                 //Intent intent = new Intent(_context, Add_TechScreen.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -85,7 +88,9 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(_context, LoginActivity.class);
+//                Intent intent = new Intent(_context, LicensePicture_Activity.class);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -108,6 +113,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
                         varification_code = txtbox1.getText().toString() + txtbox2.getText().toString() +txtbox3.getText().toString() + txtbox4.getText().toString() +txtbox5.getText().toString() + txtbox6.getText().toString();
                         GetApiResponseAsync responseAsyncOverview= new GetApiResponseAsync("POST", responseListenerAddTechInvite, Login_Register_Activity.this, "Loading");
                         responseAsyncOverview.execute(getRequestParams());
+//                        handler.sendEmptyMessage(1);
                     }
                 }
                 return false;
@@ -345,7 +351,12 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
                     break;
                 }
                 case 1:{
-                    Intent intent = new Intent(Login_Register_Activity.this,Register_Activity.class);
+                    finalRequestParams.put("object","technicians");
+                    finalRequestParams.put("api","update_by_code");
+                    finalRequestParams.put("invite_code",_prefs.getString(Preferences.TECH_INVITE_CODE,""));
+                    Intent intent = new Intent(Login_Register_Activity.this,SignUp_Account_Activity.class);
+                    intent.putExtra("ispro", false);
+                    intent.putExtra("finalRequestParams", finalRequestParams);
                     startActivity(intent);
                     break;
                 }

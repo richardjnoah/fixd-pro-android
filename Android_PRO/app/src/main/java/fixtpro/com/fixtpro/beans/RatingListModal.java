@@ -11,9 +11,27 @@ public class RatingListModal implements Serializable {
   String customer_id = "";
   String ratings = "0";
   String created_at = "(null)";
+  String finished_at = "(null)";
   String comments = "(null)";
   String customers_first_name ="(null)";
   String customers_last_name = "(null)";
+    String rating = "";
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getFinished_at() {
+        return finished_at;
+    }
+
+    public void setFinished_at(String finished_at) {
+        this.finished_at = finished_at;
+    }
 
     String jobs_contact_name = "(null)";
     String jobs_started_at = "";
@@ -21,7 +39,33 @@ public class RatingListModal implements Serializable {
     String Jobs_id = "";
     String Jobs_technilcian_id = "";
     String Jobs_request_date = "";
+    String appearance = "";
+    String knowledgeable = "";
+    String courteous = "";
 
+    public String getAppearance() {
+        return appearance;
+    }
+
+    public void setAppearance(String appearance) {
+        this.appearance = appearance;
+    }
+
+    public String getKnowledgeable() {
+        return knowledgeable;
+    }
+
+    public void setKnowledgeable(String knowledgeable) {
+        this.knowledgeable = knowledgeable;
+    }
+
+    public String getCourteous() {
+        return courteous;
+    }
+
+    public void setCourteous(String courteous) {
+        this.courteous = courteous;
+    }
     public String getJobs_request_date() {
         return Jobs_request_date;
     }
@@ -40,6 +84,52 @@ public class RatingListModal implements Serializable {
     String jobs_job_customers_addresses_state = "";
     String jobs_job_customers_addresses_address = "";
 
+
+    String Jobs_technilcians_img_original = "";
+    String Jobs_technilcians_img_160x170 = "";
+    String Jobs_technilcians_img_150x150 = "";
+    String Jobs_technilcians_img_30x30 = "";
+    String Jobs_technilcians_img_75x75 = "";
+
+    public String getJobs_technilcians_img_original() {
+        return Jobs_technilcians_img_original;
+    }
+
+    public void setJobs_technilcians_img_original(String jobs_technilcians_img_original) {
+        Jobs_technilcians_img_original = jobs_technilcians_img_original;
+    }
+
+    public String getJobs_technilcians_img_160x170() {
+        return Jobs_technilcians_img_160x170;
+    }
+
+    public void setJobs_technilcians_img_160x170(String jobs_technilcians_img_160x170) {
+        Jobs_technilcians_img_160x170 = jobs_technilcians_img_160x170;
+    }
+
+    public String getJobs_technilcians_img_150x150() {
+        return Jobs_technilcians_img_150x150;
+    }
+
+    public void setJobs_technilcians_img_150x150(String jobs_technilcians_img_150x150) {
+        Jobs_technilcians_img_150x150 = jobs_technilcians_img_150x150;
+    }
+
+    public String getJobs_technilcians_img_30x30() {
+        return Jobs_technilcians_img_30x30;
+    }
+
+    public void setJobs_technilcians_img_30x30(String jobs_technilcians_img_30x30) {
+        Jobs_technilcians_img_30x30 = jobs_technilcians_img_30x30;
+    }
+
+    public String getJobs_technilcians_img_75x75() {
+        return Jobs_technilcians_img_75x75;
+    }
+
+    public void setJobs_technilcians_img_75x75(String jobs_technilcians_img_75x75) {
+        Jobs_technilcians_img_75x75 = jobs_technilcians_img_75x75;
+    }
 
     public String getJobs_contact_name() {
         return jobs_contact_name;

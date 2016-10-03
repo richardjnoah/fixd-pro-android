@@ -3,29 +3,30 @@
     android:id="@+id/skill_container"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:layout_margin="@dimen/size_10"
+    android:layout_margin="@dimen/size_10_dp"
     android:background="@drawable/whitebox_fill"
-    android:padding="@dimen/size_10">
+    android:orientation="horizontal"
+    android:padding="@dimen/size_10_dp">
+
     <ImageView
         android:id="@+id/imgCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left|center"
-        android:visibility="gone"
-        android:src="@drawable/check"/>
+        android:src="@drawable/check"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/txtSkill"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5_dp"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/size_5_dp"
+        android:singleLine="true"
         android:text=""
         android:textAllCaps="true"
-        android:layout_marginLeft="@dimen/size_5"
-        android:singleLine="true"
-        android:textStyle="bold"
         android:textColor="@color/text_color_dark_grey"
-        android:textSize="@dimen/size_17sp" />
+        android:textSize="@dimen/size_14_sp"
+        android:textStyle="bold" />
 </LinearLayout>

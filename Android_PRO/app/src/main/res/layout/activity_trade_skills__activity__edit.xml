@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange_signin_back"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/size_14_dp"
+            android:src="@drawable/back_arrow" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtlogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_14_dp"
+                android:text="@string/tradeskills"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_22_sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:layout_marginTop="@dimen/size_14_dp"
+        android:orientation="vertical">
+        <!--Top Instruction-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/text1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="@string/pleaseselect"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_14_sp" />
+        </LinearLayout>
+
+        <GridView
+            android:id="@+id/gridView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_14_dp"
+            android:layout_marginTop="@dimen/size_20_dp"
+            android:layout_weight="1"
+            android:horizontalSpacing="@dimen/size_30_dp"
+            android:numColumns="2"
+            android:verticalSpacing="@dimen/size_20_dp"></GridView>
+
+        <!--  &lt;!&ndash;ApplicanceLayout&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/size_14_dp"
+              android:orientation="horizontal">
+
+              <TextView
+                  android:id="@+id/txtApplicance"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/appliance"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+              <TextView
+                  android:id="@+id/txtHvac"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/hvac"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+          </LinearLayout>
+
+          &lt;!&ndash;PlumbingLayout&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <TextView
+                  android:id="@+id/txtPlumbing"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/plumbing"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+              <TextView
+                  android:id="@+id/txtElectrical"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/electrical"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+          </LinearLayout>
+
+          &lt;!&ndash;GarageDoor&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+              <TextView
+                  android:id="@+id/txtGrageDoor"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/garage"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+              <TextView
+                  android:id="@+id/txtPoolSpa"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/electrical"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+
+          </LinearLayout>-->
+
+        <LinearLayout
+            android:id="@+id/layoutFinish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAddress"
+            android:layout_marginTop="@dimen/size_30_dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgFinish"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/signup_arrow" />
+
+            <TextView
+                android:id="@+id/txtFinish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_16_sp" />
+
+            <ImageView
+                android:id="@+id/imgScreeNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:src="@drawable/small3"
+                android:visibility="invisible" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

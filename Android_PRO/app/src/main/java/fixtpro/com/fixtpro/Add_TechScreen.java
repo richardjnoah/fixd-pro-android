@@ -400,9 +400,9 @@ public class Add_TechScreen extends AppCompatActivity {
                 } else {
                     Utilities.hideKeyBoad(_context, Add_TechScreen.this.getCurrentFocus());
                     if (!isEdit) {
-                          addTech();
+                        addTech();
                     } else {
-                          updateTech();
+                        updateTech();
                     }
                 }
 

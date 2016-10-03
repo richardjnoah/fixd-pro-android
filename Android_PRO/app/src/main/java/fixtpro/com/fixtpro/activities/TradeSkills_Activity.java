@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import org.json.JSONArray;
@@ -55,12 +56,16 @@ public class TradeSkills_Activity extends AppCompatActivity {
 
     ImageView imgClose, imgFinish;
     GridView gridView;
+    TextView txtFinish;
     String error_message = "";
     CheckAlertDialog checkALert;
     HashMap<String,String> finalRequestParams = null ;
     boolean ispro = false ;
+    boolean iscompleting = false ;
     MultipartUtility multipart = null;
     Dialog progressDialog;
+    String  selectedImagePathDriver = null;
+    String selectedImagePathUser = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +85,15 @@ public class TradeSkills_Activity extends AppCompatActivity {
             if (bundle.containsKey("ispro")){
                 ispro = bundle.getBoolean("ispro");
             }
+            if (bundle.containsKey("driver_image")){
+                selectedImagePathDriver = bundle.getString("driver_image");
+            }
+            if (bundle.containsKey("user_image")){
+                selectedImagePathUser = bundle.getString("user_image");
+            }
+            if (bundle.containsKey("iscompleting")){
+                iscompleting = bundle.getBoolean("iscompleting");
+            }
         }
         if (skillTrades.size() == 0) {
             GetApiResponseAsync getApiResponseAsync = new GetApiResponseAsync(Constants.BASE_URL,"POST", getTradeSkillListener,iHttpExceptionListener, TradeSkills_Activity.this, "Getting.");
@@ -87,7 +101,11 @@ public class TradeSkills_Activity extends AppCompatActivity {
         } else {
             setListAdapter();
         }
-
+        if (ispro && !iscompleting){
+            txtFinish.setText("Finish");
+        }else{
+            txtFinish.setText("Next");
+        }
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -106,6 +124,7 @@ public class TradeSkills_Activity extends AppCompatActivity {
         imgClose = (ImageView) findViewById(R.id.imgClose);
         imgFinish = (ImageView) findViewById(R.id.imgFinish);
         gridView = (GridView) findViewById(R.id.gridView);
+        txtFinish = (TextView) findViewById(R.id.txtFinish);
     }
 
     private void setCLickListner() {
@@ -113,12 +132,22 @@ public class TradeSkills_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
             }
         });
         imgFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerPro();
+                if (ispro)
+                    registerPro();
+                else {
+                    Intent intent = new Intent(TradeSkills_Activity.this,TradeLiecenseNo_Activity.class);
+                    intent.putExtra("ispro",ispro);
+                    finalRequestParams.putAll(getProRegisterParameters());
+                    intent.putExtra("finalRequestParams", finalRequestParams);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
             }
         });
     }
@@ -141,6 +170,8 @@ public class TradeSkills_Activity extends AppCompatActivity {
                         SkillTrade modal = new SkillTrade();
                         modal.setId(Integer.parseInt(jsonObj.getString("id")));
                         modal.setTitle(jsonObj.getString("name"));
+                        modal.setDisplay_order(jsonObj.getString("display_order"));
+                        modal.setFor_consumer(jsonObj.getString("for_consumer"));
                         modal.setIsChecked(false);
 
                         skillTrades.add(modal);
@@ -188,6 +219,7 @@ public class TradeSkills_Activity extends AppCompatActivity {
         hashMap.put("select", "^*");
         hashMap.put("per_page", "999");
         hashMap.put("page", "1");
+        hashMap.put("where[for_pro]", "1");
         hashMap.put("where[status]", "ACTIVE");
         return hashMap;
     }
@@ -195,6 +227,7 @@ public class TradeSkills_Activity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
         finish();
     }
 
@@ -252,7 +285,11 @@ public class TradeSkills_Activity extends AppCompatActivity {
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
-                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String has_card = "0";
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("has_card")){
+                         has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("has_card");
+                    }
+
                     String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
@@ -263,7 +300,7 @@ public class TradeSkills_Activity extends AppCompatActivity {
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+                    editor.putString(Preferences.HAS_CARD, has_card);
                     editor.putString(Preferences.ACCOUNT_STATUS, account_status);
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
                         JSONObject pros = null;
@@ -335,12 +372,12 @@ public class TradeSkills_Activity extends AppCompatActivity {
                         String last_name = technicians.getString("last_name");
                         String social_security_number = technicians.getString("social_security_number");
                         String years_in_business = technicians.getString("years_in_business");
-                        String trade_license_number = technicians.getString("trade_license_number");
+//                        String trade_license_number = technicians.getString("trade_license_number");
                         editor.putString(Preferences.FIRST_NAME, first_name);
                         editor.putString(Preferences.LAST_NAME, last_name);
                         editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
                         editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
-                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
+//                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
                         editor.putBoolean(Preferences.ISLOGIN, true);
                         if (!Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").isNull("profile_image")){
                             JSONObject profile_image = null;

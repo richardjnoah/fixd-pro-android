@@ -109,8 +109,10 @@ public class TradeSkillAdapter extends BaseAdapter {
             holder.TradeSkill.setTypeface(fontfamily);
             if (tempValues.isChecked()){
                 holder.imgCheck.setVisibility(View.VISIBLE);
+                holder.TradeSkill.setTextColor(res.getColor(R.color.orange_signin_back));
             }else{
                 holder.imgCheck.setVisibility(View.GONE);
+                holder.TradeSkill.setTextColor(res.getColor(R.color.text_color_dark_grey));
             }
             /************  Set Model values in Holder elements ***********/
 

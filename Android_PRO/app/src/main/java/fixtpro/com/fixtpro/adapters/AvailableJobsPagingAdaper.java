@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
+import fixtpro.com.fixtpro.fragment.HomeFragment;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 
@@ -36,6 +37,7 @@ public class AvailableJobsPagingAdaper extends PagingBaseAdapter<AvailableJobMod
         /***********  Layout inflator to call external xml layout () ***********/
         inflater = ( LayoutInflater )activity.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
 
     }
 
@@ -101,8 +103,13 @@ public class AvailableJobsPagingAdaper extends PagingBaseAdapter<AvailableJobMod
 
             holder.contactName.setText(contactname);
             holder.day_request_date.setText(Utilities.convertDate(tempValues.getRequest_date()));
-            holder.timeinterval.setText(Utilities.getFormattedTimeSlots(tempValues.getTimeslot_start())+" - "+Utilities.getFormattedTimeSlots(tempValues.getTimeslot_end()));
-            holder.address.setText(tempValues.getJob_customer_addresses_address()+" - "+tempValues.getJob_customer_addresses_city()+","+tempValues.getJob_customer_addresses_state());
+            holder.timeinterval.setText(tempValues.getTimeslot_name());
+            if (HomeFragment.isStateAvailable){
+                holder.address.setText(tempValues.getJob_customer_addresses_zip()+" - "+tempValues.getJob_customer_addresses_city()+","+tempValues.getJob_customer_addresses_state());
+            }else {
+                holder.address.setText(tempValues.getJob_customer_addresses_address()+" - "+tempValues.getJob_customer_addresses_city()+","+tempValues.getJob_customer_addresses_state());
+            }
+
             String STR_appliance_types_name_and_service_type = "";
             for(int j = 0; j < tempValues.getJob_appliances_arrlist().size(); j++)
             {

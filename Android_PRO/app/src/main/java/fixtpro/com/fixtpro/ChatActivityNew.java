@@ -6,7 +6,9 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
@@ -23,6 +25,15 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sns.AmazonSNSAsync;
+import com.amazonaws.services.sns.AmazonSNSAsyncClient;
+import com.amazonaws.services.sns.model.PlatformApplicationDisabledException;
+import com.amazonaws.services.sns.model.PublishRequest;
+import com.amazonaws.services.sns.model.PublishResult;
 import com.google.android.gms.location.LocationServices;
 import com.quickblox.chat.QBChat;
 import com.quickblox.chat.model.QBAttachment;
@@ -37,6 +48,7 @@ import com.quickblox.users.model.QBUser;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,6 +56,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -51,6 +64,11 @@ import fixtpro.com.fixtpro.adapters.chat_adapters.AttachmentPreviewAdapter;
 import fixtpro.com.fixtpro.adapters.chat_adapters.ChatAdapter;
 import fixtpro.com.fixtpro.fragment.ProgressDialogFragment;
 import fixtpro.com.fixtpro.utilites.ChatService;
+import fixtpro.com.fixtpro.utilites.ChatSingleton;
+import fixtpro.com.fixtpro.utilites.Constants;
+import fixtpro.com.fixtpro.utilites.JSONParser;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.utilites.chat_utils.ImagePickHelper;
 import fixtpro.com.fixtpro.utilites.chat_utils.OnImagePickedListener;
 import fixtpro.com.fixtpro.utilites.chat_utils.Toaster;
@@ -95,13 +113,17 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
     private int skipPagination = 0;
      Dialog  progressDialog ;
     int READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE,CAMERA;
+    final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 101;
+    ArrayList<String> endpoint_arn = new ArrayList<String>();
+    String current_job_id = "";
     /**
      * Constant used in the location settings dialog.
      */
 
+    SharedPreferences _prefs = null ;
 
-    final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 101;
-
+    AmazonSNSAsync sns ;
+    public static Boolean inBackground = true;
     public static void startForResult(Activity activity, int code, QBDialog dialog) {
         Intent intent = new Intent(activity, ChatActivityNew.class);
         intent.putExtra(ChatActivityNew.EXTRA_DIALOG, dialog);
@@ -112,44 +134,91 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat_new);
-
+        _prefs = Utilities.getSharedPreferences(this);
         txtToolbar = (TextView)findViewById(R.id.txtToolbar);
         txtBack = (TextView)findViewById(R.id.txtBack);
 
         qbDialog = (QBDialog) getIntent().getSerializableExtra(EXTRA_DIALOG);
+//        try {
+//            JSONObject jsonObject = new JSONObject(qbDialog.getPhoto());
+//            Iterator<String> iter = jsonObject.keys();
+//            while (iter.hasNext()) {
+//                String key = iter.next();
+//                try {
+//                    Object value = jsonObject.get(key);
+//                    JSONObject object = new JSONObject(value.toString());
+//                    txtToolbar.setText(object.getString("name"));
+//
+//                    break;
+//                } catch (JSONException e) {
+//                    // Something went wrong!
+//                }
+//            }
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         try {
             JSONObject jsonObject = new JSONObject(qbDialog.getPhoto());
             Iterator<String> iter = jsonObject.keys();
+            String QB_LOGIN = _prefs.getString(Preferences.QB_ACCOUNT_ID,"");
             while (iter.hasNext()) {
                 String key = iter.next();
-                try {
-                    Object value = jsonObject.get(key);
-                    JSONObject object = new JSONObject(value.toString());
-                    txtToolbar.setText(object.getString("name"));
-
-                    break;
-                } catch (JSONException e) {
-                    // Something went wrong!
+                if (key.equals("job_id")){
+                    current_job_id = jsonObject.getString(key);
                 }
+
+                if (!key.equals(QB_LOGIN)){
+                    try {
+                        Object value = jsonObject.get(key);
+                        JSONObject object = new JSONObject(value.toString());
+                        txtToolbar.setText(object.getString("name"));
+//                        JSONArray jsonArray = object.getJSONArray("endpoint_arn");
+//                        for (int i = 0 ; i < jsonArray.length(); i++){
+//                            endpoint_arn.add(jsonArray.getString(i));
+//                        }
+                        break;
+                    } catch (JSONException e) {
+                        // Something went wrong!
+                    }
+                }
+
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
         chatMessageIds = new ArrayList<>();
         initChatConnectionListener();
 
         initViews();
 
         setBackCLickListner();
+        try {
+            sns = new AmazonSNSAsyncClient(new AWSCredentials() {
+                @Override
+                public String getAWSAccessKeyId() {
+                    return "AKIAJZUJLFZZUEUIYDDA";
+                }
 
+                @Override
+                public String getAWSSecretKey() {
+                    return "d9/0TO/epEnkFzqFxEm9yGCEj//WflcDvnH0LG1Y";
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sns.setRegion(Region.getRegion(Regions.US_WEST_2));
+        getEndPointArn();
     }
 
     private void setBackCLickListner() {
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+                onBackPressed();
             }
         });
     }
@@ -173,12 +242,17 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
     @Override
     protected void onResume() {
         super.onResume();
+        inBackground = false;
+        ChatSingleton.getInstance().setCurrentQbDialog(qbDialog);
         ChatHelper.getInstance().addConnectionListener(chatConnectionListener);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        inBackground = true;
+
+        ChatSingleton.getInstance().setCurrentQbDialog(null);
         ChatHelper.getInstance().removeConnectionListener(chatConnectionListener);
     }
 
@@ -324,12 +398,63 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
             } else {
                 Toaster.shortToast(R.string.chat_wait_for_attachments_to_upload);
             }
+
         }
 
         String text = messageEditText.getText().toString().trim();
         if (!TextUtils.isEmpty(text)) {
             sendChatMessage(text, null);
+            sendNotification(text);
         }
+
+    }
+    private  void sendNotification(String text){
+        for (int i = 0 ; i < endpoint_arn.size() ; i++){
+
+            String GCM1 = "{\"data\":{\"message\":\"New message \\\"" + text + "\\\"\"" + "," + "\"dialogId\"" +":"+ "\"" + qbDialog.getDialogId() + "\"}}";
+            String APNS1 = "{\"dialogId\"" + ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\":\"New message \\\"" + text +"\\\"\"}}";
+//            String APNS1 = "{\"dialogId\""+ ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\"" + ":" + "\"" +  text  + "\"}}";
+            final PublishRequest publishRequest = new PublishRequest();
+            JSONObject jsonObjectMain = null;
+            try {
+                jsonObjectMain = new JSONObject();
+                jsonObjectMain.put("default",text);
+                jsonObjectMain.put("GCM",GCM1);
+                jsonObjectMain.put("APNS",APNS1);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            publishRequest.setMessage(jsonObjectMain.toString());
+//        publishRequest.setMessage(value);
+            publishRequest.setMessageStructure("json");
+//        publishRequest.setTargetArn("arn:aws:sns:us-west-2:044138592271:endpoint/APNS/FixdPro/9b434c7a-b919-3df8-a9fd-9dfeab57710f");
+            publishRequest.setTargetArn(endpoint_arn.get(i));
+
+//        PublishResult publishResult = sns.publish(publishRequest);
+            new AsyncTask<Void,Void,Void>(){
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    try {
+
+                        PublishResult publishResult = sns.publish(publishRequest);
+                        Log.e("",""+publishResult);
+                    }catch (PlatformApplicationDisabledException e){
+                        e.printStackTrace();
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                    return null;
+                }
+            }.execute();
+
+        }
+
+
+
+
+
     }
     private void uploadFile(final File item){
      progressDialog = new Dialog(this);
@@ -471,6 +596,7 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
         }
         if (attachment != null ){
 //            progressDialog.dismiss();
+            sendNotification("Image");
         }
     }
 
@@ -748,5 +874,55 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+    private HashMap<String, String> getEndPointArnParams() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "chatroom");
+        hashMap.put("object", "jobs");
+        hashMap.put("job_id", current_job_id);
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        return hashMap;
+    }
+
+    private void getEndPointArn() {
+        new AsyncTask<Void, Void, Void>() {
+            JSONObject jsonObject = null;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                JSONParser jsonParser = new JSONParser();
+                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getEndPointArnParams());
+                if (jsonObject != null) {
+                    try {
+                        String STATUS = jsonObject.getString("STATUS");
+                        if (STATUS.equals("SUCCESS")) {
+                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+                            JSONObject endpoint = RESPONSE.getJSONObject("endpoint");
+                            Iterator<String> iter = endpoint.keys();
+
+                            while (iter.hasNext()) {
+
+                                String key = iter.next();
+                                if (!key.equals(_prefs.getString(Preferences.ID,""))) {
+                                    JSONArray array = endpoint.getJSONArray(key);
+                                    for (int i = 0; i < array.length() ; i++){
+                                        if (!array.isNull(i))
+                                        endpoint_arn.add(array.getString(i));
+                                    }
+
+
+                                }
+                            }
+
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                return null;
+            }
+        }.execute();
     }
 }

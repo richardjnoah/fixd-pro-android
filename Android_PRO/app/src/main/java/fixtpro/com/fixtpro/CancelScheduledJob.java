@@ -128,6 +128,7 @@ public class CancelScheduledJob extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     showAlertDialog("SUCCESS", "Job is Cancelled.",true);
                     break;
                 }

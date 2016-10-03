@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -48,9 +50,14 @@ import fixtpro.com.fixtpro.beans.install_repair_beans.InstallOrRepairModal;
 import fixtpro.com.fixtpro.beans.install_repair_beans.Parts;
 import fixtpro.com.fixtpro.beans.install_repair_beans.RepairType;
 import fixtpro.com.fixtpro.beans.install_repair_beans.WorkOrder;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNoProgress;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
 import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.GPSTracker;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.JSONParser;
 import fixtpro.com.fixtpro.utilites.Preferences;
@@ -88,6 +95,16 @@ public class InstallorRepairFragment extends Fragment {
     float Jobtotal = 0;
     TextView txtJobTotal ;
     String total_cost ="0";
+    boolean isAutoNotiForWorkOrder = false ;
+    String job_id = "";
+    String appliance_id = "";
+    ArrayList<Location> locations_list = new ArrayList<Location>();
+    Location prevoiusLOcation = null ;
+    GPSTracker gpsTracker = null ;
+    long start_time = 0;
+    boolean start_going_to_get_parts_process = false;
+    String total ="0",pro_cut="0",job_mileage="0",fixd_cut="0";
+
     public InstallorRepairFragment() {
         // Required empty public constructor
     }
@@ -114,8 +131,16 @@ public class InstallorRepairFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            isAutoNotiForWorkOrder = true ;
+            AvailableJobModal availableJobModal = new AvailableJobModal();
+
+            appliance_id = getArguments().getString("appliance_id");
+            job_id = getArguments().getString("job_id");
+            availableJobModal.setId(job_id);
+            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(availableJobModal);
         }
         _context = getActivity();
+        gpsTracker = new GPSTracker(getActivity());
     }
 
     @Override
@@ -132,7 +157,7 @@ public class InstallorRepairFragment extends Fragment {
 //        }else{
             GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
             responseAsync.execute(getRequestParams());
-            getTotalCost();
+
 //        }
         return view;
     }
@@ -185,11 +210,85 @@ public class InstallorRepairFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
         setupToolBar();
-    }
+//        start_going_to_get_parts_process = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().isStart_going_to_get_parts_process();
+        if (start_going_to_get_parts_process){
+            start_time = System.currentTimeMillis();
+            collectDataForGoingTogetParts();
 
+        }
+
+    }
+    private void collectDataForGoingTogetParts(){
+        if (start_going_to_get_parts_process){
+            // getting gps points every second automatically
+            //make a local array to cache these gps points
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Location location = gpsTracker.getLocation() ;
+//                add the point to local array, only if the last saved point in array is >= 1 metre far from this point.
+                    if (prevoiusLOcation == null) {
+                        locations_list.add(location);
+                        prevoiusLOcation = location;
+                    } else {
+                        if (prevoiusLOcation.distanceTo(location) > 1) {
+                            locations_list.add(location);
+                            prevoiusLOcation = location;
+                        }
+                    }
+//                last sent GPS point to server's time and difference from the current points time, if it >= 1 min,
+//                 send the point array to server, and empty my local array on success.
+                    if (System.currentTimeMillis() - start_time > 60000) {
+                        // call api to send location array to server
+                        GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", goingtogetPartsResponseListener,goingtogetPartsExceptionListener, getActivity(), "Loading");
+                        responseAsync.execute(getRequestParamsForGoingtogetParts());
+                    } else {
+                        collectDataForGoingTogetParts();
+                    }
+                }
+            }, 10000);
+        }
+    }
+    IHttpResponseListener goingtogetPartsResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject response) {
+            try {
+                if (response.getString("STATUS").equals("SUCCESS")) {
+                    start_time = System.currentTimeMillis();
+                    locations_list.clear();
+                    prevoiusLOcation = null ;
+                    collectDataForGoingTogetParts();
+                } else {
+                    collectDataForGoingTogetParts();
+                }
+            }catch (JSONException e){
+                collectDataForGoingTogetParts();
+            }
+        }
+    };
+    IHttpExceptionListener goingtogetPartsExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            collectDataForGoingTogetParts();
+        }
+    };
+    private HashMap<String,String> getRequestParamsForGoingtogetParts(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","update");
+        hashMap.put("object","tech_routes");
+        hashMap.put("data[job_id]",CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
+        hashMap.put("data[travel_type]","PARTS_SHOPPING");
+        for (int i = 0 ; i < locations_list.size() ; i++){
+            hashMap.put("data[stream]["+i+"][lat]",locations_list.get(i).getLatitude()+"");
+            hashMap.put("data[stream]["+i+"][lng]",locations_list.get(i).getLongitude()+"");
+            hashMap.put("data[stream]["+i+"][utime]",System.currentTimeMillis() / 1000 + "");
+        }
+        hashMap.put("token",Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN,""));
+        return hashMap;
+    }
     private void setupToolBar() {
         ((HomeScreenNew) getActivity()).hideRight();
-        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name());
+        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name() +"-" +CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_customer_addresses_address());
         ((HomeScreenNew) getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
 
@@ -220,9 +319,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.equipment_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.equipment_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
 
         hashMap.put("where[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -264,9 +363,10 @@ public class InstallorRepairFragment extends Fragment {
                         model.setTechnician_id(obj.getString("technician_id"));
                         model.setTime_slot_id(obj.getString("time_slot_id"));
                         model.setTitle(obj.getString("title"));
-                        model.setTotal_cost(obj.getString("total_cost"));
+//                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
-                        model.setWarranty(obj.getString("warranty"));
+                        model.setIs_claim(obj.getString("is_claim"));
+//                        model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                         ArrayList<JobAppliancesModal> jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -303,7 +403,7 @@ public class InstallorRepairFragment extends Fragment {
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_repair_types");
                                             JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
                                             installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
                                             installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                             installOrRepairModal.getRepairType().setIsCompleted(true);
                                         }
@@ -319,13 +419,13 @@ public class InstallorRepairFragment extends Fragment {
                                             installOrRepairModal.getWorkOrder().setIsCompleted(true);
                                         }
 
-                                    }else if(jsonObject.getString("service_type").equals("Install")){
+                                    }else if(jsonObject.getString("service_type").equals("Install") || jsonObject.getString("service_type").equals("Re Key")){
 
                                         if (!jsonObject.isNull("job_appliance_install_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_install_types");
                                             JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
                                             installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
                                             installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                             installOrRepairModal.getRepairType().setIsCompleted(true);
 
@@ -333,7 +433,6 @@ public class InstallorRepairFragment extends Fragment {
 
                                         if (!jsonObject.isNull("job_appliance_install_info")){
                                             JSONObject jsonObjectRepairInfo  = jsonObject.getJSONObject("job_appliance_install_info");
-
                                             installOrRepairModal.getRepairInfo().setModalNumber(jsonObjectRepairInfo.getString("model_number"));
                                             installOrRepairModal.getRepairInfo().setSerialNumber(jsonObjectRepairInfo.getString("serial_number"));
                                             installOrRepairModal.getRepairInfo().setUnitManufacturer(jsonObjectRepairInfo.getString("unit_manufacturer"));
@@ -342,15 +441,13 @@ public class InstallorRepairFragment extends Fragment {
                                             installOrRepairModal.getWorkOrder().setIsCompleted(true);
 
                                         }
-
-
                                     }else {
                                     // for maintain
                                         if (!jsonObject.isNull("job_appliance_maintain_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_maintain_types");
                                             JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
                                             installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
+//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
                                             installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                             installOrRepairModal.getRepairType().setIsCompleted(true);
 
@@ -368,10 +465,24 @@ public class InstallorRepairFragment extends Fragment {
                                         }
 
                                     }
-                                    if (!jsonObject.isNull("equipment_info")){
-                                        JSONObject equipment_info = jsonObject.getJSONObject("equipment_info");
+//                                    if (!jsonObject.isNull("equipment_info")){
+//                                        JSONObject equipment_info = jsonObject.getJSONObject("equipment_info");
+                                        installOrRepairModal.getEquipmentInfo().setModel_number(jsonObject.getString("model_number"));
+                                        if (!jsonObject.isNull("serial_number"))
+                                        installOrRepairModal.getEquipmentInfo().setSerial_number(jsonObject.getString("serial_number"));
+                                        installOrRepairModal.getEquipmentInfo().setDescription(jsonObject.getString("description"));
+                                        if (!jsonObject.isNull("image")){
+                                            JSONObject image =  jsonObject.getJSONObject("image");
+                                            if (!image.isNull("original")){
+                                                String  original = image.getString("original");
+                                                installOrRepairModal.getEquipmentInfo().setImage(original);
+                                            }
+
+
+                                        }
+                                        if(jsonObject.getString("model_number").length() > 0)
                                         installOrRepairModal.getEquipmentInfo().setIsCompleted(true);
-                                    }
+//                                    }
                                     JSONArray jsonArray = jsonObject.getJSONArray("job_parts_used");
                                     ArrayList<Parts> partsArrayList = new ArrayList<Parts>();
                                     for (int k = 0 ; k < jsonArray.length() ; k++){
@@ -393,6 +504,7 @@ public class InstallorRepairFragment extends Fragment {
                                         if (workorderObject.has("sub_total"))
                                         installOrRepairModal.getWorkOrder().setSub_total(workorderObject.getString("sub_total"));
                                         Jobtotal = Jobtotal + Float.parseFloat(workorderObject.getString("total"));
+                                        if (!workorderObject.getString("status").equals("NOT_SENT"))
                                         installOrRepairModal.getWorkOrder().setIsCompleted(true);
                                     }
                                     if (partsArrayList.size()>0){
@@ -416,6 +528,9 @@ public class InstallorRepairFragment extends Fragment {
                                     mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
                                     mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
                                     mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    if (mod.getAppliance_type_name().equals("Re Key")){
+                                        mod.getInstallOrRepairModal().getEquipmentInfo().setIsCompleted(true);
+                                    }
                                     mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
                                     if (!appliance_type_obj.isNull("image")) {
                                         JSONObject image_obj = appliance_type_obj.getJSONObject("image");
@@ -522,6 +637,21 @@ public class InstallorRepairFragment extends Fragment {
                     lstInstallRepair.addHeaderView(getHeaderView());
                     lstInstallRepair.setAdapter(adapter);
                     isJobCompleted();
+                    getTotalCost();
+                    if (isAutoNotiForWorkOrder){
+                        fragment = new WhatsWrongFragment();
+                        for (int i = 0 ; i < CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().size() ; i++){
+                            if(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).getJob_appliances_id().equals(appliance_id)){
+                                CurrentScheduledJobSingleTon.getInstance().setSelectedJobApplianceModal(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i));
+
+                                break;
+                            }
+                        }
+                        isAutoNotiForWorkOrder = false ;
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean("isAutoNotiForWorkOrder",isAutoNotiForWorkOrder);
+                        ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHATS_WRONG_FRAGMENT, true, bundle);
+                    }
                     break;
                 }
                 case 1: {
@@ -530,9 +660,8 @@ public class InstallorRepairFragment extends Fragment {
                 }
                 case 2:{
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-                    Intent intent = new Intent(getActivity(),HomeScreenNew.class);
-                    startActivity(intent);
-                    getActivity().finish();
+                    // show pro cut popup
+                    shoProcutPopupdialog();
                     break;
                 }
                 case 3:{
@@ -608,18 +737,33 @@ public class InstallorRepairFragment extends Fragment {
         ViewGroup headerView = (ViewGroup) inflater.inflate(R.layout.install_repair_job_total_item, lstInstallRepair,
                 false);
         txtJobTotal = (TextView)headerView.findViewById(R.id.txtJobTotal);
-        txtJobTotal.setText("$"+Jobtotal+"");
+        txtJobTotal.setText("$" + Jobtotal + "");
         return headerView;
 
     }
-    private void showCustomDialog() {
+    private void shoProcutPopupdialog(){
         dialog = new Dialog(_context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_finish);
+        dialog.setContentView(R.layout.dialog_pro_cut);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog components - text, image and button
         ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
-        ImageView img_Finish = (ImageView)dialog.findViewById(R.id.img_Finish);
+        Button img_Finish = (Button)dialog.findViewById(R.id.img_Finish);
+        TextView txtJobTotal1 = (TextView)dialog.findViewById(R.id.txtJobTotal1);
+        TextView txtOurFee = (TextView)dialog.findViewById(R.id.txtOurFee);
+        TextView txtYourCut = (TextView)dialog.findViewById(R.id.txtYourCut);
+        TextView txtMileage = (TextView)dialog.findViewById(R.id.txtMileage);
+        LinearLayout LinearLayout = (LinearLayout)dialog.findViewById(R.id.layout_mileage);
+
+        txtJobTotal1.setText("$"+total);
+        txtOurFee.setText("$"+fixd_cut);
+        txtYourCut.setText("$"+pro_cut);
+        txtMileage.setText("$"+job_mileage);
+        if (job_mileage.length() > 0 && !job_mileage.equals("0")){
+
+        }else{
+            LinearLayout.setVisibility(View.GONE);
+        }
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -629,6 +773,48 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),HomeScreenNew.class);
+                    startActivity(intent);
+                    getActivity().finish();
+            }
+        });
+        dialog.show();
+    }
+    private void showCustomDialog() {
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_finish);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // set the custom dialog components - text, image and button
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        ImageView img_Finish = (ImageView)dialog.findViewById(R.id.img_Finish);
+        AvailableJobModal availableJobModal = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+        TextView txtUserName = (TextView)dialog.findViewById(R.id.txtUserName);
+        txtUserName.setText(availableJobModal.getContact_name());
+        TextView txtAddress = (TextView)dialog.findViewById(R.id.txtAddress);
+        txtAddress.setText(availableJobModal.getJob_customer_addresses_address()+" - "+availableJobModal.getJob_customer_addresses_city()+","+availableJobModal.getJob_customer_addresses_state());
+        TextView txtDateTime = (TextView)dialog.findViewById(R.id.txtDateTime);
+        txtDateTime.setText(Utilities.convertDate(availableJobModal.getRequest_date()));
+
+        String dateTime[] = Utilities.getDate(availableJobModal.getCreated_at()).split(" ");
+        String dateTime1[] = Utilities.getDate(availableJobModal.getFinished_at()).split(" ");
+        String actualDateTime = dateTime[0] +" "+ dateTime[1] + " at " + dateTime[2] +"" +dateTime[3];
+        String actualDateTime1 = dateTime1[0] +" "+ dateTime1[1] + " at " + dateTime1[2] +"" +dateTime1[3];
+        TextView txtArrivalTime = (TextView)dialog.findViewById(R.id.txtArrivalTime);
+        txtArrivalTime.setText(dateTime[2] +"" +dateTime[3]);
+
+        TextView txtCompleteTime = (TextView)dialog.findViewById(R.id.txtCompleteTime);
+        txtCompleteTime.setText(dateTime1[2] +"" +dateTime1[3]);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        img_Finish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                start_going_to_get_parts_process = false ;
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerFinishJob, getActivity(), "Loading");
                 responseAsync.execute(getRequestParamsFinishJob());
             }
@@ -641,6 +827,12 @@ public class InstallorRepairFragment extends Fragment {
                 Log.e("","Response"+Response);
             try {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
+                    total = Response.getJSONObject("RESPONSE").getString("total");
+                    JSONObject cuts = Response.getJSONObject("RESPONSE").getJSONObject("cuts");
+                    pro_cut = cuts.getString("pro_cut");
+                    fixd_cut = cuts.getString("fixd_cut");
+                    if (!cuts.isNull("job_mileage"))
+                    job_mileage = cuts.getString("job_mileage");
                     handler.sendEmptyMessage(2);
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");

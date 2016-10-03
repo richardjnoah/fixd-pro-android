@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_blur"
     tools:context="fixtpro.com.fixtpro.Login_Register_Activity">
-    <RelativeLayout
+   <!-- <RelativeLayout
 
         android:orientation="horizontal"
         android:id="@+id/header_items"
@@ -192,6 +192,6 @@
         </RelativeLayout>
     </ScrollView>
 
-
+-->
 
 </RelativeLayout>

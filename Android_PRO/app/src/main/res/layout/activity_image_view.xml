@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="50dp"
+            android:id="@+id/iv_user_pic"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:src="@drawable/background_grey_blur"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:id="@+id/btnUpdatePic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="5dp"
+            android:paddingLeft="14dp"
+            android:paddingRight="14dp"
+            android:paddingTop="5dp"
+            android:layout_marginTop="20dp"
+            android:text="Update Profile Picture"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:layout_below="@+id/iv_user_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom" />
+</RelativeLayout>
+    </ScrollView>

@@ -15,7 +15,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:src="@drawable/back_arrow" />
 
         <LinearLayout
@@ -30,11 +30,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_14"
+                android:padding="@dimen/size_12_dp"
                 android:text="@string/techniciansinfo"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_23sp" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -42,9 +43,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_marginLeft="@dimen/size_20dp"
-        android:layout_marginRight="@dimen/size_20dp"
-        android:layout_marginTop="@dimen/size_14"
+        android:layout_marginLeft="@dimen/size_20_dp"
+        android:layout_marginRight="@dimen/size_20_dp"
+        android:layout_marginTop="@dimen/size_14_dp"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -56,18 +57,18 @@
             android:gravity="left"
             android:hint="@string/first_name"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:singleLine="true"
-            android:textColor="@color/color_grey"
+            android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
             android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="@dimen/size_20sp" />
+            android:textSize="@dimen/size_20_sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:background="@color/color_grey"></View>
 
         <EditText
@@ -78,45 +79,21 @@
             android:gravity="left"
             android:hint="@string/last_name"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:singleLine="true"
-            android:textColor="@color/color_grey"
+            android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
             android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="@dimen/size_20sp" />
+            android:textSize="@dimen/size_20_sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:background="@color/color_grey"></View>
-
         <EditText
-            android:id="@+id/txtEmailAdd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/whitebox_fill"
-            android:gravity="left"
-            android:hint="@string/emailonly"
-            android:imeOptions="actionNext"
-            android:inputType="number"
-            android:padding="@dimen/size_14"
-            android:singleLine="true"
-            android:textColor="@color/color_grey"
-            android:textColorHint="@color/color_grey"
-            android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="@dimen/size_20sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:background="@color/color_grey"></View>
-
-        <EditText
-            android:id="@+id/txtMobile"
+            android:id="@+id/txtPhone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/whitebox_fill"
@@ -124,12 +101,35 @@
             android:hint="@string/mobile"
             android:imeOptions="actionNext"
             android:inputType="number"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:singleLine="true"
-            android:textColor="@color/color_grey"
+            android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
             android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="@dimen/size_20sp" />
+            android:textSize="@dimen/size_20_sp" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:background="@color/color_grey"></View>
+        <EditText
+            android:id="@+id/txtEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/whitebox_fill"
+            android:gravity="left"
+            android:hint="@string/emailonly"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/size_14_dp"
+            android:singleLine="true"
+            android:textColor="@color/text_color_dark_grey"
+            android:textColorHint="@color/color_grey"
+            android:textCursorDrawable="@drawable/cursor_drawable"
+            android:textSize="@dimen/size_20_sp" />
+
     </LinearLayout>
 
     <LinearLayout
@@ -137,38 +137,71 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout1"
-        android:layout_marginTop="@dimen/size_30"
+        android:layout_marginTop="@dimen/size_30_dp"
         android:orientation="vertical">
 
         <CheckBox
             android:id="@+id/checkJobPickUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_20dp"
+            android:layout_marginLeft="@dimen/size_20_dp"
             android:buttonTint="@color/white"
-            android:drawablePadding="@dimen/size_20dp"
+            android:drawablePadding="@dimen/size_20_dp"
             android:text="@string/techcanpick"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_16sp" />
+            android:textSize="@dimen/size_16_sp" />
 
         <TextView
             android:id="@+id/txtNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="5dp"
+            android:layout_marginLeft="@dimen/size_20_dp"
+            android:textStyle="italic"
+            android:padding="@dimen/size_5_dp"
             android:text="@string/note"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_12sp" />
+            android:textSize="@dimen/size_16_sp" />
 
     </LinearLayout>
-
+    <LinearLayout
+        android:visibility="gone"
+        android:gravity="center"
+        android:layout_margin="@dimen/size_5_dp"
+        android:id="@+id/layout_card"
+        android:layout_below="@+id/layout2"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgCard"
+            android:layout_margin="@dimen/size_5_dp"
+            android:src="@drawable/card_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/txtCardNumber"
+            android:textSize="@dimen/size_16_dp"
+            android:gravity="center_vertical"
+            android:layout_margin="@dimen/size_5_dp"
+            android:textColor="@color/white"
+            android:text="****4444"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/txtEditCard"
+            android:textSize="@dimen/size_16_dp"
+            android:layout_margin="@dimen/size_5_dp"
+            android:textColor="@color/white"
+            android:text="Edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layoutNext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/layout2"
-        android:layout_marginTop="@dimen/size_20dp"
+        android:layout_below="@+id/layout_card"
+        android:layout_marginTop="@dimen/size_20_dp"
         android:orientation="vertical">
 
         <ImageView
@@ -183,18 +216,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/size_5_dp"
             android:text="@string/next"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_16sp" />
+            android:textSize="@dimen/size_16_sp" />
 
         <ImageView
             android:id="@+id/imgScreeNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/size_14"
-            android:src="@drawable/next6" />
+            android:layout_marginTop="@dimen/size_14_dp"
+            android:src="@drawable/next6"
+            android:visibility="invisible" />
 
     </LinearLayout>
+
+    <TextView
+        android:visibility="gone"
+        android:background="@color/white"
+        android:gravity="center"
+        android:id="@+id/txtDeactivate"
+        android:padding="@dimen/size_10_dp"
+        android:textColor="@color/orange_signin_back"
+        android:layout_centerVertical="true"
+        android:text="Deactivate"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/size_18_sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

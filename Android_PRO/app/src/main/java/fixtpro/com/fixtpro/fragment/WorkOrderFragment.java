@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +31,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -38,10 +41,15 @@ import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.SignatureActivity;
+import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;
 import fixtpro.com.fixtpro.beans.NotificationModal;
 import fixtpro.com.fixtpro.beans.install_repair_beans.WorkOrder;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNoProgress;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
+import fixtpro.com.fixtpro.utilites.GPSTracker;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
@@ -72,9 +80,16 @@ public class WorkOrderFragment extends Fragment {
     CurrentScheduledJobSingleTon singleTon = null ;
     String error_message = "";
     WorkOrder workOrder ;
-    TextView txtDiagnosticDoller,txtSubTotalDoller,txtTaxDoller,txtTotalDoller,txtJobType,txtUserNameAddress,txtRepairType,txtReapirTypeCost,partstxtType,partstxtDollerT, typeHeading;
+    TextView txtDiagnosticDoller,txtSubTotalDoller,txtTaxDoller,txtTotalDoller,txtJob,txtJobType,txtUserNameAddress,txtRepairType,txtReapirTypeCost,partstxtType,partstxtDollerT, typeHeading,txtDiagnostic;
     EditText txtcomplaint;
     Dialog dialog = null ;
+    boolean isAutoNotiForWorkOrder = false ;
+    long start_time = 0;
+    ArrayList<Location> locations_list = new ArrayList<Location>();
+    Location prevoiusLOcation = null ;
+    GPSTracker gpsTracker = null ;
+    Handler handler1 = null ;
+    boolean isMileageCalulateCaptured  = false ;
     public WorkOrderFragment() {
         // Required empty public constructor
     }
@@ -103,11 +118,15 @@ public class WorkOrderFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
+            isAutoNotiForWorkOrder = true ;
         }
         _context = getActivity();
         _prefs = Utilities.getSharedPreferences(_context);
         singleTon = CurrentScheduledJobSingleTon.getInstance();
         workOrder = singleTon.getJobApplianceModal().getInstallOrRepairModal().getWorkOrder();
+        gpsTracker = new GPSTracker(getActivity());
+
+
     }
 
     @Override
@@ -134,6 +153,9 @@ public class WorkOrderFragment extends Fragment {
         txtTotalDoller = (TextView)view.findViewById(R.id.txtTotalDoller);
         txtUserNameAddress = (TextView)view.findViewById(R.id.txtUserNameAddress);
         txtJobType = (TextView)view.findViewById(R.id.txtJobType);
+        txtDiagnostic = (TextView)view.findViewById(R.id.txtDiagnostic);
+        txtJob = (TextView)view.findViewById(R.id.txtJob);
+        txtJob.setText("Job #"+singleTon.getCurrentJonModal().getId());
         txtJobType.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
         txtUserNameAddress.setText((singleTon.getCurrentJonModal().getContact_name() +" - " +singleTon.getCurrentJonModal().getJob_customer_addresses_address()));
         txtcomplaint.setText(singleTon.getJobApplianceModal().getJob_appliances_customer_compalint());
@@ -213,8 +235,14 @@ public class WorkOrderFragment extends Fragment {
                 String STATUS = jsonObject.getString("STATUS");
                 if (STATUS.equals("SUCCESS")){
                     JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+                    if (!RESPONSE.isNull("warranty_fee"))
+                    workOrder.setWarranty_fee(RESPONSE.getString("warranty_fee"));
+                    if (!RESPONSE.isNull("is_covered"))
+                    workOrder.setIs_covered(RESPONSE.getBoolean("is_covered"));
                     if (!RESPONSE.isNull("diagnostic_fee"))
                     workOrder.setDisgnostic(RESPONSE.getString("diagnostic_fee"));
+                    if (!RESPONSE.isNull("is_claim"))
+                    workOrder.setIs_claim(RESPONSE.getString("is_claim"));
                     if (!RESPONSE.isNull("subtotal"))
                         workOrder.setSub_total(RESPONSE.getString("subtotal"));
                     if (!RESPONSE.isNull("tax"))
@@ -245,10 +273,23 @@ public class WorkOrderFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    txtDiagnosticDoller.setText("$"+workOrder.getDisgnostic());
+
                     txtSubTotalDoller.setText("$"+workOrder.getSub_total());
                     txtTaxDoller.setText("$"+workOrder.getTax());
                     txtTotalDoller.setText("$"+workOrder.getTotal());
+                    if (isAutoNotiForWorkOrder){
+                        submitPost();
+                    }
+                    if (workOrder.is_covered() && workOrder.getIs_claim().equals("1")){
+                        txtDiagnosticDoller.setText("$"+workOrder.getWarranty_fee());
+                        txtDiagnostic.setText("Warranty Fee:");
+
+                    }else {
+                        txtDiagnosticDoller.setText("$"+workOrder.getDisgnostic());
+                    }
+                    if (!workOrder.is_covered() && workOrder.getIs_claim().equals("1")){
+                        showNotCoveredDialog();
+                    }
 
                     break;
                 }
@@ -401,7 +442,6 @@ public class WorkOrderFragment extends Fragment {
         dialog.show();
     }
 
-
     private void showhangTightDialog() {
         dialog = new Dialog(_context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -411,6 +451,32 @@ public class WorkOrderFragment extends Fragment {
         progressView.startAnimation();
         // set the custom dialog components - text, image and button
         ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private void showTrackingMileageDialog() {
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_tracking_mileage);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        CircularProgressView progressView = (CircularProgressView) dialog.findViewById(R.id.progress_view);
+        progressView.startAnimation();
+        // set the custom dialog components - text, image and button
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnReturn = (Button)dialog.findViewById(R.id.btnReturn);
+        btnReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                isMileageCalulateCaptured = true ;
+                ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
+            }
+        });
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -434,6 +500,7 @@ public class WorkOrderFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
+                        dialog.dismiss();
                         singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                         CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
                         Intent intent = new Intent(getActivity(), SignatureActivity.class);
@@ -442,14 +509,21 @@ public class WorkOrderFragment extends Fragment {
                     }
                 }, 300);
             }
-        });layout_gettingParts.setOnClickListener(new View.OnClickListener() {
+        });
+        layout_gettingParts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
+                if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("1"))
+                    start_time = System.currentTimeMillis();
+                    collectDataForGoingTogetParts();
+                    showTrackingMileageDialog();
 
             }
         });layout_reschedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(getActivity(), CalendarActivity.class);
                 intent.putExtra("Rescheduling","1");
                 startActivity(intent);
@@ -457,6 +531,7 @@ public class WorkOrderFragment extends Fragment {
         });layout_cancel_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 Intent intent = new Intent(getActivity(), CancelScheduledJob.class);
                 startActivity(intent);
             }
@@ -542,7 +617,102 @@ public class WorkOrderFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        }
+    };
 
+    private void showNotCoveredDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_not_covered);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private void collectDataForGoingTogetParts(){
+
+            // getting gps points every second automatically
+            //make a local array to cache these gps points
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    Location location = gpsTracker.getLocation();
+//                add the point to local array, only if the last saved point in array is >= 1 metre far from this point.
+                    if (prevoiusLOcation == null) {
+                        locations_list.add(location);
+                        prevoiusLOcation = location;
+                    } else {
+                        if (prevoiusLOcation.distanceTo(location) > 1) {
+                            locations_list.add(location);
+                            prevoiusLOcation = location;
+                        }
+                    }
+//                last sent GPS point to server's time and difference from the current points time, if it >= 1 min,
+//                 send the point array to server, and empty my local array on success.
+                    if (System.currentTimeMillis() - start_time > 60000) {
+                        // call api to send location array to server
+                        if (!isMileageCalulateCaptured){
+                            GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL, "POST", goingtogetPartsResponseListener, goingtogetPartsExceptionListener, getActivity(), "Loading");
+                            responseAsync.execute(getRequestParamsForGoingtogetParts());
+                        }
+
+                    } else {
+                        collectDataForGoingTogetParts();
+                    }
+                }
+            }, 60000);
+
+    }
+
+    private HashMap<String,String> getRequestParamsForGoingtogetParts(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","update");
+        hashMap.put("object","tech_routes");
+        hashMap.put("data[job_id]",CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
+        hashMap.put("data[travel_type]","PARTS_SHOPPING");
+        for (int i = 0 ; i < locations_list.size() ; i++){
+            hashMap.put("data[stream]["+i+"][lat]",locations_list.get(i).getLatitude()+"");
+            hashMap.put("data[stream]["+i+"][lng]",locations_list.get(i).getLongitude()+"");
+            hashMap.put("data[stream]["+i+"][utime]",System.currentTimeMillis() / 1000 + "");
+        }
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        return hashMap;
+    }
+
+    IHttpResponseListener goingtogetPartsResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject response) {
+            try {
+                if (response.getString("STATUS").equals("SUCCESS")) {
+                    start_time = System.currentTimeMillis();
+                    locations_list.clear();
+                    prevoiusLOcation = null ;
+                    collectDataForGoingTogetParts();
+                } else {
+                    collectDataForGoingTogetParts();
+                }
+            }catch (JSONException e){
+                collectDataForGoingTogetParts();
+            }
+        }
+    };
+    IHttpExceptionListener goingtogetPartsExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            collectDataForGoingTogetParts();
         }
     };
 }

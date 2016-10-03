@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/popuplayoutmagin"
+    android:layout_margin="@dimen/size_12_dp"
     android:background="@android:color/transparent">
 
     <RelativeLayout
@@ -13,7 +13,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="@dimen/size_8_dp"
             android:orientation="vertical">
 
             <ImageView
@@ -26,36 +26,37 @@
                 android:id="@+id/titletext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="@dimen/size_15_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/choosetime"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
+
             <TextView
                 android:id="@+id/selected_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Selected Date: 21/04/06"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
+
             <fixtpro.com.fixtpro.views.WheelView
                 android:id="@+id/wheelView"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                >
-            </fixtpro.com.fixtpro.views.WheelView>
-            <LinearLayout
-                android:layout_marginTop="20dp"
+                android:layout_marginBottom="@dimen/size_20_dp"
+                android:layout_marginTop="@dimen/size_20_dp"></fixtpro.com.fixtpro.views.WheelView>
 
-                android:layout_below="@+id/date_and_time_container"
+            <LinearLayout
                 android:layout_width="match_parent"
+
                 android:layout_height="wrap_content"
+                android:layout_below="@+id/date_and_time_container"
+                android:layout_marginTop="@dimen/size_20_dp"
                 android:orientation="vertical">
 
                 <ImageView
@@ -69,7 +70,6 @@
         </LinearLayout>
 
 
-
     </RelativeLayout>
 
     <ImageView
@@ -78,7 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
+        android:padding="@dimen/size_10_dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/screen_cross" />
+        android:src="@drawable/cross_new" />
 </RelativeLayout>

@@ -19,15 +19,15 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/setupcomplete"
-            android:padding="@dimen/padd"
-            android:textSize="@dimen/txt_voila"
+            android:padding="@dimen/size_5_dp"
+            android:textSize="@dimen/size_24_sp"
             android:textColor="@color/register_button_text" />
 
         <ImageView
             android:id="@+id/img_thumb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/size_20_dp"
             android:layout_gravity="center"
             android:src="@drawable/thumb" />
         <TextView
@@ -35,10 +35,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/size_20_dp"
             android:text="@string/voila"
-            android:padding="@dimen/padd"
-            android:textSize="@dimen/txt_voila"
+            android:padding="@dimen/size_5_dp"
+            android:textSize="@dimen/size_24_sp"
             android:textColor="@color/register_button_text" />
 
         <TextView
@@ -47,19 +47,19 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/text1"
-            android:padding="@dimen/padd"
-            android:textSize="@dimen/txt_normal_w"
+            android:padding="@dimen/size_5_dp"
+            android:textSize="@dimen/size_14_sp"
             android:textColor="@color/register_button_text" />
 
         <TextView
             android:id="@+id/text_inthe"
-            android:layout_margin="@dimen/margin"
+            android:layout_margin="@dimen/size_10_dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/text2"
-            android:padding="@dimen/padd"
-            android:textSize="@dimen/txt_normal_w"
+            android:padding="@dimen/size_5_dp"
+            android:textSize="@dimen/size_14_sp"
             android:textColor="@color/register_button_text" />
     </LinearLayout>
     <LinearLayout
@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/orange_signin_back"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/size_10_dp"
             android:text="@string/watchvideo"/>
     </LinearLayout>
 </LinearLayout>

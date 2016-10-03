@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.NotificationCompat;
@@ -14,13 +15,19 @@ import android.widget.Toast;
 
 import java.util.Date;
 
+import fixtpro.com.fixtpro.ChatActivityNew;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.beans.NotificationModal;
+import fixtpro.com.fixtpro.utilites.ChatSingleton;
+import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Utilities;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 public class ExternalReceiver extends BroadcastReceiver {
-
+    SharedPreferences _prefs = null ;
     public void onReceive(Context context, Intent intent) {
+        _prefs = Utilities.getSharedPreferences(context);
         if(intent!=null){
             if (intent.getAction().equals("com.google.android.c2dm.intent.REGISTRATION"))
                 return;
@@ -28,6 +35,12 @@ public class ExternalReceiver extends BroadcastReceiver {
 
             Bundle extras = intent.getExtras();
             NotificationModal modal = new NotificationModal();
+            if (extras.containsKey("dialogId")){
+                String dialogId = extras.getString("dialogId", "");
+                modal.setDialogId(dialogId);
+                modal.setType("cn");// Chat Notification
+                Log.e("",""+extras.getString("dialogId", ""));
+            }
             if (extras.containsKey("message"))
                 modal.setMessage(extras.getString("message", ""));
             if (extras.containsKey("t"))
@@ -56,6 +69,11 @@ public class ExternalReceiver extends BroadcastReceiver {
                 if (extras.containsKey("j"))
                     modal.setJobId(extras.getString("j", ""));
             }
+            if (modal.getType().equals("ja")){
+                if (extras.containsKey("j"))
+                    modal.setJobId(extras.getString("j", ""));
+            }
+
             String message = extras.getString("message","message");
             if (extras != null){
                 for (String key : extras.keySet()) {
@@ -63,6 +81,9 @@ public class ExternalReceiver extends BroadcastReceiver {
                     Log.d("", String.format("%s %s (%s)", key,
                             value.toString(), value.getClass().getName()));
                 }
+            }
+            if (modal.getDialogId().length() > 0 && !ChatActivityNew.inBackground && ChatSingleton.getInstance().getCurrentQbDialog() != null && ChatSingleton.getInstance().getCurrentQbDialog().getDialogId().equals(modal.getDialogId())){
+                return;
             }
             if(!HomeScreenNew.inBackground){
                 Intent intent1 = new Intent("gcm_push_notification_receiver");
@@ -105,8 +126,31 @@ public class ExternalReceiver extends BroadcastReceiver {
                         .setContentText(modal.getMessage());
                 Notification n = builder.build();
                 notificationManager.notify((111111 + (int)(Math.random() * 999999)), n);
+                int notiCountTotal = 0 ;
+                int notiCountChat = 0 ;
+                int notiCountNormal = 0 ;
+                SharedPreferences.Editor editor = _prefs.edit() ;
+                notiCountChat = _prefs.getInt(Preferences.CHAT_NOTI_COUNT,0);
+                notiCountNormal = _prefs.getInt(Preferences.CHAT_NOTI_COUNT,0);
+                if (modal.getDialogId().length() > 0){
+                    // chat_noti
+//            notiCountChat = _prefs.getInt(Preferences.CHAT_NOTI_COUNT,0);
+//            ++notiCountChat;
+//            editor.putInt(Preferences.CHAT_NOTI_COUNT,notiCountChat);
+                }else {
+                    // normal_noti
+                    notiCountNormal = _prefs.getInt(Preferences.NORMAL_NOTI_COUNT,0);
+                    ++notiCountNormal;
+                    editor.putInt(Preferences.NORMAL_NOTI_COUNT,notiCountNormal);
+                }
+                editor.commit();
+//        notiCountTotal = notiCountNormal + notiCountChat;
+                ShortcutBadger.applyCount(context, notiCountNormal);
+            }
             }
         }
+
+
     }
-}
+
 

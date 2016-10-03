@@ -186,10 +186,15 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         contactName.setText(model.getContact_name());
         address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
         date.setText(Utilities.convertDate(model.getRequest_date()));
-        timeinterval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
+        timeinterval.setText(model.getTimeslot_name());
+        if (_prefs.getString(Preferences.ROLE,"").equals("pro")){
+            custom_ratingbar.setClickable(false);
+            if (model.getTechnician_avg_rating().length() > 0)
+            custom_ratingbar.setStar((int) Float.parseFloat(model.getTechnician_avg_rating()), true);
+            else
+                custom_ratingbar.setStar(0, true);
+        }
 
-        custom_ratingbar.setClickable(false);
-        custom_ratingbar.setStar((int) Float.parseFloat(model.getTechnician_avg_rating()), true);
         txtUserName.setText(model.getTechnician_fname() + " " + model.getTechnician_lname());
         txtJobDetails.setText(model.getTechnician_fname() + " has " + model.getTechnician_scheduled_job_count() + " jobs scheduled for this time");
 //        setUpHorizontalScrollView();
@@ -415,6 +420,12 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
                     handler.sendEmptyMessage(0);
                 }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
+                        error_message = errors.getString(key);
+                    }
 
                     handler.sendEmptyMessage(1);
                 }
@@ -584,20 +595,29 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 TextView txtDesc = (TextView)child.findViewById(R.id.txtDesc);
                 final ImageView imgShowProblem = (ImageView)child.findViewById(R.id.imgShowProblem);
                 View divider = (View)child.findViewById(R.id.divider);
-                imgShowProblem.setTag(i+"");
-                txtServiceType.setText( arrayList.get(i).getJob_appliances_service_type() +":");
-                txtPowerSourceName.setText(" "+arrayList.get(i).getJob_appliances_power_source());
+                imgShowProblem.setTag(i + "");
+                txtServiceType.setText(arrayList.get(i).getJob_appliances_service_type() + ":");
+                if (arrayList.get(i).getJob_appliances_power_source().trim().length() == 0){
+                    txtPowerSourceName.setText(" "+arrayList.get(i).getJob_appliances_power_source());
+                }
+
                 txtApplianceName.setText(" "+arrayList.get(i).getAppliance_type_name());
-                txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
+                if (arrayList.get(i).getJob_appliances_brand_name().trim().length() > 0){
+                    txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
+                }
+
                 txtDesc.setText(arrayList.get(i).getJob_appliances_appliance_description());
-                txtProblem.setText(" "+arrayList.get(i).getJob_appliances_customer_compalint());
+                if (arrayList.get(i).getJob_appliances_customer_compalint().trim().length() > 0){
+                    txtProblem.setText(" "+arrayList.get(i).getJob_appliances_customer_compalint());
+                }
+
                 if (arrayList.get(i).getImg_original().length() == 0)
                     imgShowProblem.setVisibility(View.GONE);
                 imgShowProblem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(getActivity(),ProblemImageActivity.class);
-                        intent.putExtra("problemImageURL", arrayList.get(Integer.parseInt((String)imgShowProblem.getTag())).getImg_original());
+                        Intent intent = new Intent(getActivity(), ProblemImageActivity.class);
+                        intent.putExtra("problemImageURL", arrayList.get(Integer.parseInt((String) imgShowProblem.getTag())).getImg_original());
                         startActivity(intent);
 
                     }

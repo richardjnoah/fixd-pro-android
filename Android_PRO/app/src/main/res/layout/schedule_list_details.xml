@@ -6,185 +6,189 @@
     android:background="@drawable/background_grey_blur"
     tools:context="fixtpro.com.fixtpro.fragment.ScheduledListDetailsFragment">
 
-<!--    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/pickupdeclinelayout"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:gravity="center">-->
-
-        <ScrollView
-            android:id="@+id/scrollViewParent"
+    <!--    <LinearLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/pickupdeclinelayout"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_height="match_parent">
+            android:gravity="center">-->
+
+    <ScrollView
+        android:id="@+id/scrollViewParent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/pickupdeclinelayout"
+        android:layout_marginLeft="@dimen/size_10_dp"
+        android:layout_marginRight="@dimen/size_10_dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <FrameLayout
+                    android:id="@+id/location_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_210_dp"></FrameLayout>
+
+
+                <ImageView
+                    android:id="@+id/transparent_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/size_210_dp"
+                    android:src="#00000000" />
+            </RelativeLayout>
 
             <LinearLayout
+
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/canceljob_box"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-                    <FrameLayout
-                        android:id="@+id/location_map"
-                        android:layout_width="match_parent"
-                        android:layout_height="210dp"></FrameLayout>
-
-
-                    <ImageView
-                        android:id="@+id/transparent_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="210dp"
-                        android:src="#00000000" />
-                </RelativeLayout>
-
                 <LinearLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/canceljob_box"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10_dp">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="4"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:id="@+id/contactname"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/register_button_text"
-                                android:textSize="22sp" />
-
-                            <TextView
-                                android:id="@+id/address"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/register_button_text"
-                                android:textSize="18sp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_weight="1"
-                            android:orientation="vertical">
-
-                            <ImageView
-                                android:padding="10dp"
-                                android:id="@+id/imgChat"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_horizontal"
-                                android:src="@drawable/chat" />
-                        </LinearLayout>
-
-                    </LinearLayout>
-
-
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.7dp"
-                        android:background="@color/register_button_text" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:padding="10dp">
+                        android:layout_weight="4"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/date"
+                            android:id="@+id/contactname"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="22sp" />
+                            android:textSize="@dimen/size_22_sp" />
 
                         <TextView
-                            android:id="@+id/timeinterval"
+                            android:id="@+id/address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/register_button_text" />
+                            android:textColor="@color/register_button_text"
+                            android:textSize="@dimen/size_18_sp" />
                     </LinearLayout>
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.7dp"
-                        android:background="@color/register_button_text" />
 
                     <LinearLayout
-                        android:id="@+id/techView"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:padding="10dp">
-                        <include layout="@layout/edit_rating"></include>
-
-                    </LinearLayout>
-                    <View
-                        android:id="@+id/techDivider"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.7dp"
-                        android:background="@color/register_button_text" />
-                    <LinearLayout
-                        android:id="@+id/layoutServiceDescription"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
                         android:orientation="vertical">
-                    </LinearLayout>
-                    <RelativeLayout
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
 
-                        <HorizontalScrollView
-                            android:visibility="gone"
-                            android:id="@+id/horizontalScrollView"
+                        <ImageView
+                            android:id="@+id/imgChat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:padding="10dp">
+                            android:layout_gravity="center_horizontal"
+                            android:padding="@dimen/size_10_dp"
+                            android:src="@drawable/chat" />
+                    </LinearLayout>
 
-                            <LinearLayout
-                                android:id="@+id/scrollViewLatout"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:gravity="center"
-                                android:orientation="horizontal"></LinearLayout>
-                        </HorizontalScrollView>
-                    </RelativeLayout>
+                </LinearLayout>
 
-                    <View
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="0.7dp"
-                        android:background="@color/register_button_text" />
 
-                    <LinearLayout
-                        android:visibility="gone"
-                        android:id="@+id/layout_problem"
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/register_button_text" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="@dimen/size_10_dp">
+
+                    <TextView
+                        android:id="@+id/date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:textColor="@color/register_button_text"
+                        android:textSize="@dimen/size_22_sp" />
 
-                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/timeinterval"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/register_button_text" />
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/register_button_text" />
+
+                <LinearLayout
+                    android:id="@+id/techView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/size_10_dp">
+
+                    <include layout="@layout/edit_rating"></include>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/techDivider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/register_button_text" />
+
+                <LinearLayout
+                    android:id="@+id/layoutServiceDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"></LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:padding="@dimen/size_10_dp"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:id="@+id/scrollViewLatout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:orientation="horizontal"></LinearLayout>
+                    </HorizontalScrollView>
+                </RelativeLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.7dp"
+                    android:background="@color/register_button_text"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/layout_problem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
                 </LinearLayout>
             </LinearLayout>
-        </ScrollView>
+        </LinearLayout>
+    </ScrollView>
     <!--</LinearLayout>-->
 
     <LinearLayout
@@ -192,44 +196,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="@dimen/size_10_dp"
         android:gravity="center"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/txtEnrouteJob"
-            android:padding="12dp"
-            android:textSize="22sp"
-            android:textColor="@android:color/white"
-            android:background="@color/orange_signin_back"
-            android:text="En Route"
-            android:gravity="center"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/orange_signin_back"
+            android:gravity="center"
+            android:padding="@dimen/size_12_dp"
+            android:text="En Route"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_22_sp" />
+
         <TextView
             android:id="@+id/txtcancelJob"
-            android:textSize="22sp"
-            android:padding="12dp"
-            android:background="@android:color/white"
-            android:textColor="@color/orange_signin_back"
-            android:gravity="center"
-            android:text="Cancel Job"
-            android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/white"
+            android:gravity="center"
+            android:padding="@dimen/size_12_dp"
+            android:text="Cancel Job"
+            android:textColor="@color/orange_signin_back"
+            android:textSize="@dimen/size_22_sp" />
+
         <ImageView
-            android:visibility="gone"
             android:id="@+id/enroute_job"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/en_route" />
+            android:src="@drawable/en_route"
+            android:visibility="gone" />
 
         <ImageView
-            android:visibility="gone"
             android:id="@+id/canceljob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="35dp"
-            android:src="@drawable/canceljob" />
+            android:layout_marginLeft="@dimen/size_32_dp"
+            android:src="@drawable/canceljob"
+            android:visibility="gone" />
     </LinearLayout>
 </RelativeLayout>

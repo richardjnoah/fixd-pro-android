@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixtpro.com.fixtpro.activities.AddBankAccountNewEdit;
 import fixtpro.com.fixtpro.adapters.AssignTechAdapter;
 import fixtpro.com.fixtpro.beans.AssignTechModal;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
@@ -96,7 +97,7 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                             modal.setImage(profile_image.getString("original"));
                         }
                         modal.setRating(jsonObject.getString("avg_rating"));
-                        modal.setJobSchedule(jsonObject.getString("currently_scheduled"));
+                        modal.setJobSchedule(jsonObject.getString("scheduled_jobs_count"));
                         modalList.add(modal);
                     }
                     handler.sendEmptyMessage(0);
@@ -138,9 +139,48 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                     showAlertDialog("Fixd-Pro",error_message);
                     break;
                 }
+                case 4:{
+                    showAddBankAccoutAlertDialog("Fixd-Pro",error_message);
+                    break;
+                }
             }
         }
     };
+    private void showAddBankAccoutAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        // set title
+        alertDialogBuilder.setTitle(Title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("Add Bank Info", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        if(Utilities.getSharedPreferences(AssignTechnicianActivity.this).getString(Preferences.ROLE, null).equals("pro")){
+                            dialog.cancel();
+                            Intent intent = new Intent(AssignTechnicianActivity.this,AddBankAccountNewEdit.class);
+                            startActivity(intent);
+                        }else {
+                            dialog.cancel();
+                        }
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, close
+                // current activity
+                dialog.cancel();
+            }
+        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
 
     private HashMap<String,String> getAssignTechParametrs(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
@@ -170,12 +210,29 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                         finish();
                     }
 
+                } else if(!Response.isNull("NOTICES")){
+                    JSONObject notices = Response.getJSONObject("NOTICES");
+                    Iterator<String> keys = notices.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = notices.getString(key);
+                        if(key.equals("340067")){
+
+                            handler.sendEmptyMessage(4);
+                            return;
+                        }
+                    }
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
                     if (keys.hasNext()) {
                         String key = (String) keys.next();
                         error_message = errors.getString(key);
+                        if(key.equals("340067")){
+
+                            handler.sendEmptyMessage(4);
+                            return;
+                        }
                     }
                     handler.sendEmptyMessage(1);
                 }

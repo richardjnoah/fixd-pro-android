@@ -51,6 +51,8 @@ import fixtpro.com.fixtpro.fragment.FragmentDrawer1;
 
 
         }
-
+    public void setNotficationCounts(){
+        drawerFragment.setNotificationCounts();
+    }
 
     }

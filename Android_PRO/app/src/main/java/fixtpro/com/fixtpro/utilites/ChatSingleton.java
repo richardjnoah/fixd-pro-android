@@ -20,6 +20,14 @@ public class ChatSingleton {
     public static ChatSingleton getInstance( ) {
         return singleton;
     }
+    QBDialog qbDialog = null ;
 
+    public QBDialog getCurrentQbDialog() {
+        return qbDialog;
+    }
+
+    public void setCurrentQbDialog(QBDialog qbDialog) {
+        this.qbDialog = qbDialog;
+    }
 }
 

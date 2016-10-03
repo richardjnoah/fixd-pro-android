@@ -57,7 +57,7 @@ import fixtpro.com.fixtpro.views.WheelView;
 public class CalendarActivity extends AppCompatActivity {
     public GregorianCalendar cal_month, cal_month_copy;
     private CalendarAdapter cal_adapter;
-    private TextView tv_month, back;
+    private TextView tv_month, back, done;
     private Context context= this;
     Typeface fontfamily ;
     ArrayList<CalenderScheduledJobModal> calenderScheduledJobModalArrayList = new ArrayList<CalenderScheduledJobModal>();
@@ -74,14 +74,33 @@ public class CalendarActivity extends AppCompatActivity {
     CalanderEventsAdapter adapter;
     int posForRescheduled = 0;
     View viewRescheduled = null ;
+    boolean isJobRescheduled = false ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        if (getIntent() != null){
+        if (getIntent().getExtras() != null){
             Rescheduling = getIntent().getStringExtra("Rescheduling");
             getTimeSlotes();
+
+            done = (TextView) findViewById(R.id.done);
+            done.setVisibility(View.VISIBLE);
+            done.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (!isJobRescheduled){
+                        showAlertDialog("Fixd-Pro","Please Select a date before proceeding",false);
+                    }else {
+                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                        Intent j = new Intent(CalendarActivity.this, ConfirmationActivity.class);
+                        j.putExtra("JOB_DETAIL",CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal());
+                        j.putExtra("show_cal",false);
+                        startActivity(j);
+                    }
+                }
+            });
         }
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
 //        getSupportActionBar().hide();
@@ -95,6 +114,7 @@ public class CalendarActivity extends AppCompatActivity {
         tv_month.setText(android.text.format.DateFormat.format("MMM", cal_month) +"\n"+ android.text.format.DateFormat.format("yyyy", cal_month));
 
         back = (TextView) findViewById(R.id.back);
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -282,9 +302,9 @@ public class CalendarActivity extends AppCompatActivity {
                             model.setTechnician_id(obj.getString("technician_id"));
                             model.setTime_slot_id(obj.getString("time_slot_id"));
                             model.setTitle(obj.getString("title"));
-                            model.setTotal_cost(obj.getString("total_cost"));
+//                            model.setTotal_cost(obj.getString("total_cost"));
                             model.setUpdated_at(obj.getString("updated_at"));
-                            model.setWarranty(obj.getString("warranty"));
+//                            model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                             JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                             ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -376,7 +396,7 @@ public class CalendarActivity extends AppCompatActivity {
                             list.add(model);
                         }
                         if (results.length() > 0){
-                            CalendarCollection.date_collection_arr.clear();
+
                             CalendarCollection.date_collection_arr.add(new CalendarCollection(key,key,list));
                         }
                         modal.setList(list);
@@ -465,6 +485,7 @@ public class CalendarActivity extends AppCompatActivity {
                     break;
                 }
                 case 2:{
+                    CalendarCollection.date_collection_arr.clear();
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", eventListener1, CalendarActivity.this, "Loading");
                     responseAsync.execute(getEventsRequestParams());
 
@@ -507,6 +528,7 @@ public class CalendarActivity extends AppCompatActivity {
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
+                    isJobRescheduled = true;
                     handler.sendEmptyMessage(2);
                 }else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
@@ -641,9 +663,9 @@ public class CalendarActivity extends AppCompatActivity {
                             model.setTechnician_id(obj.getString("technician_id"));
 //                            model.setTime_slot_id(obj.getString("time_slot_id"));
                             model.setTitle(obj.getString("title"));
-                            model.setTotal_cost(obj.getString("total_cost"));
+//                            model.setTotal_cost(obj.getString("total_cost"));
                             model.setUpdated_at(obj.getString("updated_at"));
-                            model.setWarranty(obj.getString("warranty"));
+//                            model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                             JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                             ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -728,7 +750,7 @@ public class CalendarActivity extends AppCompatActivity {
                             list.add(model);
                         }
                         if (results.length() > 0){
-                            CalendarCollection.date_collection_arr.clear();
+//                            CalendarCollection.date_collection_arr.clear();
                             CalendarCollection.date_collection_arr.add(new CalendarCollection(key,key,list));
                         }
                         modal.setList(list);

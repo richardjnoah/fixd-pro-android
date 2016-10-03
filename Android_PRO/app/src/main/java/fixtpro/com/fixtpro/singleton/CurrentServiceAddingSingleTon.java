@@ -56,10 +56,10 @@ public class CurrentServiceAddingSingleTon {
         arrayList1.clear();
         if (skillTrade.getTitle().equals("Electronics") || skillTrade.getTitle().equals("Plumbing") || skillTrade.getTitle().equals("Electrical")){
             arrayList1.add("Repair");
-            arrayList1.add("Install");
+//            arrayList1.add("Install");
         }else {
             arrayList1.add("Repair");
-            arrayList1.add("Install");
+//            arrayList1.add("Install");
             arrayList1.add("Maintenance");
         }
     }

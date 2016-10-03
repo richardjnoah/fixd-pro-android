@@ -55,6 +55,7 @@ public class AddServiceFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     ArrayList<SkillTrade> skillTrades ;
+    ArrayList<SkillTrade> skillTradesTemp = new ArrayList<>();
     AddServiceAdapter addServiceAdapter = null;
     ListView lstTradeSkill;
     ArrayList<SkillTrade> arrayList = new ArrayList<SkillTrade>();
@@ -90,6 +91,10 @@ public class AddServiceFragment extends Fragment {
         }
         _context = getActivity();
         skillTrades = TradeSkillSingleTon.getInstance().getList();
+        for (int i = 0; i < skillTrades.size() ; i++){
+            if (skillTrades.get(i).getFor_consumer().equals("1"))
+            skillTradesTemp.add(skillTrades.get(i));
+        }
     }
 
     @Override
@@ -110,7 +115,7 @@ public class AddServiceFragment extends Fragment {
     }
     private void setListAdapter(){
 
-        addServiceAdapter = new AddServiceAdapter(getActivity(),skillTrades,getResources());
+        addServiceAdapter = new AddServiceAdapter(getActivity(),skillTradesTemp,getResources());
         lstTradeSkill.setAdapter(addServiceAdapter);
 
     }
@@ -121,9 +126,19 @@ public class AddServiceFragment extends Fragment {
         lstTradeSkill.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                fragment = new WhatTypeOfServiceFragment();
-                CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
-                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHAT_TYPE_OF_SERVICE_FGRAGMENT, true, null);
+
+                if (TradeSkillSingleTon.getInstance().getList().get(position).getTitle().equals("HVAC") || TradeSkillSingleTon.getInstance().getList().get(position).getTitle().equals("Pool/Spa"))
+                {
+                    fragment = new WhatTypeOfServiceFragment();
+                    CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHAT_TYPE_OF_SERVICE_FGRAGMENT, true, null);
+                }else {
+                    CurrentServiceAddingSingleTon.getInstance().setSelectedServicetype("Repair");
+                    CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
+                    fragment = new WhichApplianceAddServiceFragment();
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_APPLIANCE_SERVICE_FGRAGMENT, true, null);
+                }
+
             }
         });
     }
@@ -141,6 +156,8 @@ public class AddServiceFragment extends Fragment {
                         SkillTrade skillTrade = new SkillTrade();
                         skillTrade.setId(object.getInt("id"));
                         skillTrade.setTitle(object.getString("name"));
+                        skillTrade.setDisplay_order(object.getString("display_order"));
+                        skillTrade.setFor_consumer(object.getString("for_consumer"));
                         arrayList.add(skillTrade);
                     }
                     TradeSkillSingleTon.getInstance().setList(arrayList);
@@ -233,6 +250,7 @@ public class AddServiceFragment extends Fragment {
         hashMap.put("select","^*");
         hashMap.put("per_page","999");
         hashMap.put("page","1");
+        hashMap.put("where[for_pro]", "1");
         return hashMap;
     }
     private void showAlertDialog(String Title,String Message){

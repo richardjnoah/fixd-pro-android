@@ -4,12 +4,20 @@ package fixtpro.com.fixtpro.utilites;
  * Created by sony on 08-02-2016.
  */
 public class Constants {
-    public static  final String BASE_URL = "http://api.test.fixdrepair.com/v1/r";
+//    public static  final String BASE_URL = "http://api.test.fixdrepair.com/v1/r";
 //    public static  final String BASE_URL = "http://api-staging.fixdrepair.com/v1/r";
-    public static  final String BASE_URL_BATCH = "http://api.test.fixdrepair.com/v1/b";
+//    public static  final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
+//    public static  final String BASE_URL_BATCH = "http://api.test.fixdrepair.com/v1/b";
 //    public static  final String BASE_URL_BATCH = "http://api-staging.fixdrepair.com/v1/b";
-    public static  final String CHARSET = "UTF-8";
+//    public static  final String BASE_URL_BATCH = "https://stage.fixdrepair.com/v1/b";
 
+      public static final String BASE_URL = "https://dev.api.fixdrepair.com/v1/r";
+      public static final String BASE_URL_BATCH = "https://dev.api.fixdrepair.com/v1/b";
+
+//      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
+//      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1/b";
+
+    public static  final String CHARSET = "UTF-8";
 
     public static final String GOOGLE_PLACE_SERVER_KEY = "AIzaSyAGCo1xR0P1YiW1gRuXiZJKskIcN5ONTCI";
 //    Fragment Tag Constants
@@ -49,8 +57,4 @@ public class Constants {
     public static  final String INSTALL_INFO = "Install Info";
     public static  final String MAINTAIN_INFO = "Maintain Info";
     public static  final String SIGNATURE = "Homeowner Signature";
-
-
-
-
 }

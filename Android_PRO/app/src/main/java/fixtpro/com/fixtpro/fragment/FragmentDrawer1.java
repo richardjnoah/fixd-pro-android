@@ -23,6 +23,7 @@ import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
+import me.leolin.shortcutbadger.ShortcutBadger;
 
 
 public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
@@ -32,7 +33,7 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     LinearLayout home, myjobs, payments, message, myratings, settings, notifications, contactus, logout;
-    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title, message_title, notifications_title;
+    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title, message_title, notifications_title,txtNormalNotiCount,txtChatNotiCount;
     private FragmentDrawerListener drawerListener;
     View containerView;
     SharedPreferences _prefs = null;
@@ -78,6 +79,8 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         myratings_title = (TextView) layout.findViewById(R.id.myratings_title);
         settings_title = (TextView) layout.findViewById(R.id.settings_title);
         notifications_title = (TextView) layout.findViewById(R.id.notifications_title);
+        txtChatNotiCount = (TextView) layout.findViewById(R.id.txtChatNotiCount);
+        txtNormalNotiCount = (TextView) layout.findViewById(R.id.txtNormalNotiCount);
         contactus_title = (TextView) layout.findViewById(R.id.contactus_title);
         logout_title = (TextView) layout.findViewById(R.id.logout_title);
         message_title = (TextView) layout.findViewById(R.id.message_title);
@@ -146,12 +149,12 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         Fragment fragment = null;
         Bundle b = new Bundle();
-        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO")) {
-            if (v.getId() != R.id.home && v.getId() != R.id.logout && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
-                ((HomeScreenNew) getActivity()).accoutSetUpDialog();
-                return;
-            }
-        }
+//        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO")) {
+//            if (v.getId() != R.id.home && v.getId() != R.id.logout && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+//                ((HomeScreenNew) getActivity()).accoutSetUpDialog();
+//                return;
+//            }
+//        }
         switch (v.getId()) {
             case R.id.home:
                 fragment = new HomeFragment();
@@ -199,5 +202,24 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
 
     public interface FragmentDrawerListener {
         public void onDrawerItemSelected(View view, int position);
+    }
+    public void setNotificationCounts(){
+        int countChat = _prefs.getInt(Preferences.CHAT_NOTI_COUNT,0);
+        int countNormal = _prefs.getInt(Preferences.NORMAL_NOTI_COUNT,0);
+        if (countNormal > 0){
+//            txtNormalNotiCount.setVisibility(View.VISIBLE);
+            txtNormalNotiCount.setText(countNormal + "");
+            ShortcutBadger.applyCount(getActivity(), countNormal);
+        }else {
+            txtNormalNotiCount.setVisibility(View.GONE);
+        }
+        if (countChat > 0){
+            txtChatNotiCount.setVisibility(View.VISIBLE);
+            txtChatNotiCount.setText(countChat+"");
+        }else {
+            txtChatNotiCount.setVisibility(View.GONE);
+        }
+
+
     }
 }

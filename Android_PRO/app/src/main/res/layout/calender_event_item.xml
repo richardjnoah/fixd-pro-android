@@ -1,76 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:background="#000"
-    android:layout_height="wrap_content">
-<LinearLayout
-    android:padding="12dp"
-    android:orientation="vertical"
-    android:layout_weight="2"
-    android:layout_width="0dp"
-    android:gravity="center"
-    android:layout_height="match_parent">
-<TextView
-    android:textColor="@color/orange_signin_back"
-    android:id="@+id/timeFrom"
-    android:text="12pm"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <TextView
-        android:textColor="@color/orange_signin_back"
-        android:id="@+id/timeTo"
-        android:text="2pm"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</LinearLayout>
     <LinearLayout
-
-
-        android:orientation="vertical"
-        android:layout_weight="0.1"
         android:layout_width="0dp"
-        android:layout_height="match_parent">
-        <View
-            android:background="#ffffff"
-            android:layout_width="1dp"
-            android:layout_height="match_parent"></View>
-    </LinearLayout>
-    <LinearLayout
-        android:padding="12dp"
+        android:layout_height="match_parent"
+        android:layout_weight="2"
+        android:gravity="center"
         android:orientation="vertical"
-        android:layout_weight="5"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content">
+        android:padding="@dimen/size_12_dp">
+
         <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/ServiceName"
-            android:text="Washer"
-            android:textSize="20dp"
+            android:id="@+id/timeFrom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="12pm"
+            android:textColor="@color/orange_signin_back" />
 
         <TextView
+            android:id="@+id/timeTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2pm"
+            android:textColor="@color/orange_signin_back" />
+    </LinearLayout>
+
+    <LinearLayout
+
+
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.1"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="#ffffff"></View>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:padding="@dimen/size_12_dp">
+
+        <TextView
+            android:id="@+id/ServiceName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Washer"
             android:textColor="@android:color/white"
-            android:text="Address Address"
+            android:textSize="@dimen/size_20_dp" />
+
+        <TextView
             android:id="@+id/AddressName"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="Address Address"
+            android:textColor="@android:color/white" />
     </LinearLayout>
+
     <LinearLayout
-        android:layout_gravity="center"
-        android:padding="12dp"
-        android:orientation="vertical"
-        android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="@dimen/size_12_dp">
 
 
         <ImageView
-            android:visibility="gone"
-            android:src="@drawable/cross"
             android:id="@+id/img_Reschedule_icon"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:src="@drawable/down_arrow_orange"
+            android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

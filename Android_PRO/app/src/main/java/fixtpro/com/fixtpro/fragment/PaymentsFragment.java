@@ -3,6 +3,7 @@ package fixtpro.com.fixtpro.fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.adapters.PaymentsJobsPagingAdaper;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
@@ -53,6 +55,7 @@ public class PaymentsFragment extends Fragment {
     Singleton singleton = null ;
     String error_message =  "";
     String total_earnings = "",jobs_accepted="",hours_worked ="" ;
+    SharedPreferences _prefs = null ;
     public PaymentsFragment() {
         // Required empty public constructor
     }
@@ -68,6 +71,7 @@ public class PaymentsFragment extends Fragment {
         completedjoblist = singleton.getCompletedjoblist();
         next = singleton.nextCompleted ;
         compltedpage = singleton.compltedpage ;
+        _prefs = _context.getSharedPreferences(Preferences.FIXIT_PRO_PREFERNCES,Context.MODE_PRIVATE);
     }
 
     @Override
@@ -256,7 +260,7 @@ public class PaymentsFragment extends Fragment {
                         model.setTitle(obj.getString("title"));
                         model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
-                        model.setWarranty(obj.getString("warranty"));
+//                        model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                         ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -342,6 +346,15 @@ public class PaymentsFragment extends Fragment {
                             model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
                             model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
                         }
+                        if(!obj.isNull("job_line_items")){
+                            JSONObject job_line_items_obj = obj.getJSONObject("job_line_items");
+                            model.setJob_line_items_tax(job_line_items_obj.getString("tax"));
+                            model.setJob_line_items_fixd_cut(job_line_items_obj.getString("fixd_cut"));
+                            model.setJob_line_items_govt_cut(job_line_items_obj.getString("govt_cut"));
+                            model.setJob_line_items_pro_cut(job_line_items_obj.getString("pro_cut"));
+                            model.setJob_line_items_sub_total(job_line_items_obj.getString("sub_total"));
+                            model.setJob_line_items_total(job_line_items_obj.getString("total"));
+                        }
                         completedjoblist.add(model);
                     }
 
@@ -364,7 +377,13 @@ public class PaymentsFragment extends Fragment {
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","read");
         hashMap.put("object","jobs");
-        hashMap.put("select", "^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+//        if (_prefs.getString(Preferences.ROLE,"pro").equals("pro")){
+            hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
+//        }else{
+//            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+//        }
+
+//        hashMap.put("select", "^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
         hashMap.put("where[status]", Status);
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", compltedpage+"");
@@ -398,6 +417,9 @@ public class PaymentsFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.PAYMENT_FRAGMENT);
         setupToolBar();
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new CheckIfUserVarified(getActivity());
+        }
     }
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).hideRight();

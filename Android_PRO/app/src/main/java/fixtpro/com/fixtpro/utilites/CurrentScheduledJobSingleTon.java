@@ -64,12 +64,12 @@ public class CurrentScheduledJobSingleTon {
     public void setInstallOrRepairModal(InstallOrRepairModal installOrRepairModal) {
         this.installOrRepairModal = installOrRepairModal;
         repairInstallProceessList.clear();
-//        if (!jobApplianceModal.getJob_appliances_service_type().equals("Install")){
+        if (!jobApplianceModal.getAppliance_type_name().equals("Re Key")){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.EQUIPMENT_INFO,installOrRepairModal.getEquipmentInfo().isCompleted()));
-//        }
+        }
         if (jobApplianceModal.getJob_appliances_service_type().equals("Repair")){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.REPAIR_TYPE,installOrRepairModal.getRepairType().isCompleted()));
-        }else if (jobApplianceModal.getJob_appliances_service_type().equals("Install")){
+        }else if (jobApplianceModal.getJob_appliances_service_type().equals("Install") || jobApplianceModal.getJob_appliances_service_type().equals("Re Key")){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_TYPE,installOrRepairModal.getRepairType().isCompleted()));
         }else {
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_TYPE,installOrRepairModal.getRepairType().isCompleted()));

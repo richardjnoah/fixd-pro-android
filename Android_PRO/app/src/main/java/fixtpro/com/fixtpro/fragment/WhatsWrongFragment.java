@@ -1,12 +1,14 @@
 package fixtpro.com.fixtpro.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,6 +68,7 @@ public class WhatsWrongFragment extends Fragment {
     float progressText = 0 ;
     int progress = 0;
     ArrayList<Brands> arrayListBrands = BrandNamesSingleton.getInstance().getBrands();
+    boolean isAutoNotiForWorkOrder = false ;
     public WhatsWrongFragment() {
         // Required empty public constructor
     }
@@ -94,6 +97,7 @@ public class WhatsWrongFragment extends Fragment {
         if (getArguments() != null) {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
+            isAutoNotiForWorkOrder = true ;
         }
     }
     @Override
@@ -127,6 +131,12 @@ public class WhatsWrongFragment extends Fragment {
         listWhatsWrong.setAdapter(adapter);
         if (arrayListBrands.size() <= 1)
             getBrands();
+        if (isAutoNotiForWorkOrder){
+            fragment = new WorkOrderFragment();
+            Bundle bundle = new Bundle();
+            bundle.putBoolean("isAutoNotiForWorkOrder",isAutoNotiForWorkOrder);
+            ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WORK_ORDER_FRAGMENT, true, bundle);
+        }
         return view;
     }
     private void setProgress(){
@@ -147,7 +157,7 @@ public class WhatsWrongFragment extends Fragment {
                         public void run() {
                             progressBar.setProgress(progress);
                         }
-                    },200);
+                    }, 200);
 
                 }
     }
@@ -165,6 +175,7 @@ public class WhatsWrongFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ReapirInstallProcessModal modal = CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position);
                 CurrentScheduledJobSingleTon.getInstance().setCurrentReapirInstallProcessModal(modal);
+
                 if (modal.getName().equals(Constants.EQUIPMENT_INFO)){
 //                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position).isCompleted()) {
 
@@ -173,45 +184,61 @@ public class WhatsWrongFragment extends Fragment {
 //                    }
 
                 }else if (modal.getName().equals(Constants.REPAIR_TYPE) || modal.getName().equals(Constants.INSTALL_TYPE) || modal.getName().equals(Constants.MAINTAIN_TYPE)){
-//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position).isCompleted()) {
+//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position - 1).isCompleted()) {
+                    if (checkIfAboveStepsCompleted(position)) {
                         fragment = new RepairFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.REPAIR_TYPE_FRAGMENT, true, null);
-//                    }
+                    }else{
+                        showAlertDialog("Fixd-Pro","Please complete above steps first.",false);
+                    }
 
                 }else if (modal.getName().equals(Constants.PARTS)){
-                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+                    if (checkIfAboveStepsCompleted(position)) {
                         fragment = new PartsFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.PARTS_FRAGMENT, true, null);
+                    }else{
+                        showAlertDialog("Fixd-Pro", "Please complete above steps first.", false);
                     }
 
                 }else if (modal.getName().equals(Constants.WORK_ORDER)){
-                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+                    if (checkIfAboveStepsCompleted(position)) {
                         fragment = new WorkOrderFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WORK_ORDER_FRAGMENT, true, null);
+                    }else{
+                        showAlertDialog("Fixd-Pro", "Please complete above steps first.", false);
                     }
 
                 }else if (modal.getName().equals(Constants.REPAIR_INFO) || modal.getName().equals(Constants.INSTALL_INFO) || modal.getName().equals(Constants.MAINTAIN_INFO)){
-                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+                    if (checkIfAboveStepsCompleted(position)) {
                         fragment = new RepairInfoFragment();
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.REPAIR_INFO_FRAGMENT, true, null);
+                    }else{
+                        showAlertDialog("Fixd-Pro", "Please complete above steps first.", false);
                     }
 
                 }else if (modal.getName().equals(Constants.SIGNATURE)){
-                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+//                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position -1).isCompleted()){
+                    if (checkIfAboveStepsCompleted(position)) {
                         Intent intent = new Intent(getActivity(), SignatureActivity.class);
                         startActivityForResult(intent, 200);
 //                        fragment = new SignatureFragment();
 //                        ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SIGNATURE_FRAGMENT, true, null);
+                    }else{
+                        showAlertDialog("Fixd-Pro","Please complete above steps first.",false);
                     }
                 }
 
             }
         });
+
         txtRescheduleJob.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), CalendarActivity.class);
-                intent.putExtra("Rescheduling","1");
+                intent.putExtra("Rescheduling", "1");
                 startActivity(intent);
             }
         });
@@ -229,7 +256,16 @@ public class WhatsWrongFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
-
+    private boolean checkIfAboveStepsCompleted(int pos){
+        boolean isCompleted = true ;
+        for (int i = 0 ; i < pos ; i++){
+            if (!CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(i).isCompleted()){
+                isCompleted = false ;
+                break;
+            }
+        }
+        return isCompleted;
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -246,7 +282,36 @@ public class WhatsWrongFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+    private void showAlertDialog(String Title,String Message, final boolean doSomeThing){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                getActivity());
 
+        // set title
+        alertDialogBuilder.setTitle(Title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                        if (doSomeThing){
+                            (((HomeScreenNew) getActivity())).popInclusiveFragment(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT);
+                        }
+
+                    }
+                });
+
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -284,7 +349,7 @@ public class WhatsWrongFragment extends Fragment {
         hashMap.put("select", "^*");
         hashMap.put("per_page", "999");
         hashMap.put("page", "1");
-        hashMap.put("service", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("appliance_type_id", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getAppliance_type_id());
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         return hashMap;
     }
@@ -310,8 +375,10 @@ public class WhatsWrongFragment extends Fragment {
                                     brands.setId(results.getJSONObject(i).getString("id"));
                                     arrayListBrands.add(brands);
                                 }
-
                             }
+                            Brands brands1 = new Brands();
+                            brands1.setBrand_name("Other Brand");
+                            arrayListBrands.add(brands1);
 
                         }
                     } catch (JSONException e) {

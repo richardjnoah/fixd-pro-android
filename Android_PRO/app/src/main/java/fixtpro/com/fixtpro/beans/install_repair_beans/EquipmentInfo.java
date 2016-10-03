@@ -7,12 +7,21 @@ import java.io.Serializable;
  */
 public class EquipmentInfo implements Serializable{
     boolean isCompleted = false ;
+    boolean isLocal = false ;
     String image = "";
     String description = "";
     String job_appliance_id = "";
     String brand_name = "";
     String model_number = "";
     String serial_number = "";
+
+    public boolean isLocal() {
+        return isLocal;
+    }
+
+    public void setIsLocal(boolean isLocal) {
+        this.isLocal = isLocal;
+    }
 
     public String getImage() {
         return image;

@@ -104,7 +104,7 @@ public class PaymentsJobsPagingAdaper extends PagingBaseAdapter<AvailableJobModa
             /************  Set Model values in Holder elements ***********/
             holder.txtName.setText(tempValues.getContact_name());
             holder.txtJobNo.setText("Job # "+tempValues.getId());
-            holder.txtRate.setText("$" + tempValues.getCost_details_pro_earned());
+            holder.txtRate.setText("$" + tempValues.getJob_line_items_pro_cut());
 
         }
         return vi;

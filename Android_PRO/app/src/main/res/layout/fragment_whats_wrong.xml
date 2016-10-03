@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical">
 
@@ -10,41 +10,46 @@
         android:id="@+id/progressContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="1dp"
+        android:layout_margin="@dimen/size_8_dp"
         android:background="@drawable/progress_border"
-        android:layout_margin="8dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="1dp">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
-        <ProgressBar
 
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:id="@+id/progress"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:max="100"
-            android:progressTint="@color/orange_signin_back"
-            android:progress="0" />
+            <ProgressBar
+
+                android:id="@+id/progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_20_dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:max="100"
+                android:progress="0"
+                android:progressTint="@color/orange_signin_back" />
+
             <TextView
                 android:id="@+id/txtProgress"
-                android:layout_centerInParent="true"
-                android:textColor="@android:color/white"
-                android:text="0%"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0%"
+                android:textSize="@dimen/size_14_sp"
+                android:textColor="@android:color/white" />
         </RelativeLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:layout_below="@+id/progressContainer"
-        android:layout_marginTop="5dp"
-        android:layout_above="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/footer"
+        android:layout_below="@+id/progressContainer"
+        android:layout_marginTop="@dimen/size_5_dp"
         android:orientation="vertical">
+
         <ListView
             android:id="@+id/listWhatsWrong"
             android:layout_width="match_parent"
@@ -55,32 +60,34 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
         android:id="@+id/footer"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-      <TextView
-          android:id="@+id/txtCancelJOb"
-          android:padding="16dp"
-          android:background="@color/orange_signin_back"
-          android:gravity="center"
-          android:layout_weight="1"
-          android:textColor="@android:color/white"
-          android:layout_width="0dp"
-          android:text="Cancel"
-          android:textSize="22sp"
-          android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtCancelJOb"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@color/orange_signin_back"
+            android:gravity="center"
+            android:padding="@dimen/size_15_dp"
+            android:text="Cancel"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_22_sp" />
+
         <TextView
             android:id="@+id/txtRescheduleJob"
-            android:padding="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@android:color/white"
             android:gravity="center"
-            android:layout_weight="1"
-            android:textSize="22sp"
-            android:textColor="@color/orange_signin_back"
-            android:layout_width="0dp"
+            android:padding="@dimen/size_15_dp"
             android:text="Reschedule"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/orange_signin_back"
+            android:textSize="@dimen/size_22_sp" />
     </LinearLayout>
 </RelativeLayout>

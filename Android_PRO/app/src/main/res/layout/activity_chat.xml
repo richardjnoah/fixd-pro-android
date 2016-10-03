@@ -6,20 +6,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/background_grey_blur"
-    android:orientation="vertical">
 
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/background_grey_blur"
+        android:orientation="vertical">
 
 
         <RelativeLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:local="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/toolbar"
@@ -36,11 +36,11 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:textColor="@android:color/white"
                         android:id="@+id/cancel"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Back" />
+                        android:text="Back"
+                        android:textColor="@android:color/white" />
 
                     <TextView
                         android:id="@+id/txtToolbar"
@@ -49,27 +49,27 @@
                         android:gravity="center"
                         android:text="@string/rating_details"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/largetext" />
+                        android:textSize="@dimen/size_20_sp" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
+
             <ImageView
-                android:layout_marginBottom="50dp"
+                android:id="@+id/imageSend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/chat"
-                android:layout_width="wrap_content"
+                android:layout_marginBottom="@dimen/size_50_dp"
+                android:src="@drawable/chat" />
 
-                android:id="@+id/imageSend"
-                android:layout_height="wrap_content" />
             <EditText
                 android:id="@+id/messageEdit"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_toLeftOf="@+id/chatSendButton"
-
                 android:autoText="true"
-                android:hint="message text"/>
+                android:hint="message text" />
 
             <Button
                 android:id="@+id/chatSendButton"
@@ -77,22 +77,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:text="Send"/>
+                android:text="Send" />
 
             <ListView
                 android:id="@+id/messagesContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-
                 android:layout_above="@+id/messageEdit"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentTop="false"
                 android:layout_below="@+id/toolbar"
-                android:layout_marginBottom="20dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/size_20_dp"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:divider="@null"
                 android:listSelector="@android:color/transparent"
-                android:transcriptMode="alwaysScroll"/>
+                android:transcriptMode="alwaysScroll" />
 
             <TextView
                 android:id="@+id/meLabel"
@@ -101,17 +100,17 @@
                 android:layout_gravity="left|center_vertical"
                 android:singleLine="false"
                 android:text="Me"
-                android:visibility="gone"
-                android:textSize="20dp"/>
+                android:textSize="@dimen/size_20_dp"
+                android:visibility="gone" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/companionLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:text="Friend"
-                android:textSize="20dp"/>
+                android:textSize="@dimen/size_20_dp"
+                android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -119,14 +118,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"/>
+                android:layout_centerVertical="true" />
 
         </RelativeLayout>
 
         <FrameLayout
             android:id="@+id/frame"
             android:layout_width="match_parent"
-            android:layout_height="240dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_height="@dimen/size_250_dp"
+            android:layout_alignParentBottom="true" />
 
-</LinearLayout></android.support.design.widget.CoordinatorLayout>
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

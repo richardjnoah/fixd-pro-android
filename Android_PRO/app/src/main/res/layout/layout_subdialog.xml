@@ -13,27 +13,27 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/size_10_dp"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/size_10_dp"
             android:text="Enter Brand Name"
             android:textColor="@android:color/black"
-            android:textSize="18sp"
+            android:textSize="@dimen/size_18_sp"
             android:textStyle="bold" />
 
         <EditText
             android:id="@+id/editBrandName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="18dp"
-            android:layout_marginLeft="14dp"
-            android:layout_marginRight="14dp"
-            android:layout_marginTop="18dp"
+            android:layout_marginBottom="@dimen/size_18_dp"
+            android:layout_marginLeft="@dimen/size_14_dp"
+            android:layout_marginRight="@dimen/size_14_dp"
+            android:layout_marginTop="@dimen/size_18_dp"
             android:background="@drawable/white_rectangewithblackline"
             android:hint="Brand Name"
-            android:padding="10dp"
+            android:padding="@dimen/size_10_dp"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="@dimen/size_18_sp" />
 
         <View
             android:layout_width="match_parent"
@@ -44,12 +44,11 @@
             android:id="@+id/txtOK"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/size_10_dp"
             android:gravity="center"
-            android:padding="10dp"
+            android:padding="@dimen/size_10_dp"
             android:text="OK"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
+            android:textSize="@dimen/size_18_sp" />
     </LinearLayout>
 </LinearLayout>

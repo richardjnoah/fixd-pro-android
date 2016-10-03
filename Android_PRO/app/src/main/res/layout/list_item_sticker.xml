@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
     <LinearLayout
         android:id="@+id/content"
@@ -18,20 +18,22 @@
             android:layout_gravity="right"
             android:background="@drawable/incoming_message_bg"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
-            android:paddingLeft="10dp">
+            android:paddingBottom="@dimen/size_10_dp"
+            android:paddingLeft="@dimen/size_10_dp">
+
             <ImageView
                 android:id="@+id/sticker_image"
-                android:layout_width="160dp"
-                android:layout_height="160dp"/>
+                android:layout_width="@dimen/size_160_dp"
+                android:layout_height="@dimen/size_160_dp" />
+
             <TextView
-                android:visibility="gone"
                 android:id="@+id/txtInfo"
                 android:layout_width="wrap_content"
-                android:layout_height="20sp"
+                android:layout_height="@dimen/size_20_sp"
                 android:layout_gravity="right"
                 android:textColor="@android:color/secondary_text_dark"
-                android:textSize="10sp"/>
+                android:textSize="@dimen/size_11_sp"
+                android:visibility="gone" />
         </LinearLayout>
 
     </LinearLayout>

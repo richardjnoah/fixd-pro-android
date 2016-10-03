@@ -15,11 +15,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:padding="12dp"
+            android:padding="@dimen/size_12_dp"
             android:src="@drawable/back_arrow" />
-
         <LinearLayout
-
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -31,10 +29,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_14"
+                android:padding="@dimen/size_14_dp"
                 android:text="@string/addresshint"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_23sp" />
+                android:textSize="@dimen/size_22_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -43,13 +41,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_marginRight="@dimen/size_22dp"
-        android:layout_marginTop="@dimen/size_30"
+        android:layout_marginRight="@dimen/size_22_dp"
+        android:layout_marginTop="@dimen/size_30_dp"
         android:gravity="center"
-        android:padding="5dp"
+        android:padding="@dimen/size_5_dp"
         android:text="@string/thisisyour"
         android:textColor="@color/white"
-        android:textSize="@dimen/size_16sp" />
+        android:textSize="@dimen/size_16_sp" />
 
 
     <RelativeLayout
@@ -57,42 +55,57 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/text1"
-        android:layout_marginTop="@dimen/size_30"
+        android:layout_marginTop="@dimen/size_30_dp"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/txtAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/size_22dp"
-            android:layout_marginRight="@dimen/size_22dp"
+            android:layout_marginLeft="@dimen/size_22_dp"
+            android:layout_marginRight="@dimen/size_22_dp"
             android:background="@drawable/whitebox_fill"
             android:gravity="left"
             android:hint="@string/addresshint"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:singleLine="true"
-            android:textColor="@color/color_grey"
+            android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
             android:textCursorDrawable="@drawable/cursor_drawable"
-            android:textSize="@dimen/size_20sp" />
+            android:textSize="@dimen/size_20_sp" />
+
         <TextView
-            android:layout_below="@+id/txtAddress"
             android:id="@+id/txtPowerbygoogle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/txtAddress"
+            android:layout_marginRight="@dimen/size_22_dp"
+            android:gravity="right"
+            android:padding="@dimen/size_5_dp"
             android:text="@string/poweredbygoogle"
             android:textColor="@color/white"
-            android:padding="5dp"
-            android:gravity="right"
-            android:layout_marginRight="@dimen/size_22dp"
-            android:textSize="@dimen/commonlargetxt" />
+            android:textSize="@dimen/size_21_sp" />
+
+        <TextView
+            android:id="@+id/txtdontSee"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txtPowerbygoogle"
+            android:layout_marginRight="@dimen/size_22_dp"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:gravity="center"
+            android:padding="@dimen/size_5_dp"
+            android:text="I dont see my address"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18_dp" />
+
         <LinearLayout
             android:id="@+id/layoutNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtAddress"
-            android:layout_marginTop="@dimen/size_70"
+            android:layout_below="@+id/txtdontSee"
+            android:layout_marginTop="@dimen/size_70_dp"
             android:orientation="vertical">
 
             <ImageView
@@ -107,40 +120,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:text="@string/next"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16sp" />
+                android:textSize="@dimen/size_16_sp" />
 
             <ImageView
                 android:id="@+id/imgScreeNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/size_30"
-                android:src="@drawable/small1" />
+                android:layout_marginTop="@dimen/size_30_dp"
+                android:src="@drawable/small1"
+                android:visibility="gone" />
 
         </LinearLayout>
 
         <ListView
             android:id="@+id/lstPlaces"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="@dimen/size_200_dp"
             android:layout_below="@+id/txtAddress"
-            android:layout_marginLeft="@dimen/size_22dp"
-            android:layout_marginRight="@dimen/size_22dp"
+            android:layout_marginLeft="@dimen/size_22_dp"
+            android:layout_marginRight="@dimen/size_22_dp"
             android:background="@android:color/white"
             android:dividerHeight="0.5dp"
             android:visibility="gone"></ListView>
 
-        <fixtpro.com.fixtpro.views.CircularProgressView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <fixtpro.com.fixtpro.views.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/progress_view"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/size_32_dp"
+            android:layout_height="@dimen/size_32_dp"
             android:layout_below="@+id/txtAddress"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="@dimen/size_12_dp"
             android:visibility="gone"
             app:cpv_animAutostart="true"
             app:cpv_color="@color/orange_signin_back"

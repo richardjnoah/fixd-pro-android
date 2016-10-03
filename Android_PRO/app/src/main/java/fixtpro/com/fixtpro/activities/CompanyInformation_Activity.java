@@ -20,6 +20,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.fragment.CompanyInformation_Activity_Edit;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.views.WheelView;
 
 public class CompanyInformation_Activity extends AppCompatActivity {
@@ -31,6 +34,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
     String ENI_hint_text = "";
     HashMap<String,String> finalRequestParams = null ;
     boolean ispro = false ;
+    boolean iscompleting = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +51,9 @@ public class CompanyInformation_Activity extends AppCompatActivity {
             if (bundle.containsKey("ispro")){
                 ispro = bundle.getBoolean("ispro");
             }
+            if (bundle.containsKey("iscompleting")){
+                iscompleting = bundle.getBoolean("iscompleting");
+            }
         }
     }
 
@@ -55,6 +62,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
             }
         });
         txtHourlyRate.setOnClickListener(new View.OnClickListener() {
@@ -78,9 +86,15 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                 }else if (YearInBusiness.equals("")){
                     showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Pleae enter the year in business.");
+                }else if (Integer.parseInt(YearInBusiness) > 80){
+                    showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
+                            "Pleae enter a valid value for Number of Years in Business < 80.");
                 }else if (EniNumber.equals("")){
                     showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
-                            "Pleae enter the eni number.");
+                            "Pleae enter the ein number.");
+                }else if (EniNumber.length() < 9){
+                    showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
+                            "The entered ein number looks invalid.");
                 }else if (InsuranceCarrier.equals("")){
                     showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Pleae enter the insurance carrier.");
@@ -91,16 +105,24 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                     showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Pleae enter the hourly rate.");
                 }else{
-                    Intent intent = new Intent(CompanyInformation_Activity.this,LicensePicture_Activity.class);
+
                     finalRequestParams.put("data[pros][company_name]", CompanyName);
                     finalRequestParams.put("data[technicians][years_in_business]", YearInBusiness);
                     finalRequestParams.put("data[pros][ein_number]", EniNumber);
                     finalRequestParams.put("data[pros][insurance]", InsuranceCarrier);
                     finalRequestParams.put("data[pros][insurance_policy]", PolicyNumber);
                     finalRequestParams.put("data[pros][hourly_rate]", HourlyRate);
-                    intent.putExtra("ispro", ispro);
-                    intent.putExtra("finalRequestParams", finalRequestParams);
-                    startActivity(intent);
+                    if (HourlyRate.equals("$125")){
+                        showAlertDialogRate("Fixd-Pro","Keep in mind Pros with lower labor ates will see available job first.Higher labor rates may limit your job availability");
+                    }else{
+                        Intent intent = new Intent(CompanyInformation_Activity.this,LicensePicture_Activity.class);
+                        intent.putExtra("ispro", ispro);
+                        intent.putExtra("iscompleting", iscompleting);
+                        intent.putExtra("finalRequestParams", finalRequestParams);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
+
 
                 }
 
@@ -127,8 +149,8 @@ public class CompanyInformation_Activity extends AppCompatActivity {
     }
 
     private void showHourlyRateDialog() {
-        final String[] TYPES = new String[]{"$75", "$95", "$100", "$125", "$150"};
-        final String[] TYPES_NUMERIC = new String[]{"75", "95", "100", "125", "150"};
+        final String[] TYPES = new String[]{"$45","$55","$65","$75","$85","$95","$100", "$105", "$115", "$125"};
+        final String[] TYPES_NUMERIC = new String[]{"45","55","65","75","85", "95","100", "105","115", "125"};
         final Dialog dialog = new Dialog(CompanyInformation_Activity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.wheelviewdialog);
@@ -186,6 +208,44 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                         dialog.cancel();
                     }
                 });
+
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }private void showAlertDialogRate(String Title, String Message) {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                CompanyInformation_Activity.this);
+
+        // set title
+        alertDialogBuilder.setTitle(Title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setNegativeButton("Change", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                        showHourlyRateDialog();
+                    }
+                }).setPositiveButton("Ok,Countinue", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, close
+                // current activity
+                dialog.cancel();
+                Intent intent = new Intent(CompanyInformation_Activity.this,LicensePicture_Activity.class);
+                intent.putExtra("ispro", ispro);
+                intent.putExtra("iscompleting", iscompleting);
+                intent.putExtra("finalRequestParams", finalRequestParams);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
+            }
+        });
 
 
         // create alert dialog

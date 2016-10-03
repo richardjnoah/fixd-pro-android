@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="12dp"
+    android:paddingBottom="@dimen/size_12_dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -22,7 +22,7 @@
             app:starCount="5"
             app:starEmpty="@drawable/blank_star"
             app:starFill="@drawable/fill_star"
-            app:starImageSize="@dimen/ratinglistitemstarsize" />
+            app:starImageSize="@dimen/size_25_dp" />
 
         <TextView
             android:id="@+id/txtRateingInterval"
@@ -34,13 +34,12 @@
             android:singleLine="true"
             android:text="1 w"
             android:textColor="@color/lb_tv_white"
-            android:textSize="@dimen/ratingtxtmedium" />
+            android:textSize="@dimen/size_17_sp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="vertical">
 
         <TextView
@@ -48,24 +47,87 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:padding="3dp"
+            android:padding="@dimen/size_3_dp"
             android:singleLine="true"
             android:text="George Son"
-            android:textColor="@color/lb_tv_white"
-            android:textSize="@dimen/ratingtxtlarge" />
-
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_22_sp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Knowlageable"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Courteous"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Appearance"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtKnowlageable"
+                    android:text="Knowlageable"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtCourteous"
+                    android:text="Courteous"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtAppearance"
+                    android:text="Appearance"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
         <TextView
+            android:visibility="gone"
             android:id="@+id/txtComments"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="left"
-            android:padding="3dp"
-            android:text="Testing Testing Testing Testing Testing Testing TestingTestingTesting Testing Testing Testing"
-            android:textColor="@color/lb_tv_white"
-            android:textSize="@dimen/ratingtxtsmall" />
+            android:padding="@dimen/size_3_dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_16_sp" />
 
 
     </LinearLayout>
 
-
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
 </LinearLayout>

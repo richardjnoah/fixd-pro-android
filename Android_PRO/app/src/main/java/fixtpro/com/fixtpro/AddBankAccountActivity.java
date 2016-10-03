@@ -83,8 +83,8 @@ public class AddBankAccountActivity extends AppCompatActivity {
         txtBankName = (EditText)findViewById(R.id.txtBankName);
         txtRoutingNumber = (EditText)findViewById(R.id.txtRoutingNumber);
         txtAccountNumber = (EditText)findViewById(R.id.txtAccountNumber);
-        txtAccountType = (TextView)findViewById(R.id.txtAccountType);
-        lblAddBankAccount = (TextView)findViewById(R.id.lblAddBankAccount);
+//        txtAccountType = (TextView)findViewById(R.id.txtAccountType);
+//        lblAddBankAccount = (TextView)findViewById(R.id.lblAddBankAccount);
     }
     private void setTypeface(){
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");

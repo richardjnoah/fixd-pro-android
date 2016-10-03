@@ -62,7 +62,7 @@ import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.WheelView;
 
 public class Add_Driver_LicScreen extends AppCompatActivity {
-    private Context _context = this;
+  /*  private Context _context = this;
     private String TAG = "Add_Driver_LicScreen";
     Typeface fontfamily;
     TextView txtBack, txtDone, txtTradeskill, txtHourlyrate, lblAddDriverLicence, txtDOB,txtDrivingLiState;
@@ -556,7 +556,7 @@ public class Add_Driver_LicScreen extends AppCompatActivity {
 
     private void openGallery() {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, GALLERY_REQUEST);
     }
@@ -767,7 +767,7 @@ public class Add_Driver_LicScreen extends AppCompatActivity {
         return hashMap;
     }
 
-    /*Create Camra Gallery PopUP*/
+    *//*Create Camra Gallery PopUP*//*
     private void showCamraGalleryPopUp() {
         dialog = new Dialog(_context);
         dialog = new Dialog(_context);
@@ -840,7 +840,7 @@ public class Add_Driver_LicScreen extends AppCompatActivity {
         dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog1 components -listview
         ListView lst_TellUsMore = (ListView) dialog1.findViewById(R.id.lst_TellUsMore);
-                /*To set the Adapter*/
+                *//*To set the Adapter*//*
         StateListAdapter mAdp = new StateListAdapter(Utilities.getStateList(), Add_Driver_LicScreen.this);
         lst_TellUsMore.setAdapter(mAdp);
         lst_TellUsMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -852,5 +852,5 @@ public class Add_Driver_LicScreen extends AppCompatActivity {
             }
         });
         dialog1.show();
-    }
+    }*/
 }

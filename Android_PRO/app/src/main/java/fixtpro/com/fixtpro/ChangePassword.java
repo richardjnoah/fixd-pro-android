@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -32,18 +33,19 @@ import fixtpro.com.fixtpro.utilites.Utilities;
 
 
 public class ChangePassword extends AppCompatActivity {
-    TextView txtBack, txtDone, lblPhone;
-    EditText txtCurrentPassword, txtNewPassword, txtConfirmPassword;
+    TextView  txtDone;
+    EditText txtCurrentPassword, txtNewPassword, txtConfirmPassword,lblPhone;
     SharedPreferences _prefs = null ;
     Context _context  = this ;
     String Phone  = "";
     String authToken  =  "";
     String current_password = "",new_password = "",confirm_password  = "";
     String message = "";
+    ImageView imgBack;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_change_password);
+        setContentView(R.layout.change_password_new);
         setWidgets();
         _prefs = Utilities.getSharedPreferences(_context);
         authToken  = _prefs.getString(Preferences.AUTH_TOKEN, null) ;
@@ -54,9 +56,10 @@ public class ChangePassword extends AppCompatActivity {
 
     }
     private  void setWidgets(){
-        txtBack = (TextView)findViewById(R.id.txtBack);
+
+        imgBack = (ImageView)findViewById(R.id.imgBack);
         txtDone = (TextView)findViewById(R.id.txtDone);
-        lblPhone = (TextView)findViewById(R.id.lblPhone);
+        lblPhone = (EditText)findViewById(R.id.lblPhone);
 
         txtCurrentPassword = (EditText)findViewById(R.id.txtCurrentPassword);
         txtNewPassword = (EditText)findViewById(R.id.txtNewPassword);
@@ -72,10 +75,10 @@ public class ChangePassword extends AppCompatActivity {
                 new_password =  txtNewPassword.getText().toString().trim();
                 confirm_password =  txtConfirmPassword.getText().toString().trim();
                 if (current_password.length() == 0){
-                    showAlertDialog("Fixd-Pro", "Please enter the current password.",false);
+                    showAlertDialog("Fixd-Pro", "Please enter the old password.",false);
                     return;
                 }else if (current_password.length() < 6){
-                    showAlertDialog("Fixd-Pro", "Your current password should be 6 or more characters long, Please try again.",false);
+                    showAlertDialog("Fixd-Pro", "Your old password should be 6 or more characters long, Please try again.",false);
                     return;
                 }
                 else if (new_password.length() == 0){
@@ -87,7 +90,7 @@ public class ChangePassword extends AppCompatActivity {
                     return;
                 }
                 else if (confirm_password.length() == 0){
-                    showAlertDialog("Fixd-Pro", "Please enter the confirm password.",false);
+                    showAlertDialog("Fixd-Pro", "Please re-enter the password to confirm.",false);
                     return;
                 }
                 else if (confirm_password.length() < 6){
@@ -107,10 +110,12 @@ public class ChangePassword extends AppCompatActivity {
 
             }
         });
-        txtBack.setOnClickListener(new View.OnClickListener() {
+        imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
                 finish();
+
             }
         });
     }
@@ -144,7 +149,7 @@ public class ChangePassword extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    showAlertDialog("Fixed-Pro",message,true);
+                    finish();
                     break;
                 }
                 case 1:{

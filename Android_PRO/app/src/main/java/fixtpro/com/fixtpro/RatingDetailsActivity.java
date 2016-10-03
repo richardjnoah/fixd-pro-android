@@ -8,8 +8,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import fixtpro.com.fixtpro.beans.RatingListModal;
 import fixtpro.com.fixtpro.utilites.Utilities;
+import fixtpro.com.fixtpro.views.CircularImageView;
 import fixtpro.com.fixtpro.views.RatingBarView;
 
 public class RatingDetailsActivity extends AppCompatActivity {
@@ -17,8 +20,11 @@ public class RatingDetailsActivity extends AppCompatActivity {
     ImageView cancel;
     RatingListModal ratingListModal = null ;
     RatingBarView custom_ratingbar,customrating_tech ;
+    public TextView txtKnowlageable,txtCourteous,txtAppearance;;
     TextView txtToolbar,txtJobId,txtUserName,txtAddress,txtDateTime,txtArrivalTime,txtCompleteTime,txtTechName,txtDetailss;
     Typeface fontfamily ;
+    fixtpro.com.fixtpro.views.CircularImageView circleImage;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,38 +71,51 @@ public class RatingDetailsActivity extends AppCompatActivity {
         txtCompleteTime = (TextView)findViewById(R.id.txtCompleteTime);
         txtTechName = (TextView)findViewById(R.id.txtTechName);
         txtDetailss = (TextView)findViewById(R.id.txtDetailss);
+
+        txtAppearance = (TextView) findViewById(R.id.txtAppearance);
+        txtCourteous = (TextView) findViewById(R.id.txtCourteous);
+        txtKnowlageable = (TextView) findViewById(R.id.txtKnowlageable);
+
+        circleImage =(CircularImageView)findViewById(R.id.circleImage);
     }
     private void setTypeFace(){
-        txtJobId.setTypeface(fontfamily);
-        txtUserName.setTypeface(fontfamily);
-        txtAddress.setTypeface(fontfamily);
-        txtDateTime.setTypeface(fontfamily);
-        txtArrivalTime.setTypeface(fontfamily);
-        txtCompleteTime.setTypeface(fontfamily);
-        txtTechName.setTypeface(fontfamily);
-        txtDetailss.setTypeface(fontfamily);
+//        txtJobId.setTypeface(fontfamily);
+//        txtUserName.setTypeface(fontfamily);
+//        txtAddress.setTypeface(fontfamily);
+//        txtDateTime.setTypeface(fontfamily);
+//        txtArrivalTime.setTypeface(fontfamily);
+//        txtCompleteTime.setTypeface(fontfamily);
+//        txtTechName.setTypeface(fontfamily);
+//        txtDetailss.setTypeface(fontfamily);
     }
     private void setValues(){
         txtJobId.setText("Job # "+ ratingListModal.getJob_id());
         txtUserName.setText(ratingListModal.getCustomers_first_name() +" " +ratingListModal.getCustomers_last_name());
-        txtAddress.setText(ratingListModal.getJobs_job_customers_addresses_address()+" - "+ratingListModal.getJobs_job_customers_addresses_city()+","+ratingListModal.getJobs_job_customers_addresses_state());
+        txtAddress.setText(ratingListModal.getJobs_job_customers_addresses_address() +" - "+ratingListModal.getJobs_job_customers_addresses_city() +"," +ratingListModal.getJobs_job_customers_addresses_state());
         txtDateTime.setText(Utilities.convertDate(ratingListModal.getJobs_request_date()));
         if (!ratingListModal.getJobs_started_at().equals("0000-00-00 00:00:00")){
-            txtArrivalTime.setText(ratingListModal.getJobs_started_at());
+            String date[] = Utilities.getDate(ratingListModal.getJobs_started_at()).split(" ");
+            txtArrivalTime.setText(date[2] + date[3]);
         }else {
             txtArrivalTime.setText("(null)");
         }
         if (!ratingListModal.getJobs_finished_at().equals("0000-00-00 00:00:00")){
-            txtCompleteTime.setText(ratingListModal.getJobs_finished_at());
+            String date[] = Utilities.getDate(ratingListModal.getJobs_finished_at()).split(" ");
+            txtCompleteTime.setText(date[2] + date[3]);
         }else {
             txtCompleteTime.setText("(null)");
         }
 
 
-        txtTechName.setText(ratingListModal.getJobs_technilcians_first_name() +" "+ ratingListModal.getJobs_technilcians_last_name());
+        txtTechName.setText(ratingListModal.getJobs_technilcians_first_name() + " " + ratingListModal.getJobs_technilcians_last_name());
         txtDetailss.setText(ratingListModal.getComments());
 
         custom_ratingbar.setStar((int) (Float.parseFloat(ratingListModal.getRatings())), true);
         customrating_tech.setStar((int) (Float.parseFloat(ratingListModal.getJobs_technilcians_avg_rating())), true);
+        txtKnowlageable.setText(ratingListModal.getKnowledgeable());
+        txtAppearance.setText(ratingListModal.getAppearance());
+        txtCourteous.setText(ratingListModal.getCourteous());
+        if (ratingListModal.getJobs_technilcians_img_original().length() > 0)
+        Picasso.with(this).load(ratingListModal.getJobs_technilcians_img_original()).into(circleImage);
     }
 }

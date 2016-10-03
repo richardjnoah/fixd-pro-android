@@ -103,4 +103,16 @@ public class Singleton {
     public static Singleton getInstance( ) {
         return singleton;
     }
+
+    public  void doLogout(){
+        completedjoblist.clear();
+        schedulejoblist.clear();
+        availablejoblist.clear();
+        nextCompleted = "null";
+        nextSchduled = "null";
+        nextAvailable = "null";
+        pageAvaileble = 1 ;
+        pageSheduled = 1 ;
+        compltedpage = 1 ;
+    }
 }

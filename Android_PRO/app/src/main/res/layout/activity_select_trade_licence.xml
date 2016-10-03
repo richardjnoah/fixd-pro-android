@@ -1,41 +1,44 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_blur"
     tools:context="fixtpro.com.fixtpro.Login_Register_Activity">
+
     <RelativeLayout
 
-        android:orientation="horizontal"
         android:id="@+id/header_items"
-        android:layout_alignParentTop="true"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
         <TextView
-            android:padding="@dimen/padding_header_items"
             android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_10_dp"
             android:text="@string/back"
-            android:textSize="@dimen/text_size_header_items"
             android:textColor="@android:color/white"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textSize="@dimen/size_18_sp" />
+
         <TextView
-            android:padding="@dimen/padding_header_items"
             android:id="@+id/txtDone"
-            android:layout_alignParentRight="true"
-            android:text="@string/done"
-            android:textSize="@dimen/text_size_header_items"
-            android:textColor="@android:color/white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/size_10_dp"
+            android:text="@string/done"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_18_sp" />
 
     </RelativeLayout>
 
- <ListView
-     android:layout_below="@+id/header_items"
-     android:id="@+id/lstTradeSkill"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"></ListView>
-
+    <ListView
+        android:id="@+id/lstTradeSkill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_items"></ListView>
 
 
 </RelativeLayout>

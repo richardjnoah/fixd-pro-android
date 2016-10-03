@@ -1,121 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_marginBottom="10dp"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    android:orientation="vertical">
+
     <LinearLayout
-        android:layout_margin="10dp"
         android:id="@+id/main_layout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtServiceType"
-            android:textStyle="bold"
-            android:text="Repair:"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtApplianceName"
-            android:text=" Air Conditionar"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="Power Source:"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtPowerSourceName"
-            android:text=" Air Conditionar"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="Problem:"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtProblem"
-            android:text=" Air Conditionar"
-            android:maxLines="2"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="Brand:"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtBrand"
-            android:text=" Air Conditionar"
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+
+        android:layout_margin="@dimen/size_10_dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txtServiceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Repair:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtApplianceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Power Source:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtPowerSourceName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Brand:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problem:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtProblem"
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problem:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:visibility="invisible"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problem:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+
+                android:layout_width="wrap_content"
+
+                android:layout_height="wrap_content"
+                android:maxLines="2"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Problem:"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="N/A"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@android:color/white"
-            android:textStyle="bold"
-            android:text="More Info:"
-            android:textSize="22sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <TextView
-            android:textColor="@android:color/white"
-            android:id="@+id/txtDesc"
-            android:text="Hello..........."
-            android:textSize="20sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-    </LinearLayout>
-
-    </LinearLayout>
     <ImageView
-        android:layout_alignParentRight="true"
-        android:src="@drawable/ico_show_problem"
         android:id="@+id/imgShowProblem"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ico_show_problem" />
+
     <View
-        android:layout_below="@+id/main_layout"
         android:id="@+id/divider"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
         android:layout_width="match_parent"
-        android:layout_height="2dp"></View>
+        android:layout_height="2dp"
+        android:layout_below="@+id/main_layout"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:background="@android:color/white"></View>
 </RelativeLayout>

@@ -16,7 +16,7 @@
     <string name="next">Next</string>
 
     <!-- Varification Screen-->
-    <string name="varification_text">"<![CDATA[<font color='#ffffff'>enter your </font><font color='#873e10'>verification code</font>]]>"</string>
+    <string name="varification_text">"<![CDATA[<font color='#ffffff'>enter your </font><font color='#fc7506'>verification code</font>]]>"</string>
     <string name="sign_in">"SIGN IN"</string>
     <string name="register">"REGISTER"</string>
     <string name="title_activity_register_">Register_Activity</string>
@@ -32,6 +32,7 @@
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
     <string name="email">Email Address</string>
+    <string name="year_exp">Years Experience</string>
     <string name="company_name">Company Name</string>
     <string name="address">Address</string>
     <string name="address2">Address2</string>
@@ -43,7 +44,7 @@
     <string name="companyinfo">Company Information</string>
     <string name="companyname">Company Name</string>
     <string name="yearinbusi">Year in Business</string>
-    <string name="eninumber">ENI Number</string>
+    <string name="eninumber">EIN Number</string>
     <string name="insurancecarrer">Insurance Carrier</string>
 
     <!--Add_Driver_LicScreen-->
@@ -76,7 +77,7 @@
     <string name="title_activity_add_bank_account">AddBankAccountActivity</string>
 
     <!-- Bank Account Screen-->
-    <string name="add_bank_account">Add Bank Account</string>
+    <string name="add_bank_account">Bank Information</string>
     <string name="bank_name">Bank Name</string>
     <string name="routing_number">Routing Number</string>
     <string name="account_number">Account Number</string>
@@ -101,7 +102,7 @@
     <string name="welcomedroid">Welcome Droid!</string>
     <string name="nav_item_home">Home</string>
     <string name="nav_item_myjobs">My Jobs</string>
-    <string name="nav_item_payments">Payment Details</string>
+    <string name="nav_item_payments">Earnings</string>
     <string name="nav_item_message">Message</string>
     <string name="nav_item_myratings">My Ratings</string>
     <string name="nav_item_settings">Settings</string>
@@ -128,9 +129,11 @@
     <string name="changepassword">Change Password</string>
     <string name="editprofile">Edit Profile</string>
     <string name="editcompanyinfo">Edit Company Info</string>
+    <string name="edit_address">Edit Address</string>
     <string name="editbankinfo">Edit Bank Account Info</string>
     <string name="edittechnicians">Edit Technicians</string>
     <string name="change_radius">Change Radius</string>
+    <string name="edit_trade_skills">Edit Trade Skills</string>
     <string name="locationservices">Location Services</string>
     <string name="textmessaging">Text Messaging</string>
     <string name="notifications">NOTIFICATIONS</string>
@@ -159,7 +162,7 @@
     <string name="ohno">Oh No!</string>
     <string name="areusure_decline">Are you sure you want to decline this job?</string>
     <string name="backup_decline">Once you decline a job, you cannot pick it back up.</string>
-    <string name="declineedittext">Tell us why you are\ndeclining.</string>
+    <string name="declineedittext">Tell us why you are declining.</string>
 
     <string name="canceljob">Cancel Job</string>
     <string name="areusure_cancel">Are you sure you want to cancel this job?</string>
@@ -211,6 +214,9 @@
     <string name="date">MM/YYYY</string>
     <string name="cw">CVV</string>
     <string name="scancard">Scan Card</string>
+    <string name="byclicking">By clicking \"Finish\"  you agree to the : </string>
+    <string name="termsandcon"><u>terms and conditions</u> and</string>
+    <string name="termsandcon11"><u>dealer service agreement.</u></string>
 
 
     <!--Camra Gallery PopUP-->
@@ -232,7 +238,7 @@
     <string name="jobsaccepted">Jobs Accepted</string>
     <string name="hoursworked">Hours Worked</string>
     <string name="arrivaltime">Arrival Time:</string>
-    <string name="completetime">Compeleted Time:</string>
+    <string name="completetime">Completed Time:</string>
     <string name="summary">Summary</string>
     <string name="tripchanges">Trip Charges:</string>
     <string name="moterrebinding">Motor Rebinding Repair:</string>
@@ -251,7 +257,9 @@
     <string name="partnum">Part number</string>
     <string name="qty">Qty</string>
     <string name="partcost">Part cost</string>
-
+    <string name="tap_add_parts">"<![CDATA[<font color='#ffffff'>Tap </font><font color='#873e10'>Add Part</font><font color='#ffffff'> to enter a dispoasal fee. </font>]]>"</string>
+    <string name="enter_parts_cost">"<![CDATA[<font color='#ffffff'>Please enter </font><font color='#873e10'>whole sale parts cost.</font>]]>"</string>
+    <string name="disposal_fess">"<![CDATA[<font color='#ffffff'>Enter </font><font color='#873e10'>disposal fee </font><font color='#ffffff'>above if applicable. </font>]]>"</string>
     <!--Work Order...-->
     <string name="neednew">Need new washer installed</string>
     <string name="repairtype">Repair Type:</string>
@@ -408,7 +416,7 @@
 
     <string name="no_internet_connection">No internet connection</string>
     <string name="addresshint">Address</string>
-    <string name="thisisyour">This is your company headquarers.</string>
+    <string name="thisisyour">This is your company headquarters.</string>
     <string name="poweredbygoogle">powered by Google</string>
 
     <!--TradeSkillsActivity-->
@@ -416,7 +424,7 @@
     <string name="pleaseselect">Please select the skills your company is licensed for.</string>
     <string name="finish">Finish</string>
     <string name="backgroundcheck">Background Check</string>
-    <string name="would">Would you like to add additional technicians under\nyour account?</string>
+    <string name="would">Would you like to add additional technicians under your account?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="taptosign">TAP TO SIGN</string>
@@ -429,9 +437,9 @@
     <string name="driverliecensestate">Driver License State</string>
     <string name="socialsecurityno">Social Security Number</string>
     <string name="informationfor">Information for</string>
-    <string name="yourrights">Your Rights Under</string>
+    <string name="yourrights">Your Rights Under FCRA</string>
     <string name="iacknowledge">I acknowledge receipt of the summery of Your Rights Under the Fair Credit Reporting A(FCRA) and certify that i have read and understand this document </string>
-
+    <string name="discloserback">I acknowledge receipt of the Disclosure Regarding Background Investigation and certify that i have read and understand this document.</string>
     <!--SignUp_AddressActivity -->
     <string name="emailonly">Email</string>
     <string name="submit">Submit</string>
@@ -451,8 +459,8 @@
 
 
     <string name="liecensepic">License and Picture</string>
-    <string name="addprofilepic">Add ProfilePicture</string>
-    <string name="adddriverliecense">Add Driver License</string>
+    <string name="addprofilepic">Add Profile Picture</string>
+    <string name="adddriverliecense">Add Driver\'s License</string>
     <string name="tradeliecenseno">Trade License Numbers</string>
     <string name="mobile">Mobile Number</string>
     <string name="accountinfo">Account Information</string>
@@ -468,4 +476,13 @@
     <string name="address11">Address 1</string>
     <string name="address22">Address 2</string>
     <string name="zip_code11">Zip Code</string>
+
+
+    <string name="dealerserviceagre">Dealer Service Agreement</string>
+    <string name="termscondtiontextstr">Terms and Conditions</string>
+
+
+
+
+
 </resources>

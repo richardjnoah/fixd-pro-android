@@ -20,14 +20,19 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import fixtpro.com.fixtpro.R;
 
 /**
  * Created by sony on 04-02-2016.
@@ -120,10 +125,13 @@ public class Utilities {
         String time1 = null;
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             final Date dateObj = sdf.parse(time);
             System.out.println(dateObj);
-            System.out.println(new SimpleDateFormat("k:mm a").format(dateObj));
-            time1 = new SimpleDateFormat("k:mm a").format(dateObj);
+//            System.out.println(new SimpleDateFormat("k:mm a").format(dateObj));
+            final SimpleDateFormat pstFormat =  new SimpleDateFormat("k:mm a");
+//            pstFormat.setTimeZone(TimeZone.getTimeZone("PST"));
+            time1 = pstFormat.format(dateObj);
 
         } catch (final ParseException e) {
             e.printStackTrace();
@@ -131,9 +139,31 @@ public class Utilities {
         return time1;
 
     }
+
+    public static String getDate(String OurDate)
+    {
+        try
+        {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date value = formatter.parse(OurDate);
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MMMM,dd yyyy hh:mm a"); //this format changeable
+            dateFormatter.setTimeZone(TimeZone.getDefault());
+            OurDate = dateFormatter.format(value);
+
+            //Log.d("OurDate", OurDate);
+        }
+        catch (Exception e)
+        {
+            OurDate = "00-00-0000 00:00";
+        }
+        return OurDate;
+    }
     public static String convertDate(String date){
         String date1 = null;
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             final Date dateObj = sdf.parse(date);
             date1  = new SimpleDateFormat("EEE, MMM d, yyyy").format(dateObj);
@@ -209,5 +239,171 @@ public class Utilities {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+
+    /***********Copey Files from Assests to Internal/External Storage*************/
+    public static void copySqltiteFromAssets(Context context,String filename,String Storingpath) {
+        InputStream in = null;
+        OutputStream out = null;
+        try {
+            Log.e("",""+Storingpath);
+            in = context.getAssets().open(filename);
+            File outFile = new File(Storingpath, filename);
+            out = new FileOutputStream(outFile);
+            copyFile(in, out);
+        } catch(IOException e) {
+            Log.e("tag", "Failed to copy asset file: " + filename, e);
+        }
+        finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    // NOOP
+                }
+            }
+            if (out != null) {
+                try {
+                    out.close();
+                } catch (IOException e) {
+                    // NOOP
+                }
+            }
+        }
+
+    }
+    private static void copyFile(InputStream in, OutputStream out) throws IOException {
+
+        byte[] buffer = new byte[1024];
+        int read;
+        while((read = in.read(buffer)) != -1){
+            out.write(buffer, 0, read);
+        }
+    }
+    public static int getApplianceImage(String appliance) {
+        if (appliance.equals("Washer"))
+            return R.drawable.washer;
+        else if (appliance.equals("Dryer"))
+            return R.drawable.fan;
+        else if (appliance.equals("Cooktop"))
+            return R.drawable.cooktop;
+        else if (appliance.equals("Oven"))
+            return R.drawable.microware;
+        else if (appliance.equals("Range Oven"))
+            return R.drawable.range;
+        else if (appliance.equals("Double Oven"))
+            return R.drawable.microware;
+        else if (appliance.equals("Range Hood"))
+            return R.drawable.range;
+        else if (appliance.equals("Refrigerator"))
+            return R.drawable.fridge;
+        else if (appliance.equals("Dishwasher"))
+            return R.drawable.dishwasher;
+        else if (appliance.equals("Garbage Disposal"))
+            return R.drawable.garbage;
+        else if (appliance.equals("Ice Maker"))
+            return R.drawable.ice_maker;
+        else if (appliance.equals("Stand-alone Freezer"))
+            return R.drawable.freezer;
+        else if (appliance.equals("Installed Microwave"))
+            return R.drawable.microware;
+        else if (appliance.equals("Wine Refrigerator"))
+            return R.drawable.fridge;
+        else if (appliance.equals("Small Refrigerator"))
+            return R.drawable.fridge;
+       else if (appliance.equals("Mini-Fridge"))
+            return R.drawable.fridge;
+        else  if (appliance.equals("Re Key"))
+            return R.drawable.key_thumb;
+        else  if (appliance.equals("Stack Clothes Washer and Dryer"))
+            return R.drawable.washer;
+        return -1;
+    }
+    public static int getApplianceImageByName(String appliance) {
+        if (appliance.equals("Air Conditioner(Window)"))
+            return R.drawable.air_conditioner;
+        else if (appliance.equals("Boiler"))
+            return R.drawable.boiler;
+        else if (appliance.equals("Ceiling Fan"))
+            return R.drawable.ceiling_fan;
+        else if (appliance.equals("Central Vacuum"))
+            return R.drawable.central_vacuum;
+        else if (appliance.equals("Clothes Dryer"))
+            return R.drawable.clothes_dryer;
+        else if (appliance.equals("Clothes Washer") || appliance.equals("Stack Clothes Washer and Dryer"))
+            return R.drawable.clothes_washer;
+        else if (appliance.equals("Cooktop"))
+            return R.drawable.cooktop;
+        else if (appliance.equals("Dishwasher"))
+            return R.drawable.dishwasher;
+        else if (appliance.equals("Disposal"))
+            return R.drawable.disposal;
+        else if (appliance.equals("Ductless"))
+            return R.drawable.ductless;
+        else if (appliance.equals("Electrical Panel"))
+            return R.drawable.electrical_panel;
+        else if (appliance.equals("Faucet"))
+            return R.drawable.faucet;
+        else if (appliance.equals("Fireplace"))
+            return R.drawable.fireplace;
+        else if (appliance.equals("Freezer"))
+            return R.drawable.freezer;
+        else if (appliance.equals("Garage Door Opener"))
+            return R.drawable.garage_door_opener;
+       else if (appliance.equals("Garbage Disposal"))
+            return R.drawable.garbage_disposal;
+        else  if (appliance.equals("Hot Water Dispenser"))
+            return R.drawable.hot_water_dispenser;
+        else  if (appliance.equals("Hot Water Heater"))
+            return R.drawable.hot_water_heater;
+        else  if (appliance.equals("Ice Maker"))
+            return R.drawable.ice_maker;
+        else  if (appliance.equals("Light Fixture"))
+            return R.drawable.light_fixture;
+        else  if (appliance.equals("Light Switch"))
+            return R.drawable.light_switch;
+        else  if (appliance.equals("Microwave Oven"))
+            return R.drawable.microwave_oven;
+        else  if (appliance.equals("Outlet"))
+            return R.drawable.outlet;
+        else  if (appliance.equals("Oven"))
+            return R.drawable.oven;
+        else  if (appliance.equals("Package Unit"))
+            return R.drawable.package_unit;
+        else  if (appliance.equals("Pipes"))
+            return R.drawable.pipes;
+        else  if (appliance.equals("Pool & spa (All)"))
+            return R.drawable.pool_spa_all;
+        else  if (appliance.equals("Range"))
+            return R.drawable.range;
+        else  if (appliance.equals("Rangehood"))
+            return R.drawable.rangehood;
+        else  if (appliance.equals("Re Key"))
+            return R.drawable.re_key;
+        else  if (appliance.equals("Refrigerator"))
+            return R.drawable.refrigerator;
+        else  if (appliance.equals("Shower Drain"))
+            return R.drawable.shower_drains;
+        else  if (appliance.equals("Shower Head"))
+            return R.drawable.shower_head;
+        else  if (appliance.equals("Shower_ Tub"))
+            return R.drawable.shower_tub;
+        else  if (appliance.equals("Shower Drain"))
+            return R.drawable.washer;
+        else  if (appliance.equals("Split System"))
+            return R.drawable.split_system;
+        else  if (appliance.equals("Sump Pump"))
+            return R.drawable.sump_pump;
+        else  if (appliance.equals("Toilet"))
+            return R.drawable.toilet;
+        else  if (appliance.equals("Trash Compactor"))
+            return R.drawable.trash_compactor;
+        else  if (appliance.equals("Whirlpool"))
+            return R.drawable.whirlpool;
+        else  if (appliance.equals("Window Unit"))
+            return R.drawable.window_unit;
+        else  if (appliance.equals("Wine or Beverage Refrigerator"))
+            return R.drawable.wine_or_beverage_refrigerator;
+        return -1;
+    }
 
 }

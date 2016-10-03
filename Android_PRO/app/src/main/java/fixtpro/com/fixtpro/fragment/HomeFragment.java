@@ -3,9 +3,11 @@ package fixtpro.com.fixtpro.fragment;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -18,6 +20,8 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +35,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -52,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -65,12 +71,22 @@ import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
 import fixtpro.com.fixtpro.UserProfileScreen;
 import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
+import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;
 import fixtpro.com.fixtpro.adapters.AvailableJobsPagingAdaper;
+import fixtpro.com.fixtpro.adapters.JobsPagingAdapter;
+import fixtpro.com.fixtpro.adapters.MyInfoWindowAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
+
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNoProgress;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
-import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
+
+import fixtpro.com.fixtpro.utilites.HandlePagingResponse;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Singleton;
 import fixtpro.com.fixtpro.utilites.Utilities;
@@ -81,7 +97,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     GoogleMap map;
     LinearLayout availScheduleLayout, calenderviewall;
     TextView available, scheduled;
-    PagingListView availableJob_listView, scheduleJob_listView;
+    ListView availableJob_listView;ListView scheduleJob_listView;
     public static int pageAvaileble = 1 ;
     public static int pageSheduled = 1 ;
 
@@ -90,19 +106,25 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     RelativeLayout scheduleLayout;
     String nextScheduled = "null";
     String nextAvaileble = "null";
-    private boolean isStateAvailable =  true ;
+    public static boolean isStateAvailable =  true ;
     String error_message =  "";
     private Context _context = null ;
     Singleton singleton = null ;
     SharedPreferences _prefs = null;
     String role = "pro";
     Fragment fragment = null ;
-    private Dialog dialog;
+    private Dialog dialog,dialogSuccess;
     int PERMISSION_ACCESS_FINE_LOCATION, PERMISSION_ACCESS_COARSE_LOCATION;
     final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 101;
     List<String> permissionsNeeded = new ArrayList<String>();
     Bundle savedInstanceState = null ;
     private CoordinatorLayout coordinatorLayout;
+    JobsPagingAdapter adapterAvailable ;
+    JobsPagingAdapter adapterSchedule ;
+    fixtpro.com.fixtpro.views.CircularProgressView progressView ;
+    SwipeRefreshLayout swipe_refresh_layout_schedule, swipe_refresh_layout_available;
+    String switch_tab = "Available";
+    boolean isFirstTechReg = false ;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -117,6 +139,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         this.nextAvaileble =  singleton.nextAvailable;
         this.pageAvaileble = singleton.pageAvaileble;
         this.pageSheduled = singleton.pageSheduled;
+        if (getArguments() != null){
+            Bundle b = getArguments();
+            if (b.containsKey("switch_tab"))
+                switch_tab = b.getString("switch_tab");
+            if (b.containsKey("first_tech_reg"))
+                isFirstTechReg = b.getBoolean("first_tech_reg");
+        }
     }
 
     @Override
@@ -148,8 +177,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 //        }else {
             setMap(savedInstanceState);
 //        }
-
-
         setListeners();
         try {
             String token = BaseService.getBaseService().getToken();
@@ -162,14 +189,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // send where details is object
-                if (_prefs.getString(Preferences.ACCOUNT_STATUS,"").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE,"pro").equals("pro")) {
+
+                if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
                     showAccountSetupDialog();
                     return;
                 }
-                if (_prefs.getString(Preferences.IS_VARIFIED,"").equals("0")){
+                if (_prefs.getString(Preferences.IS_VARIFIED, "").equals("0")) {
                     showAlertBackGroundSaftyDialog();
                     return;
                 }
+
+                switch_tab = "Available";
                 AvailableJobModal job_detail = new AvailableJobModal();
                 job_detail = availablejoblist.get(position);
                 Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
@@ -181,36 +211,82 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         scheduleJob_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch_tab = "Scheduled";
                 AvailableJobModal job_detail = new AvailableJobModal();
                 job_detail = schedulejoblist.get(position);
                 fragment = new ScheduledListDetailsFragment();
 //                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("modal",job_detail);
+                bundle.putSerializable("modal", job_detail);
                 ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
             }
         });
         availablejoblist = singleton.getAvailablejoblist();
         schedulejoblist = singleton.getSchedulejoblist();;
+
+        adapterAvailable = new JobsPagingAdapter(getActivity(),availablejoblist,getResources(),pagingResponseAvailable,"Open");
+        availableJob_listView.setAdapter(adapterAvailable);
+
+        adapterSchedule = new JobsPagingAdapter(getActivity(),schedulejoblist,getResources(),pagingResponseScheduled,"Schduled");
+        scheduleJob_listView.setAdapter(adapterSchedule);
+
+
+
         if (availablejoblist.size() > 0){
             handler.sendEmptyMessage(0);
         }else {
             if (getInternetStatus()){
-                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
                 responseAsync.execute(getRequestParams("Open"));
             }
 
         }
 
-
+        if (switch_tab.equals("Scheduled")){
+            onClick(scheduled);
+        }
+        if (isFirstTechReg){
+            showDialogVerificaitonTokenSuccess();
+        }
         return rootView;
     }
 
+    HandlePagingResponse pagingResponseScheduled = new HandlePagingResponse() {
+        @Override
+        public void handleChangePage() {
+            if (!nextScheduled.equals("null")) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        progressView.setVisibility(View.VISIBLE);
+                    }
+                });
+             pageSheduled = Integer.parseInt(nextScheduled);
+            GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
+            responseAsync.execute(getRequestParams("Scheduled"));
+            }
+        }
+    };HandlePagingResponse pagingResponseAvailable = new HandlePagingResponse() {
+        @Override
+        public void handleChangePage() {
+            if (!nextAvaileble.equals("null")) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        progressView.setVisibility(View.VISIBLE);
+                    }
+                });
+             pageAvaileble = Integer.parseInt(nextAvaileble);
+            GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
+            responseAsync.execute(getRequestParams("Open"));
+            }
+        }
+    };
     private HashMap<String,String> getIncompleteAccountParams(){
         HashMap<String,String> hashMap = new HashMap<>();
         hashMap.put("api", "signup_complete");
-        hashMap.put("object","pros");
-        hashMap.put("with_token","1");
+        hashMap.put("object", "pros");
+        hashMap.put("with_token", "1");
 
         return hashMap;
     }
@@ -224,10 +300,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CompanyInformation_Activity.class);
+                Intent intent = new Intent(getActivity(), SetupCompleteAddressActivity.class);
                 intent.putExtra("finalRequestParams", getIncompleteAccountParams());
                 intent.putExtra("ispro", true);
+                intent.putExtra("iscompleting", true);
                 startActivity(intent);
+                dialog.dismiss();
+
             }
         });
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -245,13 +324,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_home_screen, menu);
     }
+    public void bellClick(){
+        Bundle b = new Bundle();
+        fragment = new NotificationListFragment();
+        b.putString("title", getString(R.string.nav_item_notifications));
+        ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.NOTIFICATION_LIST_FRAGMENT, false, b);
+    }
     public void refresh(){
         if (isStateAvailable){
             map.clear();
             pageAvaileble  = 1 ;
             availablejoblist.clear();
+            adapterAvailable.notifyDataSetChanged();
             if (getInternetStatus()){
-                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
                 responseAsync.execute(getRequestParams("Open"));
             }
 
@@ -259,8 +345,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             map.clear();
             pageSheduled  = 1 ;
             schedulejoblist.clear();
+            adapterSchedule.notifyDataSetChanged();
             if (getInternetStatus()){
-                GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
+                GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                 responseAsync1.execute(getRequestParams("Scheduled"));
             }
 
@@ -280,7 +367,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 pageAvaileble  = 1 ;
                 availablejoblist.clear();
                 if (Utilities.isNetworkAvailable(getActivity())) {
-                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
+                    GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync.execute(getRequestParams("Open"));
                 }
 
@@ -289,7 +376,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 pageSheduled  = 1 ;
                 schedulejoblist.clear();
                 if (Utilities.isNetworkAvailable(getActivity())) {
-                    GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
+                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync1.execute(getRequestParams("Scheduled"));
                 }
 
@@ -307,12 +394,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         availScheduleLayout = (LinearLayout) view.findViewById(R.id.availschedule_layout);
         available = (TextView) view.findViewById(R.id.available);
         scheduled = (TextView) view.findViewById(R.id.scheduled);
-        availableJob_listView = (PagingListView) view.findViewById(R.id.availableJob_list_view);
-        scheduleJob_listView = (PagingListView) view.findViewById(R.id.scheduleJob_list_view);
+        availableJob_listView = (ListView) view.findViewById(R.id.availableJob_list_view);
+        scheduleJob_listView = (ListView) view.findViewById(R.id.scheduleJob_list_view);
         scheduleLayout = (RelativeLayout) view.findViewById(R.id.schedulelayout);
         calenderviewall = (LinearLayout) view.findViewById(R.id.viewall);
+        swipe_refresh_layout_available = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_available);
+        swipe_refresh_layout_schedule = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_schedule);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
                 .coordinatorLayout);
+//        progressView = (fixtpro.com.fixtpro.views.CircularProgressView)view.findViewById(R.id.progress_view);
     }
 
     void setMap(Bundle savedInstanceState){
@@ -324,13 +414,61 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls
         MapsInitializer.initialize(this.getActivity());
+        map.setInfoWindowAdapter(new MyInfoWindowAdapter(getActivity()));
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                int pos = Integer.parseInt(marker.getSnippet());
+                if (isStateAvailable) {
+                    // send where details is object
+                    if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+                        showAccountSetupDialog();
 
+                    }
+                    if (_prefs.getString(Preferences.IS_VARIFIED, "").equals("0")) {
+                        showAlertBackGroundSaftyDialog();
+
+                    }
+                    AvailableJobModal job_detail = new AvailableJobModal();
+                    job_detail = availablejoblist.get(pos);
+                    Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
+                    i.putExtra("JOB_DETAIL", job_detail);
+                    startActivity(i);
+                } else {
+                    AvailableJobModal job_detail = new AvailableJobModal();
+                    job_detail = schedulejoblist.get(pos);
+                    fragment = new ScheduledListDetailsFragment();
+//                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("modal", job_detail);
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+                }
+
+            }
+        });
     }
 
     void setListeners(){
         available.setOnClickListener(this);
         scheduled.setOnClickListener(this);
         calenderviewall.setOnClickListener(this);
+        swipe_refresh_layout_schedule.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe_refresh_layout_schedule.setRefreshing(true);
+
+                refresh();
+            }
+        });
+        swipe_refresh_layout_available.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe_refresh_layout_available.setRefreshing(true);
+
+                refresh();
+            }
+        });
+
     }
 
     @Override
@@ -349,13 +487,44 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mapView.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.HOME_FRAGMENT);
         setupToolBar();
+        adapterAvailable.notifyDataSetChanged();
+        adapterSchedule.notifyDataSetChanged();
+        int countNormal = _prefs.getInt(Preferences.NORMAL_NOTI_COUNT,0);
+        if (countNormal > 0){
+            ((HomeScreenNew)getActivity()).setBadgeText(countNormal+"");
+        }else {
+            ((HomeScreenNew)getActivity()).hideBadge();
+        }
+
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(
+                mGcmPushReceiver, new IntentFilter("new_job_available_notification"));
+        // check if user varified
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new  CheckIfUserVarified(getActivity());
+        }
         super.onResume();
     }
     private void setupToolBar(){
-        ((HomeScreenNew)getActivity()).setRightToolBarImage(R.drawable.refresh);
-        ((HomeScreenNew)getActivity()).setTitletext("Welcome "+_prefs.getString(Preferences.FIRST_NAME,""));
+        ((HomeScreenNew)getActivity()).setRightToolBarImage(R.drawable.white_bell);
+        ((HomeScreenNew)getActivity()).setTitletext("Welcome "+_prefs.getString(Preferences.FIRST_NAME,"") +"!");
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
+    private BroadcastReceiver mGcmPushReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("","");
+            adapterAvailable.notifyDataSetChanged();
+            onClick(available);
+        }
+    };
+    @Override
+    public void onPause() {
+        ((HomeScreenNew)getActivity()).hideBadge();
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(
+                mGcmPushReceiver);
+        super.onPause();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -370,7 +539,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mapView.onLowMemory();
     }
 
-    ResponseListener responseListenerAvailable = new ResponseListener() {
+    IHttpResponseListener responseListenerAvailable = new IHttpResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
             Log.e("", "Response" + Response.toString());
@@ -406,7 +575,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         model.setTitle(obj.getString("title"));
 //                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
-                        model.setWarranty(obj.getString("warranty"));
+//                        model.setWarranty(obj.getString("warranty"));
 //                      if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                             JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                             ArrayList<JobAppliancesModal> jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -463,11 +632,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
                         }
-                        JSONObject time_slot_obj = obj.getJSONObject("time_slots");
-                        model.setTime_slot_id(time_slot_obj.getString("id"));
-                        model.setTimeslot_start(time_slot_obj.getString("start"));
-                        model.setTimeslot_end(time_slot_obj.getString("end"));
-                        model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_name(time_slot_obj.getString("name"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+
 
                         if (!obj.isNull("job_customer_addresses")){
                             JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
@@ -505,31 +678,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         @Override
         public void handleMessage(Message msg) {
              super.handleMessage(msg);
+            if (swipe_refresh_layout_available.isRefreshing()){
+                swipe_refresh_layout_available.setRefreshing(false);
+            }
+            if (swipe_refresh_layout_schedule.isRefreshing()){
+                swipe_refresh_layout_schedule.setRefreshing(false);
+            }
             switch (msg.what){
                 case 0:{
-                    AvailableJobsPagingAdaper adapter = new AvailableJobsPagingAdaper(getActivity(),availablejoblist,getResources());
-                    availableJob_listView.setAdapter(adapter);
+                    adapterAvailable.notifyDataSetChanged();
                     setMarkers(availablejoblist);
-
-                    availableJob_listView.onFinishLoading(true, availablejoblist);
-                    if (!nextAvaileble.equals("null")) {
-                        availableJob_listView.setHasMoreItems(true);
-                    }else {
-                        availableJob_listView.setHasMoreItems(false);
-                    }
-
-                    availableJob_listView.setPagingableListener(new PagingListView.Pagingable() {
-                        @Override
-                        public void onLoadMoreItems() {
-                            if (!nextAvaileble.equals("null")) {
-                                pageAvaileble = Integer.parseInt(nextAvaileble);
-                                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
-                                responseAsync.execute(getRequestParams("Open"));
-                            } else {
-                                availableJob_listView.onFinishLoading(false, null);
-                            }
-                        }
-                    });
                     if (_prefs.getBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,false)){
                         showAccountSetupCompletdDialog();
                     }
@@ -540,27 +698,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
                 case 2:{
-                    AvailableJobsPagingAdaper adapter = new AvailableJobsPagingAdaper(getActivity(),schedulejoblist,getResources());
-                    scheduleJob_listView.setAdapter(adapter);
+
+                        adapterSchedule.notifyDataSetChanged();
+//                    }
+
                     setMarkers(schedulejoblist);
-                    scheduleJob_listView.onFinishLoading(true, schedulejoblist);
-                    if (!nextScheduled.equals("null")) {
-                        scheduleJob_listView.setHasMoreItems(true);
-                    }else {
-                        scheduleJob_listView.setHasMoreItems(false);
-                    }
-                    scheduleJob_listView.setPagingableListener(new PagingListView.Pagingable() {
-                        @Override
-                        public void onLoadMoreItems() {
-                            if (!nextScheduled.equals("null")) {
-                                pageSheduled = Integer.parseInt(nextScheduled);
-                                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
-                                responseAsync.execute(getRequestParams("Scheduled"));
-                            } else {
-                                scheduleJob_listView.onFinishLoading(false, null);
-                            }
-                        }
-                    });
+
                     break;
                 }
                 case 3:{
@@ -571,7 +714,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
     };
 
-    ResponseListener responseListenerScheduled = new ResponseListener() {
+    IHttpExceptionListener iHttpExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            error_message = exception ;
+            handler.sendEmptyMessage(1);
+        }
+    };
+    IHttpResponseListener responseListenerScheduled = new IHttpResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
             Log.e("", "Response" + Response.toString());
@@ -607,7 +757,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         model.setTitle(obj.getString("title"));
 //                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
-                        model.setWarranty(obj.getString("warranty"));
+//                        model.setWarranty(obj.getString("warranty"));
+                        model.setIs_claim(obj.getString("is_claim"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                             JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                             ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -686,6 +837,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             JSONObject time_slot_obj = obj.getJSONObject("time_slots");
                             model.setTime_slot_id(time_slot_obj.getString("id"));
                             model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_name(time_slot_obj.getString("name"));
                             model.setTimeslot_end(time_slot_obj.getString("end"));
                             model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
                         }
@@ -719,23 +871,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     };
     private boolean getInternetStatus(){
         if (!Utilities.isNetworkAvailable(getActivity())){
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
-                    .setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                        }
-                    });
-
-            // Changing message text color
-            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
-
-            // Changing action button text color
-            View sbView = snackbar.getView();
-            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(Color.WHITE);
-
-            snackbar.show();
+//            Snackbar snackbar = Snackbar
+//                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+//                    .setAction("OK", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                        }
+//                    });
+//
+//            // Changing message text color
+//            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
+//
+//            // Changing action button text color
+//            View sbView = snackbar.getView();
+//            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+//            textView.setTextColor(Color.WHITE);
+//
+//            snackbar.show();
             return false;
         }else {
             return true ;
@@ -762,7 +914,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         hashMap.put("page", pageAvaileble+"");
         else
         hashMap.put("page", pageSheduled+"");
-        hashMap.put("per_page", "20");
+        hashMap.put("per_page", "15");
 
         return hashMap;
     }
@@ -788,7 +940,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 availableJob_listView.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.VISIBLE);
                 if (schedulejoblist .size() == 0){
-                    GetApiResponseAsync responseAsync1 = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
+                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync1.execute(getRequestParams("Scheduled"));
                 }else{
 //                    setMarkers(schedulejoblist);
@@ -800,6 +952,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 Intent i = new Intent(getActivity(), CalendarActivity.class);
                 i.putExtra("Rescheduling","0");
                 startActivity(i);
+                getActivity().overridePendingTransition(R.anim.enter,R.anim.exit);
                 break;
         }
     }
@@ -815,7 +968,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             // Add a marker
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(intLatitude, intLongitude)));
-            marker.setTitle(arrayList.get(k).getTitle());
+            if (!isStateAvailable){
+                marker.setTitle(arrayList.get(k).getContact_name() +"\n"+ arrayList.get(k).getJob_customer_addresses_address() +" "+arrayList.get(k).getJob_customer_addresses_city());
+            }else {
+                marker.setTitle(arrayList.get(k).getContact_name());
+            }
+
+            marker.setSnippet(k+"");
             builder.include(marker.getPosition());
 
         }
@@ -866,6 +1025,29 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
         Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
+                dialog.dismiss();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    private  void showDialogVerificaitonTokenSuccess(){
+        dialogSuccess = new Dialog(_context);
+        dialogSuccess.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogSuccess.setContentView(R.layout.dialog_tokensuccess);
+        dialogSuccess.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialogSuccess.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialogSuccess.findViewById(R.id.btnFinish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

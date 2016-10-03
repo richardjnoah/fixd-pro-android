@@ -36,6 +36,7 @@ import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.adapters.RatingListPageAdpater;
 import fixtpro.com.fixtpro.adapters.RatingListPageAdpater;
 import fixtpro.com.fixtpro.beans.RatingListModal;
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsyncBatch;
@@ -137,9 +138,13 @@ public class RatingFragment extends Fragment {
                         RatingListModal ratingListModal = new RatingListModal();
                         ratingListModal.setJob_id(results.getJSONObject(i).getString("job_id"));
                         ratingListModal.setCustomer_id(results.getJSONObject(i).getString("customer_id"));
-                        ratingListModal.setRatings(results.getJSONObject(i).getString("rating"));
+//                        ratingListModal.setRatings(results.getJSONObject(i).getString("rating"));
                         ratingListModal.setCreated_at(results.getJSONObject(i).getString("created_at"));
-                        ratingListModal.setComments(results.getJSONObject(i).getString("comments"));
+                        ratingListModal.setFinished_at(results.getJSONObject(i).getString("updated_at"));
+                        ratingListModal.setAppearance(results.getJSONObject(i).getString("appearance"));
+                        ratingListModal.setCourteous(results.getJSONObject(i).getString("courteous"));
+                        ratingListModal.setKnowledgeable(results.getJSONObject(i).getString("knowledgeable"));
+//                        ratingListModal.setComments(results.getJSONObject(i).getString("comments"));
                         ratingListModal.setCustomers_first_name(results.getJSONObject(i).getJSONObject("customers").getString("first_name"));
                         ratingListModal.setCustomers_last_name(results.getJSONObject(i).getJSONObject("customers").getString("last_name"));
                         if (!results.getJSONObject(i).isNull("jobs")){
@@ -149,10 +154,24 @@ public class RatingFragment extends Fragment {
                             ratingListModal.setJobs_finished_at(results.getJSONObject(i).getJSONObject("jobs").getString("finished_at"));
                             if (!results.getJSONObject(i).getJSONObject("jobs").isNull("technicians")){
                                 ratingListModal.setJobs_technilcians_first_name(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").getString("first_name"));
-                                ratingListModal.setJobs_technilcians_first_name(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").getString("last_name"));
+                                ratingListModal.setJobs_technilcians_last_name(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").getString("last_name"));
                                 ratingListModal.setJobs_technilcians_avg_rating(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").getString("avg_rating"));
+                                if( !results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").isNull("profile_image")){
+                                    JSONObject profile_image = results.getJSONObject(i).getJSONObject("jobs").getJSONObject("technicians").getJSONObject("profile_image");
+                                    if (!profile_image.isNull("original")) {
+                                        ratingListModal.setJobs_technilcians_img_original(profile_image.getString("original"));
+                                    }
+                                }
+
+                            }
+                            if (!results.getJSONObject(i).getJSONObject("jobs").isNull("job_customer_addresses")){
+                                ratingListModal.setJobs_job_customers_addresses_address(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("job_customer_addresses").getString("address"));
+                                ratingListModal.setJobs_job_customers_addresses_city(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("job_customer_addresses").getString("city"));
+                                ratingListModal.setJobs_job_customers_addresses_state(results.getJSONObject(i).getJSONObject("jobs").getJSONObject("job_customer_addresses").getString("state"));
                             }
                         }
+
+
 
 
 
@@ -319,14 +338,14 @@ public class RatingFragment extends Fragment {
         custom_ratingbar = (RatingBarView)v.findViewById(R.id.custom_ratingbar);
         custom_ratingbar.setClickable(false);
 
-        txtAverageRating.setTypeface(fontfamily);
-        txtnumtotaljob.setTypeface(fontfamily);
-        txtjobstxt.setTypeface(fontfamily);
-        txtnumreviews.setTypeface(fontfamily);
-        txtreviewsltxt.setTypeface(fontfamily);
+//        txtAverageRating.setTypeface(fontfamily);
+//        txtnumtotaljob.setTypeface(fontfamily);
+//        txtjobstxt.setTypeface(fontfamily);
+//        txtnumreviews.setTypeface(fontfamily);
+//        txtreviewsltxt.setTypeface(fontfamily);
 
         txtnumtotaljob.setText(total_jobs);
-        txtnumreviews.setText(total_reviews);
+        txtnumreviews.setText(ratingListModalArrayList.size()+"");
         custom_ratingbar.setStar(Integer.parseInt(total_reviews),true);
         return v;
     }
@@ -335,6 +354,9 @@ public class RatingFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.RATING_FRAGMENT);
         setupToolBar();
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new CheckIfUserVarified(getActivity());
+        }
     }
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).hideRight();

@@ -31,6 +31,24 @@ public class AvailableJobModal implements Serializable{
     String total_cost = "";
     String updated_at = "";
     String warranty = "";
+    String is_claim = "";
+    boolean start_going_to_get_parts_process = false;
+
+    public boolean isStart_going_to_get_parts_process() {
+        return start_going_to_get_parts_process;
+    }
+
+    public void setStart_going_to_get_parts_process(boolean start_going_to_get_parts_process) {
+        this.start_going_to_get_parts_process = start_going_to_get_parts_process;
+    }
+
+    public String getIs_claim() {
+        return is_claim;
+    }
+
+    public void setIs_claim(String is_claim) {
+        this.is_claim = is_claim;
+    }
 
     String technician_id = "";
 
@@ -48,7 +66,16 @@ public class AvailableJobModal implements Serializable{
     String timeslot_id;
     String timeslot_start;
     String timeslot_end;
+    String timeslot_name;
     String timeslot_soft_deleted;
+
+    public String getTimeslot_name() {
+        return timeslot_name;
+    }
+
+    public void setTimeslot_name(String timeslot_name) {
+        this.timeslot_name = timeslot_name;
+    }
 
     // job customer addresses
     String job_customer_addresses_id = "(null)";
@@ -103,6 +130,63 @@ public class AvailableJobModal implements Serializable{
     String technician_avg_rating  = "";
     String technician_scheduled_job_count  = "";
     String technician_completed_job_count  = "";
+
+    // job_line_items
+
+    String job_line_items_tax = "0";
+    String job_line_items_sub_total = "0";
+    String job_line_items_total = "0";
+    String job_line_items_pro_cut = "0";
+    String job_line_items_fixd_cut = "0";
+    String job_line_items_govt_cut = "0";
+
+    public String getJob_line_items_tax() {
+        return job_line_items_tax;
+    }
+
+    public void setJob_line_items_tax(String job_line_items_tax) {
+        this.job_line_items_tax = job_line_items_tax;
+    }
+
+    public String getJob_line_items_sub_total() {
+        return job_line_items_sub_total;
+    }
+
+    public void setJob_line_items_sub_total(String job_line_items_sub_total) {
+        this.job_line_items_sub_total = job_line_items_sub_total;
+    }
+
+    public String getJob_line_items_total() {
+        return job_line_items_total;
+    }
+
+    public void setJob_line_items_total(String job_line_items_total) {
+        this.job_line_items_total = job_line_items_total;
+    }
+
+    public String getJob_line_items_pro_cut() {
+        return job_line_items_pro_cut;
+    }
+
+    public void setJob_line_items_pro_cut(String job_line_items_pro_cut) {
+        this.job_line_items_pro_cut = job_line_items_pro_cut;
+    }
+
+    public String getJob_line_items_fixd_cut() {
+        return job_line_items_fixd_cut;
+    }
+
+    public void setJob_line_items_fixd_cut(String job_line_items_fixd_cut) {
+        this.job_line_items_fixd_cut = job_line_items_fixd_cut;
+    }
+
+    public String getJob_line_items_govt_cut() {
+        return job_line_items_govt_cut;
+    }
+
+    public void setJob_line_items_govt_cut(String job_line_items_govt_cut) {
+        this.job_line_items_govt_cut = job_line_items_govt_cut;
+    }
 
     public String getTechnician_fname() {
         return technician_fname;

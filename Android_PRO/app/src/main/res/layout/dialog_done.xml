@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/popuplayoutmagin"
+    android:layout_margin="@dimen/size_12_dp"
     android:background="@drawable/orange_background">
 
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/partleftrightmar"
+        android:layout_marginTop="@dimen/size_27_dp"
         android:orientation="vertical">
 
         <ImageView
@@ -22,12 +22,12 @@
             android:id="@+id/titletext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/partleftrightmar"
+            android:layout_marginTop="@dimen/size_27_dp"
             android:gravity="center"
             android:singleLine="true"
             android:text="@string/wahoo"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonxlargetxt" />
+            android:textSize="@dimen/size_20_sp" />
 
     </LinearLayout>
 
@@ -44,11 +44,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="8dp"
+            android:padding="@dimen/size_8_dp"
             android:singleLine="true"
             android:text="@string/youwill"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonmediumtxt" />
+            android:textSize="@dimen/size_18_sp" />
 
         <TextView
             android:id="@+id/txtAddress"
@@ -56,11 +56,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/size_5_dp"
             android:singleLine="true"
             android:text="$ 269.10"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonxxl" />
+            android:textSize="@dimen/size_37_sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -74,11 +74,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Job Total ="
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
 
             <TextView
                 android:id="@+id/txtJobDoller"
@@ -86,11 +86,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="$56.00"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -108,7 +108,7 @@
                 android:singleLine="true"
                 android:text="@string/yourcut"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtyoucutdoller"
@@ -119,7 +119,7 @@
                 android:singleLine="true"
                 android:text="$56.09"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -137,7 +137,7 @@
                 android:singleLine="true"
                 android:text="@string/outfee"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtOurfeedoller"
@@ -148,7 +148,7 @@
                 android:singleLine="true"
                 android:text="$3874.00"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -166,7 +166,7 @@
                 android:singleLine="true"
                 android:text="@string/govtcuts"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtGovtdoller"
@@ -177,22 +177,23 @@
                 android:singleLine="true"
                 android:text="$34.00"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_below="@+id/layout2"
-        android:layout_marginTop="@dimen/partleftrightmar">
+        android:layout_marginTop="@dimen/size_27_dp"
+        android:orientation="vertical">
+
         <ImageView
             android:id="@+id/img_Finish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/finish"
-            android:scaleType="fitXY"/>
+            android:scaleType="fitXY"
+            android:src="@drawable/finish" />
 
     </LinearLayout>
 

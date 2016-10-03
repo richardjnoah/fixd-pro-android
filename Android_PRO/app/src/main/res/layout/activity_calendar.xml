@@ -3,48 +3,67 @@
     android:id="@+id/LinearLayout1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/background_grey_blur"
-    tools:context="com.androidfromhome.calendar.CalenderActivity" >
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    tools:context="com.androidfromhome.calendar.CalenderActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
         android:background="@color/actionbar_bg"
-        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        local:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <TextView
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:text="Back"
-            android:textColor="#ffffff"
-            android:textSize="20sp"/>
+        android:minHeight="?attr/actionBarSize"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="2dp"
+                android:text="Back"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:padding="2dp"
+                android:text="Done"
+                android:textColor="#ffffff"
+                android:textSize="@dimen/size_20_sp"
+                android:visibility="gone" />
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical">
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/register_button_text"/>
+            android:background="@color/register_button_text" />
+
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="2dp" >
+            android:padding="2dp">
 
             <FrameLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp" >
+                android:layout_width="@dimen/size_45_dp"
+                android:layout_height="@dimen/size_45_dp">
 
                 <ImageButton
                     android:id="@+id/ib_prev"
@@ -59,7 +78,7 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" >
+                android:layout_weight="1">
 
                 <TextView
                     android:id="@+id/tv_month"
@@ -76,8 +95,8 @@
             </FrameLayout>
 
             <FrameLayout
-                android:layout_width="45dp"
-                android:layout_height="45dp" >
+                android:layout_width="@dimen/size_45_dp"
+                android:layout_height="@dimen/size_45_dp">
 
                 <ImageButton
                     android:id="@+id/Ib_next"
@@ -85,23 +104,24 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="2dp"
-                    android:background="@drawable/next_arrow" />
+                    android:background="@drawable/new_right_arrow" />
 
             </FrameLayout>
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/register_button_text"/>
+            android:background="@color/register_button_text" />
 
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="5dp"
+            android:paddingBottom="@dimen/size_5_dp"
             android:paddingLeft="2dp"
             android:paddingRight="2dp"
-            android:paddingTop="6dp" >
+            android:paddingTop="@dimen/size_5_dp">
 
             <TextView
                 android:id="@+id/TextView06"
@@ -183,28 +203,30 @@
             android:numColumns="7"
             android:padding="1dp"
             android:stretchMode="columnWidth"
-            android:textAlignment="gravity" >
+            android:textAlignment="gravity">
 
         </GridView>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/register_button_text"/>
+            android:background="@color/register_button_text" />
+
         <ListView
-            android:dividerHeight="1dp"
-            android:divider="@android:color/white"
             android:id="@+id/lstScheduledJobs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></ListView>
+            android:layout_height="wrap_content"
+            android:divider="@android:color/white"
+            android:dividerHeight="1dp"></ListView>
+
         <TextView
-            android:visibility="gone"
             android:id="@+id/txtRescheduleDialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Reschedule Dialog"
             android:textColor="@android:color/white"
-            android:textSize="20dp"/>
+            android:textSize="@dimen/size_20_sp"
+            android:visibility="gone" />
 
     </LinearLayout>
 

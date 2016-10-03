@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -24,6 +25,7 @@ import java.util.TimeZone;
 
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.beans.NotificationListModal;
+import fixtpro.com.fixtpro.utilites.HandlePagingResponse;
 import fixtpro.com.fixtpro.utilites.TimeUtils;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
@@ -39,10 +41,10 @@ public class NotificationListAdapter extends BaseAdapter {
     public Resources res;
     NotificationListModal tempValues=null;
     Typeface fontfamily;
-
+    HandlePagingResponse handlePagingResponse ;
 
     /*************  CustomAdapter Constructor *****************/
-    public NotificationListAdapter(Activity a, ArrayList d, Resources resLocal) {
+    public NotificationListAdapter(Activity a, ArrayList d, Resources resLocal,HandlePagingResponse handlePagingResponse) {
 
         /********** Take passed values **********/
         activity = a;
@@ -54,6 +56,7 @@ public class NotificationListAdapter extends BaseAdapter {
         /***********  Layout inflator to call external xml layout () ***********/
         inflater = ( LayoutInflater )activity.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.handlePagingResponse = handlePagingResponse;
     }
     /******** What is the size of Passed Arraylist Size ************/
     public int getCount() {
@@ -75,7 +78,8 @@ public class NotificationListAdapter extends BaseAdapter {
     public static class ViewHolder{
         public TextView txtTitle;
         public TextView txtDateTime;
-        //public ImageView imgPicture;
+        public ImageView imgPicture;
+        LinearLayout container;
     }
 
     /****** Depends upon data size called for each row , Create each ListView row *****/
@@ -94,7 +98,8 @@ public class NotificationListAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.txtTitle = (TextView) vi.findViewById(R.id.txtTitle);
             holder.txtDateTime = (TextView) vi.findViewById(R.id.txtDateTime);
-           // holder.imgPicture = (ImageView) vi.findViewById(R.id.imgPicture);
+            holder.imgPicture = (ImageView) vi.findViewById(R.id.imgPicture);
+            holder.container = (LinearLayout) vi.findViewById(R.id.container);
 
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -107,35 +112,52 @@ public class NotificationListAdapter extends BaseAdapter {
         }
         else
         {
+//            MMMM d, yyyy
             /***** Get each Model object from Arraylist ********/
             try {
                 tempValues = null;
                 tempValues = (NotificationListModal) data.get(position);
-                holder.txtTitle.setText(tempValues.getText());
+                if (Utilities.getApplianceImageByName(tempValues.getServiceName()) != -1){
+                    holder.imgPicture.setImageResource(Utilities.getApplianceImageByName(tempValues.getServiceName()));
+                }else{
+                    if (tempValues.getIconImage().length() > 0){
+                        Picasso.with(activity).load(tempValues.getIconImage()).into(holder.imgPicture);
+                    }
 
-                /********Set Notification Time**********/
-                Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-                long time1 = cal.getTimeInMillis();
-                long time2 = 0;
-                try {
-                    time2 = Utilities.getTimeInMilliseconds(tempValues.getCreateAt()) ;
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
-                long difference = time1 - time2 ;
-                Log.e("", "difference" + difference);
-                if (!tempValues.getCreateAt().equals("0000-00-00 00:00:00"))
 
-                    holder.txtDateTime.setText(Utilities.timeMedthod(difference/1000l));
+                holder.txtTitle.setText(tempValues.getText());
+                /*****Change the DateTime Format*****/
+                String datetimeArr[] = tempValues.getCreateAt().split(" ");
+                String date = datetimeArr[0];
+                String time = datetimeArr[1];
 
+                String dateTime[] = Utilities.getDate(tempValues.getCreateAt()).split(" ");
+                String actualDateTime = dateTime[0] +" "+ dateTime[1] + " at " + dateTime[2] +"" +dateTime[3];
+                holder.txtDateTime.setText(actualDateTime);
+                if (((NotificationListModal)data.get(position)).getIs_active().equals("0")){
+//                    holder.container.setBackgroundResource(R.color.color_grey);
+                    holder.txtTitle.setTextColor(activity.getResources().getColor(R.color.calendar_day_color));
+                }else {
+//                    holder.container.setBackgroundResource(android.R.color.transparent);
+                    holder.txtTitle.setTextColor(activity.getResources().getColor(R.color.white));
+                }
+                if (((NotificationListModal)data.get(position)).getIs_active().equals("1") && ((NotificationListModal)data.get(position)).getIsRead().equals("0")){
+                    holder.container.setBackgroundResource(R.color.calendar_day_color);
+//                    holder.txtTitle.setTextColor(activity.getResources().getColor(R.color.calendar_day_color));
+                }else {
+                    holder.container.setBackgroundResource(android.R.color.transparent);
+//                    holder.txtTitle.setTextColor(activity.getResources().getColor(R.color.white));
+                }
+                if (position == data.size() - 1){
+                    handlePagingResponse.handleChangePage();
+                }
             }catch (Exception e){
                 e.printStackTrace();
             }
-
         }
         return vi;
     }
-
 }
 
 

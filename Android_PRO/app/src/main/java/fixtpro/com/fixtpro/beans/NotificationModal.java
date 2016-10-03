@@ -11,6 +11,15 @@ public class NotificationModal implements Serializable {
     String JobId = "";
     String TechId = "";
     String JobAppliance = "";
+    String dialogId = "";
+
+    public String getDialogId() {
+        return dialogId;
+    }
+
+    public void setDialogId(String dialogId) {
+        this.dialogId = dialogId;
+    }
 
     public String getJobAppliance() {
         return JobAppliance;

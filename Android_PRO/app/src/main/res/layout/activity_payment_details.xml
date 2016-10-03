@@ -11,7 +11,7 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/actionbar_bg"
+        android:background="#00000000"
         app:popupTheme="@style/AppTheme.PopupOverlay">
 
         <RelativeLayout
@@ -22,7 +22,7 @@
                 android:id="@+id/img_Cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/screen_cross"
+                android:src="@drawable/cross_new"
                 android:text="@string/done" />
 
             <TextView
@@ -32,14 +32,14 @@
                 android:gravity="center"
                 android:text="@string/paymentdetails"
                 android:textColor="@color/register_button_text"
-                android:textSize="20sp" />
+                android:textSize="@dimen/size_22_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <include
         layout="@layout/content_payment_details"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"></include>
 
 </RelativeLayout>

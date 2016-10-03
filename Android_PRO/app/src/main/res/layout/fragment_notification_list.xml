@@ -4,11 +4,11 @@
     android:layout_height="match_parent"
     tools:context="fixtpro.com.fixtpro.fragment.NotificationListFragment">
 
-    <com.paging.listview.PagingListView
+    <ListView
         android:id="@+id/listview_Notifications"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/orange_signin_back"
-        android:dividerHeight="1.2dp"></com.paging.listview.PagingListView>
+        android:dividerHeight="1.2dp"></ListView>
 
 </FrameLayout>

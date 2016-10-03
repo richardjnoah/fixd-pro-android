@@ -79,11 +79,32 @@ public class JobCompletedActivity extends AppCompatActivity {
         }
     }
     private void getBitamap(){
-        Picasso.with(this)
-                .load(jobapplianceslist.get(count).getAppliance_type_image_original()).into(new Target() {
-            @Override
-            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                arrayList.add(bitmap);
+        try{
+            if (jobapplianceslist.get(count).getAppliance_type_image_original().length() > 0){
+                Picasso.with(this)
+                        .load(jobapplianceslist.get(count).getAppliance_type_image_original()).into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        arrayList.add(bitmap);
+                        ++count;
+                        if (count < jobapplianceslist.size()){
+                            getBitamap();
+                        }else {
+                            showLayout();
+                        }
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+                    }
+                });
+            }else {
                 ++count;
                 if (count < jobapplianceslist.size()){
                     getBitamap();
@@ -92,27 +113,25 @@ public class JobCompletedActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+        }catch (Exception e){
 
-            }
+        }
 
-            @Override
-            public void onPrepareLoad(Drawable placeHolderDrawable) {
-
-            }
-        });
     }
     private void setValues(){
         appliance_layout = (LinearLayout)findViewById(R.id.layout_appliances);
         txtName.setText(availableJobModal.getContact_name());
         txtAddress.setText(availableJobModal.getJob_customer_addresses_address()+" - "+availableJobModal.getJob_customer_addresses_city()+","+availableJobModal.getJob_customer_addresses_state());
         txtDateTime.setText(Utilities.convertDate(availableJobModal.getRequest_date()));
-        txtArrivaltime.setText("Arrival Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_start()));
-        txtCompletedTime.setText("Completed Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_end()));
+        String dateTimeCreated[] = Utilities.getDate(availableJobModal.getCreated_at()).split(" ");
+        String dateTimeFinished[] = Utilities.getDate(availableJobModal.getFinished_at()).split(" ");
+//        txtArrivaltime.setText("Arrival Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_start()));
+        txtArrivaltime.setText("Arrival Time: "+dateTimeCreated[2] + dateTimeCreated[3]);
+//        txtCompletedTime.setText("Completed Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_end()));
+        txtCompletedTime.setText("Completed Time: "+dateTimeFinished[2] + dateTimeFinished[3]);
         txtTechName.setText(availableJobModal.getTechnician_fname() +" "+availableJobModal.getTechnician_lname());
         txtTotalJobScheduled.setText(availableJobModal.getTechnician_fname() +" has" +availableJobModal.getTechnician_pickup_jobs() +" jobs scheduled at this time." );
-        txtTotal.setText("Total................$" + availableJobModal.getTotal_cost());
+        txtTotal.setText("Total................$" + availableJobModal.getJob_line_items_pro_cut());
         custom_ratingbar_tech.setStar((int)Float.parseFloat(availableJobModal.getTechnician_avg_rating()),true);
         if (availableJobModal.getTechnician_profile_image().length() > 0)
         Picasso.with(this).load(availableJobModal.getTechnician_profile_image()).into(circleImage);

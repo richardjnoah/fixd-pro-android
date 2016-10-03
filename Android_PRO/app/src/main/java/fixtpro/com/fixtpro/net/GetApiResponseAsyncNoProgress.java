@@ -28,9 +28,9 @@ public class GetApiResponseAsyncNoProgress extends AsyncTask<HashMap<String, Str
         this.Text = Text;
         this.Url = Url ;
         this.exceptionListener = exceptionListener;
-        progressDialog = new ProgressDialog(activity);
-        progressDialog.setMessage(Text);
-        progressDialog.setCancelable(false);
+//        progressDialog = new ProgressDialog(activity);
+//        progressDialog.setMessage(Text);
+//        progressDialog.setCancelable(false);
 //        progressDialog.show();
     }
 

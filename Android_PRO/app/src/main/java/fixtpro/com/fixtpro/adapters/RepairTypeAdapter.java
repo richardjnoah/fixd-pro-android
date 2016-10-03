@@ -116,7 +116,9 @@ public class RepairTypeAdapter extends BaseAdapter implements Filterable {
         tempValues = null;
         tempValues = originalData.get(position);
         holder.txtType.setText(tempValues.getType());
-        holder.txtPrice.setText("$"+((int)Float.parseFloat(tempValues.getPrice())+""));
+//        holder.txtPrice.setText("$"+((int)Float.parseFloat(tempValues.getPrice())+""));
+        if (tempValues.getLabor_hours().length() > 0)
+        holder.txtPrice.setText("$"+tempValues.getLabor_hours()+"");
         return vi;
     }
 

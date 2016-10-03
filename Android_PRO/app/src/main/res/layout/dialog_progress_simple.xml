@@ -1,67 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:layout_gravity="center"
     android:background="@drawable/dialog_back"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    >
+    android:gravity="center">
 
     <LinearLayout
         android:id="@+id/relative1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:background="@android:color/transparent"
-        >
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
+            android:layout_margin="@dimen/size_27_dp"
             android:gravity="center"
-            android:layout_margin="@dimen/partleftrightmar">
+            android:orientation="horizontal">
 
-            <fixtpro.com.fixtpro.views.CircularProgressView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
+            <fixtpro.com.fixtpro.views.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/progress_view"
-                app:cpv_color="@android:color/white"
+                android:layout_width="@dimen/size_60_dp"
+                android:layout_height="@dimen/size_60_dp"
                 app:cpv_animAutostart="true"
-                app:cpv_indeterminate="true"/>
+                app:cpv_color="@android:color/white"
+                app:cpv_indeterminate="true" />
         </LinearLayout>
-
-
 
 
         <!--Cancel JOb-->
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:visibility="gone"
             android:weightSum="2">
+
             <TextView
                 android:id="@+id/txtCancelJOb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:text="@string/canceljob"
-                android:padding="@dimen/commonpadding"
+                android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
+                android:text="@string/canceljob"
                 android:textColor="@color/orange_signin_back"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
+
             <ImageView
                 android:id="@+id/img_nextCanceljob"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:src="@drawable/right_job_arrow"
-                android:layout_gravity="center" />
+                android:src="@drawable/right_job_arrow" />
         </LinearLayout>
 
 

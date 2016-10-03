@@ -1,8 +1,11 @@
 package fixtpro.com.fixtpro.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -38,6 +42,9 @@ import fixtpro.com.fixtpro.adapters.RepairTypeAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
 import fixtpro.com.fixtpro.beans.install_repair_beans.RepairType;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
 import fixtpro.com.fixtpro.utilites.ExceptionListener;
@@ -77,6 +84,8 @@ public class RepairFragment extends Fragment {
     TextView txtJobName ;
     EditText txtSearch ;
     RepairTypeAdapter adapter;
+    CurrentScheduledJobSingleTon singleTon = null;
+    RepairType repairType ;
     public RepairFragment() {
         // Required empty public constructor
     }
@@ -108,6 +117,8 @@ public class RepairFragment extends Fragment {
         }
         _context = getActivity();
         _prefs = Utilities.getSharedPreferences(_context);
+        singleTon = CurrentScheduledJobSingleTon.getInstance();
+        repairType =  singleTon.getJobApplianceModal().getInstallOrRepairModal().getRepairType();
     }
 
     @Override
@@ -118,7 +129,7 @@ public class RepairFragment extends Fragment {
         modal = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal();
         setWidgets(view);
         setListeners();
-        txtJobName.setText(modal.getJob_appliances_service_type() + "Types");
+        txtJobName.setText(modal.getAppliance_type_name());
         GetApiResponseAsync getApiResponseAsync = new GetApiResponseAsync("POST",getRepairTypesListener,getActivity(),"Getting.");
         getApiResponseAsync.execute(getRepairOrInstallTypeRequestParams());
 
@@ -129,12 +140,81 @@ public class RepairFragment extends Fragment {
         txtSearch = (EditText)view.findViewById(R.id.txtSearch);
         txtJobName = (TextView)view.findViewById(R.id.txtJobName);
     }
+
+    IHttpResponseListener iHttpResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    handler.sendEmptyMessage(2);
+                }
+                else{
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        handler.sendEmptyMessage(1);
+                    }
+                }
+
+            }catch (JSONException e){
+
+            }
+        }
+    };
+    IHttpExceptionListener exceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            error_message = exception;
+            handler.sendEmptyMessage(1);
+        }
+    };
+
+    private HashMap<String,String>  getRequestParamsForSeletedType(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
+            hashMap.put("api", "update_install_types");
+            hashMap.put("object", "install_flow");
+            hashMap.put("data[items][0][install_type_id]", install_or_repair_type_id);
+        }else if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Repair")){
+            hashMap.put("api", "update_repair_types");
+            hashMap.put("object", "repair_flow");
+            hashMap.put("data[items][0][repair_type_id]", install_or_repair_type_id);
+        }else {
+            hashMap.put("api", "update_maintain_types");
+            hashMap.put("object", "maintain_flow");
+            hashMap.put("data[items][0][maintain_type_id]", install_or_repair_type_id);
+        }
+        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        return hashMap ;
+    }
+    private HashMap<String,String>  getRequestParamsForSaveType(String hours,String Desc){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("api", "add_custom_repair_type");
+        hashMap.put("object", "job_appliances");
+        hashMap.put("data[hours]", hours);
+        hashMap.put("data[name]", Desc);
+        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        return hashMap ;
+    }
     private void setListeners(){
         listViewInstallType.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                install_or_repair_type_id = arrayList.get(position).getId();
-                executeRepairTypeSaveingRequest();
+                if (!arrayList.get(position).getType().equals("Others")) {
+                    install_or_repair_type_id = arrayList.get(position).getId();
+                    GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
+                    getApiResponseAsyncNew.execute(getRequestParamsForSeletedType());
+                } else {
+                    showOtherTypeDialog();
+                }
+
 //
             }
         });
@@ -151,8 +231,8 @@ public class RepairFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (adapter  != null)
-                adapter.getFilter().filter(txtSearch.getText().toString());
+                if (adapter != null)
+                    adapter.getFilter().filter(txtSearch.getText().toString());
             }
         });
     }
@@ -164,9 +244,9 @@ public class RepairFragment extends Fragment {
 
     }
     private void setupToolBar(){
-        ((HomeScreenNew)getActivity()).setRightToolBarText("Done");
+        ((HomeScreenNew)getActivity()).hideRight();
         ((HomeScreenNew)getActivity()).setTitletext("Repair Types");
-        ((HomeScreenNew)getActivity()).setLeftToolBarText("Back");
+        ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.popup_cross);
     }
     private HashMap<String,String> getRepairOrInstallTypeRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
@@ -185,7 +265,7 @@ public class RepairFragment extends Fragment {
             hashMap.put("object","maintain_types");
         }
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN, ""));
-        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_appliance_id());
+        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
         return hashMap;
     }
     ResponseListener getRepairTypesListener = new ResponseListener() {
@@ -216,7 +296,11 @@ public class RepairFragment extends Fragment {
                             repairType.setLabor_hours(jsonObjectRepairType.getString("labor_hours"));
                             arrayList.add(repairType);
                         }
+
 //                    }
+                    RepairType repairType = new RepairType();
+                    repairType.setType("Others");
+                    arrayList.add(repairType);
                     handler.sendEmptyMessage(0);
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
@@ -247,7 +331,8 @@ public class RepairFragment extends Fragment {
                         handler.sendEmptyMessage(2);
                     break;
                 }case 1:{
-                    showAlertDialog("Fixd-Pro",error_message);
+//                    showAlertDialog("Fixd-Pro",error_message);
+                    handler.sendEmptyMessage(2);
                     break;
                 }case 2:{
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setType(install_or_repair_type_id);
@@ -258,6 +343,33 @@ public class RepairFragment extends Fragment {
             }
         }
     };
+
+
+    private void showOtherTypeDialog(){
+        final Dialog  subDialog = new Dialog(getActivity());
+        subDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        subDialog.setContentView(R.layout.diaolod_add_repair_type);
+        subDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        final EditText editHour = (EditText) subDialog.findViewById(R.id.editHour);
+        final EditText editDesc = (EditText) subDialog.findViewById(R.id.editDesc);
+        TextView txtOK = (TextView) subDialog.findViewById(R.id.txtOK);
+
+        txtOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editHour.getText().toString().length() == 0){
+                    showAlertDialog("Fixd-Pro","Please enter hours.");
+                }else if (editDesc.getText().toString().length() == 0){
+                    showAlertDialog("Fixd-Pro","Please enter description.");
+                }else {
+                    subDialog.dismiss();
+                    GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
+                    getApiResponseAsyncNew.execute(getRequestParamsForSaveType(editHour.getText().toString(),editDesc.getText().toString()));
+                }
+            }
+        });
+        subDialog.show();
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

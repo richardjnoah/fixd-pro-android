@@ -19,17 +19,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
             <ImageView
-                android:padding="10dp"
+                android:padding="@dimen/size_10_dp"
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/screen_cross"/>
+                android:src="@drawable/cross_new"/>
             <TextView
                 android:layout_centerInParent="true"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/register_button_text"
-                android:textSize="20sp"
+                android:textSize="@dimen/size_22_sp"
                 android:gravity="center"
                 android:text="@string/problem_image"/>
         </RelativeLayout>

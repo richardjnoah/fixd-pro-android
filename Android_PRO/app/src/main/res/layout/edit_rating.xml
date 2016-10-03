@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-   >
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
+
         <LinearLayout
             android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_weight="0.4"
             android:gravity="center"
-            android:layout_height="wrap_content"
             android:orientation="vertical">
-            <ImageView
+
+            <fixtpro.com.fixtpro.views.CircularImageView
                 android:id="@+id/img_Pic"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:src="@drawable/user"/>
+                android:layout_width="@dimen/size_60_dp"
+                android:layout_height="@dimen/size_60_dp"
+                android:background="@drawable/user"
+                 />
         </LinearLayout>
+
         <LinearLayout
-            android:paddingLeft="15dp"
             android:layout_width="0dp"
-            android:layout_weight="1.4"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1.4"
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/size_15_dp">
+
             <TextView
                 android:id="@+id/txtUserName"
-                android:textSize="@dimen/commonxlargetxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="text"
                 android:singleLine="true"
-                android:textColor="@color/register_button_text" />
+                android:text="text"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
+
             <fixtpro.com.fixtpro.views.RatingBarView
                 android:id="@+id/custom_ratingbar"
                 android:layout_width="match_parent"
@@ -42,32 +48,35 @@
                 android:layout_gravity="left"
                 android:gravity="left"
                 app:starCount="5"
-
                 app:starEmpty="@drawable/blank_star"
                 app:starFill="@drawable/fill_star"
-                app:starImageSize="@dimen/ratinglistitemstarsize" />
+                app:starImageSize="@dimen/size_27_dp" />
+
             <TextView
                 android:id="@+id/txtJobDetails"
-                android:textSize="@dimen/commonsmalltxt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="text"
                 android:singleLine="true"
-                android:textColor="@color/register_button_text" />
+                android:text="text"
+
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_12_sp" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="0.3"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_weight="0.3"
             android:gravity="center"
             android:orientation="vertical">
+
             <ImageView
-                android:padding="8dp"
                 android:id="@+id/img_Edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/edit"/>
+                android:padding="@dimen/size_8_dp"
+                android:src="@drawable/edit" />
         </LinearLayout>
 
     </LinearLayout>

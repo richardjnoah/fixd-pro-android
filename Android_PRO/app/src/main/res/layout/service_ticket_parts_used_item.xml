@@ -1,60 +1,59 @@
 <LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/layout7"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_below="@+id/layout6"
-    android:layout_marginTop="@dimen/serviceleftright"
+    android:layout_marginTop="@dimen/size_18_dp"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:weightSum="4"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:weightSum="4">
 
     <TextView
         android:id="@+id/txtpart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="0.3"
-        android:padding="@dimen/servicepadding"
+        android:padding="@dimen/size_7_dp"
         android:singleLine="true"
         android:text="@string/part"
         android:textColor="@color/lb_tv_white"
-        android:textSize="@dimen/serviclarge_text" />
+        android:textSize="@dimen/size_16_sp" />
 
     <TextView
         android:id="@+id/txtpartNum"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/serviceleftright"
+        android:layout_marginLeft="@dimen/size_18_dp"
         android:layout_weight="0.7"
         android:background="@drawable/white_rectangle"
-        android:padding="@dimen/servicepadding"
-        android:text="15"
         android:gravity="center"
+        android:padding="@dimen/size_7_dp"
+        android:text="15"
         android:textColor="@color/lb_tv_white"
-        android:textSize="@dimen/servicesmall_text" />
+        android:textSize="@dimen/size_13_sp" />
 
     <TextView
         android:id="@+id/txtpartNumD"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginLeft="@dimen/serviceleftright"
+        android:layout_marginLeft="@dimen/size_18_dp"
         android:layout_weight="1.1"
         android:background="@drawable/white_rectangle"
-        android:padding="@dimen/servicepadding"
-
+        android:padding="@dimen/size_7_dp"
         android:textColor="@color/lb_tv_white"
-        android:textSize="@dimen/servicesmall_text" />
+        android:textSize="@dimen/size_13_sp" />
 
     <TextView
         android:id="@+id/txtpartNumDSet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
-        android:layout_marginLeft="@dimen/serviceleftright"
+        android:layout_marginLeft="@dimen/size_18_dp"
         android:layout_weight="1.5"
         android:background="@drawable/white_rectangle"
-        android:padding="@dimen/servicepadding"
+        android:padding="@dimen/size_7_dp"
         android:textColor="@color/lb_tv_white"
-        android:textSize="@dimen/servicesmall_text" />
+        android:textSize="@dimen/size_13_sp" />
 </LinearLayout>

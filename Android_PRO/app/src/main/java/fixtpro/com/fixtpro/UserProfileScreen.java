@@ -68,7 +68,7 @@ import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 public class UserProfileScreen extends AppCompatActivity {
-    TextView txtBack, txtDone,txtTitle , lblAddPhoto, txtCity, txtState, txtTradeskill;
+   /* TextView txtBack, txtDone,txtTitle , lblAddPhoto, txtCity, txtState, txtTradeskill;
     CircleImageView profile_pic;
     EditText txtFirstName, txtLastName, txtPhone, txtEmail, txtCompany, txtAddress, txtAddress2, txtZip;
     String firstname = "", lastname = "", phone = "", email = "", company = "", address = "", address2 = "", city = "", zip = "", state = "",stateAbre = "", trade_skill  = "",id = "";
@@ -101,9 +101,9 @@ public class UserProfileScreen extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile_screen);
         _prefs = Utilities.getSharedPreferences(_context);
         setWidgets();
-        /**
+        *//**
          * if Intent is not null then User try to Registering else User try to Update
-         */
+         *//*
         if (getIntent().getExtras() != null){
             finalRequestParams = (HashMap<String, String>) getIntent().getSerializableExtra("finalRequestParams");
             // check for is pro or Tech
@@ -136,9 +136,9 @@ public class UserProfileScreen extends AppCompatActivity {
         if (isProfileCompleting){
             txtTitle.setText(getString(R.string.any_correction));
         }
-        /**
+        *//**
          * if is technican then hide appropriate fields fron Technicians
-         */
+         *//*
         if (!isPro){
             txtTradeskill.setVisibility(View.GONE);
             txtPhone.setVisibility(View.GONE);
@@ -346,9 +346,9 @@ public class UserProfileScreen extends AppCompatActivity {
                 }else {
 //                  do it
                     Utilities.hideKeyBoad(_context, UserProfileScreen.this.getCurrentFocus());
-                    /**
+                    *//**
                      * if user not editing then direct regiter else update user
-                     */
+                     *//*
                     if (!isEditMode  && isPro && !isProfileCompleting){
                         // Resgister Pro
                         registerPro();
@@ -483,7 +483,7 @@ public class UserProfileScreen extends AppCompatActivity {
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
-                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String  has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("has_card");
                     String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
@@ -494,7 +494,7 @@ public class UserProfileScreen extends AppCompatActivity {
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+                    editor.putString(Preferences.HAS_CARD, has_card);
                     editor.putString(Preferences.ACCOUNT_STATUS, account_status);
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
                         JSONObject pros = null;
@@ -826,7 +826,7 @@ public class UserProfileScreen extends AppCompatActivity {
 
     private void openGallery() {
         Intent intent = new Intent();
-        intent.setType("image/*");
+        intent.setType("image*//*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(intent, GALLERY_REQUEST);
     }
@@ -876,7 +876,7 @@ public class UserProfileScreen extends AppCompatActivity {
         }
        return finalRequestParams;
     }
-    /*Create Camra Gallery PopUP*/
+    *//*Create Camra Gallery PopUP*//*
     private void showCamraGalleryPopUp() {
         dialog = new Dialog(_context);
         dialog = new Dialog(_context);
@@ -1048,7 +1048,7 @@ public class UserProfileScreen extends AppCompatActivity {
         dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog1 components -listview
         ListView lst_TellUsMore = (ListView) dialog1.findViewById(R.id.lst_TellUsMore);
-                /*To set the Adapter*/
+                *//*To set the Adapter*//*
         StateListAdapter  mAdp = new StateListAdapter(Utilities.getStateList(), UserProfileScreen.this);
         lst_TellUsMore.setAdapter(mAdp);
         lst_TellUsMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -1070,7 +1070,7 @@ public class UserProfileScreen extends AppCompatActivity {
         dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog1 components -listview
         ListView lst_TellUsMore = (ListView) dialog1.findViewById(R.id.lst_TellUsMore);
-                /*To set the Adapter*/
+                *//*To set the Adapter*//*
         CityListAdapter mAdp = new CityListAdapter(arrayListCityBeans, UserProfileScreen.this);
         lst_TellUsMore.setAdapter(mAdp);
         lst_TellUsMore.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -1084,5 +1084,5 @@ public class UserProfileScreen extends AppCompatActivity {
             }
         });
         dialog1.show();
-    }
+    }*/
 }

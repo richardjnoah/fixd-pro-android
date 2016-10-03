@@ -42,6 +42,7 @@ public class WorkingRadiusNew extends AppCompatActivity {
     int selectedIndexMain = 3;
     HashMap<String,String> finalRequestParams = null ;
     boolean ispro = false ;
+
     SharedPreferences _prefs = null ;
     private String working_radius = "",error_message = "";
 
@@ -50,6 +51,10 @@ public class WorkingRadiusNew extends AppCompatActivity {
     private Context _context = this;
     private  LatLng latLng = null ;
     TextView txtMiles;
+    boolean iscompleting = false ;
+    String selectedImagePathUser = null ;
+    String  selectedImagePathDriver = null;
+    TextView txtYourRightsUnder;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +68,15 @@ public class WorkingRadiusNew extends AppCompatActivity {
             if (bundle.containsKey("ispro")){
                 ispro = bundle.getBoolean("ispro");
             }
+            if (bundle.containsKey("iscompleting")){
+                iscompleting = bundle.getBoolean("iscompleting");
+            }
+            if (bundle.containsKey("driver_image")){
+                selectedImagePathDriver = bundle.getString("driver_image");
+            }
+            if (bundle.containsKey("user_image")){
+                selectedImagePathUser = bundle.getString("user_image");
+            }
         }
         radius = Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"));
         radius = radius * 1000 * 1.6;
@@ -71,6 +85,7 @@ public class WorkingRadiusNew extends AppCompatActivity {
         setWidgets();
         setCLickListner();
         setUpMap();
+        txtYourRightsUnder.setText("How far are you willing to travel from "+_prefs.getString(Preferences.ZIP,""));
     }
     private void setUpMap() {
 
@@ -167,6 +182,7 @@ public class WorkingRadiusNew extends AppCompatActivity {
         imgClose = (ImageView) findViewById(R.id.imgClose);
         imgNext = (ImageView) findViewById(R.id.imgNext);
         txtMiles = (TextView)findViewById(R.id.txtMiles);
+        txtYourRightsUnder = (TextView)findViewById(R.id.txtYourRightsUnder);
         txtMiles.setText(Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"))+" Miles");
 
         mMap = ((SupportMapFragment) getSupportFragmentManager()
@@ -179,16 +195,20 @@ public class WorkingRadiusNew extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 onBackPressed();
+                overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
             }
         });
         imgNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(WorkingRadiusNew.this, BackgroundCheck_Activity.class);
+                finalRequestParams.put("data[pros][working_radius_miles]",radius_to_send);
+                Intent i = new Intent(WorkingRadiusNew.this, AddBankAccountNew.class);
+                i.putExtra("ispro",ispro);
+                i.putExtra("finalRequestParams",finalRequestParams);
+                i.putExtra("driver_image", selectedImagePathDriver);
+                i.putExtra("user_image", selectedImagePathUser);
                 startActivity(i);
-//                   Intent i = new Intent(context,BackgroundCheck_Next_Activity.class);
-//                    startActivity(i);
-
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
         txtMiles.setOnClickListener(new View.OnClickListener() {

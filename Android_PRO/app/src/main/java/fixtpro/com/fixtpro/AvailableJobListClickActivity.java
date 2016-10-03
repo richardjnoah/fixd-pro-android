@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixtpro.com.fixtpro.activities.AddBankAccountNewEdit;
 import fixtpro.com.fixtpro.adapters.AvailableJobsPagingAdaper;
 import fixtpro.com.fixtpro.adapters.HorizontalScrollApplianceAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
@@ -101,7 +102,7 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
         contactName.setText(model.getContact_name());
         address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
         date.setText(Utilities.convertDate(model.getRequest_date()));
-        timeinterval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
+        timeinterval.setText(model.getTimeslot_name());
 
 //        setupAppliancesImages();
           setUpApplianceDescription();
@@ -259,8 +260,12 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                     if (keys.hasNext()){
                         String key = (String)keys.next();
                         error_message = errors.getString(key);
-                        if (key.equals("168")){
+                        if (key.equals("173")){
                             handler.sendEmptyMessage(3);
+                            return;
+                        }else if(key.equals("340067")){
+                            error_message = "Your Pro needs to add Bank Account Information";
+                            handler.sendEmptyMessage(4);
                             return;
                         }
                     }
@@ -279,13 +284,25 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
                     handler.sendEmptyMessage(0);
-                }else {
+                }else if(!Response.isNull("NOTICES")){
+                    JSONObject notices = Response.getJSONObject("NOTICES");
+                    Iterator<String> keys = notices.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = notices.getString(key);
+                       if(key.equals("340067")){
+
+                            handler.sendEmptyMessage(4);
+                            return;
+                        }
+                    }
+                } else{
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
                     if (keys.hasNext()){
                         String key = (String)keys.next();
                         error_message = errors.getString(key);
-                        if (key.equals("168")){
+                        if (key.equals("173")){
                             handler.sendEmptyMessage(3);
                             return;
                         }
@@ -306,6 +323,7 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                 case 0:{
                     Intent j = new Intent(AvailableJobListClickActivity.this, ConfirmationActivity.class);
                     j.putExtra("JOB_DETAIL",model);
+                    j.putExtra("confirm","yes");
                     startActivity(j);
                     break;
                 }
@@ -316,6 +334,10 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                 case 3:{
                     Intent j = new Intent(AvailableJobListClickActivity.this, BeatActivity.class);
                     startActivity(j);
+                    break;
+                }
+                case 4:{
+                    showAddBankAccoutAlertDialog("Fixd-Pro",error_message);
                     break;
                 }
             }
@@ -343,10 +365,45 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
         // show it
         alertDialog.show();
     }
+    private void showAddBankAccoutAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        // set title
+        alertDialogBuilder.setTitle(Title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("Add Bank Info", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        if(Utilities.getSharedPreferences(AvailableJobListClickActivity.this).getString(Preferences.ROLE, null).equals("pro")){
+                            dialog.cancel();
+                            Intent intent = new Intent(AvailableJobListClickActivity.this,AddBankAccountNewEdit.class);
+                            startActivity(intent);
+                        }else {
+                            dialog.cancel();
+                        }
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
     private HashMap<String,String> getRequestParamsPro(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
-        hashMap.put("api","jobs");
-        hashMap.put("object","lock");
+        hashMap.put("api","lock");
+        hashMap.put("object","jobs");
         hashMap.put("job_id", model.getId());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
         return hashMap;

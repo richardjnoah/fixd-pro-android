@@ -1,11 +1,15 @@
  package fixtpro.com.fixtpro.fragment;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,6 +19,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,12 +41,27 @@ import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.UserProfileScreen;
 import fixtpro.com.fixtpro.WorkingRadiusActivity;
+import fixtpro.com.fixtpro.activities.AddBankAccountNew;
+import fixtpro.com.fixtpro.activities.AddBankAccountNewEdit;
+import fixtpro.com.fixtpro.activities.AddTechnicion_Activity;
+import fixtpro.com.fixtpro.activities.AddTechnicion_Activity_Edit;
+import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
+import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;
+import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity_Edit;
+import fixtpro.com.fixtpro.activities.SignUp_Account_Activity;
+import fixtpro.com.fixtpro.activities.SignUp_Account_Activity_Edit;
+import fixtpro.com.fixtpro.activities.TradeSkills_Activity;
+import fixtpro.com.fixtpro.activities.TradeSkills_Activity_Edit;
+import fixtpro.com.fixtpro.activities.WorkingRadiusNew;
+import fixtpro.com.fixtpro.activities.WorkingRadiusNew_Edit;
 import fixtpro.com.fixtpro.beans.SkillTrade;
 import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.JSONParser;
 import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Singleton;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.SwitchButton;
 
@@ -49,13 +70,13 @@ public class SettingsFragment extends Fragment {
     public SettingsFragment() {
         // Required empty public constructor
     }
-    LinearLayout layout_change_password, layout_edit_profile, layout_edit_comp_info, layout_edit_bank_info, layout_edit_tech, layout_change_radius;
+    LinearLayout layout_change_password, layout_edit_profile, layout_edit_comp_info, layout_edit_bank_info, layout_edit_tech, layout_change_radius,layout_edit_address,layout_edit_tradeskills;
     SwitchButton swhLocation, swhTextMessaging ;
     ImageView img_available_jobs_email, img_available_jobs_phone, img_job_won_email, img_job_won_phone,
               img_job_lost_email, img_job_lost_phone, img_job_reschduled_email, img_job_reschduled_phone,
               img_job_cancelled_email, img_job_cancelled_phone;
 
-    View bank_account_divider, edit_tech_divider;
+    View bank_account_divider, edit_tech_divider,edit_company_divider,edit_address_divider,divider;
 
     SharedPreferences _prefs  = null ;
 
@@ -69,6 +90,7 @@ public class SettingsFragment extends Fragment {
     Context _context ;
     String error_message =  "";
     TextView txtSignOut;
+    private Dialog dialog;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +108,7 @@ public class SettingsFragment extends Fragment {
         setWidgets(rootView);
         setListeners();
         initSettings();
-        if (_prefs.getString(Preferences.CREDIT_CARD_NUMBER,"").length() == 0){
+        if (_prefs.getString(Preferences.IS_VARIFIED,"0").equals("1")){
             getPrimaryCard();
         }
         return rootView;
@@ -99,15 +121,25 @@ public class SettingsFragment extends Fragment {
         layout_edit_bank_info  =  (LinearLayout) view.findViewById(R.id.layout_edit_bank_info);
         layout_edit_tech =  (LinearLayout) view.findViewById(R.id.layout_edit_tech);
         layout_change_radius =  (LinearLayout) view.findViewById(R.id.layout_change_radius);
+        layout_edit_address =  (LinearLayout) view.findViewById(R.id.layout_edit_address);
+        layout_edit_tradeskills =  (LinearLayout) view.findViewById(R.id.layout_edit_tradeskills);
         bank_account_divider = (View)view.findViewById(R.id.bank_account_divider);
+        edit_company_divider = (View)view.findViewById(R.id.edit_company_divider);
+        edit_address_divider = (View)view.findViewById(R.id.edit_address_divider);
         txtSignOut = (TextView)view.findViewById(R.id.txtSignOut);
         edit_tech_divider = (View)view.findViewById(R.id.edit_tech_divider);
+        divider = (View)view.findViewById(R.id.divider);
         if (!_prefs.getString(Preferences.ROLE,"").equals("pro")){
             layout_edit_bank_info.setVisibility(View.GONE);
             bank_account_divider.setVisibility(View.GONE);
             layout_edit_tech.setVisibility(View.GONE);
             edit_tech_divider.setVisibility(View.GONE);
             layout_change_radius.setVisibility(View.GONE);
+            layout_edit_comp_info.setVisibility(View.GONE);
+            layout_edit_address.setVisibility(View.GONE);
+            edit_company_divider.setVisibility(View.GONE);
+            edit_address_divider.setVisibility(View.GONE);
+            divider.setVisibility(View.GONE);
         }
         swhLocation  = (SwitchButton)view.findViewById(R.id.swhLocation);
         swhTextMessaging  = (SwitchButton)view.findViewById(R.id.swhTextMessaging);
@@ -132,6 +164,7 @@ public class SettingsFragment extends Fragment {
         notif_JobCancel = _prefs.getString(Preferences.JOB_CANCELLED,"none");
         loc_Settings = _prefs.getString(Preferences.LOCATION_SERVICE,"0");
         text_Settings = _prefs.getString(Preferences.TEXT_MESSAGING,"0");
+
         setLayout();
     }
     private  void setLayout(){
@@ -220,50 +253,84 @@ public class SettingsFragment extends Fragment {
         txtSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showcheckAlert(getActivity(), "SIGN OUT", "Are you sure you want to Sign Out?");
             }
         });
         layout_change_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(getActivity(), ChangePassword.class);
-                startActivity(intent);
+                if (checkForProfileCompletion()){
+                    Intent intent =  new Intent(getActivity(), ChangePassword.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter,R.anim.exit);
+                }
+
             }
         });
         layout_edit_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (checkForProfileCompletion()){
+                    Intent intent =  new Intent(getActivity(), SignUp_Account_Activity_Edit.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
 
-                Intent intent =  new Intent(getActivity(), UserProfileScreen.class);
-                startActivity(intent);
             }
         });
         layout_edit_comp_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(getActivity(), Add_Driver_LicScreen.class);
-                startActivity(intent);
-
+                if (checkForProfileCompletion()){
+                    Intent intent =  new Intent(getActivity(), CompanyInformation_Activity_Edit.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
             }
         });
         layout_edit_bank_info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(getActivity(), AddBankAccountActivity.class);
-                startActivity(intent);
+                if (checkForProfileCompletion()) {
+                    Intent intent = new Intent(getActivity(), AddBankAccountNewEdit.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
 
             }
         });
         layout_change_radius.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =  new Intent(getActivity(), WorkingRadiusActivity.class);
-                startActivity(intent);
+                if (checkForProfileCompletion()) {
+                    Intent intent = new Intent(getActivity(), WorkingRadiusNew_Edit.class);
+                    startActivity(intent);getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+
+                }
 
             }
         });
+        layout_edit_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkForProfileCompletion()) {
+                    Intent intent = new Intent(getActivity(), SetupCompleteAddressActivity_Edit.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
+            }
+        });
+        layout_edit_tradeskills.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkForProfileCompletion()){
+                    Intent intent =  new Intent(getActivity(), TradeSkills_Activity_Edit.class);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
 
+            }
+        });
         swhLocation.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -287,9 +354,12 @@ public class SettingsFragment extends Fragment {
         layout_edit_tech.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), Add_TechScreen.class);
-                intent.putExtra("isEdit",true);
-                startActivity(intent);
+                if (checkForProfileCompletion()) {
+                    Intent intent = new Intent(getActivity(), AddTechnicion_Activity_Edit.class);
+                    intent.putExtra("isEdit", true);
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                }
             }
         });
         img_available_jobs_email.setOnClickListener(new View.OnClickListener() {
@@ -549,6 +619,9 @@ public class SettingsFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.SETTING_FRAGMENT);
         setupToolBar();
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new CheckIfUserVarified(getActivity());
+        }
     }
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).hideRight();
@@ -557,13 +630,18 @@ public class SettingsFragment extends Fragment {
     }
     public void showcheckAlert(final Activity context,final String title, final String message) {
         // define alert...
-        android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(context);
+        final android.support.v7.app.AlertDialog.Builder dialog1 ;
         //set title
-        dialog.setTitle(title);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            dialog1 = new AlertDialog.Builder(context, android.R.style.Theme_Material_Light_Dialog_Alert);
+        } else {
+            dialog1 = new AlertDialog.Builder(context);
+        }
+        dialog1.setTitle(title);
         // set message...
-        dialog.setMessage(message);
+        dialog1.setMessage(message);
         // set button status..onclick
-        dialog.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
+        dialog1.setPositiveButton("SIGN OUT", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -571,14 +649,16 @@ public class SettingsFragment extends Fragment {
 
                 dialog.dismiss();
                 if (_prefs.edit().clear().commit()){
+                    Singleton.getInstance().doLogout();
                     Intent intent = new Intent(getActivity(), Login_Register_Activity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     getActivity().startActivity(intent);
                     getActivity().finish();
+                    getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             }
         });
-        dialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        dialog1.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -588,7 +668,7 @@ public class SettingsFragment extends Fragment {
 
             }
         });
-        android.app.AlertDialog alert = dialog.create();
+        android.support.v7.app.AlertDialog alert = dialog1.create();
         alert.setCanceledOnTouchOutside(false);
         alert.setCancelable(false);
         alert.show();
@@ -639,8 +719,52 @@ public class SettingsFragment extends Fragment {
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("api", "primary_card");
         hashMap.put("object", "cards");
-        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
 
         return hashMap;
+    }
+    private boolean checkForProfileCompletion(){
+        boolean isComplete = true;
+        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+            showAccountSetupDialog();
+            isComplete = false ;
+
+        }
+        return isComplete;
+    }
+    private HashMap<String,String> getIncompleteAccountParams(){
+        HashMap<String,String> hashMap = new HashMap<>();
+        hashMap.put("api", "signup_complete");
+        hashMap.put("object", "pros");
+        hashMap.put("with_token", "1");
+
+        return hashMap;
+    }
+    private void showAccountSetupDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_hang_tight);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialog.findViewById(R.id.btnFinish);
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SetupCompleteAddressActivity.class);
+                intent.putExtra("finalRequestParams", getIncompleteAccountParams());
+                intent.putExtra("ispro", true);
+                intent.putExtra("iscompleting", true);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
+                dialog.dismiss();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }

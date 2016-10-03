@@ -10,6 +10,7 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,12 +19,15 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import fixtpro.com.fixtpro.HomeScreenNew;
@@ -32,6 +36,9 @@ import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.adapters.RepairTypeAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.install_repair_beans.Parts;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
 import fixtpro.com.fixtpro.utilites.ExceptionListener;
@@ -65,6 +72,9 @@ public class PartsFragment extends Fragment {
     CurrentScheduledJobSingleTon singleTon = null;
     String error_message = "";
     MultipartUtility multipart = null;
+    ScrollView scrollView ;
+    TextView txtTapAddParts,txtEnterPartsCost, txtDisposalFees ;
+    LinearLayout layout_add_part ,layout_no_part, layout_main, layout_bottom_view;
     public PartsFragment() {
         // Required empty public constructor
     }
@@ -106,21 +116,67 @@ public class PartsFragment extends Fragment {
         setWidgets(view);
         setListeners();
         setView();
-        if (partsArrayList.size() == 0){
-            partsArrayList.add(new Parts());
+        if (partsArrayList.size() > 0){
+//            partsArrayList.add(new Parts());
             setView();
+            scrollView.setVisibility(View.VISIBLE);
+            layout_bottom_view.setVisibility(View.VISIBLE);
+            layout_main.setVisibility(View.GONE);
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+        }else {
+            layout_main.setVisibility(View.VISIBLE);
+            scrollView.setVisibility(View.GONE);
+            layout_bottom_view.setVisibility(View.GONE);
         }
+        txtTapAddParts.setText(Html.fromHtml(getResources().getString(R.string.tap_add_parts)));
+        txtDisposalFees.setText(Html.fromHtml(getResources().getString(R.string.disposal_fess)));
+        txtEnterPartsCost.setText(Html.fromHtml(getResources().getString(R.string.enter_parts_cost)));
         return view;
     }
     private void setWidgets(View view){
         img_add = (ImageView)view.findViewById(R.id.img_add);
+        img_add = (ImageView)view.findViewById(R.id.img_add);
         container_layout = (LinearLayout)view.findViewById(R.id.container_layout);
+        scrollView = (ScrollView)view.findViewById(R.id.scrollView);
+        txtTapAddParts = (TextView)view.findViewById(R.id.txtTapAddParts);
+        txtDisposalFees = (TextView)view.findViewById(R.id.txtDisposalFees);
+        txtEnterPartsCost = (TextView)view.findViewById(R.id.txtEnterPartsCost);
+
+        layout_add_part = (LinearLayout)view.findViewById(R.id.layout_add_part);
+        layout_no_part = (LinearLayout)view.findViewById(R.id.layout_no_part);
+        layout_main = (LinearLayout)view.findViewById(R.id.layout_main);
+        layout_bottom_view = (LinearLayout)view.findViewById(R.id.layout_bottom_view);
+
     }
     private void setListeners(){
         img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                scrollView.setVisibility(View.VISIBLE);
+                layout_main.setVisibility(View.GONE);
                 container_layout.removeAllViews();
+                partsArrayList.add(new Parts());
+                setView();
+
+            }
+        });
+        layout_no_part.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                noPartsNeeded();
+            }
+        });
+        layout_add_part.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollView.setVisibility(View.VISIBLE);
+                layout_main.setVisibility(View.GONE);
+                layout_bottom_view.setVisibility(View.VISIBLE);
                 partsArrayList.add(new Parts());
                 setView();
             }
@@ -133,7 +189,7 @@ public class PartsFragment extends Fragment {
             final View addView = layoutInflater.inflate(R.layout.parts_item, null);
             View line_view = (View)addView.findViewById(R.id.line_view);
             final EditText txtPartDescription = (EditText)addView.findViewById(R.id.txtPartDescription);
-            final EditText txtPartNumber = (EditText)addView.findViewById(R.id.txtPartDescription);
+            final EditText txtPartNumber = (EditText)addView.findViewById(R.id.txtPartNumber);
             final EditText txtQty = (EditText)addView.findViewById(R.id.txtQty);
             final EditText txtCost = (EditText)addView.findViewById(R.id.txtCost);
 
@@ -224,8 +280,8 @@ public class PartsFragment extends Fragment {
 
     }
     private void setupToolBar(){
-        ((HomeScreenNew)getActivity()).setRightToolBarText("Done");
-        ((HomeScreenNew)getActivity()).setTitletext("Parts Needed");
+        ((HomeScreenNew)getActivity()).hideRight();
+        ((HomeScreenNew)getActivity()).setTitletext("Parts Used");
         ((HomeScreenNew)getActivity()).setLeftToolBarText("Back");
     }
     // TODO: Rename method, update argument and hook method into UI event
@@ -252,9 +308,42 @@ public class PartsFragment extends Fragment {
         mListener = null;
     }
     public void submitPost(){
-        executeAddPartsRequest();
+//        executeAddPartsRequest();
+        GetApiResponseAsyncNew noPartsNeededAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST",addPartsResponseListener,addPartsExceptionListener,getActivity(),"");
+        noPartsNeededAsync.execute(getAddPartsNeededRequestParams());
 
     }
+
+    IHttpResponseListener addPartsResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+                    handler.sendEmptyMessage(2);
+                }
+                else{
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        handler.sendEmptyMessage(1);
+                    }
+                }
+
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
+        }
+    };
+    IHttpExceptionListener addPartsExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            error_message = exception ;
+            handler.sendEmptyMessage(1);
+        }
+    };
     public void clearList(){
         partsArrayList.clear();
     }
@@ -271,6 +360,20 @@ public class PartsFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+    private HashMap<String,String> getAddPartsNeededRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","save");
+        hashMap.put("object","job_parts_used");
+        hashMap.put("data[job_appliance_id]",CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        for (int i = 0 ; i < partsArrayList.size() ; i++){
+            hashMap.put("data[items][" + i + "][part_num]", partsArrayList.get(i).getNumber());
+            hashMap.put("data[items][" + i + "][part_cost]", partsArrayList.get(i).getCost());
+            hashMap.put("data[items][" + i + "][qty]", partsArrayList.get(i).getQuantity());
+            hashMap.put("data[items][" + i + "][part_desc]", partsArrayList.get(i).getDescription());
+        }
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        return hashMap;
     }
     public void executeAddPartsRequest(){
         new AsyncTask<Void, Void, String>() {
@@ -347,6 +450,8 @@ public class PartsFragment extends Fragment {
                     showAlertDialog("Fixd-Pro",error_message);
                     break;
                 }case 2:{
+                    container_layout.removeAllViews();
+                    partsArrayList.add(new Parts());
                      singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.PARTS_FRAGMENT);
                     break;
@@ -379,5 +484,11 @@ public class PartsFragment extends Fragment {
 
         // show it
         alertDialog.show();
+    }
+
+
+
+    private void noPartsNeeded(){
+        submitPost();
     }
 }

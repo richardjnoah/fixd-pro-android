@@ -10,65 +10,66 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/left_right_margin"
-        android:layout_marginRight="@dimen/left_right_margin"
+        android:layout_marginLeft="@dimen/size_18_dp"
+        android:layout_marginRight="@dimen/size_18_dp"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/picheight"
-            android:layout_marginTop="@dimen/commonpadding"
+            android:layout_height="@dimen/size_175_dp"
+            android:layout_marginTop="@dimen/size_10_dp"
             android:background="@drawable/white_rectangle"
             android:gravity="center"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/size_5_dp">
+
             <ImageView
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
                 android:id="@+id/imgMain"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
+
             <ImageView
-                android:layout_centerInParent="true"
                 android:id="@+id/img_Camra"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:src="@drawable/camera" />
 
             <TextView
-                android:layout_centerInParent="true"
-
                 android:id="@+id/txtTakepic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/img_Camra"
-                android:padding="5dp"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/size_5_dp"
                 android:text="@string/takeapic"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonmediumtxt" />
+                android:textSize="@dimen/size_18_sp" />
         </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.7dp"
-            android:layout_marginBottom="@dimen/cdimbottomtop"
-            android:layout_marginTop="@dimen/cdimbottomtop"
+            android:layout_marginBottom="@dimen/size_32_dp"
+            android:layout_marginTop="@dimen/size_32_dp"
             android:background="@color/lb_tv_white"></View>
 
         <EditText
             android:id="@+id/editDescription"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/telledittxtheight"
+            android:layout_height="@dimen/size_125_dp"
             android:background="@drawable/white_rectangle"
+            android:gravity="top"
             android:hint="@string/tellus"
             android:imeOptions="actionNext"
-            android:gravity="top"
-            android:padding="@dimen/commonpadding"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="false"
             android:textColor="@color/lb_tv_white"
             android:textColorHint="@color/lb_tv_white"
             android:textCursorDrawable="@color/lb_tv_white"
-            android:textSize="@dimen/commonmediumtxt" />
+            android:textSize="@dimen/size_18_sp" />
 
 
     </LinearLayout>

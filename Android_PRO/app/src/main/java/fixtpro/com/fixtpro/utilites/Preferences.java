@@ -48,6 +48,7 @@ public class Preferences {
     public static final String AVERAGE_RATING = "average_rating";
 
     public static final String SERVICES_JSON_ARRAY = "services_json_array";
+    public static final String TRADE_LICENCES_JSON_ARRAY = "trade_licences_json_array";
 
 
     public static final String REGISTER_JSON_DATA = "register_json_data";
@@ -79,5 +80,7 @@ public class Preferences {
     public static final String CREDIT_CARD_LAST_NAME = "credit_card_last_name";
 
     public static final String IS_ACCOUNT_SETUP_COMPLETD_SHOWED = "is_account_setup_complete_showed";
+    public static final String CHAT_NOTI_COUNT = "chat_noti_count";
+    public static final String NORMAL_NOTI_COUNT = "normal_noti_count";
 
 }

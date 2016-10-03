@@ -64,7 +64,7 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
     /********* Create a holder Class to contain inflated xml file elements *********/
     public static class ViewHolder{
 
-        public TextView txtUserName, txtComments ,txtRateingInterval;
+        public TextView txtUserName, txtComments ,txtRateingInterval,txtKnowlageable,txtCourteous,txtAppearance;;
         public fixtpro.com.fixtpro.views.RatingBarView rating;
 
     }
@@ -86,6 +86,9 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             holder.txtComments = (TextView) vi.findViewById(R.id.txtComments);
             holder.txtRateingInterval = (TextView) vi.findViewById(R.id.txtRateingInterval);
             holder.txtUserName = (TextView) vi.findViewById(R.id.txtUserName);
+            holder.txtAppearance = (TextView) vi.findViewById(R.id.txtAppearance);
+            holder.txtCourteous = (TextView) vi.findViewById(R.id.txtCourteous);
+            holder.txtKnowlageable = (TextView) vi.findViewById(R.id.txtKnowlageable);
             holder.rating.setClickable(false);
             /************  Set holder with LayoutInflater ************/
             vi.setTag( holder );
@@ -103,9 +106,12 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues =  items.get( position );
-            holder.txtUserName.setText(tempValues.getCustomers_first_name() + " " + tempValues.getCustomers_last_name());
+            holder.txtUserName.setText("Review by "+tempValues.getCustomers_first_name() + " " + tempValues.getCustomers_last_name());
             holder.txtComments.setText(tempValues.getComments());
-            holder.rating.setStar((int) Float.parseFloat(tempValues.getRatings()), true);
+
+            holder.txtKnowlageable.setText(tempValues.getKnowledgeable());
+            holder.txtAppearance.setText(tempValues.getAppearance());
+            holder.txtCourteous.setText(tempValues.getCourteous());
             Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
             long time1 = cal.getTimeInMillis();
             long time2 = 0;
@@ -122,6 +128,10 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             else
             holder.txtRateingInterval.setVisibility(View.INVISIBLE);
             /************  Set Model values in Holder elements ***********/
+            Float avd_rating  = Float.parseFloat(tempValues.getKnowledgeable()) + Float.parseFloat(tempValues.getCourteous()) + Float.parseFloat(tempValues.getAppearance()) ;
+            avd_rating = avd_rating / 3 ;
+            holder.rating.setStar((int)Math.round(avd_rating),true);
+            items.get(position).setRatings(avd_rating+"");
 
         }
         return vi;

@@ -6,9 +6,9 @@
         android:id="@+id/lstTxt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:padding="@dimen/size_8_dp"
         android:textColor="@android:color/white"
-        android:textSize="18sp"/>
+        android:textSize="@dimen/size_18_sp"/>
     <ImageView
         android:id="@+id/lstCheck"
         android:layout_width="wrap_content"

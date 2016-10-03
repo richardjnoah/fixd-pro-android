@@ -18,6 +18,15 @@ public class NotificationListModal implements Serializable {
     String ServiceName = "";
     String IconImage = "";
     String IsRead = "";
+    String is_active = "";
+
+    public String getIs_active() {
+        return is_active;
+    }
+
+    public void setIs_active(String is_active) {
+        this.is_active = is_active;
+    }
 
     HashMap<String,NotificationTypeData> data = new HashMap<String,NotificationTypeData>();
 

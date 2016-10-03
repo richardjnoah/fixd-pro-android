@@ -6,6 +6,6 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1.5dp"
-        android:background="@color/lb_tv_white"/>
+        android:background="@color/white"/>
 
 </LinearLayout>

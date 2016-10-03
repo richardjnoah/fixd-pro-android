@@ -5,18 +5,20 @@
     tools:context="fixtpro.com.fixtpro.fragment.AddServiceFragment">
     <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:gravity="center"
-        android:padding="12dp"
         android:id="@+id/add_service_header_text"
-        android:text="Choose Power Source?"
         android:layout_width="match_parent"
-        android:textColor="@color/orange_signin_back"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/size_12_dp"
+        android:text="Choose Power Source?"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/orange_signin_back" />
+
     <ListView
-        android:dividerHeight="0.7dp"
-        android:divider="#81ffffff"
-        android:layout_below="@+id/add_service_header_text"
         android:id="@+id/lstChoosePowerSource"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"></ListView>
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_service_header_text"
+        android:divider="#81ffffff"
+        android:dividerHeight="0.7dp"></ListView>
 </RelativeLayout>

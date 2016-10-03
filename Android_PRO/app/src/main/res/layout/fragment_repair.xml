@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical">
 
@@ -16,33 +16,37 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <EditText
                 android:id="@+id/txtSearch"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="20dp"
-                android:paddingLeft="5dp"
-                android:hint="Search"
+                android:layout_marginBottom="@dimen/size_20_dp"
+                android:layout_marginTop="@dimen/size_15_dp"
+                android:layout_marginLeft="@dimen/size_30_dp"
+                android:layout_marginRight="@dimen/size_30_dp"
+                android:background="@drawable/search_box"
                 android:drawableLeft="@drawable/search_grey"
-                android:background="@drawable/search_box"/>
+                android:hint="Search"
+                android:paddingLeft="@dimen/size_5_dp"
+                android:singleLine="true" />
         </LinearLayout>
         <!--JobName-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txtJobName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orange_signin_back"
-                android:textSize="@dimen/commonmediumtxt"
                 android:gravity="center"
-                android:padding="@dimen/commonpadding"
-                android:text="Install Type"/>
+                android:padding="@dimen/size_10_dp"
+                android:text="Install Type"
+                android:textColor="@color/orange_signin_back"
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <!--set the Line-->
@@ -54,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <ListView
                 android:id="@+id/listViewInstallType"
                 android:layout_width="match_parent"

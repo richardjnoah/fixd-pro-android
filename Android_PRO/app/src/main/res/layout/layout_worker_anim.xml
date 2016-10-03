@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/drawer_bg_color"
+    android:background="#00000000"
     android:orientation="vertical">
 
     <LinearLayout
@@ -17,59 +17,104 @@
             android:background="@android:color/white"></View>
 
         <LinearLayout
+            android:id="@+id/layout_appliances"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_below="@+id/txtJobId"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:gravity="center">
+
+                <TextView
+                    android:id="@+id/txtApplianceName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Air Conditionar Repair"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/size_24_sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/imgArrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/size_16_dp"
+                    android:src="@drawable/next_arrow_orange" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/txtJobId"
+            android:background="@android:color/white"></View>
+
+        <LinearLayout
+            android:id="@+id/layout_desc_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/txtCustomerComplaint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/commonpadding"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/customercomplaint"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtDisplaingError"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/commonpadding"
-                android:layout_marginRight="@dimen/commonpadding"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
                 android:enabled="false"
                 android:gravity="top"
-                android:padding="@dimen/commonpadding"
-                android:text="Displaying Error Code"
+                android:padding="@dimen/size_10_dp"
+                android:text="None"
                 android:textColor="@android:color/white"
                 android:textColorHint="@color/lb_tv_white"
-                android:textSize="@dimen/commonmediumtxt" />
+                android:textSize="@dimen/size_18_sp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-
                 android:background="@android:color/white"></View>
 
             <TextView
                 android:id="@+id/txtDescriptionOfWork"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/commonpadding"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/descriptionofwork"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/commonpadding"
-                android:layout_marginRight="@dimen/commonpadding"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/commonpadding">
+                android:padding="@dimen/size_10_dp">
 
                 <TextView
                     android:id="@+id/txtDescriptionTExt"
@@ -79,7 +124,7 @@
                     android:singleLine="true"
                     android:text="None"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/commonmediumtxt" />
+                    android:textSize="@dimen/size_18_sp" />
             </LinearLayout>
 
             <View
@@ -91,20 +136,20 @@
                 android:id="@+id/txtRepairType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/commonpadding"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="@string/repairtype"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/commonpadding"
-                android:layout_marginRight="@dimen/commonpadding"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/commonpadding">
+                android:padding="@dimen/size_10_dp">
 
                 <TextView
                     android:id="@+id/txtRepairTypeText"
@@ -114,7 +159,17 @@
                     android:singleLine="true"
                     android:text="None"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/commonmediumtxt" />
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtRepairTypeDollarText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
             </LinearLayout>
 
             <View
@@ -126,20 +181,20 @@
                 android:id="@+id/txtPartsType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/commonpadding"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:gravity="center"
                 android:singleLine="true"
                 android:text="Parts:"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonlargetxt" />
+                android:textSize="@dimen/size_21_sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/commonpadding"
-                android:layout_marginRight="@dimen/commonpadding"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
                 android:orientation="horizontal"
-                android:padding="@dimen/commonpadding">
+                android:padding="@dimen/size_10_dp">
 
                 <TextView
                     android:id="@+id/txtHomeandConnectionText"
@@ -147,9 +202,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:singleLine="true"
-                    android:text="House and Connections"
+                    android:text="None"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/commonmediumtxt" />
+                    android:textSize="@dimen/size_18_sp" />
 
                 <TextView
                     android:id="@+id/txtPartsDollerTxxt"
@@ -158,9 +213,8 @@
                     android:layout_weight="1"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="$ 75.00"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/commonmediumtxt" />
+                    android:textSize="@dimen/size_18_sp" />
             </LinearLayout>
 
 

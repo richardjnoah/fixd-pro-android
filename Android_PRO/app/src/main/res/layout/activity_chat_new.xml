@@ -14,7 +14,7 @@
         android:background="@color/drawer_bg_color">
         <TextView
             android:layout_centerVertical="true"
-            android:textSize="18sp"
+            android:textSize="@dimen/size_18_sp"
             android:gravity="center"
             android:textColor="@android:color/white"
             android:id="@+id/txtBack"
@@ -22,7 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:padding="10dp"
+            android:padding="@dimen/size_10_dp"
             android:text="Back" />
         <TextView
             android:layout_centerInParent="true"
@@ -32,18 +32,18 @@
             android:background="@android:color/transparent"
             android:gravity="center_horizontal"
             android:text=""
-            android:padding="@dimen/edittext_padding"
+            android:padding="@dimen/size_8_dp"
             android:singleLine="true"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/commonxlargetxt" />
+            android:textSize="@dimen/size_20_sp" />
 
         <ProgressBar
             android:visibility="invisible"
             android:layout_alignParentRight="true"
             android:layout_centerInParent="true"
             android:id="@+id/progress_message_attachment"
-            android:layout_height="32dp"
-            android:layout_width="32dp"
+            android:layout_height="@dimen/size_32_dp"
+            android:layout_width="@dimen/size_32_dp"
             android:theme="@style/AppTheme.BlueAccent"/>
     </RelativeLayout>
 
@@ -59,15 +59,15 @@
     <ProgressBar
         android:layout_centerInParent="true"
         android:id="@+id/progress_chat"
-        android:layout_height="60dp"
-        android:layout_width="60dp"
+        android:layout_height="@dimen/size_60_dp"
+        android:layout_width="@dimen/size_60_dp"
         android:theme="@style/AppTheme.BlueAccent"/>
 
     <LinearLayout
         android:id="@+id/layout_attachment_preview_container"
         android:layout_width="match_parent"
 
-        android:layout_height="96dp"
+        android:layout_height="@dimen/size_95_dp"
         android:layout_above="@+id/layout_chat_send_container"
         android:background="?attr/colorPrimary"
         android:orientation="vertical"
@@ -94,7 +94,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/grey_skill_back"
-        android:padding="5dp"
+        android:padding="@dimen/size_5_dp"
         android:weightSum="3"
         android:orientation="horizontal">
 
@@ -106,7 +106,7 @@
             android:layout_gravity="center_vertical"
             android:background="@color/transperant"
             android:onClick="onAttachmentsClick"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/size_5_dp"
             android:src="@drawable/camra_chat" />
 
         <EditText
@@ -116,7 +116,7 @@
             android:layout_weight="2.2"
             android:layout_height="wrap_content"
             android:hint="@string/chat_edit_text_hint"
-            android:padding="7dp"
+            android:padding="@dimen/size_8_dp"
             android:layout_margin="3dp"
             android:layout_gravity="center_vertical"
             android:inputType="textShortMessage"
@@ -126,7 +126,7 @@
             android:id="@+id/button_chat_send"
             android:layout_width="0dp"
             android:layout_weight="0.4"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/size_5_dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="@color/transperant"

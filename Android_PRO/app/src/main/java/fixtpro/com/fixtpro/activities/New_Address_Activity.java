@@ -47,7 +47,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
     Activity activity = New_Address_Activity.this;
     public static final String TAG = "New_Address_Activity";
     ImageView imgClose,imgFinish;
-    TextView txtFinish,txtCity,txtState;
+    TextView txtFinish,txtCity,txtState,txtAddressBar;
     EditText txtAddress1,txtAddress2,txtZipCode;
     LinearLayout layoutFinish;
     ArrayList<CityBeans> arrayListCityBeans  = new ArrayList<CityBeans>();
@@ -63,6 +63,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
     SharedPreferences _prefs = null ;
     GoogleResponseBean modal = null ;
     boolean ispro = false ;
+    boolean iscompleting = false ;
     HashMap<String,String> finalRequestParams = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,15 +82,19 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
 
             if (bundle.containsKey("ispro"))
                 ispro = bundle.getBoolean("ispro");
+            if (bundle.containsKey("iscompleting"))
+                iscompleting = bundle.getBoolean("iscompleting");
             if (bundle.containsKey("finalRequestParams"))
                 finalRequestParams = (HashMap<String,String>)getIntent().getSerializableExtra("finalRequestParams");
-
+            if (iscompleting){
+                txtAddressBar.setText("Address (Review)");
+            }
         }
     }
     private void initLayout(){
         if (modal.getmAddress1()  != null){
             txtAddress1.setText(modal.getmAddress1());
-        }if (modal.getmAddress2()  != null){
+        }if (modal.getmAddress2()  != null) {
             txtAddress2.setText(modal.getmAddress2());
         }if (modal.getmZip()  != null){
             txtZipCode.setText(modal.getmZip());
@@ -98,6 +103,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         }if (modal.getmState()  != null){
             txtState.setText(modal.getmState());
         }
+
     }
     private void setWidgets() {
         imgClose = (ImageView)findViewById(R.id.imgClose);
@@ -109,6 +115,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         txtCity = (TextView)findViewById(R.id.txtCity);
         txtState = (TextView)findViewById(R.id.txtState);
         txtFinish = (TextView)findViewById(R.id.txtFinish);
+        txtAddressBar = (TextView)findViewById(R.id.txtAddressBar);
         layoutFinish = (LinearLayout)findViewById(R.id.layoutFinish);
     }
     private void setClickListner() {
@@ -167,7 +174,9 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                     Intent intent = new Intent(activity,SignUp_Account_Activity.class);
                     intent.putExtra("finalRequestParams",finalRequestParams);
                     intent.putExtra("ispro",ispro);
+                    intent.putExtra("ispro",ispro);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                 }
             }
         });
@@ -316,6 +325,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
         finish();
     }
 }

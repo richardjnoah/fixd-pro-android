@@ -332,7 +332,7 @@ public class CalendarAdapter extends BaseAdapter {
 
             if (date.equals(event_date)) {
                 list = CalendarCollection.date_collection_arr.get(i).list;
-                Toast.makeText(context, "You have event on this date: " + event_date, Toast.LENGTH_LONG).show();
+//                Toast.makeText(context, "You have event on this date: " + event_date, Toast.LENGTH_LONG).show();
 
                 break;
             }else{

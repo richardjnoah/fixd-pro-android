@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.quickblox.auth.QBAuth;
@@ -37,7 +38,8 @@ import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 public class LoginActivity extends AppCompatActivity {
-    TextView txtBack,txtDone;
+    TextView txtDone,txtForgetPassword;
+    ImageView txtBack;
     EditText txtPhone,txtPassword;
     String Phone,Password;
     Context _context =  this;
@@ -72,9 +74,14 @@ public class LoginActivity extends AppCompatActivity {
 //                mMessageReceiver, new IntentFilter("gcm_token_receiver"));
         super.onResume();
     }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
+    }
     private  void setTypeface(){
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
-        txtBack.setTypeface(fontfamily);
+//        txtBack.setTypeface(fontfamily);
         txtDone.setTypeface(fontfamily);
         txtPhone.setTypeface(fontfamily);
         txtPassword.setTypeface(fontfamily);
@@ -84,7 +91,15 @@ public class LoginActivity extends AppCompatActivity {
         txtBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish();
+               onBackPressed();
+            }
+        });
+        txtForgetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(_context, ForgotPasswordActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
 
@@ -95,12 +110,13 @@ public class LoginActivity extends AppCompatActivity {
                 Password = txtPassword.getText().toString().trim();
 
                 if (Phone.length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the phone number.");
-                    return;
-                }else if (Phone.length() < 10){
-                    showAlertDialog("Fixd-Pro","Your phone number seems to invalid, Please try again.");
+                    showAlertDialog("Fixd-Pro","Please enter the Email/Phone number.");
                     return;
                 }
+//                else if (Phone.length() < 10){
+//                    showAlertDialog("Fixd-Pro","Your phone number seems to invalid, Please try again.");
+//                    return;
+//                }
                 else if (Password.length() == 0){
                     showAlertDialog("Fixd-Pro","Please enter the password.");
                     return;
@@ -122,6 +138,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void handleResponse(JSONObject Response) {
             try {
+                Log.e("",""+Response);
                 String STATUS = Response.getString("STATUS");
                 if (STATUS.equals("SUCCESS")) {
                     JSONObject RESPONSE = Response.getJSONObject("RESPONSE");
@@ -130,7 +147,11 @@ public class LoginActivity extends AppCompatActivity {
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
-                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String  has_card = "0";
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("has_card")){
+                        has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("has_card");
+                    }
+
                     String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
@@ -141,7 +162,8 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+
+                    editor.putString(Preferences.HAS_CARD, has_card);
                     editor.putString(Preferences.ACCOUNT_STATUS, account_status);
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
                         JSONObject pros = null;
@@ -206,6 +228,9 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(Preferences.JOB_CANCELLED, pro_settings.getString("job_canceled"));
 
                     }
+                    if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("trade_licenses")){
+                        editor.putString(Preferences.TRADE_LICENCES_JSON_ARRAY,Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONArray("trade_licenses").toString());
+                    }
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("technicians")){
                         JSONObject technicians = null;
                         technicians = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians");
@@ -213,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
                         String last_name = technicians.getString("last_name");
                         String social_security_number = technicians.getString("social_security_number");
                         String years_in_business = technicians.getString("years_in_business");
-                        String trade_license_number = technicians.getString("trade_license_number");
+//                        String trade_license_number = technicians.getString("trade_license_number");
                         String driver_license_number = technicians.getString("driver_license_number");
                         String driver_license_state = technicians.getString("driver_license_state");
                         String dob = technicians.getString("dob");
@@ -223,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putString(Preferences.LAST_NAME, last_name);
                         editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
                         editor.putString(Preferences.YEARS_IN_BUSINESS, years_in_business);
-                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
+//                        editor.putString(Preferences.TRADE_LICENSE_NUMBER, trade_license_number);
                         editor.putString(Preferences.DRIVER_LICENSE_NUMBER, driver_license_number);
                         editor.putString(Preferences.DRIVER_LICENSE_STATE, driver_license_state);
                         editor.putString(Preferences.DOB, dob);
@@ -237,15 +262,20 @@ public class LoginActivity extends AppCompatActivity {
                             }
                         }
                     }
-
+                    String account_id = "";
+                    String login = "";
+                    String password = "";
                     JSONObject quickblox_accounts = null;
-                    quickblox_accounts = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("quickblox_accounts");
-                    String account_id = quickblox_accounts.getString("account_id");
-                    String login = quickblox_accounts.getString("login");
-                    String password = quickblox_accounts.getString("qb_password");
-                    editor.putString(Preferences.QB_ACCOUNT_ID, account_id);
-                    editor.putString(Preferences.QB_LOGIN, login);
-                    editor.putString(Preferences.QB_PASSWORD, password);
+                    if(!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("quickblox_accounts")){
+                        quickblox_accounts = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("quickblox_accounts");
+                         account_id = quickblox_accounts.getString("account_id");
+                         login = quickblox_accounts.getString("login");
+                         password = quickblox_accounts.getString("qb_password");
+                        editor.putString(Preferences.QB_ACCOUNT_ID, account_id);
+                        editor.putString(Preferences.QB_LOGIN, login);
+                        editor.putString(Preferences.QB_PASSWORD, password);
+                    }
+
                     editor.commit();
 //                    loginToQuickBlox(login, password);
 
@@ -278,8 +308,6 @@ public class LoginActivity extends AppCompatActivity {
                             Log.e("","error");
                         }
                     });
-                    Log.e("LOGIN ACTIVITY RESPONSE from prefs", Utilities.getSharedPreferences(_context).getString(Preferences.LOGIN_JSON_DATA, "0"));
-
                     handler.sendEmptyMessage(1);
                 }else{
                     handler.sendEmptyMessage(0);
@@ -344,7 +372,9 @@ public class LoginActivity extends AppCompatActivity {
 //                    showAlertDialog("Fixd-Pro","Success");
                     Intent i = new Intent(LoginActivity.this, HomeScreenNew.class);
                     startActivity(i);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
                     finish();
+
                     break;
                 }
                 default:{
@@ -354,11 +384,12 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
     private void setWidgets(){
-        txtBack = (TextView)findViewById(R.id.txtBack);
+        txtBack = (ImageView)findViewById(R.id.txtBack);
         txtDone = (TextView)findViewById(R.id.txtDone);
 
         txtPhone = (EditText)findViewById(R.id.txtPhone);
         txtPassword = (EditText)findViewById(R.id.txtPassword);
+        txtForgetPassword = (TextView)findViewById(R.id.txtForgetPassword);
     }
     private void showAlertDialog(String Title,String Message){
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(

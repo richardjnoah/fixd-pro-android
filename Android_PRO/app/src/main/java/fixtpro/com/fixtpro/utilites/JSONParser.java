@@ -4,6 +4,12 @@ package fixtpro.com.fixtpro.utilites;
  * Created by sony on 08-02-2016.
  */
 import android.util.Log;
+
+import org.apache.http.conn.scheme.Scheme;
+import org.apache.http.conn.scheme.SchemeRegistry;
+import org.apache.http.conn.ssl.SSLSocketFactory;
+import org.apache.http.conn.ssl.X509HostnameVerifier;
+import org.apache.http.impl.conn.SingleClientConnManager;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.io.BufferedInputStream;
@@ -18,6 +24,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.HashMap;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+
+import fixtpro.com.fixtpro.net.NullHostNameVerifier;
+
 public class JSONParser {
     String charset = "UTF-8";
     HttpURLConnection conn;
@@ -51,7 +63,13 @@ public class JSONParser {
             // request method is POST
             try {
                 urlObj = new URL(url);
-
+//                HostnameVerifier hostnameVerifier = org.apache.http.conn.ssl.SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER;
+//                SchemeRegistry registry = new SchemeRegistry();
+//                SSLSocketFactory socketFactory = SSLSocketFactory.getSocketFactory();
+//                socketFactory.setHostnameVerifier((X509HostnameVerifier) hostnameVerifier);
+//                registry.register(new Scheme("https", socketFactory, 443));
+                // Set verifier
+//                HttpsURLConnection.setDefaultHostnameVerifier(hostnameVerifier);
                 conn = (HttpURLConnection) urlObj.openConnection();
 
                 conn.setDoOutput(true);

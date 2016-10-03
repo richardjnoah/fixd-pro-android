@@ -1,236 +1,334 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/background_grey_blur"
-    android:orientation="vertical"
-    tools:context="fixtpro.com.fixtpro.fragment.SettingsFragment">
+    android:background="@drawable/background_grey_blur">
+
     <ScrollView
-        android:layout_above="@+id/txtSignOut"
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/txtSignOut">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:id="@+id/layout_change_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/changepassword"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/setting_next"/>
+                    android:src="@drawable/setting_next" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:id="@+id/layout_edit_profile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/editprofile"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/setting_next"/>
+                    android:src="@drawable/setting_next" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
+                android:id="@+id/edit_company_divider"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:id="@+id/layout_edit_comp_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/editcompanyinfo"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/setting_next"/>
+                    android:src="@drawable/setting_next" />
             </LinearLayout>
 
             <View
-                android:background="@color/register_button_text"
+                android:id="@+id/edit_address_divider"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
+            <LinearLayout
+                android:id="@+id/layout_edit_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/edit_address"
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/setting_next" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:id="@+id/layout_edit_bank_info"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/editbankinfo"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/setting_next"/>
+                    android:src="@drawable/setting_next" />
             </LinearLayout>
+
             <View
                 android:id="@+id/bank_account_divider"
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
-            android:id="@+id/layout_edit_tech"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
-            android:orientation="horizontal">
-            <TextView
-                android:layout_width="0dp"
+                android:id="@+id/layout_edit_tech"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_gravity="center_vertical"
-                android:text="@string/edittechnicians"
-                android:textColor="@color/register_button_text"/>
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/setting_next"/>
-        </LinearLayout>
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:text="@string/edittechnicians"
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/setting_next" />
+            </LinearLayout>
+
             <View
                 android:id="@+id/edit_tech_divider"
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:id="@+id/layout_change_radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
                     android:text="@string/change_radius"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/setting_next"/>
+                    android:src="@drawable/setting_next" />
             </LinearLayout>
+
             <View
-                android:visibility="gone"
-                android:id="@+id/change_radius_divider"
-                android:background="@color/register_button_text"
+
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
-                android:visibility="gone"
+                android:id="@+id/layout_edit_tradeskills"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:orientation="horizontal"
-                android:weightSum="2">
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
                     android:layout_gravity="center_vertical"
-                    android:text="@string/locationservices"
-                    android:textColor="@color/register_button_text"/>
-               <!-- <Switch
-                    android:id="@+id/swhLocation"
+                    android:layout_weight="1"
+                    android:text="@string/edit_trade_skills"
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
+                <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:checked="false"
-                    android:thumb="@drawable/apptheme_switch_inner_holo_light"
-                    android:track="@drawable/apptheme_switch_track_holo_light"/>-->
+                    android:src="@drawable/setting_next" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/change_radius_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginLeft="2dp"
+                android:layout_marginRight="2dp"
+                android:background="@color/register_button_text"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp"
+                android:visibility="gone"
+                android:weightSum="2">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="2"
+                    android:text="@string/locationservices"
+                    android:textColor="@color/register_button_text" />
+                <!-- <Switch
+                     android:id="@+id/swhLocation"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_gravity="center_vertical"
+                     android:checked="false"
+                     android:thumb="@drawable/apptheme_switch_inner_holo_light"
+                     android:track="@drawable/apptheme_switch_track_holo_light"/>-->
                 <fixtpro.com.fixtpro.views.SwitchButton
                     android:id="@+id/swhLocation"
                     style="@style/SwitchButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="0.4"
                     android:checked="false"
-                    android:layout_gravity="center_vertical"
                     app:kswBackDrawable="@drawable/miui_back_drawable"
                     app:kswBackMeasureRatio="2"
-                    app:kswThumbDrawable="@drawable/miui_thumb_drawable"
-                    />
+                    app:kswThumbDrawable="@drawable/miui_thumb_drawable" />
             </LinearLayout>
+
             <View
-                android:visibility="gone"
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text"
+                android:visibility="gone" />
+
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
                 android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp"
+                android:visibility="gone"
                 android:weightSum="2">
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="2"
                     android:text="@string/textmessaging"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textColor="@color/register_button_text" />
                 <!--<Switch
                     android:id="@+id/swhTextMessaging"
                     android:layout_width="wrap_content"
@@ -245,253 +343,297 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
+                    android:checked="false"
                     app:kswBackDrawable="@drawable/miui_back_drawable"
                     app:kswBackMeasureRatio="2"
-                    android:checked="false"
-                    app:kswThumbDrawable="@drawable/miui_thumb_drawable"
-                    />
+                    app:kswThumbDrawable="@drawable/miui_thumb_drawable" />
             </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/register_button_text"
-                android:layout_marginTop="10dp"
-                android:padding="10dp"
-                android:text="@string/notifications"/>
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:padding="@dimen/size_10_dp"
+                android:text="@string/notifications"
+                android:textSize="@dimen/size_16_sp"
+                android:textColor="@color/register_button_text" />
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/availablejobs"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/mail" />
+
                 <ImageView
                     android:id="@+id/img_available_jobs_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/white_radiobutton" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/phone" />
+
                 <ImageView
                     android:id="@+id/img_available_jobs_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/white_radiobutton" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/jobwon"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/mail" />
+
                 <ImageView
                     android:id="@+id/img_job_won_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/white_radiobutton" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/phone" />
+
                 <ImageView
                     android:id="@+id/img_job_won_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/white_radiobutton" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/joblost"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/mail" />
+
                 <ImageView
                     android:id="@+id/img_job_lost_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/white_radiobutton" />
+
                 <ImageView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/phone" />
+
                 <ImageView
                     android:id="@+id/img_job_lost_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/white_radiobutton" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/jobrescheduled"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/mail" />
+
                 <ImageView
                     android:id="@+id/img_job_reschduled_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/white_radiobutton" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/phone" />
+
                 <ImageView
                     android:id="@+id/img_job_reschduled_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/white_radiobutton" />
             </LinearLayout>
+
             <View
-                android:background="@color/register_button_text"
                 android:layout_width="match_parent"
+                android:layout_height="1dp"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:layout_height="1dp"/>
+                android:background="@color/register_button_text" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/size_10_dp">
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:text="@string/jobcancelled"
-                    android:layout_gravity="center_vertical"
-                    android:textColor="@color/register_button_text"/>
+                    android:textSize="@dimen/size_16_sp"
+                    android:textColor="@color/register_button_text" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/mail"/>
+                    android:src="@drawable/mail" />
+
                 <ImageView
                     android:id="@+id/img_job_cancelled_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/white_radiobutton" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/phone"/>
+                    android:layout_marginLeft="@dimen/size_5_dp"
+                    android:src="@drawable/phone" />
+
                 <ImageView
                     android:id="@+id/img_job_cancelled_phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="3dp"
                     android:layout_gravity="center_vertical"
-                    android:src="@drawable/white_radiobutton"/>
+                    android:layout_marginLeft="3dp"
+                    android:src="@drawable/white_radiobutton" />
             </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+
+
     <TextView
         android:id="@+id/txtSignOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10sp"
         android:layout_alignParentBottom="true"
+        android:background="@color/orange_signin_back"
+        android:gravity="center"
+        android:padding="@dimen/size_10_dp"
         android:singleLine="true"
         android:text="Sign Out"
         android:textColor="@android:color/white"
-        android:background="@color/orange_signin_back"
-        android:textSize="22sp"/>
+        android:textSize="@dimen/size_22_sp" />
+
 </RelativeLayout>

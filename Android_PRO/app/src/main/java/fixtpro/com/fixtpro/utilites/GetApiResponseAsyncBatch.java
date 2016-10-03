@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import android.view.Window;
 
 import org.json.JSONObject;
 
@@ -27,6 +28,7 @@ public class GetApiResponseAsyncBatch extends AsyncTask<HashMap<String, String>,
         this.listener = listener;
         this.Text = Text;
         progressDialog = new Dialog(activity);
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         progressDialog.setContentView(R.layout.dialog_progress_simple);
         progressDialog.setCancelable(false);
         progressDialog.show();

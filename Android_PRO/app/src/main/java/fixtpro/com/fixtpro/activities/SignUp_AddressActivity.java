@@ -48,7 +48,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     EditText txtAddress;
     ImageView imgClose, imgNext;
-    TextView txtNext;
+    TextView txtNext,txtdontSee;
     LinearLayout layoutNext;
     CircularProgressView progressView ;
     ArrayList<GoogleResponseBean> arrayList = new ArrayList<GoogleResponseBean>();
@@ -68,7 +68,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
         prefs = Utilities.getSharedPreferences(activity);
         editor = prefs.edit();
         checkALert = new CheckAlertDialog();
-        GoogleResponseBean modal = new GoogleResponseBean();
+        modal = new GoogleResponseBean();
         setWidgets();
         setClickListner();
         adapter = new GooglePlaceAdapter(this,arrayList,getResources());
@@ -79,13 +79,34 @@ public class SignUp_AddressActivity extends AppCompatActivity {
     private void setWidgets() {
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         imgNext = (ImageView) findViewById(R.id.imgNext);
+        imgClose = (ImageView) findViewById(R.id.imgClose);
         txtNext = (TextView) findViewById(R.id.txtNext);
+        txtdontSee = (TextView) findViewById(R.id.txtdontSee);
         layoutNext = (LinearLayout) findViewById(R.id.layoutNext);
         lstPlaces = (ListView) findViewById(R.id.lstPlaces);
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
+    }
+
     private void setClickListner() {
+        imgClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+                overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
+            }
+        });
+        txtdontSee.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handler.sendEmptyMessage(1);
+            }
+        });
         txtAddress.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,14 +136,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditAddress = txtAddress.getText().toString();
                 if (EditAddress.equals("")) {
-                    checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.app_name), "Please enter address.");
-                } else {
-
-//                    Intent intent = new Intent(activity,SignUp_Account_Activity.class);
-//                    intent.putExtra("description",Description);
-//                    intent.putExtra("placeid",PlaceID);
-//                    intent.putExtra("valuename",ValueName);
-//                    startActivity(intent);
+                    handler.sendEmptyMessage(1);
                 }
             }
         });
@@ -179,10 +193,10 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                                 if (types.getString(0).equals("street_number")){
                                     street = jsonObject.getString("long_name");
                                 }else if (types.getString(0).equals("route")){
-                                    mAddress2 = jsonObject.getString("long_name");
+                                    mAddress1 = jsonObject.getString("long_name");
                                 }else if (types.getString(0).equals("locality")){
                                     locality = jsonObject.getString("long_name");
-                                }else if (types.getString(0).equals(" administrative_area_level_1")){
+                                }else if (types.getString(0).equals("administrative_area_level_1")){
                                     mState = jsonObject.getString("short_name");
                                 }else if (types.getString(0).equals("postal_code")){
                                     mZip = jsonObject.getString("long_name");
@@ -192,11 +206,11 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                             }
                         }
                         if (street != null && locality != null){
-                            mAddress1 = street+", "+ locality;
+                            mAddress2 = street+", "+ locality;
                         } else  if (street != null)
-                            mAddress1 = street;
+                            mAddress2 = street;
                         else if (locality != null)
-                            mAddress1 = locality;
+                            mAddress2 = locality;
 
                         modal.setmAddress1(mAddress1);
                         modal.setmAddress2(mAddress2);
@@ -208,11 +222,13 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignUp_AddressActivity.this,New_Address_Activity.class);
                         intent.putExtra("modal",modal);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
                     }
                 }else{
                     Intent intent = new Intent(SignUp_AddressActivity.this,New_Address_Activity.class);
                     intent.putExtra("modal",modal);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.enter, R.anim.exit);
 
                 }
             }catch (JSONException e){
@@ -264,6 +280,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                     finalRequestParams.put("api","signup_demo");
                     finalRequestParams.put("with_token","1");
                     finalRequestParams.put("object","pros");
+                    if (modal.getPlace_id().length() > 0)
                     finalRequestParams.put("data[address_uid]", modal.getPlace_id());
                     finalRequestParams.put("data[pros][working_radius_miles]","200");
                     if (mZip == null ||mState == null ||mCity == null  ){
@@ -272,6 +289,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         intent.putExtra("modal",modal);
                         intent.putExtra("finalRequestParams",finalRequestParams);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
                     }else {
 
                         Intent intent = new Intent(SignUp_AddressActivity.this,SignUp_Account_Activity.class);
@@ -281,6 +299,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         finalRequestParams.put("data[pros][zip]", mZip);
                         finalRequestParams.put("data[pros][state]", mState);
                         startActivity(intent);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
                     }
                 }
             }

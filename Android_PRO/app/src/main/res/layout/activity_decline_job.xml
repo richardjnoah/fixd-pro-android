@@ -6,83 +6,95 @@
     android:orientation="vertical"
     tools:context="fixtpro.com.fixtpro.ContactUsActivity">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#00000000"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/actionbar_bg"
-        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        local:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <ImageView
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/screen_cross"/>
+                android:src="@drawable/cross_new" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/register_button_text"
-                android:textSize="20sp"
                 android:gravity="center"
-                android:text="@string/declinejob"/>
+                android:text="@string/declinejob"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_22_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/declinejob_cross"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/size_20_dp"
+        android:src="@drawable/declinejob_cross" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_30_dp"
         android:gravity="center"
-        android:textSize="22sp"
-        android:layout_marginTop="30dp"
+        android:text="@string/ohno"
         android:textColor="@color/register_button_text"
-        android:text="@string/ohno"/>
+        android:textSize="@dimen/size_27_sp" />
+
     <TextView
         android:id="@+id/areusure_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:textSize="@dimen/sure_cancel_text"
+        android:text="@string/areusure_decline"
         android:textColor="@color/register_button_text"
-        android:text="@string/areusure_decline"/>
+        android:textSize="@dimen/size_18_sp" />
+
     <TextView
         android:id="@+id/backup_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
         android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/register_button_text"
-        android:text="@string/backup_decline"/>
+        android:text="@string/backup_decline"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
     <EditText
         android:id="@+id/edittext"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:textColorHint="@color/register_button_text"
-        android:textColor="@color/register_button_text"
-        android:gravity="top"
-        android:padding="5dp"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/size_30_dp"
+        android:layout_marginLeft="@dimen/size_30_dp"
+        android:layout_marginRight="@dimen/size_30_dp"
+        android:background="@drawable/declinejob_box"
+        android:gravity="top"
         android:hint="@string/declineedittext"
-        android:background="@drawable/declinejob_box"/>
+        android:padding="@dimen/size_5_dp"
+        android:textColor="@color/register_button_text"
+        android:textColorHint="@color/register_button_text" />
+
     <ImageView
         android:id="@+id/yesdecline_cancel_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
         android:layout_gravity="center"
-        android:src="@drawable/yesdecline"/>
+        android:padding="@dimen/size_5_dp"
+        android:layout_marginTop="@dimen/size_30_dp"
+        android:src="@drawable/yesdecline" />
 
 </LinearLayout>

@@ -2,11 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:background="@drawable/background_blur"
     tools:context="fixtpro.com.fixtpro.Driver_Info_Activity">
-    <RelativeLayout
-
+   <!-- <RelativeLayout
         android:orientation="horizontal"
         android:id="@+id/header_items"
         android:layout_alignParentTop="true"
@@ -261,5 +259,5 @@
 
 
 
-
+-->
 </RelativeLayout>

@@ -10,7 +10,26 @@ public class RepairType implements Serializable {
     String Price = "0";
     String Id  = "";
     String labor_hours  = "";
-     public RepairType(){
+    String calculatedBy = "";
+    String fixed_cost = "0";
+
+    public String getCalculatedBy() {
+        return calculatedBy;
+    }
+
+    public void setCalculatedBy(String calculatedBy) {
+        this.calculatedBy = calculatedBy;
+    }
+
+    public String getFixed_cost() {
+        return fixed_cost;
+    }
+
+    public void setFixed_cost(String fixed_cost) {
+        this.fixed_cost = fixed_cost;
+    }
+
+    public RepairType(){
 
      }
 

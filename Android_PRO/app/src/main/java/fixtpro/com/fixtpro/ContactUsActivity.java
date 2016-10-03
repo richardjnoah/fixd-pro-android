@@ -1,7 +1,12 @@
 package fixtpro.com.fixtpro;
 
+import android.*;
+import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -9,12 +14,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
+import fixtpro.com.fixtpro.utilites.Preferences;
+
 public class ContactUsActivity extends AppCompatActivity implements View.OnClickListener{
     ImageView cancel, email, call, feedback;
+    private static final int REQUEST_CODE_ASK_PERMISSIONS = 123;
+    List<String> listPermissionsNeeded = new ArrayList<>();
+    SharedPreferences _prefs = null ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact_us);
+        _prefs = getSharedPreferences(Preferences.FIXIT_PRO_PREFERNCES,MODE_PRIVATE);
 //        getSupportActionBar().hide();
         setWidgets();
         setListeners();
@@ -69,9 +84,21 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
                 break;
             case R.id.call:
-                String number = "tel:" + "80-01111111";
-                Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
-                startActivity(callIntent);
+                if (Build.VERSION.SDK_INT >= 23) {
+                    insertDummyContactWrapper();
+                    if (listPermissionsNeeded.size() > 0){
+                        requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_CODE_ASK_PERMISSIONS);
+                    }else {
+                        String number = "tel:" + "80-01111111";
+                        Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                        startActivity(callIntent);
+                    }
+                } else {
+                    String number = "tel:" + "80-01111111";
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                    startActivity(callIntent);
+                }
+
                 break;
             case R.id.feedback:
                 Intent feedbackemailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
@@ -79,6 +106,44 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                 feedbackemailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fixd-Pro App Feedback(Ver: 1.0)");
                 startActivity(Intent.createChooser(feedbackemailIntent, "Send email..."));
                 break;
+        }
+    }
+    @TargetApi(Build.VERSION_CODES.M)
+    private void insertDummyContactWrapper() {
+
+        int hasWriteReadExtewrnalPermission = checkSelfPermission(android.Manifest.permission.CALL_PHONE);
+        listPermissionsNeeded.clear();
+
+        if (hasWriteReadExtewrnalPermission != PackageManager.PERMISSION_GRANTED) {
+            listPermissionsNeeded.add(android.Manifest.permission.CALL_PHONE);
+        }
+
+
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission Granted
+                    String number = "tel:" + "80-01111111";
+                    Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
+                    startActivity(callIntent);
+                } else {
+                    // Permission Denied
+                    insertDummyContactWrapper();
+                }
+                break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new CheckIfUserVarified(this);
         }
     }
 }

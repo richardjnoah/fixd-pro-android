@@ -9,7 +9,7 @@ public class Parts implements Serializable{
     String Description = "";
     String Number = "";
     String Quantity = "";
-    String Cost = "0";
+    String Cost = "";
 
     public String getDescription() {
         return Description;

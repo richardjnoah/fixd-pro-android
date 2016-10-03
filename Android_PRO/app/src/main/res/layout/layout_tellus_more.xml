@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/transparent"
-    android:layout_margin="30dp"
+    android:layout_margin="@dimen/size_30_dp"
     android:orientation="vertical">
     <ListView
         android:background="#7d7b7b"

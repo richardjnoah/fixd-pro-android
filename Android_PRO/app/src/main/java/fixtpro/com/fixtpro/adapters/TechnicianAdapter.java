@@ -2,6 +2,7 @@ package fixtpro.com.fixtpro.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
@@ -21,6 +22,7 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 
 import fixtpro.com.fixtpro.R;
+import fixtpro.com.fixtpro.activities.TechnicianInformation_Activity;
 import fixtpro.com.fixtpro.beans.TechnicianModal;
 import fixtpro.com.fixtpro.utilites.Preferences;
 
@@ -82,7 +84,7 @@ public class TechnicianAdapter extends BaseAdapter {
     }
 
     /****** Depends upon data size called for each row , Create each ListView row *****/
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         View vi = convertView;
         final ViewHolder holder;
@@ -124,9 +126,19 @@ public class TechnicianAdapter extends BaseAdapter {
             holder.txtEmail.setText(tempValues.getEmail());
             if (tempValues.getProfile_image().length() > 0)
             Picasso.with(activity).load(tempValues.getProfile_image())
-                    .resize(60, 60)
-                    .centerInside()
                     .into(holder.imgTech);
+            holder.edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                        Intent intent = new Intent(activity, TechnicianInformation_Activity.class);{
+                        intent.putExtra("isedit",true);
+                        intent.putExtra("modal",tempValues);
+                        intent.putExtra("position",position);
+                        activity.startActivity(intent);
+                        activity.overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
+                }
+            });
 
 //            Picasso.with(activity).load(_prefs.getString(Preferences.PROFILE_IMAGE,null)).into(loadtarget);
             /************  Set Model values in Holder elements ***********/

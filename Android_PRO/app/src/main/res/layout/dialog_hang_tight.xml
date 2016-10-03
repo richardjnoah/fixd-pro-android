@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/popuplayoutmagin"
+    android:layout_margin="@dimen/size_12_dp"
     android:background="@android:color/transparent">
 
     <RelativeLayout
@@ -17,75 +17,78 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="10dp">
+            android:padding="@dimen/size_10_dp">
 
             <ImageView
                 android:id="@+id/imgThumbLuck"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/thumb" />
+                android:src="@drawable/hand" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_below="@+id/layout1"
             android:id="@+id/layout2"
-
             android:layout_width="match_parent"
+
             android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txtYouHave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_12_dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:text="Hang Tight!"
-                android:padding="@dimen/edittext_padding"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
-                android:layout_marginBottom="12dp"
+                android:text="Hang Tight!"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/startmediumtext" />
+                android:textSize="@dimen/size_22_sp" />
+
             <TextView
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
                 android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_40_dp"
+                android:layout_marginRight="@dimen/size_40_dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
                 android:text="In order to start picking up jobs we need to finish your account setup"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/startmediumtext" />
+                android:textSize="@dimen/size_20_sp" />
+
             <TextView
-                android:visibility="invisible"
                 android:id="@+id/txtUserDetails"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:text="2399 ,Gurusharan singshssa is not the able to sratrl"
-                android:padding="@dimen/edittext_padding"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
+                android:text="2399 ,Gurusharan singshssa is not the able to sratrl"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/startsmalltext" />
+                android:textSize="@dimen/size_15_sp"
+                android:visibility="invisible" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_below="@+id/layout2"
             android:id="@+id/layout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_below="@+id/layout2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
             <HorizontalScrollView
                 android:id="@+id/horizontalScrollView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:padding="10dp">
+                android:padding="@dimen/size_10_dp">
 
                 <LinearLayout
-
                     android:id="@+id/scrollViewLatout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -95,22 +98,21 @@
             </HorizontalScrollView>
 
         </LinearLayout>
+
         <LinearLayout
-            android:layout_below="@+id/layout3"
             android:id="@+id/layout4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/layout3"
             android:orientation="vertical">
+
             <Button
                 android:id="@+id/btnFinish"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/finish"/>
+                android:background="@drawable/finish" />
         </LinearLayout>
-
-
     </RelativeLayout>
-
 
     <ImageView
         android:id="@+id/img_close"
@@ -118,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
+        android:padding="@dimen/size_10_dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/screen_cross" />
+        android:src="@drawable/cross_new" />
 </RelativeLayout>

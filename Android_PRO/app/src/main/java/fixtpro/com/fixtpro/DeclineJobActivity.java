@@ -32,6 +32,7 @@ import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Singleton;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 public class DeclineJobActivity extends AppCompatActivity implements View.OnClickListener{
@@ -79,14 +80,19 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.yesdecline_cancel_img:
+                if (editText.getText().toString().trim().length() == 0){
+                    showAlertDialog("Fixd-Pro","Please enter the reason before proceeding");
+                    return;
+                }
+                HashMap<String,String> hashMap = null ;
                 if (JobType.equals("Scheduled")) {
-                    objectType = "canceled_jobs";
+                    hashMap = getRequestParamsScheduled();
                 }
                 else {
-                    objectType = "declined_jobs";
+                    hashMap = getRequestParams();
                 }
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerDeclineCancel, this, "Loading");
-                responseAsync.execute(getRequestParams());
+                responseAsync.execute(hashMap);
                 break;
         }
     }
@@ -94,7 +100,17 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
     private HashMap<String,String> getRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","create");
-        hashMap.put("object",objectType);
+        hashMap.put("object","declined_jobs");
+        hashMap.put("data[job_id]",JobId);
+        hashMap.put("data[reason]",editText.getText().toString());
+        hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
+
+        return hashMap;
+    }
+    private HashMap<String,String> getRequestParamsScheduled(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","cancel");
+        hashMap.put("object","jobs");
         hashMap.put("data[job_id]",JobId);
         hashMap.put("data[reason]",editText.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
@@ -109,8 +125,12 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
-                    handler.sendEmptyMessage(0);
-                }else {
+                    if (JobType.equals("Scheduled")) {
+                        handler.sendEmptyMessage(2);
+                    }else {
+                        handler.sendEmptyMessage(0);
+                    }
+                                    }else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
                     if (keys.hasNext()){
@@ -125,6 +145,26 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         }
     };
 
+    private void removeJobFromList(){
+        for (int i = 0; i < Singleton.getInstance().getAvailablejoblist().size() ; i++){
+            AvailableJobModal modal = Singleton.getInstance().getAvailablejoblist().get(i);
+            if (modal.getId().equals(JobId)){
+                Singleton.getInstance().getAvailablejoblist().remove(i);
+                break;
+            }
+        }
+    }
+    private void removeJobFromScheduledList(){
+        for (int i = 0; i < Singleton.getInstance().getAvailablejoblist().size() ; i++){
+            AvailableJobModal modal = Singleton.getInstance().getSchedulejoblist().get(i);
+            if (modal.getId().equals(JobId)){
+                modal.setStatus("Open");
+                Singleton.getInstance().getAvailablejoblist().add(modal);
+                Singleton.getInstance().getSchedulejoblist().remove(i);
+                break;
+            }
+        }
+    }
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -132,7 +172,11 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
             switch (msg.what){
                 case 0:{
 //                    Toast.makeText(getApplicationContext(),"Job is Scheduled",2000).show();
-                    showAlertDialog("SUCCESS", "Job is Declined.");
+                    removeJobFromList();
+                    Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                     break;
                 }
                 case 1:{
@@ -141,7 +185,12 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                     break;
                 }
                 case 2:{
-
+                    removeJobFromScheduledList();
+                    Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
+                    intent.putExtra("switch_tab","Scheduled");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
                     break;
                 }
                 case 3:{
@@ -168,10 +217,10 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                         // if this button is clicked, close
                         // current activity
                         dialog.cancel();
-                        Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
-                        finish();
+//                        Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                        startActivity(intent);
+//                        finish();
                     }
                 });
 

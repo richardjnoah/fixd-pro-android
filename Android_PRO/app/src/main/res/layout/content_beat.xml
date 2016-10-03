@@ -6,79 +6,89 @@
     android:orientation="vertical"
     tools:context="fixtpro.com.fixtpro.ContactUsActivity">
 
-    <android.support.v7.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="?attr/actionBarSize"
         android:background="@color/actionbar_bg"
-        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        local:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:minHeight="?attr/actionBarSize"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageView
-                android:visibility="invisible"
                 android:id="@+id/cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/screen_cross"/>
+                android:src="@drawable/screen_cross"
+                android:visibility="invisible" />
+
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/register_button_text"
-                android:textSize="24sp"
                 android:layout_centerInParent="true"
-                android:text="@string/confirmation"/>
+                android:text="@string/confirmation"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_24_sp" />
+
             <TextView
-                android:layout_marginRight="5dp"
                 android:id="@+id/done"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/register_button_text"
-                android:textSize="20sp"
                 android:layout_alignParentRight="true"
-                android:text="Done"/>
+                android:layout_marginRight="@dimen/size_5_dp"
+                android:text="Done"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+
     <LinearLayout
-        android:layout_marginTop="150dp"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/thumb"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="center"/>
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="22sp"
-        android:layout_marginTop="30dp"
-        android:textColor="@color/register_button_text"
-        android:text="@string/ohno"/>
-    <TextView
-        android:id="@+id/areusure_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/register_button_text"
-        android:text="Someone else beat you to the punch."/>
-    <TextView
-        android:id="@+id/backup_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/register_button_text"
-        android:text="Better luck on the next one!"/>
+        android:layout_marginTop="@dimen/size_150_dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/size_20_dp"
+            android:src="@drawable/thumb" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_30_dp"
+            android:gravity="center"
+            android:text="@string/ohno"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_22_sp" />
+
+        <TextView
+            android:id="@+id/areusure_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:gravity="center"
+            android:textSize="@dimen/size_18_sp"
+            android:text="Someone else beat you to the punch."
+            android:textColor="@color/register_button_text" />
+
+        <TextView
+            android:id="@+id/backup_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:gravity="center"
+            android:textSize="@dimen/size_16_sp"
+            android:text="Better luck on the next one!"
+            android:textColor="@color/register_button_text" />
     </LinearLayout>
 
 </RelativeLayout>

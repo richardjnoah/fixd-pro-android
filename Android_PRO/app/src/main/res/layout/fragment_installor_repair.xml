@@ -3,27 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fixtpro.com.fixtpro.fragment.InstallorRepairFragment">
-<ListView
-    android:layout_alignParentTop="true"
-    android:layout_above="@+id/layout_finish_job"
-    android:id="@+id/lstInstallRepair"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"></ListView>
+
+    <ListView
+        android:id="@+id/lstInstallRepair"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_finish_job"
+        android:layout_alignParentTop="true"></ListView>
+
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/layout_finish_job"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:gravity="bottom"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/img_finishjob"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/finish_job"
             android:layout_gravity="center"
-            android:layout_margin="@dimen/left_right_margin"/>
+            android:layout_margin="@dimen/size_40_dp"
+            android:src="@drawable/finish_job" />
     </LinearLayout>
 
 

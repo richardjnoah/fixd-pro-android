@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="@dimen/size_90_dp"
+            android:layout_height="@dimen/size_95_dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgPicture"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/size_10_dp" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txtTitle"
-                android:layout_width="0dp"
-                android:layout_weight="0.7"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/allmargins"
-                android:textSize="@dimen/textsizenoti"
-                android:paddingTop="5dp"
-                android:minLines="2"
-                android:paddingBottom="5dp"
-                android:textColor="@android:color/white"/>
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/size_10_dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_21_sp" />
+
             <TextView
                 android:id="@+id/txtDateTime"
-                android:layout_width="0dp"
-                android:layout_weight="0.3"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:paddingRight="@dimen/allmargins"
-                android:gravity="right"
-                android:textSize="@dimen/textsizenoti"
-                android:textColor="@color/orange_signin_back"/>
+                android:paddingBottom="2dp"
+                android:paddingLeft="@dimen/size_10_dp"
+                android:paddingTop="2dp"
+                android:textColor="@color/orange_signin_back"
+                android:textSize="@dimen/size_17_sp" />
         </LinearLayout>
-    <!--</LinearLayout>-->
+    </LinearLayout>
 </LinearLayout>

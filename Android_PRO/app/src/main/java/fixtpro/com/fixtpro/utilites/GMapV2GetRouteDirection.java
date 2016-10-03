@@ -34,10 +34,10 @@ public class GMapV2GetRouteDirection {
     public GMapV2GetRouteDirection() { }
 
     public String getDocument(LatLng start, LatLng end, String mode) {
-        String url = "http://maps.googleapis.com/maps/api/directions/json?"
+        String url = "https://maps.googleapis.com/maps/api/directions/json?"
                 + "origin=" + start.latitude + "," + start.longitude
                 + "&destination=" + end.latitude + "," + end.longitude
-                + "&sensor=false&units=imperial&mode="+mode+"&key" + API_KEY;
+                + "&sensor=false&units=imperial&mode="+mode+"&key=" + API_KEY;
 
         try {
             HttpClient httpClient = new DefaultHttpClient();

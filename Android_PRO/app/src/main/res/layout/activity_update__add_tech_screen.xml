@@ -16,20 +16,20 @@
             android:id="@+id/txtBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/padding_header_items"
+            android:padding="@dimen/size_10_dp"
             android:text="@string/back"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_header_items" />
+            android:textSize="@dimen/size_18_sp" />
 
         <TextView
             android:id="@+id/txtDone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="@dimen/padding_header_items"
+            android:padding="@dimen/size_10_dp"
             android:text="@string/done"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/text_size_header_items" />
+            android:textSize="@dimen/size_18_sp" />
 
     </RelativeLayout>
 
@@ -52,17 +52,17 @@
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:padding="@dimen/edittext_padding"
+                android:padding="@dimen/size_8_dp"
                 android:text="@string/add_account"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
-                android:textSize="@dimen/edittext_size" />
+                android:textSize="@dimen/size_22_sp" />
 
             <ImageView
                 android:id="@+id/img_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top"
+                android:layout_marginTop="@dimen/size_40_dp"
                 android:src="@drawable/addtech" />
 
         </LinearLayout>

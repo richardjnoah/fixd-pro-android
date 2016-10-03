@@ -14,14 +14,16 @@
             android:id="@+id/imgClose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/size_14"
             android:layout_centerVertical="true"
+            android:padding="@dimen/size_14_dp"
             android:src="@drawable/back_arrow" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:orientation="horizontal">
 
@@ -30,10 +32,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_14"
+                android:padding="@dimen/size_14_dp"
                 android:text="@string/tradeskills"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_23sp" />
+                android:textSize="@dimen/size_22_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -41,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="@dimen/size_14"
+        android:layout_marginTop="@dimen/size_14_dp"
         android:orientation="vertical">
         <!--Top Instruction-->
         <LinearLayout
@@ -57,147 +59,147 @@
                 android:padding="3dp"
                 android:text="@string/pleaseselect"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_14sp" />
+                android:textSize="@dimen/size_14_sp" />
         </LinearLayout>
+
         <GridView
-            android:layout_marginTop="@dimen/size_20dp"
             android:id="@+id/gridView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:numColumns="2"
+            android:layout_margin="@dimen/size_14_dp"
+            android:layout_marginTop="@dimen/size_20_dp"
             android:layout_weight="1"
-            android:layout_margin="@dimen/size_14"
-            android:verticalSpacing="@dimen/size_20dp"
-            android:horizontalSpacing="@dimen/size_30">
-        </GridView>
+            android:horizontalSpacing="@dimen/size_30_dp"
+            android:numColumns="2"
+            android:verticalSpacing="@dimen/size_20_dp"></GridView>
 
-      <!--  &lt;!&ndash;ApplicanceLayout&ndash;&gt;
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_14"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtApplicance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/appliance"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-            <TextView
-                android:id="@+id/txtHvac"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/hvac"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-        </LinearLayout>
-
-        &lt;!&ndash;PlumbingLayout&ndash;&gt;
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtPlumbing"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/plumbing"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-            <TextView
-                android:id="@+id/txtElectrical"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/electrical"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-        </LinearLayout>
-
-        &lt;!&ndash;GarageDoor&ndash;&gt;
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txtGrageDoor"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/garage"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-            <TextView
-                android:id="@+id/txtPoolSpa"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_10"
-                android:layout_weight="1"
-                android:background="@drawable/whitebox_fill"
-                android:gravity="center"
-                android:paddingBottom="@dimen/size_14"
-                android:paddingLeft="@dimen/size_20dp"
-                android:paddingRight="@dimen/size_20dp"
-                android:paddingTop="@dimen/size_14"
-                android:text="@string/electrical"
-                android:textColor="@color/colorGrey"
-                android:textSize="@dimen/size_17sp" />
-
-        </LinearLayout>-->
+        <!--  &lt;!&ndash;ApplicanceLayout&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/size_14_dp"
+              android:orientation="horizontal">
+  
+              <TextView
+                  android:id="@+id/txtApplicance"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/appliance"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+              <TextView
+                  android:id="@+id/txtHvac"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/hvac"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+          </LinearLayout>
+  
+          &lt;!&ndash;PlumbingLayout&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+  
+              <TextView
+                  android:id="@+id/txtPlumbing"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/plumbing"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+              <TextView
+                  android:id="@+id/txtElectrical"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/electrical"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+          </LinearLayout>
+  
+          &lt;!&ndash;GarageDoor&ndash;&gt;
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+  
+              <TextView
+                  android:id="@+id/txtGrageDoor"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/garage"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+              <TextView
+                  android:id="@+id/txtPoolSpa"
+                  android:layout_width="0dp"
+                  android:layout_height="wrap_content"
+                  android:layout_margin="@dimen/size_10"
+                  android:layout_weight="1"
+                  android:background="@drawable/whitebox_fill"
+                  android:gravity="center"
+                  android:paddingBottom="@dimen/size_14_dp"
+                  android:paddingLeft="@dimen/size_20_dp"
+                  android:paddingRight="@dimen/size_20_dp"
+                  android:paddingTop="@dimen/size_14_dp"
+                  android:text="@string/electrical"
+                  android:textColor="@color/colorGrey"
+                  android:textSize="@dimen/size_17sp" />
+  
+          </LinearLayout>-->
 
         <LinearLayout
             android:id="@+id/layoutFinish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txtAddress"
-            android:layout_marginTop="@dimen/size_30"
+            android:layout_marginTop="@dimen/size_30_dp"
             android:orientation="vertical">
 
             <ImageView
@@ -215,15 +217,16 @@
                 android:padding="5dp"
                 android:text="@string/finish"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16sp" />
+                android:textSize="@dimen/size_16_sp" />
 
             <ImageView
                 android:id="@+id/imgScreeNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/size_20dp"
-                android:src="@drawable/small3" />
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:src="@drawable/small3"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

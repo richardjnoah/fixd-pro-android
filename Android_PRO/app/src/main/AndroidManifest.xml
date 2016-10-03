@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="fixtpro.com.fixtpro">
+    package="fixtpro.com.fixtpro" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -60,13 +60,13 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme" >
         <activity
             android:name=".Splash"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -160,11 +160,11 @@
             android:label="@string/title_activity_calendar"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity
-            android:name=".MyJobsSearchActivity"
-            android:label="@string/title_activity_my_jobs_search"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme.Base" />
+        <!-- <activity -->
+        <!-- android:name=".MyJobsSearchActivity" -->
+        <!-- android:label="@string/title_activity_my_jobs_search" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/MyMaterialTheme.Base" /> -->
         <activity
             android:name=".ContactUsActivity"
             android:label="@string/title_activity_contact_us"
@@ -212,6 +212,7 @@
         <activity
             android:name=".PaymentDetailsActivity"
             android:label="@string/title_activity_payment_details"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".RatingDetailsActivity"
@@ -239,10 +240,11 @@
         <activity
             android:name=".HomeScreenNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"
             android:label="@string/title_activity_home_screen_new"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:theme="@style/MyMaterialTheme.Base"
+             />
         <activity
             android:name=".SignatureActivity"
             android:label="@string/title_activity_signature"
@@ -275,7 +277,7 @@
 
         <service
             android:name=".gcm_components.MessageReceivingService"
-            android:label="fixtpro.com.fixtpro.MessageReceivingService">
+            android:label="fixtpro.com.fixtpro.MessageReceivingService" >
             <intent-filter>
                 <action android:name="fixtpro.com.fixtpro.AndroidMobilePushApp" />
                 <action android:name="fixtpro.com.fixtpro.ExternalReceiver" />
@@ -286,7 +288,7 @@
 
         <receiver
             android:name=".gcm_components.ExternalReceiver"
-            android:permission="com.google.android.c2dm.permission.SEND">
+            android:permission="com.google.android.c2dm.permission.SEND" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
                 <action android:name="com.google.android.c2dm.intent.REGISTRATION" />
@@ -331,6 +333,7 @@
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
             android:name=".activities.LicensePicture_Activity"
+            android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
@@ -345,9 +348,89 @@
             android:name=".activities.BackgrounTap_ToSign_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
-        <activity android:name=".activities.WorkingRadiusNew"
+        <activity
+            android:name=".activities.WorkingRadiusNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TapToSignActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddTechnicion_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TechnicianInformation_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.LastStep_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgroundCheck_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddBankAccountNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SetupCompleteAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgroundCheckDisclosure"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SignUp_Account_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".fragment.CompanyInformation_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SetupCompleteAddressActivity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddBankAccountNewEdit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.WorkingRadiusNew_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeSkills_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeLiecenseNo_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddTechnicion_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity android:name=".round_img_ropper.ImageCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"/>
+
+        <activity android:name=".round_img_ropper.ImageViewActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"/>
+        <activity android:name=".activities.TermsAndConditions_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" ></activity>
+
     </application>
 
 </manifest>

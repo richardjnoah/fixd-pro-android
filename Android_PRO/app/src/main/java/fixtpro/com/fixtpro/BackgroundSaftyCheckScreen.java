@@ -50,7 +50,7 @@ import io.card.payment.CardIOActivity;
 import io.card.payment.CreditCard;
 
 public class BackgroundSaftyCheckScreen extends AppCompatActivity {
-    private Context _context = this;
+   /* private Context _context = this;
     private String TAG = "BackgroundSaftyCheckScreen";
     private TextView txtBack, txtDone;
     private Typeface fontfamily, italic_fontfamily;
@@ -218,7 +218,7 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                     String role = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("role");
                     String email = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("email");
                     String phone = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("phone");
-                    boolean has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getBoolean("has_card");
+                    String has_card = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("has_card");
                     String account_status = Response.getJSONObject("RESPONSE").getJSONObject("users").getString("account_status");
                     Log.e("AUTH TOKEN", Token);
                     Log.e("ROLE", role);
@@ -229,7 +229,7 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
                     editor.putString(Preferences.AUTH_TOKEN, Token);
                     editor.putString(Preferences.EMAIL, email);
                     editor.putString(Preferences.PHONE, phone);
-                    editor.putBoolean(Preferences.HAS_CARD, has_card);
+                    editor.putString(Preferences.HAS_CARD, has_card);
                     editor.putString(Preferences.ACCOUNT_STATUS, account_status);
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("pros")){
                         JSONObject pros = null;
@@ -610,5 +610,5 @@ public class BackgroundSaftyCheckScreen extends AppCompatActivity {
 //        LocalBroadcastManager.getInstance(this).registerReceiver(
 //                mMessageReceiver, new IntentFilter("gcm_token_receiver"));
         super.onResume();
-    }
+    }*/
 }

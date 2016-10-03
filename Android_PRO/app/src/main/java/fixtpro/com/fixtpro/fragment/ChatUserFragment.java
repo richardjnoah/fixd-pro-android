@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,9 +37,12 @@ import fixtpro.com.fixtpro.ChatActivityNew;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.R;
 import fixtpro.com.fixtpro.adapters.UserChatAdapters;
+import fixtpro.com.fixtpro.beans.NotificationModal;
 import fixtpro.com.fixtpro.utilites.ChatService;
 import fixtpro.com.fixtpro.utilites.ChatSingleton;
+import fixtpro.com.fixtpro.utilites.CheckIfUserVarified;
 import fixtpro.com.fixtpro.utilites.Constants;
+import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
 
 /**
@@ -64,12 +68,14 @@ public class ChatUserFragment extends Fragment {
     ListView lstUser;
     Dialog progressDialog = null;
     private static final String EXTRA_DIALOG = "dialog";
+    NotificationModal modal = null ;
     public ChatUserFragment() {
         // Required empty public constructor
     }
 
     UserChatAdapters adapters;
     private CoordinatorLayout coordinatorLayout;
+    SharedPreferences _prefs = null ;
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -92,8 +98,23 @@ public class ChatUserFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+//            mParam1 = getArguments().getString(ARG_PARAM1);
+//            mParam2 = getArguments().getString(ARG_PARAM2);
+            modal = (NotificationModal)getArguments().getSerializable("data");
+            ChatSingleton.getInstance().dataSourceUsers.clear();
+        }
+        _prefs = getActivity().getSharedPreferences(Preferences.FIXIT_PRO_PREFERNCES,Context.MODE_PRIVATE);
+    }
+    private void handleIfnotificationClick(){
+        if (modal != null){
+            for (int i = 0 ; i < ChatSingleton.getInstance().dataSourceUsers.size() ; i++){
+                if (ChatSingleton.getInstance().dataSourceUsers.get(i).getDialogId().equals(modal.getDialogId())){
+                    Intent intent = new Intent(getActivity(), ChatActivityNew.class);
+                    intent.putExtra(EXTRA_DIALOG,ChatSingleton.getInstance().dataSourceUsers.get(i));
+                    startActivity(intent);
+                    break;
+                }
+            }
         }
     }
     @Override
@@ -101,6 +122,9 @@ public class ChatUserFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew)getActivity()).setCurrentFragmentTag(Constants.CHATUSER_FRAGMENT);
         setupToolBar();
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.IS_VARIFIED, "").equals("0")){
+            new CheckIfUserVarified(getActivity());
+        }
 //        getInternetStatus();
     }
     private void setupToolBar(){
@@ -143,6 +167,7 @@ public class ChatUserFragment extends Fragment {
 ////                 Open chat activity
 //                ChatActivity.start(getActivity(), bundle);
                 QBDialog selectedDialog = (QBDialog) parent.getItemAtPosition(position);
+                selectedDialog.setUnreadMessageCount(0);
                 Intent i = new Intent(getActivity(), ChatActivityNew.class);
                 i.putExtra(EXTRA_DIALOG,selectedDialog);
                 startActivity(i);
@@ -192,6 +217,7 @@ public class ChatUserFragment extends Fragment {
             return true;
         }
     }
+
     private void getChatUsers(){
         // Get dialogs
         //
@@ -203,7 +229,7 @@ public class ChatUserFragment extends Fragment {
                     progressDialog.dismiss();
                 ChatSingleton.getInstance().dataSourceUsers.addAll(dialogs);
                 adapters.notifyDataSetChanged();
-
+                handleIfnotificationClick();
             }
 
             @Override

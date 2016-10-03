@@ -20,6 +20,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     ImageView action;
     SharedPreferences _prefs = null;
     AvailableJobModal model;
+    boolean isJobReschduled = false ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,15 +30,21 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
         model = (AvailableJobModal) getIntent().getSerializableExtra("JOB_DETAIL");
         setWidgets();
         setListeners();
-        if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro")){
+        if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("pro")){
             action.setImageResource(R.drawable.assign_technician);
             done.setVisibility(View.GONE);
-        }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("technician")){
+        }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("technician")){
             action.setImageResource(R.drawable.view_in_calendar);
             done.setVisibility(View.VISIBLE);
         }
+
+        if (getIntent().getExtras() != null && !getIntent().getExtras().containsKey("confirm")){
+            isJobReschduled = true ;
+            action.setVisibility(View.GONE);
+            done.setVisibility(View.VISIBLE);
+        }
         date.setText(Utilities.convertDate(model.getRequest_date()));
-        time_interval.setText(Utilities.getFormattedTimeSlots(model.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(model.getTimeslot_end()));
+        time_interval.setText(model.getTimeslot_name());
         contact_name.setText(model.getContact_name());
         address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
     }
@@ -60,6 +67,11 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.done:
+                Intent intent = new Intent(ConfirmationActivity.this,HomeScreenNew.class);
+
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
                 break;
             case R.id.action:
                 if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro")){

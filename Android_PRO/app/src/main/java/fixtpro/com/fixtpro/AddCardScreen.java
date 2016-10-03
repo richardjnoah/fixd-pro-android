@@ -69,6 +69,19 @@ public class AddCardScreen extends AppCompatActivity {
                 submit();
             }
         });
+        txtBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
+        finish();
     }
 
     private void setyTypeFace() {
@@ -232,6 +245,7 @@ public class AddCardScreen extends AppCompatActivity {
             switch (msg.what) {
                 case 0: {
 //                    Now Card is Added its the call for Schedule
+                    overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
                     finish();
                     break;
                 }
@@ -251,6 +265,7 @@ public class AddCardScreen extends AppCompatActivity {
         scanIntent.putExtra(CardIOActivity.EXTRA_REQUIRE_POSTAL_CODE, true); // default: false
         // MY_SCAN_REQUEST_CODE is arbitrary and is only used within this activity.
         startActivityForResult(scanIntent, MY_SCAN_REQUEST_CODE);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     @Override

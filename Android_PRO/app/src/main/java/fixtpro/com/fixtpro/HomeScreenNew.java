@@ -1,10 +1,12 @@
 package fixtpro.com.fixtpro;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
@@ -17,7 +19,9 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.Message;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -26,12 +30,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -41,7 +47,11 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import fixtpro.com.fixtpro.activities.BackgroundCheck_Next_Activity;
 import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
+import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;
+import fixtpro.com.fixtpro.beans.AvailableJobModal;
+import fixtpro.com.fixtpro.beans.JobAppliancesModal;
 import fixtpro.com.fixtpro.beans.NotificationModal;
 import fixtpro.com.fixtpro.beans.SkillTrade;
 import fixtpro.com.fixtpro.beans.install_repair_beans.EquipmentInfo;
@@ -65,12 +75,19 @@ import fixtpro.com.fixtpro.fragment.WhatsWrongFragment;
 import fixtpro.com.fixtpro.fragment.WhichApplianceAddServiceFragment;
 import fixtpro.com.fixtpro.fragment.WorkOrderFragment;
 import fixtpro.com.fixtpro.gcm_components.MessageReceivingService;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
+import fixtpro.com.fixtpro.net.GetApiResponseAsyncNoProgress;
+import fixtpro.com.fixtpro.net.IHttpExceptionListener;
+import fixtpro.com.fixtpro.net.IHttpResponseListener;
 import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
 import fixtpro.com.fixtpro.utilites.ChatService;
+import fixtpro.com.fixtpro.utilites.ChatSingleton;
+import fixtpro.com.fixtpro.utilites.CheckAlertDialog;
 import fixtpro.com.fixtpro.utilites.Constants;
 import fixtpro.com.fixtpro.utilites.CurrentScheduledJobSingleTon;
 import fixtpro.com.fixtpro.utilites.JSONParser;
 import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Singleton;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.utilites.chat_utils.SharedPreferencesUtil;
 
@@ -83,6 +100,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
+import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
@@ -91,6 +109,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +123,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     public String currentFragmentTag = "";
     int CONTACTUS_REQUESTCODE = 1;
     private ImageView img_Toggle, img_Right;
-    private TextView titletext, txtDone, txtBack, continue_job;
+    private TextView titletext, txtDone, txtBack, continue_job,badge_home;
     FragmentManager fragmentManager;
     SlidingMenu slidingMenu = null;
     String token = "";
@@ -170,7 +189,10 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     String continue_job_tag = "";
     private Dialog dialog;
     private Context _context = this;
-
+    boolean isChatNoti = false ;
+    int count  = 0 ;
+    ArrayList<AvailableJobModal>  schedulejoblist;
+    ArrayList<AvailableJobModal>  availablejoblist;
     public HomeScreenNew() {
         super();
     }
@@ -182,7 +204,14 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
     Fragment fragment;
     private CoordinatorLayout coordinatorLayout;
-
+    NotificationModal modal = null;
+    Singleton singletonJobs = null ;
+    AvailableJobModal jobModal = null ;
+    CheckAlertDialog checkALert;
+    String role = "pro";
+    String error_message = "";
+    String switch_tab_value = "Available" ;
+    boolean isFirstTechReg = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -190,25 +219,65 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         getSlidingMenu().setMode(SlidingMenu.LEFT);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         setContentView(R.layout.activity_home_screen_new);
-
-        if (Build.VERSION.SDK_INT < 16) { //ye olde method
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else { // Jellybean and up, new hotness
-            View decorView = getWindow().getDecorView();
-            // Hide the status bar.
-            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
-            decorView.setSystemUiVisibility(uiOptions);
-            // Remember that you should never show the action bar if the
-            // status bar is hidden, so hide that too if necessary.
-//            ActionBar actionBar = getActionBar();
-//            actionBar.hide();
-        }
+        _prefs = Utilities.getSharedPreferences(_context);
+        checkALert = new CheckAlertDialog();
+        singletonJobs = Singleton.getInstance();
+        schedulejoblist = singletonJobs.getSchedulejoblist();;
+        availablejoblist = singletonJobs.getAvailablejoblist();;
+//        if (Build.VERSION.SDK_INT < 16) { //ye olde method
+//            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                    WindowManager.LayoutParams.FLAG_FULLSCREEN);
+//        } else { // Jellybean and up, new hotness
+//            View decorView = getWindow().getDecorView();
+//            // Hide the status bar.
+//            int uiOptions = View.SYSTEM_UI_FLAG_FULLSCREEN;
+//            decorView.setSystemUiVisibility(uiOptions);
+//            // Remember that you should never show the action bar if the
+//            // status bar is hidden, so hide that too if necessary.
+////            ActionBar actionBar = getActionBar();
+////            actionBar.hide();
+//        }
         _prefs = Utilities.getSharedPreferences(_context);
         fragmentManager = getSupportFragmentManager();
         setWidgets();
         setListeners();
+        Bundle bundle1 = getIntent().getExtras();
+        if (bundle1 != null && bundle1.containsKey("switch_tab")) {
+            switch_tab_value = bundle1.getString("switch_tab");
+        }
+        if (bundle1 != null && bundle1.containsKey("ispro") && !bundle1.getBoolean("bundle1")){
+            isFirstTechReg = true;
+        }
         initLayout();
+
+       /* String  FilePath = Environment.getExternalStorageDirectory()
+                + "/FIXD";
+        File file = new File(FilePath +"/FCRAAgreement.pdf");
+        if (file.exists()){
+            // get file and attach to email
+
+            File file1 = new File(FilePath, "FCRAAgreement.pdf");
+            Intent intent = new Intent(Intent.ACTION_SEND ,Uri.parse("mailto:")); // it's not ACTION_SEND
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Card Set ");
+            intent.putExtra(Intent.EXTRA_TEXT, "");
+            intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file1));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+            startActivity(intent);
+        }else {
+            File Folder = new File(FilePath);
+            Folder.mkdir();
+            Utilities.copySqltiteFromAssets(HomeScreenNew.this, "FCRAAgreement.pdf", FilePath);
+            File file1 = new File(FilePath, "FCRAAgreement.pdf");
+            Intent intent = new Intent(Intent.ACTION_SEND ,Uri.parse("mailto:")); // it's not ACTION_SEND
+            intent.setType("text/plain");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Card Set ");
+            intent.putExtra(Intent.EXTRA_TEXT, "");
+            intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(file1));
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // this will make such that when user returns to your app, your app is displayed, instead of the email app.
+            startActivity(intent);
+        }*/
+
 //        / Update values using data stored in the Bundle.
         updateValuesFromBundle(savedInstanceState);
 
@@ -238,6 +307,526 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 //            buildLocationSettingsRequest();
 //        }
         QBLogin();
+        if (bundle1 != null && bundle1.containsKey("isnoty")) {
+            modal = (NotificationModal) bundle1.getSerializable("data");
+            handleNotificationPopup(false);
+        }
+
+    }
+
+    private void handleNotificationPopup(boolean showPopup) {
+        String title = "";
+        String message = modal.getMessage();
+        if (showPopup) {
+            if (modal.getType().equals("woa")) {
+                title = "Work Order Approved!";
+                // define alert...
+            }
+            if (modal.getType().equals("wod")) {
+                title = "Work Order Declined!";
+                // define alert...
+            }
+            if (modal.getType().equals("ja")) {
+                title = "Job Available!";
+                // define alert...
+            }
+            if (modal.getType().equals("pjt")) {
+                title = "Job Picked!";
+                // define alert...
+            }
+            if (modal.getType().equals("ja")) {
+                title = "Job Picked!";
+                // define alert...
+            }
+            if (modal.getType().equals("pr")) {
+                title = "Pro has Arrived!";
+                // define alert...
+            }
+            if(modal.getType().equals("cn")){
+                int count = _prefs.getInt(Preferences.CHAT_NOTI_COUNT,0);
+                count = count + 1;
+                _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit() ;
+                setNotficationCounts();
+                return;
+            }
+            AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+            //set title
+            dialog.setTitle(title);
+            // set message...
+            dialog.setMessage(message);
+            // set button status..onclick
+            dialog.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.setPositiveButton("View", new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    dialog.dismiss();
+                    executeNoti();
+                }
+            });
+            AlertDialog alert = dialog.create();
+            alert.setCanceledOnTouchOutside(false);
+            alert.setCancelable(false);
+            alert.show();
+        } else {
+            executeNoti();
+        }
+    }
+
+
+    private void executeNoti(){
+        if (modal.getType().equals("woa") || modal.getType().equals("wod")) {
+            Bundle bundle = new Bundle();
+            bundle.putString("job_id", modal.getJobId());
+            bundle.putString("appliance_id", modal.getJobAppliance());
+            switchFragment(new InstallorRepairFragment(), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, bundle);
+        }
+        if (modal.getType().equals("pr") ) {
+            Bundle bundle = new Bundle();
+
+            switchFragment(new StartJobFragment(), Constants.START_JOB_FRAGMENT, true, bundle);
+        }
+        if (modal.getType().equals("cn")) {
+            isChatNoti = true ;
+            dialog = new Dialog(this);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View customView = inflater.inflate(R.layout.dialog_progress_simple, null);
+            dialog.setContentView(customView);
+            dialog.setCancelable(false);
+            dialog.show();
+
+        }
+        if (modal.getType().equals("ja")) {
+            AvailableJobModal job_detail = getJobforIdAvalable(modal.getJobId());
+            if (job_detail != null) {
+                Intent i = new Intent(HomeScreenNew.this, AvailableJobListClickActivity.class);
+                i.putExtra("JOB_DETAIL", job_detail);
+                startActivity(i);
+
+            } else {
+                //get the job
+                GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, HomeScreenNew.this, "Loading");
+                responseAsync.execute(getRequestParams(modal.getJobId(),"read_open"));
+            }
+        }
+        if (modal.getType().equals("pjp") ||modal.getType().equals("pjt")) {
+            AvailableJobModal job_detail = getJobforId(modal.getJobId());
+            if (job_detail != null) {
+                ScheduledListDetailsFragment fragment = new ScheduledListDetailsFragment();
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("modal", job_detail);
+                switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+            } else {
+                //get the job
+                GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, HomeScreenNew.this, "Loading");
+                responseAsync.execute(getRequestParams(modal.getJobId(),"read"));
+            }
+        }
+    }
+    private HashMap<String, String> getRequestParams(String id,String api) {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", api);
+        hashMap.put("object", "jobs");
+        hashMap.put("expand[0]", "work_order");
+        if (!role.equals("pro"))
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+        else
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+        hashMap.put("where[id]", id + "");
+        hashMap.put("token", Utilities.getSharedPreferences(HomeScreenNew.this).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("page", "1");
+        hashMap.put("per_page", "20");
+        return hashMap;
+    }
+    private HashMap<String, String> getRequestParamsAvailable(String id) {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "read_open");
+        hashMap.put("object", "jobs");
+        hashMap.put("expand[0]", "work_order");
+        if (!role.equals("pro"))
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+        else
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+        hashMap.put("where[id]", id + "");
+        hashMap.put("token", Utilities.getSharedPreferences(HomeScreenNew.this).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("page", "1");
+        hashMap.put("per_page", "20");
+        return hashMap;
+    }
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case 0: {
+                    
+                    break;
+                }
+                case 1:{
+                    checkALert.showcheckAlert(HomeScreenNew.this, HomeScreenNew.this.getResources().getString(R.string.alert_title), error_message);
+                    break;
+                }
+                case 2:{
+
+                    if (jobModal != null){
+                        if (modal.getType().equals("ja")){
+                            Singleton.getInstance().getAvailablejoblist().add(0, jobModal);
+                            Intent i = new Intent(HomeScreenNew.this, AvailableJobListClickActivity.class);
+                            i.putExtra("JOB_DETAIL", jobModal);
+                            startActivity(i);
+                        }else {
+                            Singleton.getInstance().getSchedulejoblist().add(0, jobModal);
+                            ScheduledListDetailsFragment fragment = new ScheduledListDetailsFragment();
+                            Bundle bundle = new Bundle();
+                            bundle.putSerializable("modal", jobModal);
+                            switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+                        }
+
+                    }
+                    break;
+                }
+                case 3:{
+                    checkALert.showcheckAlert(HomeScreenNew.this, HomeScreenNew.this.getResources().getString(R.string.alert_title), error_message);
+                    break;
+                }
+                case 4:{
+                    Intent intent1 = new Intent("new_job_available_notification");
+                    // You can also include some extra data.
+//                MessageReceivingService.sendToApp(extras, context);
+                    LocalBroadcastManager.getInstance(HomeScreenNew.this).sendBroadcast(intent1);
+                }
+            }
+        }
+    };
+    IHttpResponseListener responseListenerAvailable = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
+                    JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
+//                    nextScheduled = pagination.getString("next");
+                    for(int i = 0; i < results.length(); i++){
+                        JSONObject obj = results.getJSONObject(i);
+                        jobModal = new AvailableJobModal();
+                        jobModal.setContact_name(obj.getString("contact_name"));
+                        jobModal.setCreated_at(obj.getString("created_at"));
+                        jobModal.setCustomer_id(obj.getString("customer_id"));
+                        jobModal.setCustomer_notes(obj.getString("customer_notes"));
+                        jobModal.setFinished_at(obj.getString("finished_at"));
+                        jobModal.setId(obj.getString("id"));
+                        jobModal.setJob_id(obj.getString("job_id"));
+//                        jobModal.setLatitude(obj.getDouble("latitude"));
+                        jobModal.setLocked_by(obj.getString("locked_by"));
+                        jobModal.setLocked_on(obj.getString("locked_on"));
+//                        jobModal.setLongitude(obj.getDouble("longitude"));
+                        jobModal.setPhone(obj.getString("phone"));
+                        jobModal.setPro_id(obj.getString("pro_id"));
+                        jobModal.setRequest_date(obj.getString("request_date"));
+//                        jobModal.setService_id(obj.getString("service_id"));
+//                        jobModal.setService_type(obj.getString("service_type"));
+                        jobModal.setStarted_at(obj.getString("started_at"));
+                        jobModal.setStatus(obj.getString("status"));
+                        jobModal.setTechnician_id(obj.getString("technician_id"));
+                        jobModal.setTime_slot_id(obj.getString("time_slot_id"));
+                        jobModal.setTitle(obj.getString("title"));
+//                        jobModal.setTotal_cost(obj.getString("total_cost"));
+                        jobModal.setUpdated_at(obj.getString("updated_at"));
+//                        jobModal.setWarranty(obj.getString("warranty"));
+//                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
+                        JSONArray jobAppliances = obj.getJSONArray("job_appliances");
+                        ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
+                        if(jobAppliances != null){
+                            for (int j = 0; j < jobAppliances.length(); j++) {
+                                JSONObject jsonObject = jobAppliances.getJSONObject(j);
+                                JobAppliancesModal mod = new JobAppliancesModal();
+                                mod.setJob_appliances_id(jsonObject.getString("id"));
+                                mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
+                                mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+
+                                if (!jsonObject.isNull("description")){
+                                    mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("service_type")){
+                                    mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                                }
+                                if (!jsonObject.isNull("customer_complaint")) {
+                                    mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                                }
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
+                                        mod.setImg_original(image_obj.getString("original"));
+                                        mod.setImg_160x170(image_obj.getString("160x170"));
+                                        mod.setImg_150x150(image_obj.getString("150x150"));
+                                        mod.setImg_75x75(image_obj.getString("75x75"));
+                                        mod.setImg_30x30(image_obj.getString("30x30"));
+                                    }
+                                }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")){
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        if( !image_obj.isNull("original")){
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
+                                        }
+                                    }
+                                }
+
+
+//                                JSONObject services_obj = jsonObject.getJSONObject("services");
+//                                mod.setService_id(services_obj.getString("id"));
+//                                mod.setService_name(services_obj.getString("name"));
+//                                mod.setService_created_at(services_obj.getString("created_at"));
+//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+                                jobapplianceslist.add(mod);
+                            }
+//                            }
+                            jobModal.setJob_appliances_arrlist(jobapplianceslist);
+                        }
+                        if (!obj.isNull("technicians")){
+                            JSONObject technician_object  =  obj.getJSONObject("technicians");
+                            jobModal.setTechnician_technicians_id(technician_object.getString("id"));
+                            jobModal.setTechnician_user_id(technician_object.getString("user_id"));
+                            jobModal.setTechnician_fname(technician_object.getString("first_name"));
+                            jobModal.setTechnician_lname(technician_object.getString("last_name"));
+                            jobModal.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
+                            jobModal.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            jobModal.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                            jobModal.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
+                            if (!technician_object.isNull("profile_image")){
+                                JSONObject object_profile_image  = technician_object.getJSONObject("profile_image");
+                                if (!object_profile_image.isNull("original"))
+                                    jobModal.setTechnician_profile_image(object_profile_image.getString("original"));
+                            }
+
+                        }
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            jobModal.setTime_slot_id(time_slot_obj.getString("id"));
+                            jobModal.setTimeslot_start(time_slot_obj.getString("start"));
+                            jobModal.setTimeslot_end(time_slot_obj.getString("end"));
+                            jobModal.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+
+
+                        if (!obj.isNull("job_customer_addresses")){
+                            JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
+                            jobModal.setJob_customer_addresses_id(job_customer_addresses_obj.getString("id"));
+                            jobModal.setJob_customer_addresses_zip(job_customer_addresses_obj.getString("zip"));
+                            jobModal.setJob_customer_addresses_city(job_customer_addresses_obj.getString("city"));
+                            jobModal.setJob_customer_addresses_state(job_customer_addresses_obj.getString("state"));
+                            jobModal.setJob_customer_addresses_address(job_customer_addresses_obj.getString("address"));
+                            jobModal.setJob_customer_addresses_address_2(job_customer_addresses_obj.getString("address_2"));
+                            jobModal.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
+                            jobModal.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
+                            jobModal.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            jobModal.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            jobModal.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
+                        }
+
+                    }
+                    if (jobModal == null)
+                        return;
+                    if(!checkIfAvailablejobExistsInList(jobModal.getId())){
+                        Singleton.getInstance().getAvailablejoblist().add(0,jobModal);
+                    }
+                    handler.sendEmptyMessage(4);
+                }else {
+//                    handler.sendEmptyMessage(3);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    IHttpResponseListener responseListenerScheduled = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
+                    JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
+//                    nextScheduled = pagination.getString("next");
+                    for(int i = 0; i < results.length(); i++){
+                        JSONObject obj = results.getJSONObject(i);
+                        jobModal = new AvailableJobModal();
+                        jobModal.setContact_name(obj.getString("contact_name"));
+                        jobModal.setCreated_at(obj.getString("created_at"));
+                        jobModal.setCustomer_id(obj.getString("customer_id"));
+                        jobModal.setCustomer_notes(obj.getString("customer_notes"));
+                        jobModal.setFinished_at(obj.getString("finished_at"));
+                        jobModal.setId(obj.getString("id"));
+                        jobModal.setJob_id(obj.getString("job_id"));
+//                        jobModal.setLatitude(obj.getDouble("latitude"));
+                        jobModal.setLocked_by(obj.getString("locked_by"));
+                        jobModal.setLocked_on(obj.getString("locked_on"));
+//                        jobModal.setLongitude(obj.getDouble("longitude"));
+                        jobModal.setPhone(obj.getString("phone"));
+                        jobModal.setPro_id(obj.getString("pro_id"));
+                        jobModal.setRequest_date(obj.getString("request_date"));
+//                        jobModal.setService_id(obj.getString("service_id"));
+//                        jobModal.setService_type(obj.getString("service_type"));
+                        jobModal.setStarted_at(obj.getString("started_at"));
+                        jobModal.setStatus(obj.getString("status"));
+                        jobModal.setTechnician_id(obj.getString("technician_id"));
+                        jobModal.setTime_slot_id(obj.getString("time_slot_id"));
+                        jobModal.setTitle(obj.getString("title"));
+//                        jobModal.setTotal_cost(obj.getString("total_cost"));
+                        jobModal.setUpdated_at(obj.getString("updated_at"));
+//                        jobModal.setWarranty(obj.getString("warranty"));
+//                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
+                        JSONArray jobAppliances = obj.getJSONArray("job_appliances");
+                        ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
+                        if(jobAppliances != null){
+                            for (int j = 0; j < jobAppliances.length(); j++) {
+                                JSONObject jsonObject = jobAppliances.getJSONObject(j);
+                                JobAppliancesModal mod = new JobAppliancesModal();
+                                mod.setJob_appliances_id(jsonObject.getString("id"));
+                                mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
+                                mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+
+                                if (!jsonObject.isNull("description")){
+                                    mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("service_type")){
+                                    mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                                }
+                                if (!jsonObject.isNull("customer_complaint")) {
+                                    mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                                }
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
+                                        mod.setImg_original(image_obj.getString("original"));
+                                        mod.setImg_160x170(image_obj.getString("160x170"));
+                                        mod.setImg_150x150(image_obj.getString("150x150"));
+                                        mod.setImg_75x75(image_obj.getString("75x75"));
+                                        mod.setImg_30x30(image_obj.getString("30x30"));
+                                    }
+                                }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")){
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        if( !image_obj.isNull("original")){
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
+                                        }
+                                    }
+                                }
+
+
+//                                JSONObject services_obj = jsonObject.getJSONObject("services");
+//                                mod.setService_id(services_obj.getString("id"));
+//                                mod.setService_name(services_obj.getString("name"));
+//                                mod.setService_created_at(services_obj.getString("created_at"));
+//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+                                jobapplianceslist.add(mod);
+                            }
+//                            }
+                            jobModal.setJob_appliances_arrlist(jobapplianceslist);
+                        }
+                        if (!obj.isNull("technicians")){
+                            JSONObject technician_object  =  obj.getJSONObject("technicians");
+                            jobModal.setTechnician_technicians_id(technician_object.getString("id"));
+                            jobModal.setTechnician_user_id(technician_object.getString("user_id"));
+                            jobModal.setTechnician_fname(technician_object.getString("first_name"));
+                            jobModal.setTechnician_lname(technician_object.getString("last_name"));
+                            jobModal.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
+                            jobModal.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            jobModal.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                            jobModal.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
+                            if (!technician_object.isNull("profile_image")){
+                                JSONObject object_profile_image  = technician_object.getJSONObject("profile_image");
+                                if (!object_profile_image.isNull("original"))
+                                    jobModal.setTechnician_profile_image(object_profile_image.getString("original"));
+                            }
+
+                        }
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            jobModal.setTime_slot_id(time_slot_obj.getString("id"));
+                            jobModal.setTimeslot_start(time_slot_obj.getString("start"));
+                            jobModal.setTimeslot_end(time_slot_obj.getString("end"));
+                            jobModal.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+
+
+                        if (!obj.isNull("job_customer_addresses")){
+                            JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
+                            jobModal.setJob_customer_addresses_id(job_customer_addresses_obj.getString("id"));
+                            jobModal.setJob_customer_addresses_zip(job_customer_addresses_obj.getString("zip"));
+                            jobModal.setJob_customer_addresses_city(job_customer_addresses_obj.getString("city"));
+                            jobModal.setJob_customer_addresses_state(job_customer_addresses_obj.getString("state"));
+                            jobModal.setJob_customer_addresses_address(job_customer_addresses_obj.getString("address"));
+                            jobModal.setJob_customer_addresses_address_2(job_customer_addresses_obj.getString("address_2"));
+                            jobModal.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
+                            jobModal.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
+                            jobModal.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            jobModal.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            jobModal.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
+                        }
+
+                    }
+
+                    handler.sendEmptyMessage(2);
+                }else {
+                    handler.sendEmptyMessage(3);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+    IHttpExceptionListener exceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+            error_message = exception;
+            handler.sendEmptyMessage(1);
+        }
+    };
+    public AvailableJobModal getJobforId(String id){
+        AvailableJobModal jobModal = null ;
+        for (int i = 0 ; i < schedulejoblist.size() ; i++ ){
+            if (schedulejoblist.get(i).getId().equals(id)){
+                jobModal = schedulejoblist.get(i);
+                break;
+            }
+        }
+        return jobModal;
+    }
+    public AvailableJobModal getJobforIdAvalable(String id){
+        AvailableJobModal jobModal = null ;
+        for (int i = 0 ; i < availablejoblist.size() ; i++ ){
+            if (availablejoblist.get(i).getId().equals(id)){
+                jobModal = availablejoblist.get(i);
+                break;
+            }
+        }
+        return jobModal;
     }
     private void QBLogin(){
         QBAuth.createSession(new QBEntityCallback<QBSession>() {
@@ -276,6 +865,23 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 //
                 Log.e("" + bundle, "success" + result);
                 SharedPreferencesUtil.saveQbUser(user);
+                HomeScreenNew.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (dialog != null && dialog.isShowing()) {
+                            isChatNoti = false;
+                            dialog.dismiss();
+                            Bundle data = new Bundle();
+                            data.putSerializable("data", modal);
+                            switchFragment(new ChatUserFragment(), Constants.CHATUSER_FRAGMENT, true, data);
+
+                        } else {
+                            ChatSingleton.getInstance().dataSourceUsers.clear();
+                            getChatUsers();
+                        }
+                    }
+                });
+
 //                            Intent intent = new Intent(SplashActivity.this, DialogsActivity.class);
 //                            startActivity(intent);
 //                            finish();
@@ -286,7 +892,25 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             public void onError(QBResponseException errors) {
 //                            AlertDialog.Builder dialog = new AlertDialog.Builder(SplashActivity.this);
 //                            dialog.setMessage("chat login errors: " + errors).create().show();
-                Log.e("", "error");
+                if (errors.getMessage().equals("You have already logged in chat")) {
+                    HomeScreenNew.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (dialog != null && dialog.isShowing()) {
+                                isChatNoti = false;
+                                dialog.dismiss();
+                                Bundle data = new Bundle();
+                                data.putSerializable("data", modal);
+                                switchFragment(new ChatUserFragment(), Constants.CHATUSER_FRAGMENT, true, data);
+
+                            }
+                        }
+                    });
+
+                }
+                ChatSingleton.getInstance().dataSourceUsers.clear();
+                getChatUsers();
+                Log.e("", "error" + errors.getMessage());
             }
         });
 
@@ -294,8 +918,11 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     private void initLayout() {
         Bundle b = new Bundle();
         b.putString("title", getString(R.string.app_name));
+        b.putString("switch_tab", switch_tab_value);
+        b.putBoolean("first_tech_reg",isFirstTechReg);
         titletext.setText(b.getString("title", ""));
         fragment = new HomeFragment();
+        fragment.setArguments(b);
         if (fragment != null) {
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container_body, fragment, Constants.HOME_FRAGMENT);
@@ -362,7 +989,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT) || currentFragmentTag.equals(Constants.MYJOB_FRAGMENT)
                 || currentFragmentTag.equals(Constants.PAYMENT_FRAGMENT) || currentFragmentTag.equals(Constants.RATING_FRAGMENT)
                 || currentFragmentTag.equals(Constants.SETTING_FRAGMENT) || currentFragmentTag.equals(Constants.START_JOB_FRAGMENT)
-                || currentFragmentTag.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)) {
+                || currentFragmentTag.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)|| currentFragmentTag.equals(Constants.NOTIFICATION_LIST_FRAGMENT)|| currentFragmentTag.equals(Constants.CHATUSER_FRAGMENT)) {
             toggle();
         } else if (currentFragmentTag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
             popStack();
@@ -377,10 +1004,10 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     private void handleRightClick() {
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT)) {
             Log.e("", "-----" + ((HomeFragment) fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)));
-            ((HomeFragment) fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)).refresh();
+            ((HomeFragment) fragmentManager.findFragmentByTag(Constants.HOME_FRAGMENT)).bellClick();
         } else if (currentFragmentTag.equals(Constants.START_JOB_FRAGMENT)) {
             //Show start job dialog
-            ((StartJobFragment) fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT)).showStartJobDialog();
+            ((StartJobFragment) fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT)).submitPost();
         } else if (currentFragmentTag.equals(Constants.TELL_US_WHATS_WRONG_FRAGMENT)) {
             ((TellUsWhatsWrongFragment) fragmentManager.findFragmentByTag(Constants.TELL_US_WHATS_WRONG_FRAGMENT)).submitPost();
         } else if (currentFragmentTag.equals(Constants.PARTS_FRAGMENT)) {
@@ -399,6 +1026,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     private void setWidgets() {
         img_Toggle = (ImageView) findViewById(R.id.img_Toggle);
         img_Right = (ImageView) findViewById(R.id.img_Right);
+        badge_home = (TextView) findViewById(R.id.badge_home);
         titletext = (TextView) findViewById(R.id.titletext);
         txtBack = (TextView) findViewById(R.id.txtBack);
         txtDone = (TextView) findViewById(R.id.txtDone);
@@ -446,6 +1074,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 Utilities.getSharedPreferences(HomeScreenNew.this).edit().clear().commit();
                 Intent j = new Intent(HomeScreenNew.this, Login_Register_Activity.class);
                 startActivity(j);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
                 finish();
             }
         }, 500);
@@ -459,6 +1088,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             public void run() {
                 Intent i = new Intent(HomeScreenNew.this, ContactUsActivity.class);
                 startActivityForResult(i, CONTACTUS_REQUESTCODE);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         }, 500);
     }
@@ -483,10 +1113,11 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(HomeScreenNew.this, CompanyInformation_Activity.class);
+                Intent intent = new Intent(HomeScreenNew.this, SetupCompleteAddressActivity.class);
                 intent.putExtra("finalRequestParams", getIncompleteAccountParams());
                 intent.putExtra("ispro", true);
                 startActivity(intent);
+                overridePendingTransition(R.anim.enter, R.anim.exit);
             }
         });
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -562,7 +1193,16 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         img_Right.setVisibility(View.VISIBLE);
         img_Right.setImageResource(resId);
     }
-
+    public void hideBadge(){
+        badge_home.setVisibility(View.GONE);
+    }
+    public void showBadge(){
+        badge_home.setVisibility(View.VISIBLE);
+    }
+    public void setBadgeText(String values){
+        badge_home.setVisibility(View.VISIBLE);
+        badge_home.setText(values);
+    }
     @Override
     public void onBackPressed() {
 //        super.onBackPressed();
@@ -618,7 +1258,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
         // The final argument to {@code requestLocationUpdates()} is a LocationListener
         // (http://developer.android.com/reference/com/google/android/gms/location/LocationListener.html).
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+//        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
     }
 
     /**
@@ -659,7 +1299,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
         // Sets the fastest rate for active location updates. This interval is exact, and your
         // application will never receive updates faster than this value.
-//        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
+        mLocationRequest.setFastestInterval(FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS);
 
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
@@ -724,27 +1364,36 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 //            startLocationUpdates();
 //        }
         if (!Utilities.isNetworkAvailable(_context)) {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
-                    .setAction("OK", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-
-                        }
-                    });
-
-            // Changing message text color
-            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
-
-            // Changing action button text color
-            View sbView = snackbar.getView();
-            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
-            textView.setTextColor(Color.WHITE);
-
-            snackbar.show();
+//            Snackbar snackbar = Snackbar
+//                    .make(coordinatorLayout, "No internet connection!", Snackbar.LENGTH_LONG)
+//                    .setAction("OK", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//
+//                        }
+//                    });
+//
+//            // Changing message text color
+//            snackbar.setActionTextColor(Color.parseColor("#fa7507"));
+//
+//            // Changing action button text color
+//            View sbView = snackbar.getView();
+//            TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+//            textView.setTextColor(Color.WHITE);
+//
+//            snackbar.show();
         } else {
 
         }
+        count =  0 ;
+        for (int i = 0 ; i < ChatSingleton.getInstance().dataSourceUsers.size() ; i++){
+            count = count + ChatSingleton.getInstance().dataSourceUsers.get(i).getUnreadMessageCount() ;
+        }
+        if (count > 0){
+
+            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
+        }
+        setNotficationCounts();
     }
 
     @Override
@@ -803,6 +1452,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
      */
     @Override
     public void onLocationChanged(Location location) {
+
         mCurrentLocation = location;
         if (locationResponseListener != null) {
             locationResponseListener.handleLocationResponse(location);
@@ -843,10 +1493,28 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                     intent1.putExtra("data", notificationModal);
 //                MessageReceivingService.sendToApp(extras, context);
                     LocalBroadcastManager.getInstance(context).sendBroadcast(intent1);
+                }else if (notificationModal.getType().equals("ja")) {
+                    // check if new available job is already  in the list  if not then get it
+                    if (!checkIfAvailablejobExistsInList(notificationModal.getJobId())){
+                        GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", responseListenerAvailable,exceptionListener, HomeScreenNew.this, "Loading");
+                        responseAsync.execute(getRequestParamsAvailable(notificationModal.getJobId()));
+                    }
                 }
             }
         }
     };
+
+    private boolean checkIfAvailablejobExistsInList(String JobId){
+        boolean isexist = false ;
+        ArrayList<AvailableJobModal> list = Singleton.getInstance().getAvailablejoblist();
+        for (int i = 0 ; i < list.size() ; i++){
+            if (list.get(i).getId().equals(JobId)){
+                isexist = true;
+                break;
+            }
+        }
+        return isexist ;
+    }
 //    public void onSaveInstanceState(Bundle savedInstanceState) {
 //        if (savedInstanceState != null) {
 //            savedInstanceState.putBoolean(REQUESTING_LOCATION_UPDATES_KEY, mRequestingLocationUpdates);
@@ -965,7 +1633,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 token = intent.getStringExtra("token");
                 updateToken();
             }
-        }
+          }
     };
 
     private void updateToken() {
@@ -1004,13 +1672,19 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
     private HashMap<String, String> getTokenUpdateParameters() {
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("api", "update");
-        if (_prefs.getString(Preferences.ROLE, "").equals("pro"))
-            hashMap.put("object", "pros");
-        else
-            hashMap.put("object", "technicians");
-        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
-        hashMap.put("data[technicians][gcm_token]", token);
+//        hashMap.put("api", "update");
+//        if (_prefs.getString(Preferences.ROLE, "").equals("pro"))
+//            hashMap.put("object", "pros");
+//        else
+//            hashMap.put("object", "technicians");
+//        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+//        hashMap.put("data[technicians][gcm_token]", token);
+
+         hashMap.put("api", "save_pn_token");
+         hashMap.put("object", "users");
+         hashMap.put("data[token_type]", "gcm");
+         hashMap.put("data[token]", token);
+         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         return hashMap;
     }
 
@@ -1038,5 +1712,37 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             // other 'case' lines to check for other
             // permissions this app might request
         }
+    }
+    private void getChatUsers(){
+        // Get dialogs
+        //
+
+        ChatService.getInstance().getDialogs(new QBEntityCallback<ArrayList<QBDialog>>() {
+            @Override
+            public void onSuccess(final ArrayList<QBDialog> dialogs, Bundle bundle1) {
+                Log.e("", "");
+                count = 0;
+                ChatSingleton.getInstance().dataSourceUsers.addAll(dialogs);
+                HomeScreenNew.this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i = 0; i < dialogs.size(); i++) {
+                            count = count + dialogs.get(i).getUnreadMessageCount();
+                        }
+                        if (count > 0) {
+                            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
+                            setNotficationCounts();
+                        }
+
+                    }
+                });
+            }
+
+            @Override
+            public void onError(QBResponseException errors) {
+
+                Log.e("", "");
+            }
+        }, null);
     }
 }

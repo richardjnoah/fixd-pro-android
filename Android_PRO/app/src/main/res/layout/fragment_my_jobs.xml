@@ -1,54 +1,60 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical"
     tools:context="fixtpro.com.fixtpro.fragment.MyJobsFragment">
+
     <LinearLayout
         android:id="@+id/comp_avail_schedule_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="15dp"
         android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/size_15_dp"
+        android:layout_marginTop="@dimen/size_20_dp"
         android:background="@drawable/completedjobs"
         android:orientation="horizontal">
+
         <TextView
             android:id="@+id/completed_text"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/available_text"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
         <TextView
             android:id="@+id/scheduled_text"
             android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
     </LinearLayout>
-    <com.paging.listview.PagingListView
+
+    <ListView
         android:id="@+id/completed_listview"
-        android:dividerHeight="1dp"
-        android:divider="@color/register_button_text"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:divider="@color/register_button_text"
+        android:dividerHeight="1dp" />
 
-    <com.paging.listview.PagingListView
+    <ListView
         android:id="@+id/available_listview"
-        android:dividerHeight="1dp"
-        android:divider="@color/register_button_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:divider="@color/register_button_text"
+        android:dividerHeight="1dp"
+        android:visibility="gone" />
 
-    <com.paging.listview.PagingListView
+    <ListView
         android:id="@+id/scheduled_listview"
-        android:dividerHeight="1dp"
-        android:divider="@color/register_button_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone"/>
+        android:divider="@color/register_button_text"
+        android:dividerHeight="1dp"
+        android:visibility="gone" />
 </LinearLayout>

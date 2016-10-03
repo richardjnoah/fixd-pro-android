@@ -2,22 +2,22 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/popuplayoutmagin"
+    android:layout_margin="@dimen/size_12_dp"
     android:background="@android:color/transparent">
 
     <LinearLayout
         android:id="@+id/relative1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@drawable/orange_background">
+        android:background="@drawable/orange_background"
+        android:orientation="vertical">
 
         <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="@dimen/partleftrightmar">
+            android:layout_marginTop="@dimen/size_27_dp"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/imgThumbLuck"
@@ -30,28 +30,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/txt1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:text="@string/owner_approval"
-                android:padding="@dimen/edittext_padding"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
+                android:text="@string/owner_approval"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/commonmediumtxt" />
+                android:textSize="@dimen/size_18_sp" />
+
             <TextView
-                android:layout_marginTop="@dimen/commonpadding"
                 android:id="@+id/txt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
+                android:paddingBottom="@dimen/size_27_dp"
                 android:text="@string/owner_approval_desc"
                 android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:paddingBottom="@dimen/partleftrightmar"/>
+                android:textSize="@dimen/size_18_sp" />
 
         </LinearLayout>
         <!--Complete Job Now...-->
@@ -59,88 +61,97 @@
             android:id="@+id/send_to_owner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
             android:weightSum="2">
+
             <TextView
                 android:id="@+id/txt3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:text="@string/send_to_Owner"
-                android:padding="@dimen/commonpadding"
+                android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
+                android:text="@string/send_to_Owner"
                 android:textColor="@color/orange_signin_back"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
+
             <ImageView
                 android:id="@+id/img_next"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:src="@drawable/right_job_arrow"
-                android:layout_gravity="center" />
+                android:src="@drawable/right_job_arrow" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="@dimen/size_20_dp"></View>
         <!-- resechedule Now...-->
         <LinearLayout
             android:id="@+id/layout_complete_job"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
             android:weightSum="2">
+
             <TextView
                 android:id="@+id/txt3resechedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:text="@string/complete_here"
-                android:padding="@dimen/commonpadding"
+                android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
+                android:text="@string/complete_here"
                 android:textColor="@color/orange_signin_back"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
+
             <ImageView
                 android:id="@+id/img_nextresechedule"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:src="@drawable/right_job_arrow"
-                android:layout_gravity="center" />
+                android:src="@drawable/right_job_arrow" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="@dimen/size_20_dp"></View>
         <!--Cancel JOb-->
         <LinearLayout
-            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:visibility="gone"
             android:weightSum="2">
+
             <TextView
                 android:id="@+id/txtCancelJOb"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:text="@string/canceljob"
-                android:padding="@dimen/commonpadding"
+                android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
+                android:text="@string/canceljob"
                 android:textColor="@color/orange_signin_back"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
+
             <ImageView
                 android:id="@+id/img_nextCanceljob"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_weight="0.6"
-                android:src="@drawable/right_job_arrow"
-                android:layout_gravity="center" />
+                android:src="@drawable/right_job_arrow" />
         </LinearLayout>
+
         <View
             android:layout_width="match_parent"
-            android:layout_height="20dp"></View>
+            android:layout_height="@dimen/size_20_dp"></View>
 
     </LinearLayout>
 
@@ -151,7 +162,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="16dp"
+        android:padding="@dimen/size_16_dp"
         android:scaleType="centerCrop"
         android:src="@drawable/screen_cross" />
 </RelativeLayout>

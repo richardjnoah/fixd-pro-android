@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/popuplayoutmagin"
+    android:layout_margin="@dimen/size_12_dp"
     android:background="@drawable/orange_background">
 
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/partleftrightmar"
+        android:layout_marginTop="@dimen/size_27_dp"
         android:orientation="vertical">
 
         <ImageView
@@ -22,12 +22,12 @@
             android:id="@+id/titletext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/partleftrightmar"
+            android:layout_marginTop="@dimen/size_27_dp"
             android:gravity="center"
             android:singleLine="true"
             android:text="My Work Here Is Done!"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonxlargetxt" />
+            android:textSize="@dimen/size_20_sp" />
 
     </LinearLayout>
 
@@ -43,13 +43,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="@dimen/left_right_margin"
+            android:layout_marginTop="@dimen/size_18_dp"
             android:gravity="center"
-            android:padding="8dp"
+            android:padding="@dimen/size_8_dp"
             android:singleLine="true"
             android:text="Robort Allen"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonxlargetxt" />
+            android:textSize="@dimen/size_20_sp" />
 
         <TextView
             android:id="@+id/txtAddress"
@@ -57,11 +57,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/size_5_dp"
             android:singleLine="true"
             android:text="1234-main chandigarh"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonmediumtxt" />
+            android:textSize="@dimen/size_18_sp" />
 
         <TextView
             android:id="@+id/txtDateTime"
@@ -69,11 +69,11 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
-            android:padding="5dp"
+            android:padding="@dimen/size_5_dp"
             android:singleLine="true"
             android:text="August 3,2015,"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/commonxlargetxt" />
+            android:textSize="@dimen/size_20_sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -87,11 +87,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Arrival Time:"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonmediumtxt" />
+                android:textSize="@dimen/size_18_sp" />
 
             <TextView
                 android:id="@+id/txtArrivalTime"
@@ -99,11 +99,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -118,11 +118,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Completed Time:"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonmediumtxt" />
+                android:textSize="@dimen/size_18_sp" />
 
             <TextView
                 android:id="@+id/txtCompleteTime"
@@ -130,11 +130,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:padding="5dp"
+                android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/commonxlargetxt" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -142,7 +142,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout2"
-        android:layout_marginTop="@dimen/partleftrightmar"
+        android:layout_marginTop="@dimen/size_27_dp"
         android:orientation="vertical">
 
         <ImageView
@@ -159,7 +159,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:padding="10dp"
+        android:padding="@dimen/size_10_dp"
         android:scaleType="centerCrop"
         android:src="@drawable/screen_cross" />
 </RelativeLayout>

@@ -3,9 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_chat_message_container"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:gravity="right"
     tools:ignore="RtlHardcoded">
 
@@ -17,53 +17,52 @@
 
         <TextView
             android:id="@+id/text_image_message"
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:maxWidth="250dp"
-            android:textSize="@dimen/chat_message_body_text_size"
-            android:textColor="@android:color/white"
-            android:layout_marginLeft="@dimen/chat_message_content_margin"
-            android:layout_marginRight="@dimen/chat_message_content_margin"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/text_message_author"
+            android:layout_marginLeft="@dimen/size_4_dp"
+            android:layout_marginRight="@dimen/size_4_dp"
+            android:maxWidth="@dimen/size_250_dp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_16_sp"
             tools:text="Test message" />
 
         <fixtpro.com.fixtpro.views.MaskedImageView
             android:id="@+id/image_message_attachment"
-            android:layout_width="@dimen/chat_message_attachment_size"
-            android:layout_height="@dimen/chat_message_attachment_size"
+            android:layout_width="@dimen/size_160_dp"
+            android:layout_height="@dimen/size_160_dp"
             android:scaleType="centerCrop"
             app:mask="@drawable/outgoing_message_bg" />
 
         <ProgressBar
             android:id="@+id/progress_message_attachment"
-            android:layout_height="35dp"
+            android:layout_width="@dimen/size_36_dp"
+            android:layout_height="@dimen/size_36_dp"
             android:layout_centerInParent="true"
-            android:layout_width="35dp"
-            android:theme="@style/AppTheme.BlueAccent"/>
+            android:theme="@style/AppTheme.BlueAccent" />
 
         <com.devspark.robototextview.widget.RobotoTextView
             android:id="@+id/text_message_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/chat_message_username_margin"
-            android:layout_marginRight="@dimen/chat_message_username_margin"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="@dimen/size_4_dp"
+            android:layout_marginRight="@dimen/size_4_dp"
             android:gravity="left"
             android:textColor="@color/white"
-            android:textSize="@dimen/chat_author_text_size"
+            android:textSize="@dimen/size_16_sp"
             android:textStyle="bold"
-            android:layout_alignParentTop="true"
             tools:text="User 2" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/text_message_info"
-        android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-
-    android:paddingLeft="@dimen/padding_common"
-    android:paddingRight="@dimen/padding_common"
-    android:textColor="@android:color/darker_gray"
-    android:textSize="@dimen/chat_message_info_text_size"
-    android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/size_10_dp"
+        android:paddingRight="@dimen/size_10_dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/size_13_sp"
+        android:visibility="gone"
         tools:text="10:50" />
 </LinearLayout>

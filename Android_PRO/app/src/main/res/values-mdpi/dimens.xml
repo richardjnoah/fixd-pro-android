@@ -145,4 +145,71 @@
     <dimen name="imgwid">80dp</dimen>
     <!--Home Activity With Fragment Drawer-->
     <!--<dimen name="drawerwidth">240dp</dimen>-->
+
+
+    <!--******************MDPI******************-->
+    <dimen name="size_3_dp">2dp</dimen>
+    <dimen name="size_4_dp">2dp</dimen>
+    <dimen name="size_5_dp">3dp</dimen>
+    <dimen name="size_7_dp">5dp</dimen>
+    <dimen name="size_8_dp">6dp</dimen>
+    <dimen name="size_10_dp">7dp</dimen>
+    <dimen name="size_11_sp">9sp</dimen>
+    <dimen name="size_12_dp">9dp</dimen>
+    <dimen name="size_12_sp">10sp</dimen>
+    <dimen name="size_13_dp">10dp</dimen>
+    <dimen name="size_13_sp">11sp</dimen>
+    <dimen name="size_14_sp">12sp</dimen>
+    <dimen name="size_14_dp">12dp</dimen>
+    <dimen name="size_15_dp">13dp</dimen>
+    <dimen name="size_15_sp">14sp</dimen>
+    <dimen name="size_16_dp">14dp</dimen>
+    <dimen name="size_16_sp">14sp</dimen>
+    <dimen name="size_17_sp">15sp</dimen>
+    <dimen name="size_18_dp">16dp</dimen>
+    <dimen name="size_18_sp">16sp</dimen>
+    <dimen name="size_19_sp">17sp</dimen>
+    <dimen name="size_20_sp">18sp</dimen>
+    <dimen name="size_20_dp">18dp</dimen>
+    <dimen name="size_21_dp">19dp</dimen>
+    <dimen name="size_21_sp">19sp</dimen>
+    <dimen name="size_22_sp">20sp</dimen>
+    <dimen name="size_22_dp">20dp</dimen>
+    <dimen name="size_24_sp">21sp</dimen>
+    <dimen name="size_24_dp">21dp</dimen>
+    <dimen name="size_25_dp">22dp</dimen>
+    <dimen name="size_27_sp">24sp</dimen>
+    <dimen name="size_27_dp">24dp</dimen>
+    <dimen name="size_28_dp">25dp</dimen>
+    <dimen name="size_30_dp">26dp</dimen>
+    <dimen name="size_32_dp">27dp</dimen>
+    <dimen name="size_36_dp">30dp</dimen>
+    <dimen name="size_37_sp">31sp</dimen>
+    <dimen name="size_40_dp">34dp</dimen>
+    <dimen name="size_40_sp">34sp</dimen>
+    <dimen name="size_45_dp">38dp</dimen>
+    <dimen name="size_48_dp">41dp</dimen>
+    <dimen name="size_50_dp">43dp</dimen>
+    <dimen name="size_54_dp">47dp</dimen>
+    <dimen name="size_57_dp">50dp</dimen>
+    <dimen name="size_60_dp">52dp</dimen>
+    <dimen name="size_65_dp">57dp</dimen>
+    <dimen name="size_70_dp">60dp</dimen>
+    <dimen name="size_73_dp">63dp</dimen>
+    <dimen name="size_75_dp">67dp</dimen>
+    <dimen name="size_80_dp">72dp</dimen>
+    <dimen name="size_90_dp">80dp</dimen>
+    <dimen name="size_95_dp">85dp</dimen>
+    <dimen name="size_100_dp">90dp</dimen>
+    <dimen name="size_110_dp">100dp</dimen>
+    <dimen name="size_120_dp">110dp</dimen>
+    <dimen name="size_125_dp">115dp</dimen>
+    <dimen name="size_150_dp">139dp</dimen>
+    <dimen name="size_160_dp">149dp</dimen>
+    <dimen name="size_175_dp">165dp</dimen>
+    <dimen name="size_200_dp">189dp</dimen>
+    <dimen name="size_210_dp">199dp</dimen>
+    <dimen name="size_220_dp">210dp</dimen>
+    <dimen name="size_250_dp">240dp</dimen>
+
 </resources>

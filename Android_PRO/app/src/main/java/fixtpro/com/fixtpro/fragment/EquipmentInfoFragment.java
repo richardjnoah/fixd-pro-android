@@ -1,7 +1,9 @@
 package fixtpro.com.fixtpro.fragment;
 
 import android.Manifest;
+import android.annotation.TargetApi;
 import android.app.Dialog;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,6 +16,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.DocumentsContract;
@@ -145,7 +148,7 @@ public class EquipmentInfoFragment extends Fragment {
     }
 
     private void setupToolBar() {
-        ((HomeScreenNew) getActivity()).setRightToolBarText("Next");
+        ((HomeScreenNew) getActivity()).setRightToolBarText("Done");
         ((HomeScreenNew) getActivity()).setTitletext("Equipment Info");
         ((HomeScreenNew) getActivity()).setLeftToolBarText("Back");
     }
@@ -157,9 +160,32 @@ public class EquipmentInfoFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_equipment_info, container, false);
         setWidgets(view);
         setListener();
+        initLayout();
         return view;
     }
+    private void initLayout(){
+        edit_Brand.setText(equipmentInfo.getBrand_name());
+        editMOdalNum.setText(equipmentInfo.getModel_number());
+        editSerialNum.setText(equipmentInfo.getSerial_number());
+        editDescription.setText(equipmentInfo.getDescription());
+        if (equipmentInfo.getImage().length() > 0){
+            if (equipmentInfo.isLocal()){
+//                Loadimage  from loccally
+                Uri uri = Uri.fromFile(new File(equipmentInfo.getImage()));
+                Picasso.with(getActivity()).load(uri)
+                        .into(imgMain);
+                txtTakepic.setVisibility(View.INVISIBLE);
+                img_Camra.setVisibility(View.INVISIBLE);
+            }else{
+//                Load image form server
+                Picasso.with(getActivity()).load(equipmentInfo.getImage())
+                        .into(imgMain);
+                txtTakepic.setVisibility(View.INVISIBLE);
+                img_Camra.setVisibility(View.INVISIBLE);
+            }
+        }
 
+    }
     private void setListener() {
         txtTakepic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -190,9 +216,9 @@ public class EquipmentInfoFragment extends Fragment {
 
     private void setDropDownWithDialog() {
         final String[] selectedBrand = {""};
-        Brands brands1 = new Brands();
-        brands1.setBrand_name("Other Brand");
-        arrayListBrands.add(brands1);
+//        Brands brands1 = new Brands();
+//        brands1.setBrand_name("Other Brand");
+//        arrayListBrands.add(brands1);
         dialog1 = new Dialog(_context);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setContentView(R.layout.layout_tellus_more);
@@ -335,7 +361,7 @@ public class EquipmentInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                     boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
                     if (!hasPermission) {
@@ -345,7 +371,7 @@ public class EquipmentInfoFragment extends Fragment {
                     } else {
                         openCamera();
                     }
-                }else{
+                } else {
                     openCamera();
                 }
             }
@@ -354,7 +380,7 @@ public class EquipmentInfoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1) {
+                if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                     boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
                     if (!hasPermission) {
@@ -364,7 +390,7 @@ public class EquipmentInfoFragment extends Fragment {
                     } else {
                         openGallery();
                     }
-                }else{
+                } else {
                     openGallery();
                 }
             }
@@ -413,7 +439,9 @@ public class EquipmentInfoFragment extends Fragment {
             if (requestCode == CAMERA_REQUEST) {
                 try {
                     selectedImageUri = data.getData();
-                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
+
+                    Path = getPath(getActivity(), selectedImageUri);
+//                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
                     txtTakepic.setVisibility(View.INVISIBLE);
                     img_Camra.setVisibility(View.INVISIBLE);
                     Picasso.with(getActivity()).load(selectedImageUri)
@@ -423,35 +451,35 @@ public class EquipmentInfoFragment extends Fragment {
                 }
             } else if (requestCode == GALLERY_REQUEST) {
                 Uri selectedImageUri = data.getData();
-                if (android.os.Build.VERSION.SDK_INT <19 ){
-                    Path = getPath(selectedImageUri);
-                }else {
-
-// Will return "image:x*"
-                    String wholeID = DocumentsContract.getDocumentId(selectedImageUri);
-
-// Split at colon, use second item in the array
-                    String id = wholeID.split(":")[1];
-
-                    String[] column = { MediaStore.Images.Media.DATA };
-
-// where id is equal to
-                    String sel = MediaStore.Images.Media._ID + "=?";
-
-                    Cursor cursor = getActivity().getContentResolver().
-                            query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                                    column, sel, new String[]{id}, null);
-
-
-
-                    int columnIndex = cursor.getColumnIndex(column[0]);
-
-                    if (cursor.moveToFirst()) {
-                        Path = cursor.getString(columnIndex);
-                    }
-
-                    cursor.close();
-                }
+//                if (android.os.Build.VERSION.SDK_INT <19 ){
+                    Path = getPath(getActivity(),selectedImageUri);
+//                }else {
+//
+//// Will return "image:x*"
+//                    String wholeID = DocumentsContract.getDocumentId(selectedImageUri);
+//
+//// Split at colon, use second item in the array
+//                    String id = wholeID.split(":")[1];
+//
+//                    String[] column = { MediaStore.Images.Media.DATA };
+//
+//// where id is equal to
+//                    String sel = MediaStore.Images.Media._ID + "=?";
+//
+//                    Cursor cursor = getActivity().getContentResolver().
+//                            query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//                                    column, sel, new String[]{id}, null);
+//
+//
+//
+//                    int columnIndex = cursor.getColumnIndex(column[0]);
+//
+//                    if (cursor.moveToFirst()) {
+//                        Path = cursor.getString(columnIndex);
+//                    }
+//
+//                    cursor.close();
+//                }
 
                 txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
@@ -463,7 +491,148 @@ public class EquipmentInfoFragment extends Fragment {
             }
         }
     }
+    /**
+     * Get a file path from a Uri. This will get the the path for Storage Access
+     * Framework Documents, as well as the _data field for the MediaStore and
+     * other file-based ContentProviders.
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @author paulburke
+     */
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    public static String getPath(final Context context, final Uri uri) {
 
+        final boolean isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
+
+        // DocumentProvider
+        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
+            // ExternalStorageProvider
+            if (isExternalStorageDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                if ("primary".equalsIgnoreCase(type)) {
+                    return Environment.getExternalStorageDirectory() + "/" + split[1];
+                }
+
+                // TODO handle non-primary volumes
+            }
+            // DownloadsProvider
+            else if (isDownloadsDocument(uri)) {
+
+                final String id = DocumentsContract.getDocumentId(uri);
+                final Uri contentUri = ContentUris.withAppendedId(
+                        Uri.parse("content://downloads/public_downloads"), Long.valueOf(id));
+
+                return getDataColumn(context, contentUri, null, null);
+            }
+            // MediaProvider
+            else if (isMediaDocument(uri)) {
+                final String docId = DocumentsContract.getDocumentId(uri);
+                final String[] split = docId.split(":");
+                final String type = split[0];
+
+                Uri contentUri = null;
+                if ("image".equals(type)) {
+                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                } else if ("video".equals(type)) {
+                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+                } else if ("audio".equals(type)) {
+                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                }
+
+                final String selection = "_id=?";
+                final String[] selectionArgs = new String[] {
+                        split[1]
+                };
+
+                return getDataColumn(context, contentUri, selection, selectionArgs);
+            }
+        }
+        // MediaStore (and general)
+        else if ("content".equalsIgnoreCase(uri.getScheme())) {
+
+            // Return the remote address
+            if (isGooglePhotosUri(uri))
+                return uri.getLastPathSegment();
+
+            return getDataColumn(context, uri, null, null);
+        }
+        // File
+        else if ("file".equalsIgnoreCase(uri.getScheme())) {
+            return uri.getPath();
+        }
+
+        return null;
+    }
+
+    /**
+     * Get the value of the data column for this Uri. This is useful for
+     * MediaStore Uris, and other file-based ContentProviders.
+     *
+     * @param context The context.
+     * @param uri The Uri to query.
+     * @param selection (Optional) Filter used in the query.
+     * @param selectionArgs (Optional) Selection arguments used in the query.
+     * @return The value of the _data column, which is typically a file path.
+     */
+    public static String getDataColumn(Context context, Uri uri, String selection,
+                                       String[] selectionArgs) {
+
+        Cursor cursor = null;
+        final String column = "_data";
+        final String[] projection = {
+                column
+        };
+
+        try {
+            cursor = context.getContentResolver().query(uri, projection, selection, selectionArgs,
+                    null);
+            if (cursor != null && cursor.moveToFirst()) {
+                final int index = cursor.getColumnIndexOrThrow(column);
+                return cursor.getString(index);
+            }
+        } finally {
+            if (cursor != null)
+                cursor.close();
+        }
+        return null;
+    }
+
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is ExternalStorageProvider.
+     */
+    public static boolean isExternalStorageDocument(Uri uri) {
+        return "com.android.externalstorage.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is DownloadsProvider.
+     */
+    public static boolean isDownloadsDocument(Uri uri) {
+        return "com.android.providers.downloads.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is MediaProvider.
+     */
+    public static boolean isMediaDocument(Uri uri) {
+        return "com.android.providers.media.documents".equals(uri.getAuthority());
+    }
+
+    /**
+     * @param uri The Uri to check.
+     * @return Whether the Uri authority is Google Photos.
+     */
+    public static boolean isGooglePhotosUri(Uri uri) {
+        return "com.google.android.apps.photos.content".equals(uri.getAuthority());
+    }
     // get path from the gallery...
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Images.Media.DATA};
@@ -517,7 +686,7 @@ public class EquipmentInfoFragment extends Fragment {
 //
 //                    }
                     if (Path != null)
-                        multipart.addFilePart("data[image]", new File(Path));
+                    multipart.addFilePart("data[image]", new File(Path));
                     multipart.addFormField("data[model_number]", modal_number);
                     multipart.addFormField("data[brand_name]", brand);
                     multipart.addFormField("data[serial_number]", serial_number);
@@ -554,7 +723,8 @@ public class EquipmentInfoFragment extends Fragment {
                     break;
                 }
                 case 2: {
-                    equipmentInfo.setImage(path);
+                    equipmentInfo.setImage(Path);
+                    equipmentInfo.setIsLocal(true);
                     equipmentInfo.setBrand_name(brand);
                     equipmentInfo.setModel_number(modal_number);
                     equipmentInfo.setSerial_number(serial_number);

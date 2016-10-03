@@ -17,8 +17,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:padding="@dimen/size_14"
+            android:padding="@dimen/size_14_dp"
             android:src="@drawable/back_arrow" />
+        <ImageView
+            android:visibility="gone"
+            android:id="@+id/imgMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/size_14_dp"
+            android:src="@drawable/mail" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -32,10 +41,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_12"
+                android:padding="@dimen/size_12_dp"
                 android:text="@string/backgroundcheck"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_23sp" />
+                android:textSize="@dimen/size_22_sp" />
+
             <TextView
                 android:id="@+id/txtInformationFor"
                 android:layout_width="match_parent"
@@ -43,7 +53,8 @@
                 android:gravity="center"
                 android:text="@string/informationfor"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
+
             <TextView
                 android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
@@ -51,7 +62,7 @@
                 android:gravity="center"
                 android:text="Test User"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -60,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
-        android:layout_marginTop="@dimen/size_5"
+        android:layout_marginTop="@dimen/size_5_dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -68,8 +79,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
-            android:layout_marginLeft="@dimen/size_20dp"
-            android:layout_marginRight="@dimen/size_20dp"
+            android:layout_marginLeft="@dimen/size_20_dp"
+            android:layout_marginRight="@dimen/size_20_dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -81,19 +92,21 @@
                 android:gravity="left"
                 android:hint="@string/middlename"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_12"
+                android:padding="@dimen/size_12_dp"
                 android:singleLine="true"
-                android:textColor="@color/color_grey"
+                android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
                 android:textCursorDrawable="@drawable/cursor_drawable"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
+
             <CheckBox
                 android:id="@+id/checkMiddleName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:drawablePadding="@dimen/size_20_dp"
                 android:text="@string/idonthave"
-                android:drawablePadding="@dimen/size_20dp"
-                android:textColor="@color/color_grey"/>
+                android:textColor="@color/color_grey"
+                android:buttonTint="@color/orange_signin_back"/>
 
             <View
                 android:layout_width="match_parent"
@@ -108,12 +121,13 @@
                 android:gravity="left"
                 android:hint="@string/birthday"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_12"
+                android:padding="@dimen/size_12_dp"
                 android:singleLine="true"
-                android:textColor="@color/color_grey"
+                android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
                 android:textCursorDrawable="@drawable/cursor_drawable"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -127,12 +141,14 @@
                 android:gravity="left"
                 android:hint="@string/driverliecenseno"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_12"
+                android:inputType="number"
+                android:padding="@dimen/size_12_dp"
                 android:singleLine="true"
-                android:textColor="@color/color_grey"
+                android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
                 android:textCursorDrawable="@drawable/cursor_drawable"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -146,32 +162,35 @@
                 android:gravity="left"
                 android:hint="@string/driverliecensestate"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_12"
+                android:padding="@dimen/size_12_dp"
                 android:singleLine="true"
-                android:textColor="@color/color_grey"
+                android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
                 android:textCursorDrawable="@drawable/cursor_drawable"
-                android:textSize="@dimen/size_20sp" />
+                android:textSize="@dimen/size_20_sp" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/color_grey"></View>
 
-            <TextView
+            <EditText
                 android:id="@+id/txtSocialSecurityNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/whitebox_fill"
-                android:gravity="left"
-                android:text="@string/socialsecurityno"
-                android:imeOptions="actionNext"
-                android:padding="@dimen/size_12"
-                android:singleLine="true"
-                android:textColor="@color/color_grey"
                 android:drawableLeft="@drawable/social_lock"
-                android:drawablePadding="@dimen/size_20dp"
-                android:textSize="@dimen/size_20sp" />
-
+                android:drawablePadding="@dimen/size_20_dp"
+                android:gravity="left"
+                android:inputType="number"
+                android:hint="@string/socialsecurityno"
+                android:imeOptions="actionDone"
+                android:padding="@dimen/size_12_dp"
+                android:maxLength="9"
+                android:singleLine="true"
+                android:textColor="@color/text_color_dark_grey"
+                android:textColorHint="@color/color_grey"
+                android:textSize="@dimen/size_20_sp" />
 
 
         </LinearLayout>
@@ -181,7 +200,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout1"
-            android:layout_marginTop="@dimen/size_30"
+            android:layout_marginTop="@dimen/size_30_dp"
             android:orientation="vertical">
 
             <ImageView
@@ -199,15 +218,16 @@
                 android:padding="5dp"
                 android:text="@string/next"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16sp" />
+                android:textSize="@dimen/size_16_sp" />
 
             <ImageView
                 android:id="@+id/imgScreeNo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/size_12"
-                android:src="@drawable/next5" />
+                android:layout_marginTop="@dimen/size_12_dp"
+                android:src="@drawable/next5"
+                android:visibility="invisible" />
 
         </LinearLayout>
 

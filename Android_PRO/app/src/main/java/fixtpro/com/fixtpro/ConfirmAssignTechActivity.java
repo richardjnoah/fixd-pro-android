@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -19,13 +21,16 @@ import fixtpro.com.fixtpro.beans.AssignTechModal;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
+import fixtpro.com.fixtpro.utilites.Singleton;
 import fixtpro.com.fixtpro.utilites.Utilities;
+import fixtpro.com.fixtpro.views.CircularImageView;
 import fixtpro.com.fixtpro.views.RatingBarView;
 
 public class ConfirmAssignTechActivity extends AppCompatActivity {
     AssignTechModal modal = null ;
-    TextView textChange,done,textTitleName,date,time_interval,contact_name,address;
+    TextView textChange,done,textTitleName,date,time_interval,contact_name,address,textJobSchedule;
     SharedPreferences _prefs = null ;
+    fixtpro.com.fixtpro.views.CircularImageView circleImage ;
     RatingBarView cusRatingbar;
     AvailableJobModal modelAvail;
     @Override
@@ -41,10 +46,15 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
             modelAvail = (AvailableJobModal) getIntent().getSerializableExtra("JOB_DETAIL");
             textTitleName.setText(modal.getFirstName());
             date.setText(Utilities.convertDate(modelAvail.getRequest_date()));
-            time_interval.setText(Utilities.getFormattedTimeSlots(modelAvail.getTimeslot_start()) + " - " + Utilities.getFormattedTimeSlots(modelAvail.getTimeslot_end()));
-            contact_name.setText(modelAvail.getContact_name());
+            time_interval.setText(modelAvail.getTimeslot_name());
+            contact_name.setText(modal.getFirstName() +" "+modal.getLasttName());
             address.setText(modelAvail.getJob_customer_addresses_zip() + " - " + modelAvail.getJob_customer_addresses_city() + "," + modelAvail.getJob_customer_addresses_state());
             cusRatingbar.setStar((int) Float.parseFloat(modal.getRating()), true);
+            textJobSchedule.setText(modal.getFirstName() + " has " + (Integer.parseInt(modal.getJobSchedule()) + 1) + " job schduled for this time");
+            modal.setJobSchedule(Integer.parseInt(modal.getJobSchedule() +1)+"");
+            if (modal.getImage().length() > 0)
+                Picasso.with(this).load(modal.getImage())
+                        .into(circleImage);
         }
     }
     private void setWidgets(){
@@ -52,10 +62,32 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
         done = (TextView)findViewById(R.id.done);
         date = (TextView)findViewById(R.id.date);
         time_interval = (TextView)findViewById(R.id.time_interval);
+        textJobSchedule = (TextView)findViewById(R.id.textJobSchedule);
         textTitleName = (TextView)findViewById(R.id.textTitleName);
         contact_name = (TextView)findViewById(R.id.contact_name);
         address = (TextView)findViewById(R.id.address);
         cusRatingbar = (RatingBarView)findViewById(R.id.cusRatingbar);
+        circleImage = (fixtpro.com.fixtpro.views.CircularImageView)findViewById(R.id.circleImage);
+    }
+    private void changeStatusofJob(){
+        for (int i = 0; i < Singleton.getInstance().getAvailablejoblist().size() ; i++){
+            AvailableJobModal modallocal = Singleton.getInstance().getAvailablejoblist().get(i);
+            if (modallocal.getId().equals(modelAvail.getId())){
+                modallocal.setStatus("Scheduled");
+                modallocal.setTechnician_technicians_id(modal.getTechId());
+                modallocal.setTechnician_user_id(modal.getTech_User_id());
+                modallocal.setTechnician_fname(modal.getFirstName());
+                modallocal.setTechnician_lname(modal.getLasttName());
+                modallocal.setTechnician_pickup_jobs(modal.getJobSchedule() + 1);
+                modallocal.setTechnician_avg_rating(modal.getRating());
+
+                modallocal.setTechnician_profile_image(modal.getImage());
+
+                Singleton.getInstance().getSchedulejoblist().add(0, modallocal);
+                Singleton.getInstance().getAvailablejoblist().remove(i);
+                break;
+            }
+        }
     }
     private void setListeners(){
         textChange.setOnClickListener(new View.OnClickListener() {
@@ -67,8 +99,11 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                changeStatusofJob();
                 Intent intent = new Intent(ConfirmAssignTechActivity.this,HomeScreenNew.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("switch_tab","Scheduled");
                 startActivity(intent);
                 finish();
 //                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST",assignTechListener,ConfirmAssignTechActivity.this,"Assigning");

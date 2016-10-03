@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/grey_background"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/size_10_dp"
+            android:text="Fixd-Pro"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_18_sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editHour"
+            android:inputType="numberDecimal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/size_18_dp"
+            android:layout_marginLeft="@dimen/size_14_dp"
+            android:layout_marginRight="@dimen/size_14_dp"
+            android:background="@drawable/white_rectangewithblackline"
+            android:hint="Enter Hours"
+            android:padding="@dimen/size_10_dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_18_sp" />
+        <EditText
+            android:id="@+id/editDesc"
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:layout_marginBottom="@dimen/size_18_dp"
+            android:layout_marginLeft="@dimen/size_14_dp"
+            android:layout_marginRight="@dimen/size_14_dp"
+            android:background="@drawable/white_rectangewithblackline"
+            android:hint="Enter Description"
+            android:gravity="top"
+            android:padding="@dimen/size_10_dp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_18_sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@android:color/black"></View>
+
+        <TextView
+            android:id="@+id/txtOK"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:gravity="center"
+            android:padding="@dimen/size_10_dp"
+            android:text="OK"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/size_18_sp" />
+    </LinearLayout>
+</LinearLayout>

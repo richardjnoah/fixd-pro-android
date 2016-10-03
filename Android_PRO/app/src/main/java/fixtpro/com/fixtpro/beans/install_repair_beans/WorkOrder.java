@@ -11,6 +11,41 @@ public class WorkOrder implements Serializable {
     String tax = "";
     String total = "";
     String status = "";
+    String hourly_rate = "";
+    String is_claim = "0";
+    String warranty_fee = "0.0";
+    boolean is_covered = false ;
+    public String getIs_claim() {
+        return is_claim;
+    }
+
+    public String getWarranty_fee() {
+        return warranty_fee;
+    }
+
+    public void setWarranty_fee(String warranty_fee) {
+        this.warranty_fee = warranty_fee;
+    }
+
+    public boolean is_covered() {
+        return is_covered;
+    }
+
+    public void setIs_covered(boolean is_covered) {
+        this.is_covered = is_covered;
+    }
+
+    public void setIs_claim(String is_claim) {
+        this.is_claim = is_claim;
+    }
+
+    public String getHourly_rate() {
+        return hourly_rate;
+    }
+
+    public void setHourly_rate(String hourly_rate) {
+        this.hourly_rate = hourly_rate;
+    }
 
     public String getStatus() {
         return status;

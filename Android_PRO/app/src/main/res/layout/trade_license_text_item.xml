@@ -1,21 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <EditText
-        android:id="@+id/txtItem"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/whitebox_fill"
-        android:gravity="left"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_weight="1.4"
+            android:textColor="@color/orange_signin_back"
+            android:text="Pool/Spa"
+            android:padding="@dimen/size_12_dp"
+            android:layout_width="0dp"
+            android:textSize="@dimen/size_16_sp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:layout_weight="2"
+            android:id="@+id/txtItem"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/whitebox_fill"
+            android:gravity="left"
+            android:hint=""
+            android:imeOptions="actionNext"
+            android:padding="@dimen/size_14_dp"
+            android:singleLine="true"
+            android:textColor="@color/text_color_dark_grey"
+            android:textColorHint="@color/color_grey"
+            android:textCursorDrawable="@drawable/cursor_drawable"
+            android:textSize="@dimen/size_20_sp" />
 
-        android:imeOptions="actionNext"
-        android:padding="@dimen/size_14"
-        android:singleLine="true"
-        android:textColor="@color/color_grey"
-        android:textColorHint="@color/color_grey"
-        android:textCursorDrawable="@drawable/cursor_drawable"
-        android:textSize="@dimen/size_20sp" />
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"
