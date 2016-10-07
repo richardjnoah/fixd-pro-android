@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
-    tools:context="fixtpro.com.fixtpro.RatingDetailsActivity">
+    tools:context="fixdpro.com.fixdpro.RatingDetailsActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
-                <fixtpro.com.fixtpro.views.RatingBarView
+                <fixdpro.com.fixdpro.views.RatingBarView
                     android:id="@+id/custom_ratingbar"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -232,7 +232,7 @@
                     android:gravity="center"
                     android:orientation="horizontal">
 
-                    <fixtpro.com.fixtpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    <fixdpro.com.fixdpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/circleImage"
                         android:layout_width="@dimen/size_70_dp"
                         android:layout_height="@dimen/size_70_dp"
@@ -276,7 +276,7 @@
                             android:orientation="horizontal"
                             android:paddingLeft="@dimen/size_10_dp">
 
-                            <fixtpro.com.fixtpro.views.RatingBarView
+                            <fixdpro.com.fixdpro.views.RatingBarView
                                 android:id="@+id/customrating_tech"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

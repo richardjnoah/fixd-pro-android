@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
-    tools:context="fixtpro.com.fixtpro.AvailableJobListClickActivity">
+    tools:context="fixdpro.com.fixdpro.AvailableJobListClickActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -64,14 +64,14 @@
                     android:orientation="vertical">
 
                     <!-- Add Title and Image Here In Horizontal Scroll View -->
-                    <fixtpro.com.fixtpro.views.HorizontalListView
+                    <fixdpro.com.fixdpro.views.HorizontalListView
                         android:id="@+id/hlvImageList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center_horizontal"
                         android:minHeight="@dimen/size_120_dp"
-                        android:visibility="gone"></fixtpro.com.fixtpro.views.HorizontalListView>
+                        android:visibility="gone"></fixdpro.com.fixdpro.views.HorizontalListView>
 
                     <HorizontalScrollView
                         android:layout_width="wrap_content"
@@ -220,7 +220,7 @@
                             android:orientation="horizontal"
                             android:paddingLeft="@dimen/size_10_dp">
 
-                            <fixtpro.com.fixtpro.views.RatingBarView
+                            <fixdpro.com.fixdpro.views.RatingBarView
                                 android:id="@+id/custom_ratingbar_tech"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"

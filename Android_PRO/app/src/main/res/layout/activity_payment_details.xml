@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
-    tools:context="fixtpro.com.fixtpro.PaymentDetailsActivity">
+    tools:context="fixdpro.com.fixdpro.PaymentDetailsActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"

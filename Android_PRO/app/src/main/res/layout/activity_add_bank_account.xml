@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_blur"
-    tools:context="fixtpro.com.fixtpro.Login_Register_Activity">
+    tools:context="fixdpro.com.fixdpro.Login_Register_Activity">
    <!-- <RelativeLayout
 
         android:orientation="horizontal"

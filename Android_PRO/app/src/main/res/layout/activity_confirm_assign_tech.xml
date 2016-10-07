@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical"
-    tools:context="fixtpro.com.fixtpro.ConfirmationActivity">
+    tools:context="fixdpro.com.fixdpro.ConfirmationActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -134,7 +134,7 @@
         android:layout_marginTop="@dimen/size_32_dp"
         android:orientation="horizontal">
 
-        <fixtpro.com.fixtpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <fixdpro.com.fixdpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/circleImage"
             android:layout_width="@dimen/size_60_dp"
             android:layout_height="@dimen/size_60_dp"
@@ -164,7 +164,7 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <fixtpro.com.fixtpro.views.RatingBarView
+                <fixdpro.com.fixdpro.views.RatingBarView
                     android:id="@+id/cusRatingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

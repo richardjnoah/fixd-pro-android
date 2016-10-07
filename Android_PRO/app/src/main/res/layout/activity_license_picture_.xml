@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <fixtpro.com.fixtpro.views.CircularImageView
+                <fixdpro.com.fixdpro.views.CircularImageView
                     android:id="@+id/imgProfilePic"
                     android:layout_width="@dimen/size_120_dp"
                     android:layout_height="@dimen/size_120_dp"

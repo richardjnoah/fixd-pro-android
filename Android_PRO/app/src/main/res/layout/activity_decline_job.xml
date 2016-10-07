@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical"
-    tools:context="fixtpro.com.fixtpro.ContactUsActivity">
+    tools:context="fixdpro.com.fixdpro.ContactUsActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"

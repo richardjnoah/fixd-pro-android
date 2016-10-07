@@ -37,12 +37,17 @@
         </LinearLayout>
 
     </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/layout1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/toolbar"
+
         android:layout_marginLeft="@dimen/size_20_dp"
         android:layout_marginRight="@dimen/size_20_dp"
         android:layout_marginTop="@dimen/size_14_dp"
@@ -129,6 +134,27 @@
             android:textColorHint="@color/color_grey"
             android:textCursorDrawable="@drawable/cursor_drawable"
             android:textSize="@dimen/size_20_sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:background="@color/color_grey"></View>
+
+        <EditText
+            android:id="@+id/txtYearExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/whitebox_fill"
+            android:gravity="left"
+            android:hint="@string/year_exp"
+            android:imeOptions="actionNext"
+            android:padding="@dimen/size_14_dp"
+            android:singleLine="true"
+            android:textColor="@color/text_color_dark_grey"
+            android:textColorHint="@color/color_grey"
+            android:textCursorDrawable="@drawable/cursor_drawable"
+            android:textSize="@dimen/size_20_sp" />
 
     </LinearLayout>
 
@@ -137,7 +163,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout1"
-        android:layout_marginTop="@dimen/size_30_dp"
+        android:layout_marginTop="@dimen/size_20_dp"
         android:orientation="vertical">
 
         <CheckBox
@@ -201,7 +227,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_card"
-        android:layout_marginTop="@dimen/size_20_dp"
+        android:layout_marginTop="@dimen/size_15_dp"
         android:orientation="vertical">
 
         <ImageView
@@ -230,6 +256,7 @@
             android:src="@drawable/next6"
             android:visibility="invisible" />
 
+    </LinearLayout>
     </LinearLayout>
 
     <TextView

@@ -43,7 +43,7 @@
                 android:orientation="horizontal"
                 android:weightSum="2">
 
-                <fixtpro.com.fixtpro.views.RatingBarView
+                <fixdpro.com.fixdpro.views.RatingBarView
                     android:id="@+id/cusRatingbar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

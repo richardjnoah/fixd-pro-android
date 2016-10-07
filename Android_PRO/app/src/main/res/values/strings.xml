@@ -110,7 +110,7 @@
     <string name="nav_item_contactus">Contact Us</string>
     <string name="nav_item_logout">Logout</string>
 
-    <string name="google_api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>
+    <!--<string name="google_api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -120,7 +120,7 @@
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_my_jobs_search">MyJobsSearchActivity</string>
 
-    <string name="google_app_id">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>
+    <!--<string name="google_app_id">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
     <string name="cancel">Cancel</string>
     <string name="search">Search</string>
     <string name="searchresults">Search Jobs</string>
@@ -480,9 +480,6 @@
 
     <string name="dealerserviceagre">Dealer Service Agreement</string>
     <string name="termscondtiontextstr">Terms and Conditions</string>
-
-
-
 
 
 </resources>

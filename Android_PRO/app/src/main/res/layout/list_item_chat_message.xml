@@ -27,7 +27,7 @@
             android:textSize="@dimen/size_16_sp"
             tools:text="Test message" />
 
-        <fixtpro.com.fixtpro.views.MaskedImageView
+        <fixdpro.com.fixdpro.views.MaskedImageView
             android:id="@+id/image_message_attachment"
             android:layout_width="@dimen/size_160_dp"
             android:layout_height="@dimen/size_160_dp"

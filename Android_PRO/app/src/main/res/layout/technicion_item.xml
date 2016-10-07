@@ -13,7 +13,7 @@
         android:orientation="horizontal"
         android:padding="@dimen/size_8_dp">
 
-        <fixtpro.com.fixtpro.views.CircularImageView
+        <fixdpro.com.fixdpro.views.CircularImageView
             android:id="@+id/imgTech"
             android:layout_width="@dimen/size_60_dp"
             android:layout_height="@dimen/size_60_dp"

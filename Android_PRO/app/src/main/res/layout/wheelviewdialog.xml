@@ -13,10 +13,10 @@
         android:orientation="vertical"
         android:paddingTop="@dimen/size_10_dp">
 
-        <fixtpro.com.fixtpro.views.WheelView
+        <fixdpro.com.fixdpro.views.WheelView
             android:id="@+id/wheelView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></fixtpro.com.fixtpro.views.WheelView>
+            android:layout_height="wrap_content"></fixdpro.com.fixdpro.views.WheelView>
 
         <LinearLayout
             android:id="@+id/layout_check"

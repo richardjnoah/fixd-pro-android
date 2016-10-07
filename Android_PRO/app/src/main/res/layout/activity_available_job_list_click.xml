@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
-    tools:context="fixtpro.com.fixtpro.AvailableJobListClickActivity">
+    tools:context="fixdpro.com.fixdpro.AvailableJobListClickActivity">
 
     <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:local="http://schemas.android.com/apk/res-auto"
@@ -89,14 +89,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_22_sp" />
+                            android:textSize="@dimen/size_20_sp" />
 
                         <TextView
                             android:id="@+id/address"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_22_sp" />
+                            android:textSize="@dimen/size_18_sp" />
                     </LinearLayout>
 
                     <View
@@ -115,14 +115,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_22_sp" />
+                            android:textSize="@dimen/size_20_sp" />
 
                         <TextView
                             android:id="@+id/timeinterval"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_22_sp" />
+                            android:textSize="@dimen/size_18_sp" />
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -193,10 +193,10 @@
             android:layout_weight="1"
             android:background="@color/orange_signin_back"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="@dimen/size_8_dp"
             android:text="Pick up"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/size_22_sp" />
+            android:textSize="@dimen/size_20_sp" />
 
         <TextView
             android:id="@+id/txtDecline"
@@ -205,10 +205,10 @@
             android:layout_weight="1"
             android:background="@android:color/white"
             android:gravity="center"
-            android:padding="12dp"
+            android:padding="@dimen/size_8_dp"
             android:text="Decline"
             android:textColor="@color/orange_signin_back"
-            android:textSize="@dimen/size_22_sp" />
+            android:textSize="@dimen/size_20_sp" />
 
         <ImageView
             android:id="@+id/pickupimg"

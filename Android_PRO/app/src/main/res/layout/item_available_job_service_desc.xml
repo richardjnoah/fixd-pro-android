@@ -9,7 +9,6 @@
         android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_margin="@dimen/size_10_dp"
         android:orientation="vertical">
 
@@ -23,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:text="Repair:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -32,7 +31,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -44,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:text="Power Source:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -53,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -65,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="Brand:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -74,7 +73,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -86,7 +85,7 @@
                 android:layout_height="wrap_content"
                 android:text="Problem:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -97,7 +96,7 @@
                 android:maxLines="2"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
         <LinearLayout
             android:visibility="gone"
@@ -109,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:text="Problem:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -120,7 +119,7 @@
                 android:maxLines="2"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
         <LinearLayout
             android:visibility="invisible"
@@ -132,7 +131,7 @@
                 android:layout_height="wrap_content"
                 android:text="Problem:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -143,7 +142,7 @@
                 android:maxLines="2"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -157,7 +156,7 @@
                 android:layout_height="wrap_content"
                 android:text="Problem:"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp"
+                android:textSize="@dimen/size_20_sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -166,7 +165,7 @@
                 android:layout_height="wrap_content"
                 android:text="N/A"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
     </LinearLayout>

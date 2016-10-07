@@ -21,7 +21,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <fixtpro.com.fixtpro.views.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
+            <fixdpro.com.fixdpro.views.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/progress_view"
                 android:layout_width="@dimen/size_60_dp"
                 android:layout_height="@dimen/size_60_dp"

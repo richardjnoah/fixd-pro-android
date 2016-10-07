@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="fixtpro.com.fixtpro.PaymentDetailsActivity"
+    tools:context="fixdpro.com.fixdpro.PaymentDetailsActivity"
     tools:showIn="@layout/activity_payment_details">
 
     <ScrollView

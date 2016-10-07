@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_blur"
-    tools:context="fixtpro.com.fixtpro.Driver_Info_Activity">
+    tools:context="fixdpro.com.fixdpro.Driver_Info_Activity">
 
    <!-- <RelativeLayout
 

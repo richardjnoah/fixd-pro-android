@@ -47,7 +47,7 @@
             android:theme="@style/AppTheme.BlueAccent"/>
     </RelativeLayout>
 
-    <fixtpro.com.fixtpro.views.StickyListHeadersListView
+    <fixdpro.com.fixdpro.views.StickyListHeadersListView
         android:layout_below="@+id/layoutToolbar"
         android:id="@+id/list_chat_messages"
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
         <!--android:id="@+id/divider_chat_attachments"-->
         <!--style="@style/HorizontalDividerStyle" />-->
 
-        <fixtpro.com.fixtpro.views.AttachmentPreviewAdapterView
+        <fixdpro.com.fixdpro.views.AttachmentPreviewAdapterView
             android:id="@+id/adapter_view_attachment_preview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

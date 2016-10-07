@@ -17,7 +17,7 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <fixtpro.com.fixtpro.views.CircularImageView
+            <fixdpro.com.fixdpro.views.CircularImageView
                 android:id="@+id/img_Pic"
                 android:layout_width="@dimen/size_60_dp"
                 android:layout_height="@dimen/size_60_dp"
@@ -41,7 +41,7 @@
                 android:textColor="@color/register_button_text"
                 android:textSize="@dimen/size_20_sp" />
 
-            <fixtpro.com.fixtpro.views.RatingBarView
+            <fixdpro.com.fixdpro.views.RatingBarView
                 android:id="@+id/custom_ratingbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

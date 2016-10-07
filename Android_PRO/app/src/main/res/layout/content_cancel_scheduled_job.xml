@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fixtpro.com.fixtpro.CancelScheduledJob"
+    tools:context="fixdpro.com.fixdpro.CancelScheduledJob"
     tools:showIn="@layout/activity_cancel_scheduled_job">
 
 </RelativeLayout>

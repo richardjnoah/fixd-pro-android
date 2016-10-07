@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context="fixtpro.com.fixtpro.BeatActivity">
+    tools:context="fixdpro.com.fixdpro.BeatActivity">
     <include layout="@layout/content_beat" />
 
 </LinearLayout>

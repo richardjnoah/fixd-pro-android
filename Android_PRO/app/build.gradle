@@ -6,11 +6,11 @@ android {
     useLibrary 'org.apache.http.legacy'
 
     defaultConfig {
-        applicationId "fixtpro.com.fixtpro"
+        applicationId "fixdpro.com.fixdpro"
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.2"
+        versionName "1.0.3"
     }
     buildTypes {
         release {
@@ -40,13 +40,14 @@ dependencies {
     compile 'com.android.support:leanback-v17:23.4.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.android.support:design:23.4.0'
-    compile 'com.google.android.gms:play-services-maps:8.4.0'
+
     compile 'com.github.nicolasjafelle:paginglistview:1.2'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'io.card:android-sdk:5.3.0'
-    compile 'com.google.android.gms:play-services-location:8.4.0'
-    compile 'com.google.android.gms:play-services-gcm:8.4.0'
+    compile 'com.google.android.gms:play-services-gcm:9.6.0'
+    compile 'com.google.android.gms:play-services-maps:9.6.0'
+    compile 'com.google.android.gms:play-services-location:9.6.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.5.0'
@@ -54,4 +55,8 @@ dependencies {
     compile 'com.amazonaws:aws-android-sdk-sns:2.2.+'
     compile 'me.leolin:ShortcutBadger:1.1.6@aar'
     compile project(':photo-crop-library')
+    compile 'com.google.firebase:firebase-core:9.6.0'
+    compile 'com.google.firebase:firebase-messaging:9.6.0'
 }
+// Add to the bottom of the file
+apply plugin: 'com.google.gms.google-services'

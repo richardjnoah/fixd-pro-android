@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
     android:padding="@dimen/size_24_dp"
-    tools:context="fixtpro.com.fixtpro.AvailableJobListClickActivity">
+    tools:context="fixdpro.com.fixdpro.AvailableJobListClickActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -74,11 +74,11 @@
                     android:layout_above="@+id/bottom_layout"
                     android:layout_below="@+id/header_layout">
 
-                    <fixtpro.com.fixtpro.views.InkView
+                    <fixdpro.com.fixdpro.views.InkView
                         android:id="@+id/signatureView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/white"></fixtpro.com.fixtpro.views.InkView>
+                        android:background="@android:color/white"></fixdpro.com.fixdpro.views.InkView>
 
                     <View
                         android:layout_width="match_parent"

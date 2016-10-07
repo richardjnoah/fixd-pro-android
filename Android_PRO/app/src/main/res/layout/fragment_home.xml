@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_grey_blur"
         android:orientation="vertical"
-        tools:context="fixtpro.com.fixtpro.fragment.HomeFragment">
+        tools:context="fixdpro.com.fixdpro.fragment.HomeFragment">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapview"

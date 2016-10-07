@@ -12,7 +12,7 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <fixtpro.com.fixtpro.views.RatingBarView
+        <fixdpro.com.fixdpro.views.RatingBarView
             android:id="@+id/custom_ratingbar"
             android:layout_width="0dp"
             android:layout_weight="1.6"
