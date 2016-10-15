@@ -35,7 +35,7 @@
                 android:gravity="center"
                 android:text="@string/assigntech"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 

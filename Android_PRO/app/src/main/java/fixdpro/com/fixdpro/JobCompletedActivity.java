@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -57,11 +58,14 @@ public class JobCompletedActivity extends AppCompatActivity {
         if (getIntent() != null){
             availableJobModal = (AvailableJobModal)getIntent().getSerializableExtra("CompletedJobObject");
             jobapplianceslist = availableJobModal.getJob_appliances_arrlist();
+            Log.e(TAG,"jobapplianceslist+++++++++++++"+jobapplianceslist.size());
+            Log.e(TAG,"jobapplianceslist+++++++++++++"+jobapplianceslist.toString());
 //            horizontalScrollApplianceAdapter = new HorizontalScrollApplianceAdapter(this,jobapplianceslist);
 //            mHlvCustomList.setAdapter(horizontalScrollApplianceAdapter);
             setValues();
             appliance_layout.removeAllViews();
-            getBitamap();
+//            getBitamap();
+            showLayout();
         }
     }
     private void showLayout(){
@@ -73,7 +77,15 @@ public class JobCompletedActivity extends AppCompatActivity {
             ImageView imageView = (ImageView)addView.findViewById(R.id.imgType);
             TextView txtTypeTitle = (TextView)addView.findViewById(R.id.txtTypeTitle);
             txtTypeTitle.setText(jobapplianceslist.get(i).getAppliance_type_name());
-            imageView.setImageBitmap(arrayList.get(i));
+            if (Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()) != -1){
+                imageView.setImageResource(Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()));
+            }else {
+                if (jobapplianceslist.get(count).getAppliance_type_image_original().length() > 0){
+                    Picasso.with(context).load(jobapplianceslist.get(i).getAppliance_type_image_original()).into(imageView);
+                }
+            }
+
+
             appliance_layout.addView(addView);
         }
     }

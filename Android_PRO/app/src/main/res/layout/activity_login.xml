@@ -90,6 +90,7 @@
                     android:background="@android:color/transparent"
                     android:hint="Phone / Email"
                     android:singleLine="true"
+                    android:inputType="textEmailAddress"
                     android:imeOptions="actionNext"
                     android:textColor="@android:color/white"
                     android:textColorHint="@android:color/white"

@@ -321,7 +321,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 title = "Job Available!";
                 // define alert...
             }
-            if (modal.getType().equals("pjt")) {
+            if (modal.getType().equals("pjt") || modal.getType().equals("pjp")) {
                 title = "Job Picked!";
                 // define alert...
             }
@@ -331,6 +331,10 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
             if (modal.getType().equals("pr")) {
                 title = "Pro has Arrived!";
+                // define alert...
+            }
+            if (modal.getType().equals("cja")) {
+                title = "Job Appointment Confirmation!";
                 // define alert...
             }
             if(modal.getType().equals("cn")){
@@ -407,7 +411,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 responseAsync.execute(getRequestParams(modal.getJobId(),"read_open"));
             }
         }
-        if (modal.getType().equals("pjp") ||modal.getType().equals("pjt")) {
+        if (modal.getType().equals("pjp") ||modal.getType().equals("pjt") ||modal.getType().equals("cja")) {
             AvailableJobModal job_detail = getJobforId(modal.getJobId());
             if (job_detail != null) {
                 ScheduledListDetailsFragment fragment = new ScheduledListDetailsFragment();
@@ -468,12 +472,12 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
                     if (jobModal != null){
                         if (modal.getType().equals("ja")){
-                            Singleton.getInstance().getAvailablejoblist().add(0, jobModal);
+//                            Singleton.getInstance().getAvailablejoblist().add(0, jobModal);
                             Intent i = new Intent(HomeScreenNew.this, AvailableJobListClickActivity.class);
                             i.putExtra("JOB_DETAIL", jobModal);
                             startActivity(i);
                         }else {
-                            Singleton.getInstance().getSchedulejoblist().add(0, jobModal);
+//                            Singleton.getInstance().getSchedulejoblist().add(0, jobModal);
                             ScheduledListDetailsFragment fragment = new ScheduledListDetailsFragment();
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("modal", jobModal);
@@ -726,6 +730,13 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                             mod.setAppliance_type_image_original(image_obj.getString("original"));
 
                                         }
+                                    }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
                                     }
                                 }
 

@@ -221,7 +221,7 @@ public class NotificationListFragment extends Fragment {
                         GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, getActivity(), "Loading");
                         responseAsync.execute(getRequestParams(modal.getJobId()));
                     }
-                } else if (value.equals("pjt")) {//pickup job tech
+                } else if (value.equals("pjt") ||value.equals("cja") ) {//pickup job tech
                     modal.setJobId(listModal.getData().get("j").getValue());
                     AvailableJobModal job_detail = getJobforId(modal.getJobId());
                     if (job_detail != null) {

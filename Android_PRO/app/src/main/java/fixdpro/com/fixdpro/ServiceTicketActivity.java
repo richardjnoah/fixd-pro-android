@@ -2,6 +2,7 @@ package fixdpro.com.fixdpro;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
@@ -41,7 +42,7 @@ public class ServiceTicketActivity extends AppCompatActivity {
     private Typeface fontfamily,italicfontfamily;
     ArrayList<AvailableJobModal> completedjoblist  = new ArrayList<AvailableJobModal>();
     String jobId = "";
-    TextView txtToolbar,txtTotalCost,txtName,txtAddresss,txtSubTotalDoller,txtJobId,txtTaxDoller,txtBack;
+    TextView txtToolbar,txtTotalCost,txtName,txtAddresss,txtSubTotalDoller,txtJobId,txtTaxDoller,txtBack,txtWarrenty,txtWarrentyDoller,txtTotal,txtTotalDoller;
 //    TextView txtCustomerComplaint,txtDisplaingError,txtDescriptionOfWork,txtDescriptionTExt,txtRepairType,txtRepairTypeText,txtPartsType,txtHomeandConnectionText,txtPartsDollerTxxt,txtApplianceName;
 
     String nextComplete = "null";
@@ -77,9 +78,20 @@ public class ServiceTicketActivity extends AppCompatActivity {
             txtTotalCost.setText("$"+availableJobModal.getJob_line_items_pro_cut());
             txtName.setText(availableJobModal.getContact_name());
             txtJobId.setText("Job#"+jobId  );
-            txtAddresss.setText(availableJobModal.getJob_customer_addresses_address());
+            txtSubTotalDoller.setText("$"+availableJobModal.getJob_line_items_sub_total());
+            txtWarrentyDoller.setText("$"+availableJobModal.getJob_line_items_diagnostic_fee());
+            txtTaxDoller.setText("$"+availableJobModal.getJob_line_items_tax());
+            txtTotalDoller.setText("$"+availableJobModal.getJob_line_items_pro_cut());
+            txtAddresss.setText(availableJobModal.getJob_customer_addresses_address() + " " + availableJobModal.getJob_customer_addresses_address_2());
             GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerCompleted, this, "Loading");
             responseAsyncCompleted.execute(getRequestParams(jobId));
+            if (availableJobModal.getIs_claim().equals("1") && availableJobModal.getJob_line_items_is_covered().equals("1")){
+                txtWarrenty.setText("Warrenty");
+                txtSubTotalDoller.setPaintFlags(txtSubTotalDoller.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+            }
+            if (availableJobModal.getJob_line_items_diagnostic_fee().equals("0") || availableJobModal.getJob_line_items_diagnostic_fee().equals("0.0")){
+                txtWarrentyDoller.setText("$50.00");
+            }
         }
 
     }
@@ -152,19 +164,22 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
                                         if (!jsonObject.isNull("job_appliance_repair_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_repair_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                            if (!inner_object_repair_types.isNull("calculate_by")){
-                                                if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
-                                                    installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
-                                                    if (!inner_object_repair_types.isNull("fixed_cost")){
-                                                        installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                            if (!jsonObjectRepairType.isNull("maintain_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
                                                     }
                                                 }
                                             }
+
 
                                         }
 
@@ -182,19 +197,22 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
                                         if (!jsonObject.isNull("job_appliance_install_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_install_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                            if (!inner_object_repair_types.isNull("calculate_by")){
-                                                if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
-                                                    installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
-                                                    if (!inner_object_repair_types.isNull("fixed_cost")){
-                                                        installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                            if (!jsonObjectRepairType.isNull("maintain_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("maintain_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
                                                     }
                                                 }
                                             }
+
 
 
                                         }
@@ -215,20 +233,23 @@ public class ServiceTicketActivity extends AppCompatActivity {
                                         // for maintain
                                         if (!jsonObject.isNull("job_appliance_maintain_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_maintain_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("maintain_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                            if (!jsonObjectRepairType.isNull("maintain_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("maintain_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
 //                                            installOrRepairModal.getRepairType().setIsCompleted(true);
-                                            if (!inner_object_repair_types.isNull("calculate_by")){
-                                                if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
-                                                    installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
-                                                    if (!inner_object_repair_types.isNull("fixed_cost")){
-                                                        installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
                                                     }
                                                 }
                                             }
+
 
                                         }
                                         if (!jsonObject.isNull("job_appliance_maintain_info")){
@@ -341,78 +362,27 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
     }
     private void setWidgets() {
-//        txttop = (TextView)findViewById(R.id.txttop);
-//        txtCustomer = (TextView)findViewById(R.id.txtCustomer);
-//        txtCustomerSet = (TextView)findViewById(R.id.txtCustomerSet);
-//        txtJobName = (TextView)findViewById(R.id.txtJobName);
-//        txtJobNameSet = (TextView)findViewById(R.id.txtJobNameSet);
-//        txtType = (TextView)findViewById(R.id.txtType);
-//        txtTypeSet = (TextView)findViewById(R.id.txtTypeSet);
-//        txtUnit1 = (TextView)findViewById(R.id.txtUnit1);
-//        txtUnit1Set = (TextView)findViewById(R.id.txtUnit1Set);
-//        txtcustomerCompaint = (TextView)findViewById(R.id.txtcustomerCompaint);
-//        txtcustomerCompaintSet = (TextView)findViewById(R.id.txtcustomerCompaintSet);
-//
-//        txtGarInstall = (TextView)findViewById(R.id.txtGarInstall);
-//        txtGarDoller = (TextView)findViewById(R.id.txtGarDoller);
-//        txtTax = (TextView)findViewById(R.id.txtTax);
-//        txtTexDoller = (TextView)findViewById(R.id.txtTexDoller);
-//        txtTotalDoller = (TextView)findViewById(R.id.txtTotalDoller);
-//        txtContractor = (TextView)findViewById(R.id.txtContractor);
-//        txtContractoeDoller = (TextView)findViewById(R.id.txtContractoeDoller);
-//        layoutAppliances = (LinearLayout)findViewById(R.id.layout4);
-//        layoutPartsUsed = (LinearLayout)findViewById(R.id.layout7);
+
 //
         txtTotalCost = (TextView)findViewById(R.id.txtTotalCost);
         txtSubTotalDoller = (TextView)findViewById(R.id.txtSubTotalDoller);
         txtTaxDoller = (TextView)findViewById(R.id.txtTaxDoller);
+
+        txtWarrenty = (TextView)findViewById(R.id.txtWarrenty);
+        txtWarrentyDoller = (TextView)findViewById(R.id.txtWarrentyDoller);
+        txtTotal = (TextView)findViewById(R.id.txtTotal);
+        txtTotalDoller = (TextView)findViewById(R.id.txtTotalDoller);
         txtBack = (TextView)findViewById(R.id.txtBack);
         txtJobId = (TextView)findViewById(R.id.txtJobId);
         txtName = (TextView)findViewById(R.id.txtName);
         txtAddresss = (TextView)findViewById(R.id.txtAddresss);
         layout_workorder = (LinearLayout)findViewById(R.id.layout_workorder);
-//        layout_workorder.setVisibility(View.GONE);
-//
-//        layout_appliances = (LinearLayout)findViewById(R.id.layout_appliances);
-//
-//        imgArrow = (ImageView)findViewById(R.id.imgArrow);
-//
-//        txtCustomerComplaint = (TextView)findViewById(R.id.txtCustomerComplaint);
-//        txtDisplaingError = (TextView)findViewById(R.id.txtDisplaingError);
-//        txtDescriptionOfWork = (TextView)findViewById(R.id.txtDescriptionOfWork);
-//        txtDescriptionTExt = (TextView)findViewById(R.id.txtDescriptionTExt);
-//        txtRepairType = (TextView)findViewById(R.id.txtRepairType);
-//        txtRepairTypeText = (TextView)findViewById(R.id.txtRepairTypeText);
-//        txtPartsType = (TextView)findViewById(R.id.txtPartsType);
-//        txtHomeandConnectionText = (TextView)findViewById(R.id.txtHomeandConnectionText);
-//        txtPartsDollerTxxt = (TextView)findViewById(R.id.txtPartsDollerTxxt);
     }
     private void setTypeface() {
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
         italicfontfamily = Typeface.createFromAsset(getAssets(),"HelveticaNeueLTStd-It.otf");
 
         txtToolbar.setTypeface(fontfamily);
-//        txttop.setTypeface(fontfamily);
-//        txtCustomer.setTypeface(fontfamily);
-//        txtCustomerSet.setTypeface(fontfamily);
-//        txtJobName.setTypeface(fontfamily);
-//        txtJobNameSet.setTypeface(fontfamily);
-//        txtType.setTypeface(fontfamily);
-//        txtTypeSet.setTypeface(fontfamily);
-//
-//
-//        txtcustomerCompaint.setTypeface(fontfamily);
-//        txtcustomerCompaintSet.setTypeface(fontfamily);
-//
-//        txtGarInstall.setTypeface(fontfamily);
-//        txtGarDoller.setTypeface(fontfamily);
-//
-//        txtTax.setTypeface(fontfamily);
-//        txtTexDoller.setTypeface(fontfamily);
-//        txtTotalDoller.setTypeface(fontfamily);
-//
-//        txtContractor.setTypeface(italicfontfamily);
-//        txtContractoeDoller.setTypeface(italicfontfamily);
     }
 
     private HashMap<String,String> getRequestParams(String Jobid){
@@ -452,44 +422,6 @@ public class ServiceTicketActivity extends AppCompatActivity {
         }
     };
 
-    private void initView(View view){
-//                txttop = (TextView)view.findViewById(R.id.txttop);
-//        txtCustomer = (TextView)view.findViewById(R.id.txtCustomer);
-//        txtCustomerSet = (TextView)view.findViewById(R.id.txtCustomerSet);
-//        txtJobName = (TextView)view.findViewById(R.id.txtJobName);
-//        txtJobNameSet = (TextView)view.findViewById(R.id.txtJobNameSet);
-//        txtType = (TextView)view.findViewById(R.id.txtType);
-//        txtTypeSet = (TextView)view.findViewById(R.id.txtTypeSet);
-//        txtUnit1 = (TextView)view.findViewById(R.id.txtUnit1);
-//        txtUnit1Set = (TextView)view.findViewById(R.id.txtUnit1Set);
-//        txtcustomerCompaint = (TextView)view.findViewById(R.id.txtcustomerCompaint);
-//        txtcustomerCompaintSet = (TextView)view.findViewById(R.id.txtcustomerCompaintSet);
-
-//        txtGarInstall = (TextView)view.findViewById(R.id.txtGarInstall);
-//        txtGarDoller = (TextView)view.findViewById(R.id.txtGarDoller);
-//        txtTax = (TextView)view.findViewById(R.id.txtTax);
-//        txtTexDoller = (TextView)view.findViewById(R.id.txtTexDoller);
-//        txtTotalDoller = (TextView)view.findViewById(R.id.txtTotalDoller);
-//        txtContractor = (TextView)view.findViewById(R.id.txtContractor);
-//        txtContractoeDoller = (TextView)view.findViewById(R.id.txtContractoeDoller);
-//        layoutAppliances = (LinearLayout)view.findViewById(R.id.layout4);
-//        layoutPartsUsed = (LinearLayout)view.findViewById(R.id.layout7);
-
-//        layout_appliances = (LinearLayout)view.findViewById(R.id.layout_appliances);
-//        layout_desc_container = (LinearLayout)view.findViewById(R.id.layout_desc_container);
-//        txtApplianceName = (TextView)view.findViewById(R.id.txtApplianceName);
-//        imgArrow = (ImageView)view.findViewById(R.id.imgArrow);
-//
-//        txtCustomerComplaint = (TextView)view.findViewById(R.id.txtCustomerComplaint);
-//        txtDisplaingError = (TextView)view.findViewById(R.id.txtDisplaingError);
-//        txtDescriptionOfWork = (TextView)view.findViewById(R.id.txtDescriptionOfWork);
-//        txtDescriptionTExt = (TextView)view.findViewById(R.id.txtDescriptionTExt);
-//        txtRepairType = (TextView)view.findViewById(R.id.txtRepairType);
-//        txtRepairTypeText = (TextView)view.findViewById(R.id.txtRepairTypeText);
-//        txtPartsType = (TextView)view.findViewById(R.id.txtPartsType);
-//        txtHomeandConnectionText = (TextView)view.findViewById(R.id.txtHomeandConnectionText);
-//        txtPartsDollerTxxt = (TextView)view.findViewById(R.id.txtPartsDollerTxxt);
-    }
     private void initLayout(){
         layout_workorder.removeAllViews();
         float tax =0;
@@ -562,7 +494,7 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
             ArrayList<Parts> partsArrayList = jobapplianceslist.get(i).getInstallOrRepairModal().getPartsContainer().getPartsArrayList();
             for (int j = 0 ; j < partsArrayList.size() ; j++){
-                txtHomeandConnectionText.setText(partsArrayList.get(i).getNumber() +"\n");
+                txtHomeandConnectionText.setText(partsArrayList.get(i).getDescription() +"\n");
                 txtPartsDollerTxxt.setText("$"+partsArrayList.get(i).getCost() +"\n");
             }
             subtotal = subtotal +Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getSub_total());
@@ -570,8 +502,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
             layout_workorder.addView(view);
         }
-        txtSubTotalDoller.setText("$"+subtotal);
-        txtTaxDoller.setText("$"+tax);
+//        txtSubTotalDoller.setText("$"+subtotal);
+//        txtTaxDoller.setText("$"+tax);
     }
     private  void setValues(){
 

@@ -348,4 +348,13 @@
         </LinearLayout>
     </ScrollView>
 
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:textSize="@dimen/size_16sp"
+        android:textColor="@color/white"
+        android:id="@+id/txtVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </RelativeLayout>

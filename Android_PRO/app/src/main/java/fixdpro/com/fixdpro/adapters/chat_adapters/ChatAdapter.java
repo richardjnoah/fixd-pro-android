@@ -13,19 +13,21 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-
 import com.quickblox.chat.model.QBAttachment;
 import com.quickblox.chat.model.QBChatMessage;
 import com.quickblox.users.model.QBUser;
+
 import java.util.Collection;
 import java.util.List;
 
 import fixdpro.com.fixdpro.AttachmentImageActivity;
 import fixdpro.com.fixdpro.R;
+import fixdpro.com.fixdpro.utilites.ChatSingleton;
 import fixdpro.com.fixdpro.utilites.chat_utils.Consts;
 import fixdpro.com.fixdpro.utilites.chat_utils.ResourceUtils;
 import fixdpro.com.fixdpro.utilites.chat_utils.TimeUtils;
@@ -203,8 +205,10 @@ public class ChatAdapter extends BaseListAdapter<QBChatMessage> implements Stick
 
     private void setMessageAuthor(ViewHolder holder, QBChatMessage chatMessage) {
         if (isIncoming(chatMessage)) {
+
             QBUser sender = QbUsersHolder.getInstance().getUserById(chatMessage.getSenderId());
-            holder.messageAuthorTextView.setText(sender.getFullName());
+            holder.messageAuthorTextView.setText(ChatSingleton.getInstance().getINameFromDialogId(chatMessage.getDialogId(), chatMessage.getSenderId() + ""));
+//            holder.messageAuthorTextView.setText(sender.getFullName());
             holder.messageAuthorTextView.setVisibility(View.VISIBLE);
 
             if (hasAttachments(chatMessage)) {

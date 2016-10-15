@@ -219,6 +219,7 @@ public class ChatUserFragment extends Fragment {
             public void onSuccess(ArrayList<QBDialog> dialogs, Bundle bundle) {
                 if (progressDialog != null && progressDialog.isShowing())
                     progressDialog.dismiss();
+                ChatSingleton.getInstance().dataSourceUsers.clear();
                 ChatSingleton.getInstance().dataSourceUsers.addAll(dialogs);
                 adapters.notifyDataSetChanged();
                 handleIfnotificationClick();

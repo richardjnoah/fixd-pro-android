@@ -6,6 +6,7 @@ package fixdpro.com.fixdpro.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -33,7 +34,7 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
     private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
     LinearLayout home, myjobs, payments, message, myratings, settings, notifications, contactus, logout;
-    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title, message_title, notifications_title,txtNormalNotiCount,txtChatNotiCount;
+    TextView home_title, myjobs_title, payments_title, myratings_title, settings_title, contactus_title, logout_title, message_title, notifications_title,txtNormalNotiCount,txtChatNotiCount, txtVersion;
     private FragmentDrawerListener drawerListener;
     View containerView;
     SharedPreferences _prefs = null;
@@ -80,6 +81,7 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         settings_title = (TextView) layout.findViewById(R.id.settings_title);
         notifications_title = (TextView) layout.findViewById(R.id.notifications_title);
         txtChatNotiCount = (TextView) layout.findViewById(R.id.txtChatNotiCount);
+        txtVersion = (TextView) layout.findViewById(R.id.txtVersion);
         txtNormalNotiCount = (TextView) layout.findViewById(R.id.txtNormalNotiCount);
         contactus_title = (TextView) layout.findViewById(R.id.contactus_title);
         logout_title = (TextView) layout.findViewById(R.id.logout_title);
@@ -107,6 +109,14 @@ public class FragmentDrawer1 extends Fragment implements View.OnClickListener {
         logout.setOnClickListener(this);
 
         logout.setVisibility(View.GONE);
+
+        try {
+            int versionCode = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionCode;
+            String versionName = getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName;
+            txtVersion.setText("Version "+versionCode +"("+ versionName+")");
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
 
         return layout;
     }

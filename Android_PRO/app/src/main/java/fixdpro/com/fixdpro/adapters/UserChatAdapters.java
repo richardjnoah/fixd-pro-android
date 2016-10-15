@@ -3,8 +3,10 @@ package fixdpro.com.fixdpro.adapters;
 /**
  * Created by sahil on 28-04-2016.
  */
+
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +16,8 @@ import android.widget.TextView;
 
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.chat.model.QBDialogType;
-
 import com.quickblox.users.model.QBUser;
 import com.squareup.picasso.Picasso;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,17 +32,21 @@ import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.utilites.ChatService;
+import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class UserChatAdapters extends BaseAdapter {
     private List<QBDialog> dataSource;
     private LayoutInflater inflater;
     private Context context = null ;
-
+    String QB_LOGIN = null ;
+    SharedPreferences _prefs = null ;
     public UserChatAdapters(ArrayList<QBDialog> dataSource, Activity ctx) {
         this.dataSource = dataSource;
         this.inflater = LayoutInflater.from(ctx);
         context = ctx;
+        _prefs = Utilities.getSharedPreferences(context);
+        QB_LOGIN = _prefs.getString(Preferences.QB_ACCOUNT_ID,"");
     }
 
     public List<QBDialog> getDataSource() {
@@ -115,12 +119,18 @@ public class UserChatAdapters extends BaseAdapter {
             while (iter.hasNext()) {
                 String key = iter.next();
                 try {
-                    Object value = jsonObject.get(key);
-                    JSONObject object = new JSONObject(value.toString());
-                    holder.groupType.setText(object.getString("name"));
-                    if (!object.getString("image").equals("null"))
-                    Picasso.with(context).load(object.getString("image"))
-                            .into(holder.imgUser);
+                    if (key.equals(QB_LOGIN) || key.equals("job_id")){
+                        continue;
+
+                    }
+                    else {
+                        Object value = jsonObject.get(key);
+                        JSONObject object = new JSONObject(value.toString());
+                        holder.groupType.setText(object.getString("name"));
+                        if (!object.getString("image").equals("null"))
+                            Picasso.with(context).load(object.getString("image"))
+                                    .into(holder.imgUser);
+                    }
                     break;
                 } catch (JSONException e) {
                     // Something went wrong!

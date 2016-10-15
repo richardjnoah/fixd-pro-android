@@ -10,7 +10,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.3"
+        versionName "1.0.10"
     }
     buildTypes {
         release {
@@ -57,6 +57,10 @@ dependencies {
     compile project(':photo-crop-library')
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile 'com.google.firebase:firebase-messaging:9.6.0'
+
+    // Existing dependencies may go here
+    compile 'com.google.code.gson:gson:2.1'
+    compile 'com.mindscapehq.android:raygun4android:2.0.0'
 }
 // Add to the bottom of the file
 apply plugin: 'com.google.gms.google-services'

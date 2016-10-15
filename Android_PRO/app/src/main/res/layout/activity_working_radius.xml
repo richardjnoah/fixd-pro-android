@@ -56,7 +56,7 @@
                 android:singleLine="true"
                 android:text="@string/workingradius"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_24_sp" />
 
             <TextView
                 android:id="@+id/txthowfar"
@@ -103,7 +103,7 @@
                 android:paddingTop="@dimen/size_5_dp"
                 android:text="Miles"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_24_sp" />
         </LinearLayout>
         <!--MapView Layout-->
         <LinearLayout

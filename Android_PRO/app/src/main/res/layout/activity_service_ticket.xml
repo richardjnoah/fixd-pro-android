@@ -47,7 +47,7 @@
         android:padding="@dimen/size_5_dp"
         android:text="Back"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/size_22_sp" />
+        android:textSize="@dimen/size_18_sp" />
 
     <TextView
         android:id="@+id/txtTotalCost"
@@ -69,7 +69,7 @@
         android:padding="@dimen/size_5_dp"
         android:text="Jatinder Arora"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/size_24_sp" />
+        android:textSize="@dimen/size_22_sp" />
 
     <TextView
         android:id="@+id/txtAddresss"
@@ -125,7 +125,7 @@
                 android:gravity="center"
                 android:text="Air Conditionar Repair"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_24_sp" />
+                android:textSize="@dimen/size_20_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -175,7 +175,38 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/scroll"
                 android:background="@android:color/white"></View>
+            <LinearLayout
+                android:id="@+id/layoutWarrenty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/txtWarrenty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="Warrenty"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtWarrentyDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="$ 75.00"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+            </LinearLayout>
             <LinearLayout
                 android:id="@+id/subTotal"
                 android:layout_width="match_parent"
@@ -203,7 +234,7 @@
                     android:layout_weight="1.4"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="$ 75.00"
+                    android:text=""
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_18_sp" />
 
@@ -236,10 +267,50 @@
                     android:layout_weight="1.4"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="$ 75.00"
+                    android:text=""
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_18_sp" />
             </LinearLayout>
+            <View
+                android:layout_marginLeft="@dimen/size_57_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/scroll"
+                android:background="@android:color/white"></View>
+            <LinearLayout
+                android:id="@+id/layoutTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subTotal"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/total"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_21_sp" />
+
+                <TextView
+                    android:id="@+id/txtTotalDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

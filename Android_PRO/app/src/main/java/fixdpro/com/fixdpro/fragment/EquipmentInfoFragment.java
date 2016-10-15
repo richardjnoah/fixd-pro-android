@@ -2,6 +2,7 @@ package fixdpro.com.fixdpro.fragment;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentUris;
 import android.content.Context;
@@ -25,6 +26,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +48,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.FixdProApplication;
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
@@ -60,6 +63,10 @@ import fixdpro.com.fixdpro.utilites.GetApiResponseAsyncMutipart;
 import fixdpro.com.fixdpro.utilites.MultipartUtility;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
+import fixdpro.com.fixdpro.utilites.chat_utils.ImageUtils;
+import fixdpro.com.fixdpro.utilites.chat_utils.SchemeType;
+import fixdpro.com.fixdpro.utilites.chat_utils.StorageUtils;
+import fixdpro.com.fixdpro.utilites.image_compressor.SiliCompressor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -102,6 +109,8 @@ public class EquipmentInfoFragment extends Fragment {
     BrandDialogAdapter mAdp;
     ArrayList<Brands> arrayListBrands = BrandNamesSingleton.getInstance().getBrands();
     private static final int REQUEST_READ_STORAGE = 111;
+    private static final String CAMERA_FILE_NAME_PREFIX = "FIXD_";
+    File photoFile ;
     public EquipmentInfoFragment() {
         // Required empty public constructor
     }
@@ -217,6 +226,7 @@ public class EquipmentInfoFragment extends Fragment {
 //        brands1.setBrand_name("Other Brand");
 //        arrayListBrands.add(brands1);
         dialog1 = new Dialog(_context);
+        dialog1 = new Dialog(_context);
         dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog1.setContentView(R.layout.layout_tellus_more);
         dialog1.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -296,20 +306,25 @@ public class EquipmentInfoFragment extends Fragment {
     }
 
     public void submitPost() {
-//        brand =edit_Brand.getText().toString().trim();
+        brand =edit_Brand.getText().toString().trim();
         modal_number = editMOdalNum.getText().toString().trim();
         serial_number = editSerialNum.getText().toString().trim();
         description = editDescription.getText().toString().trim();
         if (brand.length() == 0) {
-            showAlertDialog("Fixd-Pro", "please enter unit manufacturer");
+            showAlertDialog("Fixd-Pro", "please select brand.");
         } else if (modal_number.length() == 0) {
             showAlertDialog("Fixd-Pro", "please enter modal number");
         } else if (serial_number.length() == 0) {
             showAlertDialog("Fixd-Pro", "please enter serial number");
         } else if (description.length() == 0) {
             showAlertDialog("Fixd-Pro", "please enter unit work description");
-        } else if (Path.length() == 0) {
-            showAlertDialog("Fixd-Pro", "please add image");
+        } else if (equipmentInfo.getImage().length() == 0) {
+            if (Path != null && Path.length() > 0){
+                executeRepairInfoSaveingRequest();
+            }else {
+                showAlertDialog("Fixd-Pro", "please add image");
+            }
+
         } else {
             executeRepairInfoSaveingRequest();
         }
@@ -361,9 +376,12 @@ public class EquipmentInfoFragment extends Fragment {
                 if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
                     boolean hasPermission = (ContextCompat.checkSelfPermission(getActivity(),
                             Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-                    if (!hasPermission) {
+                    boolean hasPermissionCamra = (ContextCompat.checkSelfPermission(getActivity(),
+                            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED);
+
+                    if (!hasPermission || !hasPermissionCamra) {
                         ActivityCompat.requestPermissions(getActivity(),
-                                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE},
+                                new String[]{android.Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
                                 REQUEST_READ_STORAGE);
                     } else {
                         openCamera();
@@ -418,9 +436,30 @@ public class EquipmentInfoFragment extends Fragment {
         }
 
     }
+    private static String getTemporaryCameraFileName() {
+        return CAMERA_FILE_NAME_PREFIX + System.currentTimeMillis() + ".jpg";
+    }
+    public static File getTemporaryCameraFile() {
+        File storageDir = StorageUtils.getAppExternalDataDirectoryFile();
+        File file = new File(storageDir, getTemporaryCameraFileName());
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
     private void openCamera() {
-        Intent camraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camraIntent, CAMERA_REQUEST);
+//        Intent camraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(camraIntent, CAMERA_REQUEST);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getActivity().getPackageManager()) == null) {
+            return;
+        }
+
+        photoFile = getTemporaryCameraFile();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        startActivityForResult(intent, CAMERA_REQUEST);;
     }
 
     private void openGallery() {
@@ -433,59 +472,137 @@ public class EquipmentInfoFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (data != null) {
-            if (requestCode == CAMERA_REQUEST) {
-                try {
-                    selectedImageUri = data.getData();
+            String imageFilePath = null;
+            Uri uri = data.getData();
+            String uriScheme = uri.getScheme();
+            boolean isFromGoogleApp = uri.toString().startsWith(SchemeType.SCHEME_CONTENT_GOOGLE);
+            boolean isKitKatAndUpper = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
-                    Path = getPath(getActivity(), selectedImageUri);
-//                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
-                    txtTakepic.setVisibility(View.INVISIBLE);
-                    img_Camra.setVisibility(View.INVISIBLE);
-                    Picasso.with(getActivity()).load(selectedImageUri)
-                            .into(imgMain);
+            if (SchemeType.SCHEME_CONTENT.equalsIgnoreCase(uriScheme) && !isFromGoogleApp && !isKitKatAndUpper) {
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = FixdProApplication.getInstance().getContentResolver().query(uri, filePathColumn, null, null, null);
+                if (cursor != null) {
+                    if (cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imageFilePath = cursor.getString(columnIndex);
+                    }
+                    cursor.close();
+                }
+            } else if (SchemeType.SCHEME_FILE.equalsIgnoreCase(uriScheme)) {
+                imageFilePath = uri.getPath();
+            } else {
+                try {
+                    imageFilePath = ImageUtils.saveUriToFile(uri);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            } else if (requestCode == GALLERY_REQUEST) {
-                Uri selectedImageUri = data.getData();
-//                if (android.os.Build.VERSION.SDK_INT <19 ){
-                    Path = getPath(getActivity(),selectedImageUri);
-//                }else {
-//
-//// Will return "image:x*"
-//                    String wholeID = DocumentsContract.getDocumentId(selectedImageUri);
-//
-//// Split at colon, use second item in the array
-//                    String id = wholeID.split(":")[1];
-//
-//                    String[] column = { MediaStore.Images.Media.DATA };
-//
-//// where id is equal to
-//                    String sel = MediaStore.Images.Media._ID + "=?";
-//
-//                    Cursor cursor = getActivity().getContentResolver().
-//                            query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-//                                    column, sel, new String[]{id}, null);
-//
-//
-//
-//                    int columnIndex = cursor.getColumnIndex(column[0]);
-//
-//                    if (cursor.moveToFirst()) {
-//                        Path = cursor.getString(columnIndex);
-//                    }
-//
-//                    cursor.close();
-//                }
+            }
+
+            if (!TextUtils.isEmpty(imageFilePath)) {
+
+                Path = imageFilePath ;
+                photoFile = new File(Path);
+                Uri uri1 = Uri.fromFile(photoFile);
+                Path = SiliCompressor.with(getActivity()).compress(uri1.toString(), true);
+                photoFile = new File(Path);
+
 
                 txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
-//                imgMain.getLayoutParams().height = finalHeight;
-//                imgMain.getLayoutParams().width = finalWidth;
-//                imgDriver.setImageBitmap(ImageHelper2.decodeSampledBitmapFromFile(Path, finalWidth, finalHeight));
-                Picasso.with(getActivity()).load(selectedImageUri)
+                Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
                         .into(imgMain);
+//                                    Path = imageFilePath;
+////                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
+//                    txtTakepic.setVisibility(View.INVISIBLE);
+//                    img_Camra.setVisibility(View.INVISIBLE);
+////                    Picasso.with(getActivity()).load(Uri.fromFile(new File(imageFilePath)))
+////                            .into(imgMain);
+////                Uri uri = Uri.fromFile(photoFile);
+//                Bitmap d = new BitmapDrawable(getActivity().getResources() , Path).getBitmap();
+//                int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+//                Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
+//                imgMain.setImageBitmap(scaled);
+//                imgMain.setImageURI(uri);
             }
+//            if (requestCode == CAMERA_REQUEST) {
+//                try {
+//                    selectedImageUri = data.getData();
+//
+//                    Path = getPath(getActivity(), selectedImageUri);
+////                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
+//                    txtTakepic.setVisibility(View.INVISIBLE);
+//                    img_Camra.setVisibility(View.INVISIBLE);
+//                    Picasso.with(getActivity()).load(selectedImageUri)
+//                            .into(imgMain);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//            } else if (requestCode == GALLERY_REQUEST) {
+//                Uri selectedImageUri = data.getData();
+////                if (android.os.Build.VERSION.SDK_INT <19 ){
+//                    Path = getPath(getActivity(),selectedImageUri);
+////                }else {
+////
+////// Will return "image:x*"
+////                    String wholeID = DocumentsContract.getDocumentId(selectedImageUri);
+////
+////// Split at colon, use second item in the array
+////                    String id = wholeID.split(":")[1];
+////
+////                    String[] column = { MediaStore.Images.Media.DATA };
+////
+////// where id is equal to
+////                    String sel = MediaStore.Images.Media._ID + "=?";
+////
+////                    Cursor cursor = getActivity().getContentResolver().
+////                            query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+////                                    column, sel, new String[]{id}, null);
+////
+////
+////
+////                    int columnIndex = cursor.getColumnIndex(column[0]);
+////
+////                    if (cursor.moveToFirst()) {
+////                        Path = cursor.getString(columnIndex);
+////                    }
+////
+////                    cursor.close();
+////                }
+//
+//                txtTakepic.setVisibility(View.INVISIBLE);
+//                img_Camra.setVisibility(View.INVISIBLE);
+////                imgMain.getLayoutParams().height = finalHeight;
+////                imgMain.getLayoutParams().width = finalWidth;
+////                imgDriver.setImageBitmap(ImageHelper2.decodeSampledBitmapFromFile(Path, finalWidth, finalHeight));
+//                Picasso.with(getActivity()).load(selectedImageUri)
+//                        .into(imgMain);
+//            }
+        }
+        else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode){
+            Path = photoFile.getPath() ;
+            photoFile = new File(Path);
+            Uri uri = Uri.fromFile(photoFile);
+            Path = SiliCompressor.with(getActivity()).compress(uri.toString(), true);
+            photoFile = new File(Path);
+
+
+            txtTakepic.setVisibility(View.INVISIBLE);
+            img_Camra.setVisibility(View.INVISIBLE);
+            Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
+                    .into(imgMain);
+
+//            Uri uri = Uri.fromFile(photoFile);
+//            Bitmap d = new BitmapDrawable(getActivity().getResources() , photoFile.getAbsolutePath()).getBitmap();
+//            int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
+//            Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
+//            imgMain.setImageBitmap(scaled);
+//            Picasso.with(getActivity())
+//                    .load(uri)
+//                    .resize(size, size)
+//                    .centerInside()
+//                    .into(imgMain);
+//            imgMain.setImageURI(uri);
         }
     }
     /**
@@ -682,7 +799,7 @@ public class EquipmentInfoFragment extends Fragment {
 //                        multipart.addFormField("object", "repair_flow");
 //
 //                    }
-                    if (Path != null)
+                    if (Path != null && !Path.equals(""))
                     multipart.addFilePart("data[image]", new File(Path));
                     multipart.addFormField("data[model_number]", modal_number);
                     multipart.addFormField("data[brand_name]", brand);
@@ -720,8 +837,11 @@ public class EquipmentInfoFragment extends Fragment {
                     break;
                 }
                 case 2: {
-                    equipmentInfo.setImage(Path);
-                    equipmentInfo.setIsLocal(true);
+                    if (Path != null && Path.length() > 0){
+                        equipmentInfo.setImage(Path);
+                        equipmentInfo.setIsLocal(true);
+                    }
+
                     equipmentInfo.setBrand_name(brand);
                     equipmentInfo.setModel_number(modal_number);
                     equipmentInfo.setSerial_number(serial_number);

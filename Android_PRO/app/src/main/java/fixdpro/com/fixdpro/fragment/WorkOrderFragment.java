@@ -31,6 +31,7 @@ import android.widget.TextView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -42,6 +43,7 @@ import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.SignatureActivity;
 import fixdpro.com.fixdpro.beans.NotificationModal;
+import fixdpro.com.fixdpro.beans.install_repair_beans.RepairType;
 import fixdpro.com.fixdpro.beans.install_repair_beans.WorkOrder;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
@@ -78,8 +80,9 @@ public class WorkOrderFragment extends Fragment {
     CurrentScheduledJobSingleTon singleTon = null ;
     String error_message = "";
     WorkOrder workOrder ;
+    RepairType repairType ;
     TextView txtDiagnosticDoller,txtSubTotalDoller,txtTaxDoller,txtTotalDoller,txtJob,txtJobType,txtUserNameAddress,txtRepairType,txtReapirTypeCost,partstxtType,partstxtDollerT, typeHeading,txtDiagnostic;
-    EditText txtcomplaint;
+    EditText txtcomplaint,txtDescValue;
     Dialog dialog = null ;
     boolean isAutoNotiForWorkOrder = false ;
     long start_time = 0;
@@ -88,6 +91,7 @@ public class WorkOrderFragment extends Fragment {
     GPSTracker gpsTracker = null ;
     Handler handler1 = null ;
     boolean isMileageCalulateCaptured  = false ;
+    DecimalFormat df = new DecimalFormat("#.00");
     public WorkOrderFragment() {
         // Required empty public constructor
     }
@@ -122,6 +126,7 @@ public class WorkOrderFragment extends Fragment {
         _prefs = Utilities.getSharedPreferences(_context);
         singleTon = CurrentScheduledJobSingleTon.getInstance();
         workOrder = singleTon.getJobApplianceModal().getInstallOrRepairModal().getWorkOrder();
+        repairType = singleTon.getJobApplianceModal().getInstallOrRepairModal().getRepairType();
         gpsTracker = new GPSTracker(getActivity());
 
 
@@ -140,6 +145,7 @@ public class WorkOrderFragment extends Fragment {
     }
     private void setWidgets(View view){
         txtcomplaint = (EditText)view.findViewById(R.id.txtcomplaint);
+        txtDescValue = (EditText)view.findViewById(R.id.txtDescValue);
         txtRepairType =  (TextView)view.findViewById(R.id.txtRepairType);
         partstxtType =  (TextView)view.findViewById(R.id.partstxtType);
         partstxtDollerT =  (TextView)view.findViewById(R.id.partstxtDollerT);
@@ -157,9 +163,10 @@ public class WorkOrderFragment extends Fragment {
         txtJobType.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
         txtUserNameAddress.setText((singleTon.getCurrentJonModal().getContact_name() +" - " +singleTon.getCurrentJonModal().getJob_customer_addresses_address()));
         txtcomplaint.setText(singleTon.getJobApplianceModal().getJob_appliances_customer_compalint());
+        txtDescValue.setText(singleTon.getJobApplianceModal().getJob_appliances_appliance_description());
         if (singleTon.getInstallOrRepairModal().getRepairType().getType().length() > 0)
         txtRepairType.setText( singleTon.getInstallOrRepairModal().getRepairType().getType());
-        txtReapirTypeCost.setText("$" + singleTon.getInstallOrRepairModal().getRepairType().getPrice());
+
         String parts = "" ;
         float cost = 0;
         for (int i = 0 ; i < singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().size() ; i++){
@@ -171,10 +178,9 @@ public class WorkOrderFragment extends Fragment {
 
             if (!(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost().length() == 0)){
                 cost = cost + Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost());
-                partstxtDollerT.setText(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost() +"\n");
+                float parts_Cost = Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost()) * Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getQuantity());
+                partstxtDollerT.setText("$"+df.format(parts_Cost)+"" +"\n");
             }
-
-
 
         }
         typeHeading.setText(singleTon.getJobApplianceModal().getJob_appliances_service_type() +" Type");
@@ -247,6 +253,8 @@ public class WorkOrderFragment extends Fragment {
                         workOrder.setTax(RESPONSE.getString("tax"));
                     if (!RESPONSE.isNull("status"))
                         workOrder.setStatus(RESPONSE.getString("status"));
+                    if (!RESPONSE.isNull("hourly_rate"))
+                        workOrder.setHourly_rate(RESPONSE.getString("hourly_rate"));
                     if (!RESPONSE.isNull("total"))
                         workOrder.setTotal(RESPONSE.getString("total"));
                     handler.sendEmptyMessage(0);
@@ -275,6 +283,13 @@ public class WorkOrderFragment extends Fragment {
                     txtSubTotalDoller.setText("$"+workOrder.getSub_total());
                     txtTaxDoller.setText("$"+workOrder.getTax());
                     txtTotalDoller.setText("$"+workOrder.getTotal());
+                    if (repairType.getCalculatedBy().equals("FIXED")){
+                        txtReapirTypeCost.setText(repairType.getFixed_cost());
+                    }else {
+                        float value = Float.parseFloat(workOrder.getHourly_rate()) * Float.parseFloat(repairType.getLabor_hours());
+                        txtReapirTypeCost.setText("$"+value);
+                    }
+
                     if (isAutoNotiForWorkOrder){
                         submitPost();
                     }
@@ -512,10 +527,25 @@ public class WorkOrderFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("1"))
+                if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("1")){
                     start_time = System.currentTimeMillis();
                     collectDataForGoingTogetParts();
                     showTrackingMileageDialog();
+                }else {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+                            CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
+                            Intent intent = new Intent(getActivity(), SignatureActivity.class);
+                            CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().getSignature().setIsCompleted(true);
+//                            startActivity(intent);
+                            ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
+                        }
+                    }, 300);
+                }
+
 
             }
         });layout_reschedule.setOnClickListener(new View.OnClickListener() {

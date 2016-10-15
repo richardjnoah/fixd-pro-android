@@ -76,7 +76,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                 EniNumber = txtEniNumber.getText().toString().trim();
                 InsuranceCarrier = txtInsuranceCarr.getText().toString().trim();
                 PolicyNumber = txtPolicyNumber.getText().toString().trim();
-                HourlyRate = txtHourlyRate.getText().toString().trim();
+//                HourlyRate = txtHourlyRate.getText().toString().trim();
                 if (CompanyName.equals("")){
                     showAlertDialog(CompanyInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Pleae enter the company name.");
@@ -109,7 +109,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                     finalRequestParams.put("data[pros][insurance]", InsuranceCarrier);
                     finalRequestParams.put("data[pros][insurance_policy]", PolicyNumber);
                     finalRequestParams.put("data[pros][hourly_rate]", HourlyRate);
-                    if (HourlyRate.equals("$125")){
+                    if (HourlyRate.equals("125")){
                         showAlertDialogRate("Fixd-Pro","Keep in mind Pros with lower labor ates will see available job first.Higher labor rates may limit your job availability");
                     }else{
                         Intent intent = new Intent(CompanyInformation_Activity.this,LicensePicture_Activity.class);

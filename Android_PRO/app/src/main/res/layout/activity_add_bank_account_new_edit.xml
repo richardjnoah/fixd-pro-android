@@ -33,7 +33,7 @@
                 android:padding="@dimen/size_14_dp"
                 android:text="@string/add_bank_account"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -56,7 +56,8 @@
             android:gravity="left"
             android:hint="@string/bank_name"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14_dp"
+            android:inputType="text"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
@@ -76,7 +77,8 @@
             android:gravity="left"
             android:hint="@string/routing_number"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14_dp"
+            android:inputType="number"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
@@ -97,7 +99,7 @@
             android:hint="@string/account_number"
             android:imeOptions="actionNext"
             android:inputType="number"
-            android:padding="@dimen/size_14_dp"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
@@ -137,12 +139,12 @@
             android:textSize="@dimen/size_16_sp" />
 
         <ImageView
-            android:visibility="invisible"
             android:id="@+id/imgScreeNo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="@dimen/size_14_dp"
-            android:src="@drawable/next1" />
+            android:src="@drawable/next1"
+            android:visibility="invisible" />
     </LinearLayout>
 </RelativeLayout>

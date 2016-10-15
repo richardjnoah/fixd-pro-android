@@ -9,9 +9,9 @@
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_bottom_view"
-        android:visibility="gone">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_plus"
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,27 +29,38 @@
             </LinearLayout>
 
 
-            <!--Add part-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_27_dp"
-                android:gravity="center"
-                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/img_add"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/size_10_dp"
-                    android:src="@drawable/add_part" />
-            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
+    <!--Add part-->
+    <LinearLayout
+        android:id="@+id/layout_plus"
+        android:visibility="gone"
+        android:layout_above="@+id/layout_bottom_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
 
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/img_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/size_5_dp"
+            android:src="@drawable/add_part" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_5_dp"
+            android:text="Add Part"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_16_sp" />
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/layout_main"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -82,6 +93,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"

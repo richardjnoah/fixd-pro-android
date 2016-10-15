@@ -30,6 +30,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -78,6 +79,8 @@ public class RepairFragment extends Fragment {
     ArrayList<RepairType> arrayList = new ArrayList<RepairType>();
     MultipartUtility multipart = null;
     String install_or_repair_type_id = "";
+    String install_or_repair_type_price = "";
+    String install_or_repair_labour_hour = "";
     JobAppliancesModal modal = null ;
     TextView txtJobName ;
     EditText txtSearch ;
@@ -207,6 +210,8 @@ public class RepairFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!arrayList.get(position).getType().equals("Others")) {
                     install_or_repair_type_id = arrayList.get(position).getId();
+                    install_or_repair_type_price = arrayList.get(position).getPrice();
+                    install_or_repair_labour_hour = arrayList.get(position).getLabor_hours();
                     GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
                     getApiResponseAsyncNew.execute(getRequestParamsForSeletedType());
                 } else {
@@ -273,6 +278,11 @@ public class RepairFragment extends Fragment {
             try {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
                     JSONObject jsonObject = Response.getJSONObject("RESPONSE");
+                    String rate = "0";
+                    if (jsonObject.has("hourly_rate")){
+                        rate = jsonObject.getString("hourly_rate");
+                    }
+
 //                    JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
 //                    for (int i = 0 ; i < results.length() ; i++){
 //                        JSONObject jsonObject = results.getJSONObject(i);
@@ -290,7 +300,20 @@ public class RepairFragment extends Fragment {
                             RepairType repairType = new RepairType();
                             repairType.setId(jsonObjectRepairType.getString("id"));
                             repairType.setType(jsonObjectRepairType.getString("name"));
-//                            repairType.setPrice(jsonObjectRepairType.getString("cost"));
+                            float cost = 0 ;
+                            DecimalFormat decimalFormat = new DecimalFormat("0.00");
+
+                            if (jsonObjectRepairType.has("calculated_by") && jsonObjectRepairType.getString("calculated_by").equals("FIXED")){
+
+                                repairType.setPrice(jsonObjectRepairType.getString("fixed_cost"));
+                            }else {
+
+                                cost = Float.parseFloat(rate) * Float.parseFloat(jsonObjectRepairType.getString("labor_hours"));
+                                decimalFormat.format(cost);
+                                repairType.setPrice(cost+"");
+
+                            }
+
                             repairType.setLabor_hours(jsonObjectRepairType.getString("labor_hours"));
                             arrayList.add(repairType);
                         }
@@ -333,7 +356,9 @@ public class RepairFragment extends Fragment {
                     handler.sendEmptyMessage(2);
                     break;
                 }case 2:{
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setLabor_hours(install_or_repair_labour_hour);
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setType(install_or_repair_type_id);
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setPrice(install_or_repair_type_price);
                     CurrentScheduledJobSingleTon.getInstance().getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.REPAIR_TYPE_FRAGMENT);
                     break;
@@ -361,6 +386,8 @@ public class RepairFragment extends Fragment {
                     showAlertDialog("Fixd-Pro","Please enter description.");
                 }else {
                     subDialog.dismiss();
+                    install_or_repair_labour_hour  = editHour.getText().toString();
+                    install_or_repair_type_id  = editDesc.getText().toString();
                     GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
                     getApiResponseAsyncNew.execute(getRequestParamsForSaveType(editHour.getText().toString(),editDesc.getText().toString()));
                 }

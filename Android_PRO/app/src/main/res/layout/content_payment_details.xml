@@ -36,7 +36,7 @@
                     android:singleLine="true"
                     android:text="$25,70"
                     android:textColor="@color/orange_signin_back"
-                    android:textSize="@dimen/size_27_sp" />
+                    android:textSize="@dimen/size_24_sp" />
 
                 <TextView
                     android:id="@+id/txtJobID"
@@ -48,7 +48,7 @@
                     android:singleLine="true"
                     android:text="Job #8"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/size_27_sp" />
+                    android:textSize="@dimen/size_24_sp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                     android:singleLine="true"
                     android:text="Beverly Hills"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/size_27_sp" />
+                    android:textSize="@dimen/size_22_sp" />
 
                 <TextView
                     android:id="@+id/txtAddress"
@@ -98,7 +98,7 @@
                     android:singleLine="true"
                     android:text="Fri,Dec 15, 2016"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/size_27_sp" />
+                    android:textSize="@dimen/size_22_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                         android:singleLine="true"
                         android:text="08:33 PM"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_27_sp" />
+                        android:textSize="@dimen/size_22_sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -161,7 +161,7 @@
                         android:singleLine="true"
                         android:text="08:33 PM"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_27_sp" />
+                        android:textSize="@dimen/size_22_sp" />
                 </LinearLayout>
                 <!--Line Layout....-->
                 <TextView
@@ -185,7 +185,7 @@
                         android:singleLine="true"
                         android:text="@string/summary"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_27_sp" />
+                        android:textSize="@dimen/size_24_sp" />
 
                     <LinearLayout
                         android:layout_width="match_parent"

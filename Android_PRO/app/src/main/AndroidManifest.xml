@@ -239,6 +239,7 @@
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".HomeScreenNew"
+
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_home_screen_new"
             android:screenOrientation="portrait"
@@ -447,6 +448,12 @@
         </service>
 
         <activity android:name=".activities.LicensePicture_Activity_Edit"></activity>
+
+        <service   android:name="main.java.com.mindscapehq.android.raygun4android.RaygunPostService"
+            android:exported="false"
+            android:process=":raygunpostservice"/>
+        <meta-data android:name="com.mindscapehq.android.raygun4android.apikey"
+            android:value="wWAQ7dppz/omulUa9zqgmA==" />
     </application>
 
 </manifest>

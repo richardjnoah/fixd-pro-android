@@ -61,7 +61,7 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         txtEniNumber.setText(_prefs.getString(Preferences.EIN_NUMEBR, ""));
         txtInsuranceCarr.setText(_prefs.getString(Preferences.INSURANCE, ""));
         txtPolicyNumber.setText(_prefs.getString(Preferences.INSURANCE_POLICY, ""));
-        txtHourlyRate.setText(_prefs.getString(Preferences.HOURLY_RATE, ""));
+        txtHourlyRate.setText("$"+Math.round(Float.parseFloat(_prefs.getString(Preferences.HOURLY_RATE, ""))));
     }
 
     private void setCLickListner() {

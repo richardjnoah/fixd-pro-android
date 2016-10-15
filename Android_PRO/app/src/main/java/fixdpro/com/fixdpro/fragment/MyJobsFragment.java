@@ -28,14 +28,14 @@ import android.widget.TextView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import fixdpro.com.fixdpro.AvailableJobListClickActivity;
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.JobCompletedActivity;
-//import fixtpro.com.fixtpro.MyJobsSearchActivity;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.activities.SetupCompleteAddressActivity;
@@ -49,6 +49,8 @@ import fixdpro.com.fixdpro.utilites.HandlePagingResponse;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
+
+//import fixtpro.com.fixtpro.MyJobsSearchActivity;
 
 
 public class MyJobsFragment extends Fragment implements View.OnClickListener{
@@ -287,20 +289,31 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 
     private HashMap<String,String> getRequestParams(String Status){
         HashMap<String,String> hashMap = new HashMap<String,String>();
-        if (!Status.equals("Open"))
-        hashMap.put("api","read");
-        else
+        if (!Status.equals("Open")){
+            hashMap.put("api","read");
+            hashMap.put("order_by", "created_at");
+            hashMap.put("order", "DESC");
+        }else {
             hashMap.put("api","read_open");
-        hashMap.put("object","jobs");
+            hashMap.put("object","jobs");
+        }
+
         if (!role.equals("pro"))
             hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
         else
             hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
-        if (Status.equals("Scheduled"))
+
+        if (Status.equals("Scheduled")){
             hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
+            hashMap.put("order_by", "date_time_combined");
+            hashMap.put("order", "ASC");
+        }
+
 
         else if (Status.equals("Complete")){
             hashMap.put("where[status]", Status);
+            hashMap.put("order_by", "finished_at");
+            hashMap.put("order", "DESC");
         }
 
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -311,6 +324,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         else
             hashMap.put("page", pageAvaileble+"");
         hashMap.put("per_page", "15");
+
         return hashMap;
     }
 
@@ -397,12 +411,15 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 
                                     }
                                 }
+                                if (!appliance_type_obj.isNull("services")){
+                                    JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                    mod.setService_id(services_obj.getString("id"));
+                                    mod.setService_name(services_obj.getString("name"));
+                                    mod.setService_created_at(services_obj.getString("created_at"));
+                                    mod.setService_updated_at(services_obj.getString("updated_at"));
+                                }
                             }
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+
                             jobapplianceslist.add(mod);
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
@@ -429,7 +446,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         availablejoblist.add(model);
-                        Collections.reverse(availablejoblist);
+//                        Collections.reverse(availablejoblist);
                     }
                     handler.sendEmptyMessage(0);
                 }else {
@@ -695,14 +712,23 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 
                                         }
                                     }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
                                 }
-//
 
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+
                                 jobapplianceslist.add(mod);
                             }
 //                            }
@@ -770,7 +796,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
                         }
                         schedulejoblist.add(model);
-                        Collections.reverse(schedulejoblist);
+//                        Collections.reverse(schedulejoblist);
                     }
 
                     handler.sendEmptyMessage(2);
@@ -836,7 +862,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                                 JobAppliancesModal mod = new JobAppliancesModal();
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
-
+                                mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
                                 JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
                                 mod.setAppliance_type_id(appliance_type_obj.getString("id"));
                                 mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
@@ -944,9 +970,11 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                             model.setJob_line_items_pro_cut(job_line_items_obj.getString("pro_cut"));
                             model.setJob_line_items_sub_total(job_line_items_obj.getString("sub_total"));
                             model.setJob_line_items_total(job_line_items_obj.getString("total"));
+                            model.setJob_line_items_diagnostic_fee(job_line_items_obj.getString("diagnostic_fee"));
+                            model.setJob_line_items_is_covered(job_line_items_obj.getString("is_covered"));
                         }
                         completedjoblist.add(model);
-                        Collections.reverse(completedjoblist);
+//                        Collections.reverse(completedjoblist);
                     }
 
                     handler.sendEmptyMessage(4);

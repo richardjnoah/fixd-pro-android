@@ -50,6 +50,7 @@
             android:gravity="left"
             android:hint="@string/address11"
             android:imeOptions="actionNext"
+            android:inputType="text"
             android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
@@ -72,6 +73,7 @@
             android:gravity="left"
             android:hint="@string/address22"
             android:imeOptions="actionNext"
+            android:inputType="text"
             android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
@@ -171,7 +173,7 @@
             android:gravity="center"
             android:text="@string/next"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_21_sp" />
+            android:textSize="@dimen/size_16_sp" />
 
         <ImageView
             android:layout_width="wrap_content"

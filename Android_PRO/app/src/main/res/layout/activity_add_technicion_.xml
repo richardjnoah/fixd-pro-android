@@ -34,10 +34,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_14_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
+                android:padding="@dimen/size_12_dp"
                 android:text="Add Technicians"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtYourRightsUnder"
@@ -71,7 +72,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/whitebox_fill"
                 android:gravity="center"
-                android:padding="@dimen/size_14_dp"
+                android:padding="@dimen/size_12_dp"
                 android:text="@string/yes"
                 android:textColor="@color/color_grey"
                 android:textSize="@dimen/size_16_sp" />
@@ -84,7 +85,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/whitebox_fill"
                 android:gravity="center"
-                android:padding="@dimen/size_14_dp"
+                android:padding="@dimen/size_12_dp"
                 android:text="@string/no"
                 android:textColor="@color/color_grey"
                 android:textSize="@dimen/size_16_sp" />

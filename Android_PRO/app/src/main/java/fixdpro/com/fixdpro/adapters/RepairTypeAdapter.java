@@ -8,15 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.beans.install_repair_beans.RepairType;
-
-import android.widget.Filter;
-
-import java.util.ArrayList;
 
 /**
  * Created by sahil on 07-04-2016.
@@ -118,7 +117,7 @@ public class RepairTypeAdapter extends BaseAdapter implements Filterable {
         holder.txtType.setText(tempValues.getType());
 //        holder.txtPrice.setText("$"+((int)Float.parseFloat(tempValues.getPrice())+""));
         if (tempValues.getLabor_hours().length() > 0)
-        holder.txtPrice.setText("$"+tempValues.getLabor_hours()+"");
+        holder.txtPrice.setText("$"+tempValues.getPrice()+"");
         return vi;
     }
 

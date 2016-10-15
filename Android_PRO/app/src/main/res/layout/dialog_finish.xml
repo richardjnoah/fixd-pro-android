@@ -25,7 +25,7 @@
             android:layout_marginTop="@dimen/size_27_dp"
             android:gravity="center"
             android:singleLine="true"
-            android:text="My Work Here Is Done!"
+            android:text="Your work is Done here!"
             android:textColor="@color/register_button_text"
             android:textSize="@dimen/size_20_sp" />
 
@@ -145,12 +145,15 @@
         android:layout_marginTop="@dimen/size_27_dp"
         android:orientation="vertical">
 
-        <ImageView
+        <TextView
             android:id="@+id/img_Finish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="fitXY"
-            android:src="@drawable/finish" />
+            android:text="Finish Job"
+            android:gravity="center"
+            android:textSize="@dimen/size_22_sp"
+            android:textColor="@color/white"
+            android:background="@drawable/delete_box" />
     </LinearLayout>
 
     <ImageView

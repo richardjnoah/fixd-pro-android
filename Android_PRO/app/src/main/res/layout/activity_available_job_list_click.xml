@@ -32,7 +32,7 @@
                 android:gravity="center"
                 android:text="@string/availablejob"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
@@ -43,8 +43,7 @@
         android:layout_above="@+id/pickupdeclinelayout"
         android:layout_below="@+id/toolbar"
         android:layout_marginLeft="@dimen/size_10_dp"
-        android:layout_marginRight="@dimen/size_10_dp"
-        >
+        android:layout_marginRight="@dimen/size_10_dp">
 
         <ScrollView
             android:id="@+id/scrollViewParent"
@@ -89,7 +88,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_20_sp" />
+                            android:textSize="@dimen/size_18_sp" />
 
                         <TextView
                             android:id="@+id/address"
@@ -115,14 +114,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_20_sp" />
+                            android:textSize="@dimen/size_18_sp" />
 
                         <TextView
                             android:id="@+id/timeinterval"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textColor="@color/register_button_text"
-                            android:textSize="@dimen/size_18_sp" />
+                            android:textSize="@dimen/size_16_sp" />
 
                         <TextView
                             android:layout_width="wrap_content"

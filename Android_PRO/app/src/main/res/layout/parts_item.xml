@@ -8,7 +8,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/size_27_dp"
+        android:layout_marginTop="@dimen/size_5_dp"
         android:orientation="vertical">
         <!--Line-->
         <View
@@ -40,7 +40,7 @@
                 android:singleLine="true"
                 android:textColor="@color/lb_tv_white"
                 android:textColorHint="@color/lb_tv_white"
-                android:textCursorDrawable="@color/lb_tv_white"
+                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:textSize="@dimen/size_18_sp" />
 
             <EditText
@@ -57,7 +57,7 @@
                 android:singleLine="true"
                 android:textColor="@color/lb_tv_white"
                 android:textColorHint="@color/lb_tv_white"
-                android:textCursorDrawable="@color/lb_tv_white"
+                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:textSize="@dimen/size_18_sp" />
 
             <LinearLayout
@@ -80,7 +80,7 @@
                     android:singleLine="true"
                     android:textColor="@color/lb_tv_white"
                     android:textColorHint="@color/lb_tv_white"
-                    android:textCursorDrawable="@color/lb_tv_white"
+                    android:textCursorDrawable="@drawable/cursor_drawable"
                     android:textSize="@dimen/size_18_sp" />
 
                 <EditText
@@ -99,7 +99,7 @@
                     android:singleLine="true"
                     android:textColor="@color/lb_tv_white"
                     android:textColorHint="@color/lb_tv_white"
-                    android:textCursorDrawable="@color/lb_tv_white"
+                    android:textCursorDrawable="@drawable/cursor_drawable"
                     android:textSize="@dimen/size_18_sp" />
             </LinearLayout>
         </LinearLayout>

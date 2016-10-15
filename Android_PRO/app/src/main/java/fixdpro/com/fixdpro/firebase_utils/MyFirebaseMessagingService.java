@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -117,6 +119,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 if (jsonPayload.has("j"))
                                     modal.setJobId(jsonPayload.getString("j"));
                             }
+                                if (modal.getType().equals("cja")){
+                                    if (jsonPayload.has("j"))
+                                        modal.setJobId(jsonPayload.getString("j"));
+                                }
+
+                            if (modal.getType().equals("pjp") ||modal.getType().equals("pjt") ||modal.getType().equals("cja")) {
+                                if (jsonPayload.has("j"))
+                                    modal.setJobId(jsonPayload.getString("j"));
+                            }
 
                         }
 
@@ -143,16 +154,17 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Intent notificationIntent = new Intent(this, HomeScreenNew.class);
                 notificationIntent.putExtra("data", modal);
                 notificationIntent.putExtra("isnoty","yes");
-                notificationIntent.setAction("com.fixtconsumer" + uniqueId);
+                notificationIntent.setAction("fixdpro.com.fixdpro" + uniqueId);
 
                 PendingIntent contentIntent = PendingIntent.getActivity(this,
                         0, notificationIntent,
                         PendingIntent.FLAG_CANCEL_CURRENT);
                 Notification.Builder builder = new Notification.Builder(this);
-
+                Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 builder.setContentIntent(contentIntent)
                         .setSmallIcon(R.mipmap.ic_launcher)
                         .setAutoCancel(true)
+                        .setSound(uri)
                         .setContentTitle("Fixd Pro")
                         .setContentText(modal.getMessage());
                 Notification n = builder.build();

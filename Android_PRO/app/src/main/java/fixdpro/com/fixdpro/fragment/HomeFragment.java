@@ -67,19 +67,17 @@ import fixdpro.com.fixdpro.adapters.JobsPagingAdapter;
 import fixdpro.com.fixdpro.adapters.MyInfoWindowAdapter;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
-
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.utilites.CheckIfUserVarified;
 import fixdpro.com.fixdpro.utilites.Constants;
-
 import fixdpro.com.fixdpro.utilites.HandlePagingResponse;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
-
+import main.java.com.mindscapehq.android.raygun4android.RaygunClient;
 
 public class HomeFragment extends Fragment implements View.OnClickListener{
     MapView mapView;
@@ -135,6 +133,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (b.containsKey("first_tech_reg"))
                 isFirstTechReg = b.getBoolean("first_tech_reg");
         }
+        RaygunClient.Init(getActivity());
+        RaygunClient.AttachExceptionHandler();
     }
 
     @Override
@@ -599,10 +599,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                     JSONObject image_obj = jsonObject.getJSONObject("image");
                                     if(!image_obj.isNull("original")){
                                         mod.setImg_original(image_obj.getString("original"));
-                                        mod.setImg_160x170(image_obj.getString("160x170"));
-                                        mod.setImg_150x150(image_obj.getString("150x150"));
-                                        mod.setImg_75x75(image_obj.getString("75x75"));
-                                        mod.setImg_30x30(image_obj.getString("30x30"));
+//                                        mod.setImg_160x170(image_obj.getString("160x170"));
+//                                        mod.setImg_150x150(image_obj.getString("150x150"));
+//                                        mod.setImg_75x75(image_obj.getString("75x75"));
+//                                        mod.setImg_30x30(image_obj.getString("30x30"));
                                     }
                                 }
                                 if (!jsonObject.isNull("appliance_types")){
@@ -619,12 +619,16 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                                         }
                                     }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
+
                                 }
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+
                                 jobapplianceslist.add(mod);
 //                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
@@ -800,14 +804,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
                                         }
                                     }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
+
                                 }
 
 
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+
                                 jobapplianceslist.add(mod);
                             }
 //                            }
@@ -892,14 +900,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
     private HashMap<String,String> getRequestParams(String Status){
         HashMap<String,String> hashMap = new HashMap<String,String>();
-        if (Status.equals("Open"))
-         hashMap.put("api","read_open");
+        if (Status.equals("Open")){
+            hashMap.put("api","read_open");
+            hashMap.put("order_by", "created_at");
+            hashMap.put("order", "DESC");
+        }
+
         else {
             hashMap.put("api","read");
-            if (!Status.equals("Scheduled"))
+            if (!Status.equals("Scheduled")){
                 hashMap.put("where[status]", Status);
-            else
+
+
+            }
+            else{
                 hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
+                hashMap.put("order_by", "date_time_combined");
+                hashMap.put("order", "ASC");
+            }
         }
         hashMap.put("object","jobs");
         if (!role.equals("pro"))

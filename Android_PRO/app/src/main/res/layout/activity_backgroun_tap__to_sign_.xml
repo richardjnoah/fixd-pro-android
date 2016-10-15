@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/size_5_dp"
             android:padding="@dimen/size_14_dp"
             android:src="@drawable/email_share" />
         <LinearLayout
@@ -40,10 +41,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:padding="@dimen/size_14_dp"
                 android:text="@string/backgroundcheck"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtYourRightsUnder"
@@ -52,7 +54,7 @@
                 android:gravity="center"
                 android:text="Acknowledgement and Authorization"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -88,6 +90,7 @@
                 android:gravity="center"
                 android:padding="@dimen/size_10_dp"
                 android:text="@string/taptosign"
+                android:textSize="@dimen/size_16_sp"
                 android:textColor="@color/orange_signin_back" />
 
         </LinearLayout>

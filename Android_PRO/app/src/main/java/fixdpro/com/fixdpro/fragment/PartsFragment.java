@@ -72,7 +72,7 @@ public class PartsFragment extends Fragment {
     MultipartUtility multipart = null;
     ScrollView scrollView ;
     TextView txtTapAddParts,txtEnterPartsCost, txtDisposalFees ;
-    LinearLayout layout_add_part ,layout_no_part, layout_main, layout_bottom_view;
+    LinearLayout layout_add_part ,layout_no_part, layout_main, layout_bottom_view,layout_plus;
     public PartsFragment() {
         // Required empty public constructor
     }
@@ -119,6 +119,7 @@ public class PartsFragment extends Fragment {
             setView();
             scrollView.setVisibility(View.VISIBLE);
             layout_bottom_view.setVisibility(View.VISIBLE);
+            layout_add_part.setVisibility(View.VISIBLE);
             layout_main.setVisibility(View.GONE);
             scrollView.post(new Runnable() {
                 @Override
@@ -136,6 +137,7 @@ public class PartsFragment extends Fragment {
         txtEnterPartsCost.setText(Html.fromHtml(getResources().getString(R.string.enter_parts_cost)));
         return view;
     }
+
     private void setWidgets(View view){
         img_add = (ImageView)view.findViewById(R.id.img_add);
         img_add = (ImageView)view.findViewById(R.id.img_add);
@@ -146,6 +148,7 @@ public class PartsFragment extends Fragment {
         txtEnterPartsCost = (TextView)view.findViewById(R.id.txtEnterPartsCost);
 
         layout_add_part = (LinearLayout)view.findViewById(R.id.layout_add_part);
+        layout_plus = (LinearLayout)view.findViewById(R.id.layout_plus);
         layout_no_part = (LinearLayout)view.findViewById(R.id.layout_no_part);
         layout_main = (LinearLayout)view.findViewById(R.id.layout_main);
         layout_bottom_view = (LinearLayout)view.findViewById(R.id.layout_bottom_view);
@@ -155,6 +158,7 @@ public class PartsFragment extends Fragment {
         img_add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 scrollView.setVisibility(View.VISIBLE);
                 layout_main.setVisibility(View.GONE);
                 container_layout.removeAllViews();
@@ -172,7 +176,9 @@ public class PartsFragment extends Fragment {
         layout_add_part.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ((HomeScreenNew)getActivity()).setRightToolBarText("Done");
                 scrollView.setVisibility(View.VISIBLE);
+                layout_plus.setVisibility(View.VISIBLE);
                 layout_main.setVisibility(View.GONE);
                 layout_bottom_view.setVisibility(View.VISIBLE);
                 partsArrayList.add(new Parts());
@@ -449,7 +455,7 @@ public class PartsFragment extends Fragment {
                     break;
                 }case 2:{
                     container_layout.removeAllViews();
-                    partsArrayList.add(new Parts());
+//                    partsArrayList.add(new Parts());
                      singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.PARTS_FRAGMENT);
                     break;
@@ -490,3 +496,4 @@ public class PartsFragment extends Fragment {
         submitPost();
     }
 }
+

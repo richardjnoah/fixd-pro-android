@@ -32,7 +32,7 @@
                 android:padding="@dimen/size_14_dp"
                 android:text="@string/addresshint"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -68,7 +68,8 @@
             android:gravity="left"
             android:hint="@string/addresshint"
             android:imeOptions="actionNext"
-            android:padding="@dimen/size_14_dp"
+            android:inputType="text"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"
@@ -85,7 +86,7 @@
             android:padding="@dimen/size_5_dp"
             android:text="@string/poweredbygoogle"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_21_sp" />
+            android:textSize="@dimen/size_18_sp" />
 
         <TextView
             android:id="@+id/txtdontSee"

@@ -127,7 +127,6 @@ public class JSONParser {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         conn.disconnect();
 
         // try parse the string to a JSON object

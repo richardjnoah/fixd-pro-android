@@ -39,7 +39,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar">
 
@@ -83,7 +83,7 @@
                             android:id="@+id/layout_appliances"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:minHeight="@dimen/size_100_dp"
+                            android:minHeight="@dimen/size_90_dp"
                             android:orientation="horizontal">
 
                         </LinearLayout>
@@ -112,12 +112,12 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/size_10_dp"
+                        android:layout_marginTop="@dimen/size_5_dp"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="testing"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_22_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtAddress"
@@ -141,7 +141,7 @@
                         android:singleLine="true"
                         android:text="Wed,dec 30,2015"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_22_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtArrivaltime"
@@ -227,7 +227,7 @@
                                 app:starCount="5"
                                 app:starEmpty="@drawable/blank_star"
                                 app:starFill="@drawable/fill_star"
-                                app:starImageSize="@dimen/size_36_dp" />
+                                app:starImageSize="@dimen/size_30_dp" />
                         </LinearLayout>
 
 
@@ -270,19 +270,19 @@
                         android:singleLine="true"
                         android:text="Job Total"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_22_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtTotal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/size_10_dp"
+                        android:layout_marginTop="@dimen/size_8_dp"
                         android:gravity="center"
                         android:singleLine="true"
                         android:text="Total..............$299"
                         android:textColor="@android:color/white"
-                        android:textSize="@dimen/size_22_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtServceTicket"

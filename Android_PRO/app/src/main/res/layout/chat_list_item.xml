@@ -3,54 +3,90 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="@dimen/size_10_dp">
+    android:padding="@dimen/size_10_dp"
+    android:orientation="horizontal">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/roomImage"
-        android:layout_width="@dimen/size_60_dp"
-        android:layout_height="@dimen/size_60_dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/addphoto_img" />
+    <LinearLayout
+        android:id="@+id/image_container"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/roomImage"
+            android:layout_width="@dimen/size_60_dp"
+            android:layout_height="@dimen/size_60_dp"
+            android:src="@drawable/addphoto_img"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:id="@+id/textViewGroupType"
+
+            android:text="Roo"
+            android:textSize="@dimen/size_12_sp"
+            android:singleLine="true"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/size_4_dp"
+            android:layout_below="@+id/roomImage"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/room"
+        android:layout_toRightOf="@+id/image_container"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_weight="8"
+            android:layout_marginLeft="@dimen/size_8_dp"
+            android:textStyle="bold"
+            android:id="@+id/roomName"
+            android:layout_width="0dp"
+
+            android:paddingLeft="@dimen/size_10_dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:textColor="@android:color/white"
+            android:text="Rooo"
+            android:textSize="@dimen/size_16_sp" />
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="@android:color/white"
+            android:id="@+id/time"
+            android:text="time"
+            android:gravity="right"
+
+
+            />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/roomName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/size_8_dp"
-        android:layout_toRightOf="@+id/roomImage"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/size_18_sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/lastMessage"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/roomName"
-        android:layout_gravity="center_vertical"
         android:layout_marginLeft="@dimen/size_8_dp"
         android:layout_marginTop="@dimen/size_4_dp"
-        android:layout_toRightOf="@+id/roomImage"
         android:textColor="@android:color/white"
-        android:textSize="@dimen/size_20_sp" />
-
-    <TextView
-        android:id="@+id/textViewGroupType"
+        android:id="@+id/lastMessage"
+        android:layout_below="@+id/room"
+        android:singleLine="true"
+        android:maxLines="2"
+        android:ellipsize="end"
+        android:paddingLeft="@dimen/size_10_dp"
+        android:layout_toRightOf="@+id/image_container"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/roomImage"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white" />
+        android:layout_gravity="center_vertical"
+        android:textSize="@dimen/size_16_sp"
+        android:text="Message"/>
 
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignRight="@+id/roomImage"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:textColor="@android:color/white" />
+
+
 </RelativeLayout>

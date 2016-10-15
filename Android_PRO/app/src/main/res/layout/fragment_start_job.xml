@@ -167,7 +167,7 @@
                 android:gravity="center"
                 android:text="Are You Heading\nTo The Job Now?"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_24_sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -179,6 +179,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:gravity="right">
 
                     <ImageView
@@ -186,6 +187,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/cross_x" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="No"
+                        android:layout_marginRight="@dimen/size_10_dp"
+                        android:textColor="@color/white" />
 
                 </LinearLayout>
                 <LinearLayout
@@ -207,6 +214,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:orientation="vertical"
                     android:gravity="left">
 
                     <ImageView
@@ -214,6 +222,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/arow_r" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:text="Yes"
+                        android:layout_marginLeft="@dimen/size_7_dp"
+                        android:textSize="@dimen/size_16_sp"/>
                 </LinearLayout>
 
             </LinearLayout>

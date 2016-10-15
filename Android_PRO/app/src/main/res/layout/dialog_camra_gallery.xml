@@ -46,7 +46,7 @@
                 android:singleLine="true"
                 android:text="@string/cam_gallery"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_22_sp" />
 
             <TextView
                 android:id="@+id/txtGallery"
@@ -58,7 +58,7 @@
                 android:singleLine="true"
                 android:text="@string/gallery"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_22_sp" />
         </LinearLayout>
 
     </RelativeLayout>

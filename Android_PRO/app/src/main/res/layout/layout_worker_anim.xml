@@ -36,7 +36,7 @@
                     android:gravity="center"
                     android:text="Air Conditionar Repair"
                     android:textColor="@android:color/white"
-                    android:textSize="@dimen/size_24_sp" />
+                    android:textSize="@dimen/size_21_sp" />
             </LinearLayout>
 
             <LinearLayout

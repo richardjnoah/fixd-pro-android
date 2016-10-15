@@ -121,6 +121,8 @@ public class FixdProApplication  extends Application {
                         JSONArray results = jsonObject.getJSONObject("RESPONSE").getJSONArray("results");
                         JSONObject pagination = jsonObject.getJSONObject("RESPONSE").getJSONObject("pagination");
 //                        nextScheduled = pagination.getString("next");
+//                        next = pagination.getString("next");
+                        Singleton.getInstance().setNextSchduled(pagination.getString("next"));
                         for(int i = 0; i < results.length(); i++){
                             JSONObject obj = results.getJSONObject(i);
                             AvailableJobModal model = new AvailableJobModal();
@@ -193,14 +195,15 @@ public class FixdProApplication  extends Application {
 
                                             }
                                         }
+                                        if (!appliance_type_obj.isNull("services")){
+                                            JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                            mod.setService_id(services_obj.getString("id"));
+                                            mod.setService_name(services_obj.getString("name"));
+                                            mod.setService_created_at(services_obj.getString("created_at"));
+                                            mod.setService_updated_at(services_obj.getString("updated_at"));
+                                        }
                                     }
 
-
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
                                     jobapplianceslist.add(mod);
                                 }
 //                            }
@@ -368,6 +371,8 @@ public class FixdProApplication  extends Application {
         hashMap.put("token", Utilities.getSharedPreferences(getApplicationContext()).getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("page", compltedpage + "");
         hashMap.put("per_page", "15");
+        hashMap.put("order_by", "finished_at");
+        hashMap.put("order", "DESC");
         return hashMap;
     }
     private HashMap<String, String> getreadUserFromServer() {
@@ -395,7 +400,8 @@ public class FixdProApplication  extends Application {
             hashMap.put("page", 1+"");
 
         hashMap.put("per_page", "15");
-
+        hashMap.put("order_by", "date_time_combined");
+        hashMap.put("order", "ASC");
         return hashMap;
     }
     ResponseListener responseListenerCompleted = new ResponseListener() {
@@ -444,6 +450,7 @@ public class FixdProApplication  extends Application {
                                 JobAppliancesModal mod = new JobAppliancesModal();
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
                                 if (!jsonObject.isNull("appliance_types")){
                                     JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
                                     mod.setAppliance_type_id(appliance_type_obj.getString("id"));
@@ -461,13 +468,16 @@ public class FixdProApplication  extends Application {
                                             mod.setImg_30x30(image_obj.getString("30x30"));
                                         }
                                     }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
                                 }
 
-//                                JSONObject services_obj = jsonObject.getJSONObject("services");
-//                                mod.setService_id(services_obj.getString("id"));
-//                                mod.setService_name(services_obj.getString("name"));
-//                                mod.setService_created_at(services_obj.getString("created_at"));
-//                                mod.setService_updated_at(services_obj.getString("updated_at"));
+//
                                 jobapplianceslist.add(mod);
                             }
 //                            }
@@ -554,6 +564,8 @@ public class FixdProApplication  extends Application {
                             model.setJob_line_items_pro_cut(job_line_items_obj.getString("pro_cut"));
                             model.setJob_line_items_sub_total(job_line_items_obj.getString("sub_total"));
                             model.setJob_line_items_total(job_line_items_obj.getString("total"));
+                            model.setJob_line_items_diagnostic_fee(job_line_items_obj.getString("diagnostic_fee"));
+                            model.setJob_line_items_is_covered(job_line_items_obj.getString("is_covered"));
                         }
                         completedjoblist.add(model);
                     }

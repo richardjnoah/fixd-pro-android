@@ -5,7 +5,9 @@
     android:layout_height="match_parent"
     android:background="@drawable/background_grey_blur"
     android:orientation="vertical">
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -81,12 +83,13 @@
                 android:layout_marginTop="@dimen/size_10_dp"
                 android:background="@drawable/white_rectangle"
                 android:hint="@string/modalno"
+
                 android:imeOptions="actionNext"
                 android:padding="@dimen/size_10_dp"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:textColor="@color/lb_tv_white"
                 android:textColorHint="@color/lb_tv_white"
-                android:textCursorDrawable="@color/lb_tv_white"
+                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:textSize="@dimen/size_18_sp" />
 
             <EditText
@@ -98,10 +101,10 @@
                 android:hint="@string/serialno"
                 android:imeOptions="actionNext"
                 android:padding="@dimen/size_10_dp"
-                android:singleLine="false"
+                android:singleLine="true"
                 android:textColor="@color/lb_tv_white"
                 android:textColorHint="@color/lb_tv_white"
-                android:textCursorDrawable="@color/lb_tv_white"
+                android:textCursorDrawable="@drawable/cursor_drawable"
                 android:textSize="@dimen/size_18_sp" />
 
         </LinearLayout>
@@ -120,15 +123,15 @@
             android:background="@drawable/white_rectangle"
             android:gravity="top"
             android:hint="@string/descriptionofwork"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:padding="@dimen/size_10_dp"
             android:singleLine="false"
             android:textColor="@color/lb_tv_white"
             android:textColorHint="@color/lb_tv_white"
-            android:textCursorDrawable="@color/lb_tv_white"
+            android:textCursorDrawable="@drawable/cursor_drawable"
             android:textSize="@dimen/size_18_sp" />
 
 
     </LinearLayout>
-
+    </ScrollView>
 </LinearLayout>

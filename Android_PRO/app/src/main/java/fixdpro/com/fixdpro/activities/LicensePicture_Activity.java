@@ -21,19 +21,28 @@ import android.os.Environment;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import fixdpro.com.fixdpro.FixdProApplication;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.imageupload.ImageHelper2;
+import fixdpro.com.fixdpro.utilites.chat_utils.ImageUtils;
+import fixdpro.com.fixdpro.utilites.chat_utils.SchemeType;
+import fixdpro.com.fixdpro.utilites.chat_utils.StorageUtils;
+import fixdpro.com.fixdpro.utilites.image_compressor.SiliCompressor;
 
 public class LicensePicture_Activity extends AppCompatActivity {
     Context _context = LicensePicture_Activity.this;
@@ -61,7 +70,9 @@ public class LicensePicture_Activity extends AppCompatActivity {
     boolean isUser = false;
     boolean isDriver = false;
     Uri uriUser,uriDriver;
-
+    private static final String CAMERA_FILE_NAME_PREFIX = "FIXD_";
+    File photoFile ;
+    File photoFileDriver ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +110,7 @@ public class LicensePicture_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isUser = true;
+                isDriver = false;
                 if (Build.VERSION.SDK_INT >= 23) {
                     insertDummyContactWrapper();
                 } else {
@@ -111,10 +123,11 @@ public class LicensePicture_Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 isDriver = true;
+                isUser = false;
                 if (Build.VERSION.SDK_INT >= 23) {
                     insertDummyContactWrapper();
                 } else {
-                    showCamraGalleryPopUpDriver();
+                    showCamraGalleryPopUp();
                 }
 
             }
@@ -274,10 +287,30 @@ public class LicensePicture_Activity extends AppCompatActivity {
         });
         dialog.show();
     }
-
+    private static String getTemporaryCameraFileName() {
+        return CAMERA_FILE_NAME_PREFIX + System.currentTimeMillis() + ".jpg";
+    }
+    public static File getTemporaryCameraFile() {
+        File storageDir = StorageUtils.getAppExternalDataDirectoryFile();
+        File file = new File(storageDir, getTemporaryCameraFileName());
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
     private void openCamera() {
-        Intent camraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(camraIntent, CAMERA_REQUEST);
+//        Intent camraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getPackageManager()) == null) {
+            return;
+        }
+
+        photoFile = getTemporaryCameraFile();
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+        startActivityForResult(intent, CAMERA_REQUEST);;
+//        startActivityForResult(camraIntent, CAMERA_REQUEST);
     }
 
     private void openGallery() {
@@ -303,80 +336,153 @@ public class LicensePicture_Activity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (data != null) {
-            if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && isUser) {
-                isUser = false;
+            String imageFilePath = null;
+            Uri uri = data.getData();
+            String uriScheme = uri.getScheme();
+            boolean isFromGoogleApp = uri.toString().startsWith(SchemeType.SCHEME_CONTENT_GOOGLE);
+            boolean isKitKatAndUpper = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
 
-                // Getting Data as a bitmap
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // SettingUp bitmap to imageview
-                imgProfilePic.setImageBitmap(photo);
-                // Getting Uri of intent
-                uriUser = getImagePathURI(_context, photo);
-                Log.e(TAG,"Uri+++++++++++++++"+uriUser);
-                // Getting Image Actual Path
-                if (Build.VERSION.SDK_INT >= 23){
-//                    selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context, uriUser);
-                    selectedImagePathUser = ImageHelper2.compressImage(uriUser,_context);
-                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-                }else{
-                    selectedImagePathUser = getPath(_context, uriUser);
-                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-                }
-            } else if (requestCode == CAMERA_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
-                isDriver = false;
-                // Getting Data as a bitmap
-                Bitmap photo = (Bitmap) data.getExtras().get("data");
-                // SettingUp bitmap to imageview
-                imgAddDriverLiecense.setImageBitmap(photo);
-                // Getting uri of image
-//                Uri uri = data.getData();
-                // Getting Image Actual Path
-                uriDriver = getImagePathURI(_context,photo);
-                if (Build.VERSION.SDK_INT >= 23){
-//                    selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context, uriDriver);
-                    selectedImagePathDriver = ImageHelper2.compressImage(uriDriver,_context);
-                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-                }else{
-                    selectedImagePathDriver = getPath(_context,uriDriver);
-                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-                }
-
-            } else if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && isUser) {
-                isUser = false;
-                // Get the uri from data
-                Uri selectedImageUri = data.getData();
-                if (null != selectedImageUri) {
-                    // Set the image in ImageView
-                    imgProfilePic.setImageURI(selectedImageUri);
-                    if (Build.VERSION.SDK_INT >= 23){
-                        selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context,selectedImageUri);
-                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-                    }else{
-                        // Get the actual path of image from the Uri
-                        selectedImagePathUser = getPathFromURI(selectedImageUri);
+            if (SchemeType.SCHEME_CONTENT.equalsIgnoreCase(uriScheme) && !isFromGoogleApp && !isKitKatAndUpper) {
+                String[] filePathColumn = {MediaStore.Images.Media.DATA};
+                Cursor cursor = FixdProApplication.getInstance().getContentResolver().query(uri, filePathColumn, null, null, null);
+                if (cursor != null) {
+                    if (cursor.getCount() > 0) {
+                        cursor.moveToFirst();
+                        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                        imageFilePath = cursor.getString(columnIndex);
                     }
+                    cursor.close();
                 }
-
-            } else if (requestCode == GALLERY_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
-                isDriver = false;
-                // Get the url from data
-                Uri selectedImageUriDriver = data.getData();
-                if (null != selectedImageUriDriver) {
-                    // Set the image in ImageView
-                    imgAddDriverLiecense.setImageURI(selectedImageUriDriver);
-                    if (Build.VERSION.SDK_INT >= 23){
-                        selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context,selectedImageUriDriver);
-                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-                    }else{
-                        // Get the path from the Uri
-                        selectedImagePathDriver = getPathFromURI(selectedImageUriDriver);
-                    }
-
+            } else if (SchemeType.SCHEME_FILE.equalsIgnoreCase(uriScheme)) {
+                imageFilePath = uri.getPath();
+            } else {
+                try {
+                    imageFilePath = ImageUtils.saveUriToFile(uri);
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
+
+            if (!TextUtils.isEmpty(imageFilePath)) {
+                if (isUser) {
+                    selectedImagePathUser = imageFilePath;
+                    photoFile = new File(selectedImagePathUser);
+                    Uri uri1 = Uri.fromFile(photoFile);
+                    selectedImagePathUser = SiliCompressor.with(this).compress(uri1.toString(), true);
+                    photoFile = new File(selectedImagePathUser);
+
+                    Picasso.with(this).load(Uri.fromFile(photoFile))
+                            .into(imgProfilePic);
+                } else {
+                    selectedImagePathDriver = imageFilePath;
+                    photoFile = new File(selectedImagePathDriver);
+                    Uri uri1 = Uri.fromFile(photoFile);
+                    selectedImagePathDriver = SiliCompressor.with(this).compress(uri1.toString(), true);
+                    photoFile = new File(selectedImagePathDriver);
+
+                    Picasso.with(this).load(Uri.fromFile(photoFile))
+                            .into(imgAddDriverLiecense);
+                }
+
+
+                if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && isUser) {
+//                isUser = false;
+//
+//                // Getting Data as a bitmap
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                // SettingUp bitmap to imageview
+//                imgProfilePic.setImageBitmap(photo);
+//                // Getting Uri of intent
+//                uriUser = getImagePathURI(_context, photo);
+//                Log.e(TAG,"Uri+++++++++++++++"+uriUser);
+//                // Getting Image Actual Path
+//                if (Build.VERSION.SDK_INT >= 23){
+////                    selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context, uriUser);
+//                    selectedImagePathUser = ImageHelper2.compressImage(uriUser,_context);
+//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
+//                }else{
+//                    selectedImagePathUser = getPath(_context, uriUser);
+//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
+//                }
+                } else if (requestCode == CAMERA_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
+//                isDriver = false;
+//                // Getting Data as a bitmap
+//                Bitmap photo = (Bitmap) data.getExtras().get("data");
+//                // SettingUp bitmap to imageview
+//                imgAddDriverLiecense.setImageBitmap(photo);
+//                // Getting uri of image
+////                Uri uri = data.getData();
+//                // Getting Image Actual Path
+//                uriDriver = getImagePathURI(_context,photo);
+//                if (Build.VERSION.SDK_INT >= 23){
+////                    selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context, uriDriver);
+//                    selectedImagePathDriver = ImageHelper2.compressImage(uriDriver,_context);
+//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
+//                }else{
+//                    selectedImagePathDriver = getPath(_context,uriDriver);
+//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
+//                }
+
+                } else if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && isUser) {
+//                isUser = false;
+//                // Get the uri from data
+//                Uri selectedImageUri = data.getData();
+//                if (null != selectedImageUri) {
+//                    // Set the image in ImageView
+//                    imgProfilePic.setImageURI(selectedImageUri);
+//                    if (Build.VERSION.SDK_INT >= 23){
+//                        selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context,selectedImageUri);
+//                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
+//                    }else{
+//                        // Get the actual path of image from the Uri
+//                        selectedImagePathUser = getPathFromURI(selectedImageUri);
+//                    }
+//                }
+
+                } else if (requestCode == GALLERY_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
+//                isDriver = false;
+//                // Get the url from data
+//                Uri selectedImageUriDriver = data.getData();
+//                if (null != selectedImageUriDriver) {
+//                    // Set the image in ImageView
+//                    imgAddDriverLiecense.setImageURI(selectedImageUriDriver);
+//                    if (Build.VERSION.SDK_INT >= 23){
+//                        selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context,selectedImageUriDriver);
+//                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
+//                    }else{
+//                        // Get the path from the Uri
+//                        selectedImagePathDriver = getPathFromURI(selectedImageUriDriver);
+//                    }
+//
+//                }
+                }
+            }
+        }else if (requestCode == CAMERA_REQUEST && isDriver) {
+            selectedImagePathDriver = photoFile.getPath();
+            photoFile = new File(selectedImagePathDriver);
+            Uri uri1 = Uri.fromFile(photoFile);
+            selectedImagePathDriver = SiliCompressor.with(this).compress(uri1.toString(), true);
+            photoFile = new File(selectedImagePathDriver);
+
+
+//            txtTakepic.setVisibility(View.INVISIBLE);
+//            img_Camra.setVisibility(View.INVISIBLE);
+            Picasso.with(this).load(Uri.fromFile(photoFile))
+                    .into(imgAddDriverLiecense);
+        } else if (requestCode == CAMERA_REQUEST && isUser) {
+            selectedImagePathUser = photoFile.getPath();
+            photoFile = new File(selectedImagePathUser);
+            Uri uri2 = Uri.fromFile(photoFile);
+            selectedImagePathUser = SiliCompressor.with(this).compress(uri2.toString(), true);
+            photoFile = new File(selectedImagePathUser);
+
+
+//            txtTakepic.setVisibility(View.INVISIBLE);
+//            img_Camra.setVisibility(View.INVISIBLE);
+            Picasso.with(this).load(Uri.fromFile(photoFile))
+                    .into(imgProfilePic);
         }
     }
-
 
     private String gettingMarshmallowSelectedImagePath(Context context,Uri uri){
         String imgPath = "";
@@ -421,11 +527,12 @@ public class LicensePicture_Activity extends AppCompatActivity {
         if (hasWriteExternalExtewrnalPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        if (isUser) {
-            showCamraGalleryPopUp();
-        } else if (isDriver) {
-            showCamraGalleryPopUpDriver();
-        }
+        showCamraGalleryPopUp();
+//        if (isUser) {
+//            showCamraGalleryPopUp();
+//        } else if (isDriver) {
+//            showCamraGalleryPopUpDriver();
+//        }
 
         if (listPermissionsNeeded.size() > 0) {
             requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CODE_ASK_PERMISSIONS);

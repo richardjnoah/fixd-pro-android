@@ -40,6 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Back"
+                        android:textSize="@dimen/size_18_sp"
                         android:textColor="@android:color/white" />
 
                     <TextView
@@ -49,7 +50,7 @@
                         android:gravity="center"
                         android:text="@string/rating_details"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_20_sp" />
+                        android:textSize="@dimen/size_21_sp" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
 

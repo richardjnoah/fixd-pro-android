@@ -20,7 +20,7 @@
             android:gravity="center"
             android:text="@string/setupcomplete"
             android:padding="@dimen/size_5_dp"
-            android:textSize="@dimen/size_24_sp"
+            android:textSize="@dimen/size_21_sp"
             android:textColor="@color/register_button_text" />
 
         <ImageView

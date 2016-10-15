@@ -10,21 +10,22 @@
         android:layout_height="wrap_content"
         android:background="@drawable/orange_background">
 
+        <ImageView
+            android:id="@+id/img_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/size_10_dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/cross_new" />
+
         <LinearLayout
             android:id="@+id/layout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/img_close"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:padding="@dimen/size_10_dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/cross_new" />
 
             <TextView
                 android:id="@+id/txtAlmostDone"
@@ -36,7 +37,7 @@
                 android:singleLine="true"
                 android:text="@string/almostdone"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_27_sp" />
+                android:textSize="@dimen/size_24_sp" />
         </LinearLayout>
 
         <LinearLayout

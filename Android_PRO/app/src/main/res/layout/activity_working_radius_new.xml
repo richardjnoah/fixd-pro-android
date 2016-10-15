@@ -33,10 +33,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:padding="@dimen/size_14_dp"
+                android:padding="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:text="@string/workingradius"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
 
             <TextView
                 android:id="@+id/txtYourRightsUnder"
@@ -66,7 +67,7 @@
             android:drawableRight="@drawable/drop_arrow"
             android:gravity="left"
             android:hint="Miles"
-            android:padding="@dimen/size_14_dp"
+            android:padding="@dimen/size_10_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
             android:textColorHint="@color/color_grey"

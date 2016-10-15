@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:background="@drawable/background_grey_blur"
         android:orientation="vertical"
-        tools:context="fixdpro.com.fixdpro.fragment.HomeFragment">
+        tools:context="fixtpro.com.fixtpro.fragment.HomeFragment">
 
         <com.google.android.gms.maps.MapView
             android:id="@+id/mapview"
@@ -55,6 +55,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_above="@+id/viewall"
+                android:listSelector="@drawable/selectore_listview"
                 android:divider="@color/register_button_text"
                 android:dividerHeight="1dp" />
             </android.support.v4.widget.SwipeRefreshLayout>
@@ -90,6 +91,7 @@
             android:layout_height="match_parent"
             android:layout_above="@+id/viewall"
             android:layout_marginTop="@dimen/size_5_dp"
+            android:listSelector="@drawable/selectore_listview"
             android:divider="@color/register_button_text"
             android:dividerHeight="1dp"
             android:focusable="false" />

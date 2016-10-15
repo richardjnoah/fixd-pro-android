@@ -130,7 +130,7 @@ public class JobSearchFragment extends Fragment implements View.OnClickListener 
     private void setupToolBar() {
         ((HomeScreenNew) getActivity()).hideRight();
         ((HomeScreenNew) getActivity()).setTitletext("Search Job");
-        ((HomeScreenNew) getActivity()).setLeftToolBarText("Cancel");
+        ((HomeScreenNew) getActivity()).setLeftToolBarText("Back");
     }
 
     @Override

@@ -57,13 +57,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.LocationResponseListener;
@@ -124,10 +122,10 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     RelativeLayout layout_heading ;
     int PERMISSION_ACCESS_FINE_LOCATION, PERMISSION_ACCESS_COARSE_LOCATION;
     final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS_BY_START_JOB_CLASS = 100;
-
+    boolean isJobStarted = false ;
     GPSTracker gpsTracker = null ;
     boolean isnotificationClicked = false;
-
+    GetLocationRecursivelyTask getLocationRecursivelyTask = null ;
     public StartJobFragment() {
         // Required empty public constructor
     }
@@ -552,33 +550,59 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     private void getLocationRecursively(){
 
 //         Getting Trade Skills on App Start
-        new AsyncTask<Void, Void, Void>() {
-            JSONObject jsonObject = null;
+//        new AsyncTask<Void, Void, Void>() {
+//            JSONObject jsonObject = null;
+//
+//            @Override
+//            protected Void doInBackground(Void... params) {
+//                JSONParser jsonParser = new JSONParser();
+//                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getEnrouteParams());
+//                if (jsonObject != null) {
+//                    try {
+//                        String STATUS = jsonObject.getString("STATUS");
+//                        if (STATUS.equals("SUCCESS")) {
+////                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+//                               handler.sendEmptyMessage(3);
+//                        }
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                        handler.sendEmptyMessage(3);
+//                    }
+//
+//                }
+//
+//                return null;
+//            }
+//        }.execute();
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                JSONParser jsonParser = new JSONParser();
-                jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getEnrouteParams());
-                if (jsonObject != null) {
-                    try {
-                        String STATUS = jsonObject.getString("STATUS");
-                        if (STATUS.equals("SUCCESS")) {
+        getLocationRecursivelyTask = new GetLocationRecursivelyTask();
+        getLocationRecursivelyTask.execute();
+    }
+    private class GetLocationRecursivelyTask extends AsyncTask<Void, Void, Void> {
+
+        JSONObject jsonObject = null;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            JSONParser jsonParser = new JSONParser();
+            jsonObject = jsonParser.makeHttpRequest(Constants.BASE_URL, "POST", getEnrouteParams());
+            if (jsonObject != null) {
+                try {
+                    String STATUS = jsonObject.getString("STATUS");
+                    if (STATUS.equals("SUCCESS")) {
 //                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
-                               handler.sendEmptyMessage(3);
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
                         handler.sendEmptyMessage(3);
                     }
-
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    handler.sendEmptyMessage(3);
                 }
 
-                return null;
             }
-        }.execute();
-    }
 
-
+            return null;
+        }
+    };
     private HashMap<String,String> getEnrouteParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api", "update");
@@ -603,31 +627,31 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //        showStartJobDialog();
 //        return;
         //check time
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
-            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
-            Date startDate = formatter.parse(requestedDateStart);
-            Date endDate = formatter.parse(requestDateEnd);
-            Date currentDate = formatter.parse( formatter.format(new Date()));
-            Log.e("",""+startDate);
-            Log.e("",""+endDate);
-            Log.e("",""+currentDate);
-            if (startDate.before(currentDate) && currentDate.before(endDate)){
-                if (distance < 61){
+//        try {
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+//
+//            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
+//            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
+//            Date startDate = formatter.parse(requestedDateStart);
+//            Date endDate = formatter.parse(requestDateEnd);
+//            Date currentDate = formatter.parse( formatter.format(new Date()));
+//            Log.e("",""+startDate);
+//            Log.e("",""+endDate);
+//            Log.e("",""+currentDate);
+//            if (startDate.before(currentDate) && currentDate.before(endDate)){
+//                if (distance < 61){
                     showStartJobDialog();
-                }else {
-                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
-                }
-            }else {
-                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
-            }
-
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//                }else {
+//                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
+//                }
+//            }else {
+//                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
+//            }
+//
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 //        if ((requestedDateStart < currentTime) && (currentTime  < requestDateEnd) ){
 //            if (distance < 61){
 ////        if (true)
@@ -655,6 +679,10 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             public void onClick(View v) {
                 dialog.dismiss();
 //                    handler.sendEmptyMessage(2);
+                if (getLocationRecursivelyTask != null ){
+                    getLocationRecursivelyTask.cancel(false);
+                }
+                    isJobStarted = true;
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerStartJob, getActivity(), "Loading");
                     responseAsync.execute(getRequestParams());
 
@@ -704,6 +732,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             super.handleMessage(msg);
             switch (msg.what){
                 case 2:{
+
                     fragment = new InstallorRepairFragment();
                     ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
                     break;
@@ -725,12 +754,15 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                     if (checkIfProArrived()){
                         showStartJobDialog();
                     }else {
-                        new Handler().postDelayed(new Runnable() {
-                            @Override
-                            public void run() {
-                                getLocationRecursively();
-                            }
-                        }, 10000);
+                        if (!isJobStarted){
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getLocationRecursively();
+                                }
+                            }, 60000);
+                        }
+
                     }
 
                     break;
@@ -861,14 +893,20 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 txtProblem.setText(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name() + " " + modal.getJob_appliances_arrlist().get(i).getJob_appliances_service_type() + " - " + modal.getJob_appliances_arrlist().get(i).getJob_appliances_appliance_description());
                 final ImageView imgType = (ImageView) child.findViewById(R.id.imgType);
                 txtTitle.setText(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name() + "\n" + modal.getJob_appliances_arrlist().get(i).getJob_appliances_service_type());
+
+                if (Utilities.getApplianceImageByName(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name()) != -1){
+                    imgType.setImageResource(Utilities.getApplianceImageByName(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name()));
+                }else{
+                    imageLoader.loadImage(modal.getJob_appliances_arrlist().get(i).getImg_original(), defaultOptions, new SimpleImageLoadingListener() {
+                        @Override
+                        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                            // Do whatever you want with Bitmap
+                            imgType.setImageBitmap(loadedImage);
+                        }
+                    });
+                }
                 scrollViewLatout.addView(child);
-                imageLoader.loadImage(modal.getJob_appliances_arrlist().get(i).getImg_original(), defaultOptions, new SimpleImageLoadingListener() {
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        // Do whatever you want with Bitmap
-                        imgType.setImageBitmap(loadedImage);
-                    }
-                });
+
             }
         }
     }

@@ -42,12 +42,16 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/txtTotal"
+                            android:textSize="@dimen/size_14_sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="$501.12"
+                            android:text=""
                             android:textColor="@color/orange_signin_back" />
 
                         <TextView
+                            android:id="@+id/txtTitle"
+                            android:textSize="@dimen/size_14_sp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Washer Install"
@@ -61,9 +65,10 @@
                         android:layout_weight="3">
 
                         <TextView
+                            android:textSize="@dimen/size_12_sp"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:gravity="center"
+                            android:gravity="left"
                             android:text="@string/acknowledge" />
                     </LinearLayout>
                 </LinearLayout>

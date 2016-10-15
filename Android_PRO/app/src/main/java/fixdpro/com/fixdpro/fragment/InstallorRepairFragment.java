@@ -391,11 +391,23 @@ public class InstallorRepairFragment extends Fragment {
 
                                         if (!jsonObject.isNull("job_appliance_repair_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_repair_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            if (!jsonObjectRepairType.isNull("repair_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
+                                                    }
+                                                }
+                                                installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            }
+
                                         }
 
                                         if (!jsonObject.isNull("job_appliance_repair_info")){
@@ -413,11 +425,24 @@ public class InstallorRepairFragment extends Fragment {
 
                                         if (!jsonObject.isNull("job_appliance_install_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_install_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            if (!jsonObjectRepairType.isNull("install_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
+                                                    }
+                                                }
+                                                installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            }
+
+
 
                                         }
 
@@ -434,12 +459,26 @@ public class InstallorRepairFragment extends Fragment {
                                     }else {
                                     // for maintain
                                         if (!jsonObject.isNull("job_appliance_maintain_types")){
+
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_maintain_types");
-                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
-                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-//                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("cost"));
-                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                            installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            if (!jsonObjectRepairType.isNull("maintain_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("maintain_types");
+                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                        }
+                                                    }
+                                                }
+                                                installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            }
+
+
 
                                         }
 
@@ -461,6 +500,7 @@ public class InstallorRepairFragment extends Fragment {
                                         if (!jsonObject.isNull("serial_number"))
                                         installOrRepairModal.getEquipmentInfo().setSerial_number(jsonObject.getString("serial_number"));
                                         installOrRepairModal.getEquipmentInfo().setDescription(jsonObject.getString("description"));
+                                        installOrRepairModal.getEquipmentInfo().setBrand_name(jsonObject.getString("brand_name"));
                                         if (!jsonObject.isNull("image")){
                                             JSONObject image =  jsonObject.getJSONObject("image");
                                             if (!image.isNull("original")){
@@ -777,7 +817,7 @@ public class InstallorRepairFragment extends Fragment {
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // set the custom dialog components - text, image and button
         ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
-        ImageView img_Finish = (ImageView)dialog.findViewById(R.id.img_Finish);
+        TextView img_Finish = (TextView)dialog.findViewById(R.id.img_Finish);
         AvailableJobModal availableJobModal = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
         TextView txtUserName = (TextView)dialog.findViewById(R.id.txtUserName);
         txtUserName.setText(availableJobModal.getContact_name());
@@ -804,6 +844,7 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 start_going_to_get_parts_process = false ;
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerFinishJob, getActivity(), "Loading");
                 responseAsync.execute(getRequestParamsFinishJob());

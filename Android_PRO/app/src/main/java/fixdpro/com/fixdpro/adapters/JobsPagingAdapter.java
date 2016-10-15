@@ -115,15 +115,19 @@ public class JobsPagingAdapter extends BaseAdapter {
             }
 
             String STR_appliance_types_name_and_service_type = "";
-            for(int j = 0; j < tempValues.getJob_appliances_arrlist().size(); j++)
-            {
-                if (tempValues.getJob_appliances_arrlist().get(j).getAppliance_type_name().equalsIgnoreCase("I don't know")){
-                    STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type()+" ";
-                }else {
-                    STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getAppliance_type_name()+" "+tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type()+" ";
+            if (tempValues.getJob_appliances_arrlist().size() == 1){
+                for(int j = 0; j < tempValues.getJob_appliances_arrlist().size(); j++)
+                {
+                    STR_appliance_types_name_and_service_type = tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type();
                 }
-
+            }else {
+                for(int j = 0; j < tempValues.getJob_appliances_arrlist().size() - 1; j++)
+                {
+                    STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type() +"\n";
+                }
+                STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getService_name() + " " +tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getJob_appliances_service_type();
             }
+
             holder.appliance_types_name_and_service_type.setText(STR_appliance_types_name_and_service_type);
             STR_appliance_types_name_and_service_type = "";
             if (position == list.size() - 1){

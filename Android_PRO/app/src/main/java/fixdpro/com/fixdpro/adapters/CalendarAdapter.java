@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.DateFormat;
@@ -92,7 +93,7 @@ public class CalendarAdapter extends BaseAdapter {
         ViewHolder holder = null;
 //        View convertView = view;
         TextView dayView;
-        TextView event_indicator;
+        LinearLayout event_indicator;
         if (convertView == null) { // if it's not recycled, initialize some
             // attributes
 
@@ -108,7 +109,7 @@ public class CalendarAdapter extends BaseAdapter {
         }
 
         dayView = (TextView) convertView.findViewById(R.id.date);
-        event_indicator = (TextView) convertView.findViewById(R.id.event_indicator);
+        event_indicator = (LinearLayout) convertView.findViewById(R.id.event_indicator);
 
         String[] separatedTime = day_string.get(position).split("-");
 
@@ -176,16 +177,16 @@ public class CalendarAdapter extends BaseAdapter {
             if(previousView.getTag().equals("1")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#fc7506"));
-                TextView indicator = (TextView)previousView.findViewById(R.id.event_indicator);
-                indicator.setTextColor(Color.parseColor("#fc7506"));
+                LinearLayout indicator = (LinearLayout)previousView.findViewById(R.id.event_indicator);
+                indicator.setBackgroundColor(Color.parseColor("#fc7506"));
             }else if(previousView.getTag().equals("2")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#fc7506"));
             }else if(previousView.getTag().equals("3")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#ffffff"));
-                TextView indicator = (TextView)previousView.findViewById(R.id.event_indicator);
-                indicator.setTextColor(Color.parseColor("#fc7506"));
+                LinearLayout indicator = (LinearLayout)previousView.findViewById(R.id.event_indicator);
+                indicator.setBackgroundColor(Color.parseColor("#fc7506"));
             }
             else if(previousView.getTag().equals("4")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
@@ -203,9 +204,9 @@ public class CalendarAdapter extends BaseAdapter {
         int len=day_string.size();
         if (len>pos) {
             previousView = view;
-            TextView txtIndicator = (TextView)view.findViewById(R.id.event_indicator);
+            LinearLayout txtIndicator = (LinearLayout)view.findViewById(R.id.event_indicator);
             TextView txtDate = (TextView)view.findViewById(R.id.date);
-            txtIndicator.setTextColor(Color.parseColor("#ffffff"));
+            txtIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
             txtDate.setTextColor(Color.parseColor("#ffffff"));
             if (day_string.get(pos).equals(curentDateString) && hasEvent) {
                 previousView.setTag("1");
@@ -286,7 +287,7 @@ public class CalendarAdapter extends BaseAdapter {
     }
 
 
-    public void setEventView(View v,int pos,TextView txt){
+    public void setEventView(View v,int pos,LinearLayout txt){
 
         int len=CalendarCollection.date_collection_arr.size();
         for (int i = 0; i < len; i++) {
@@ -305,7 +306,7 @@ public class CalendarAdapter extends BaseAdapter {
 //                    txt.setTextColor(Color.WHITE);
                 }else {
 //                    return  false;
-                    txt.setVisibility(View.GONE);
+                    txt.setVisibility(View.INVISIBLE);
 
 //                    txt.setTag(pos);
                 }

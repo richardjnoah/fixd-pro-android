@@ -33,7 +33,7 @@
                 android:padding="@dimen/size_14_dp"
                 android:text="@string/tradeskills"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_21_sp" />
         </LinearLayout>
     </RelativeLayout>
 
