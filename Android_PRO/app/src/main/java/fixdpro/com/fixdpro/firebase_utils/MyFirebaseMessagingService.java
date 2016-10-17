@@ -10,6 +10,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
@@ -147,7 +149,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
             else{
-
+                Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
                 NotificationManager notificationManager = (NotificationManager)getSystemService(this.NOTIFICATION_SERVICE);
                 Date now = new Date();
                 long uniqueId = now.getTime();//use date to generate an unique id to differentiate the notifications.
@@ -163,6 +165,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                 builder.setContentIntent(contentIntent)
                         .setSmallIcon(R.mipmap.ic_launcher)
+                        .setLargeIcon(largeIcon)
                         .setAutoCancel(true)
                         .setSound(uri)
                         .setContentTitle("Fixd Pro")

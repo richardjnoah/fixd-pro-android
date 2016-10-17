@@ -167,7 +167,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
             model.setTechnician_lname(assignTechModal.getLasttName());
             model.setTechnician_avg_rating(assignTechModal.getRating());
             model.setTechnician_scheduled_job_count(assignTechModal.getJobSchedule());
-            model.setId(assignTechModal.getTechId());
+            model.setTechnician_user_id(assignTechModal.getTech_User_id());
             setTechView();
         }
     }
@@ -182,16 +182,16 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                     img_Pic.setImageBitmap(loadedImage);
                 }
             });
-            txtUserName.setText(model.getTechnician_fname() + " " + model.getTechnician_lname());
-            if (_prefs.getString(Preferences.ROLE,"").equals("pro")){
-                custom_ratingbar.setClickable(false);
-                if (model.getTechnician_avg_rating().length() > 0)
-                    custom_ratingbar.setStar((int) Float.parseFloat(model.getTechnician_avg_rating()), true);
-                else
-                    custom_ratingbar.setStar(0, true);
-            }
-            txtJobDetails.setText(model.getTechnician_fname() + " has " + model.getTechnician_scheduled_job_count() + " jobs scheduled for this time");
         }
+        txtUserName.setText(model.getTechnician_fname() + " " + model.getTechnician_lname());
+        if (_prefs.getString(Preferences.ROLE,"").equals("pro")){
+            custom_ratingbar.setClickable(false);
+            if (model.getTechnician_avg_rating().length() > 0)
+                custom_ratingbar.setStar((int) Float.parseFloat(model.getTechnician_avg_rating()), true);
+            else
+                custom_ratingbar.setStar(0, true);
+        }
+        txtJobDetails.setText(model.getTechnician_fname() + " has " + model.getCurrent_technician_scheduled_job_count() + " jobs scheduled for this time");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -399,6 +399,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                         if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
                             showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
                         }else{
+                            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
                             enrouteJob();
                         }
                     }else {

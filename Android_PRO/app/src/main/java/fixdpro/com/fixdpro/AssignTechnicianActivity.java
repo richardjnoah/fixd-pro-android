@@ -75,8 +75,6 @@ public class AssignTechnicianActivity extends AppCompatActivity {
     ResponseListener getTechniciansListener = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
-            Log.e("", "" + Response.toString());
-            Log.e("", "Response" + Response.toString());
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
@@ -96,7 +94,7 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                             modal.setImage(profile_image.getString("original"));
                         }
                         modal.setRating(jsonObject.getString("avg_rating"));
-                        modal.setJobSchedule(jsonObject.getString("scheduled_jobs_count"));
+                        modal.setJobSchedule(jsonObject.getString("currently_scheduled"));
                         modalList.add(modal);
                     }
                     handler.sendEmptyMessage(0);

@@ -40,6 +40,7 @@
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
+        android:layout_above="@+id/txtDispute"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -90,13 +91,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:background="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -127,7 +128,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_marginTop="@dimen/size_5_dp"
                     android:gravity="center"
                     android:padding="@dimen/size_5_dp"
                     android:singleLine="true"
@@ -407,4 +407,17 @@
 
         </LinearLayout>
     </ScrollView>
+    <TextView
+        android:id="@+id/txtDispute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/size_10_dp"
+        android:background="@color/orange_signin_back"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:singleLine="false"
+        android:text="Dispute"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_20_sp"
+         />
 </RelativeLayout>

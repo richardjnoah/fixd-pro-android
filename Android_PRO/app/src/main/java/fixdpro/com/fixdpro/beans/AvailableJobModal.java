@@ -128,10 +128,18 @@ public class AvailableJobModal implements Serializable{
     String technician_pickup_jobs = "";
     String technician_profile_image = "";
     String technician_avg_rating  = "";
+    String current_technician_scheduled_job_count  = "";
     String technician_scheduled_job_count  = "";
     String technician_completed_job_count  = "";
 
-    // job_line_items
+    public String getCurrent_technician_scheduled_job_count() {
+        return current_technician_scheduled_job_count;
+    }
+
+    public void setCurrent_technician_scheduled_job_count(String current_technician_scheduled_job_count) {
+        this.current_technician_scheduled_job_count = current_technician_scheduled_job_count;
+    }
+// job_line_items
 
     String job_line_items_tax = "0";
     String job_line_items_sub_total = "0";

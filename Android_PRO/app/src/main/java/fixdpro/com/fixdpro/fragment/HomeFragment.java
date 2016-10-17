@@ -68,7 +68,6 @@ import fixdpro.com.fixdpro.adapters.MyInfoWindowAdapter;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
-import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.utilites.CheckIfUserVarified;
@@ -91,8 +90,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     ArrayList<AvailableJobModal> availablejoblist, schedulejoblist;
 
     RelativeLayout scheduleLayout;
-    String nextScheduled = "null";
-    String nextAvaileble = "null";
+//    String nextScheduled = "null";
+//    String nextAvaileble = "null";
     public static boolean isStateAvailable =  true ;
     String error_message =  "";
     private Context _context = null ;
@@ -121,11 +120,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         _context = getActivity();
-        singleton = Singleton.getInstance();
-        this.nextScheduled =  singleton.nextSchduled;
-        this.nextAvaileble =  singleton.nextAvailable;
-        this.pageAvaileble = singleton.pageAvaileble;
-        this.pageSheduled = singleton.pageSheduled;
         if (getArguments() != null){
             Bundle b = getArguments();
             if (b.containsKey("switch_tab"))
@@ -142,6 +136,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+        singleton = Singleton.getInstance();
+//        this.nextScheduled =  singleton.nextSchduled;
+//        this.nextAvaileble =  singleton.nextAvailable;
+//        this.pageAvaileble = singleton.pageAvaileble;
+//        this.pageSheduled = singleton.pageSheduled;
         _prefs = Utilities.getSharedPreferences(_context);
         role = _prefs.getString(Preferences.ROLE, "pro");
         setWidgets(rootView);
@@ -189,10 +188,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 }
 
                 switch_tab = "Available";
-                AvailableJobModal job_detail = new AvailableJobModal();
-                job_detail = availablejoblist.get(position);
+//                AvailableJobModal job_detail = new AvailableJobModal();
+//                job_detail = availablejoblist.get(position);
                 Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
-                i.putExtra("JOB_DETAIL", job_detail);
+                i.putExtra("JOB_DETAIL", availablejoblist.get(position));
                 startActivity(i);
             }
         });
@@ -206,7 +205,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 fragment = new ScheduledListDetailsFragment();
 //                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("modal", job_detail);
+                bundle.putSerializable("modal", schedulejoblist.get(position));
                 ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
             }
         });
@@ -238,34 +237,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
         return rootView;
     }
-
+    private void getNextScheduled(){
+        if (!singleton.nextSchduled.equals("null")) {
+            pageSheduled = Integer.parseInt(singleton.nextSchduled);
+            GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew (Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
+            responseAsync.execute(getRequestParams("Scheduled"));
+        }
+    }
     HandlePagingResponse pagingResponseScheduled = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
-            if (!nextScheduled.equals("null")) {
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-//                        progressView.setVisibility(View.VISIBLE);
-                    }
-                });
-             pageSheduled = Integer.parseInt(nextScheduled);
-            GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
-            responseAsync.execute(getRequestParams("Scheduled"));
-            }
+           getNextScheduled();
         }
     };HandlePagingResponse pagingResponseAvailable = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
-            if (!nextAvaileble.equals("null")) {
+            if (!singleton.nextAvailable.equals("null")) {
                 getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
 //                        progressView.setVisibility(View.VISIBLE);
                     }
                 });
-             pageAvaileble = Integer.parseInt(nextAvaileble);
-            GetApiResponseAsyncNoProgress responseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
+             pageAvaileble = Integer.parseInt(singleton.nextAvailable);
+            GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
             responseAsync.execute(getRequestParams("Open"));
             }
         }
@@ -545,7 +540,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextAvaileble = pagination.getString("next");
+                    singleton.nextAvailable = pagination.getString("next");
                     for(int i = 0; i < results.length(); i++){
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -731,7 +726,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextScheduled = pagination.getString("next");
+                    singleton.nextSchduled = pagination.getString("next");
                     for(int i = 0; i < results.length(); i++){
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -829,6 +824,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                             model.setTechnician_lname(technician_object.getString("last_name"));
                             model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
                             model.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            model.setCurrent_technician_scheduled_job_count("1");
                             model.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
                             model.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
                             if (!technician_object.isNull("profile_image")){
@@ -910,7 +906,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             hashMap.put("api","read");
             if (!Status.equals("Scheduled")){
                 hashMap.put("where[status]", Status);
-
 
             }
             else{

@@ -24,7 +24,7 @@ public class GetApiResponseAsync extends AsyncTask<HashMap<String, String>, Void
     public GetApiResponseAsync(String Method, ResponseListener listener,
                               Activity activity,String Text) {
         this.Method = Method;
-        this.listener = listener;
+        this.listener  = listener;
         this.Text = Text;
         progressDialog = new Dialog(activity);
         progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

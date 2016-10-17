@@ -95,6 +95,7 @@ public class RatingFragment extends Fragment {
     }
 
 
+
     ResponseListener responseListenerOverview = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {

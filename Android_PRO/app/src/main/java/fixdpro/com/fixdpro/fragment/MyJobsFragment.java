@@ -63,9 +63,9 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
     ArrayList<AvailableJobModal> availablejoblist = null;
     ArrayList<AvailableJobModal> schedulejoblist  = null;
     ArrayList<AvailableJobModal> completedjoblist  = null;
-    String nextAvailable = "null";
-    String nextScheduled = "null";
-    String nextComplete = "null";
+//    String nextAvailable = "null";
+//    String nextScheduled = "null";
+//    String nextComplete = "null";
     String error_message =  "";
     String MODE = "Complete" ;
     Context _context ;
@@ -87,9 +87,9 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 //        setHasOptionsMenu(true);
         _context = getActivity();
         singleton = Singleton.getInstance();
-        this.nextScheduled =  singleton.nextSchduled;
-        this.nextAvailable =  singleton.nextAvailable;
-        this.nextComplete  =  singleton.nextCompleted;
+//        this.nextScheduled =  singleton.nextSchduled;
+//        this.nextAvailable =  singleton.nextAvailable;
+//        this.nextComplete  =  singleton.nextCompleted;
         this.pageAvaileble = singleton.pageAvaileble;
         this.pageAvaileble = singleton.pageSheduled;
         this.pagecomplted = singleton.compltedpage;
@@ -337,7 +337,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                 {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextAvailable = pagination.getString("next");
+                    singleton.nextAvailable = pagination.getString("next");
                     for(int i = 0; i < results.length(); i++){
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -500,8 +500,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
     HandlePagingResponse handlePagingResponseAvailable = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
-            if (!nextAvailable.equals("null")) {
-                pageAvaileble = Integer.parseInt(nextAvailable);
+            if (!singleton.nextAvailable.equals("null")) {
+                pageAvaileble = Integer.parseInt(singleton.nextAvailable);
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerAvailable, getActivity(), "Loading");
                 responseAsync.execute(getRequestParams("Open"));
             }
@@ -510,8 +510,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
     HandlePagingResponse handlePagingResponseScheduled = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
-            if (!nextScheduled.equals("null")) {
-                pageSheduled = Integer.parseInt(nextScheduled);
+            if (!singleton.nextSchduled.equals("null")) {
+                pageSheduled = Integer.parseInt(singleton.nextSchduled);
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
                 responseAsync.execute(getRequestParams("Scheduled"));
                 }
@@ -520,8 +520,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
     HandlePagingResponse handlePagingResponseCompleted = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
-            if (!nextComplete.equals("null")) {
-                pagecomplted = Integer.parseInt(nextComplete);
+            if (!singleton.nextCompleted.equals("null")) {
+                pagecomplted = Integer.parseInt(singleton.nextCompleted);
                 GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerCompleted, getActivity(), "Loading");
                 responseAsync.execute(getRequestParams("Complete"));
             }
@@ -641,7 +641,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                 {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextScheduled = pagination.getString("next");
+                    singleton.nextSchduled = pagination.getString("next");
                     for(int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -825,7 +825,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                 {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    nextComplete = pagination.getString("next");
+                    singleton.nextCompleted = pagination.getString("next");
                     for(int i = 0; i < results.length(); i++){
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();

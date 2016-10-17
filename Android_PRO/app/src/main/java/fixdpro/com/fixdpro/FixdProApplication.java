@@ -38,7 +38,7 @@ public class FixdProApplication  extends Application {
     ArrayList<AvailableJobModal> completedjoblist = null;
     public static String SelectedAvailableJobId = "";
     private int compltedpage = 1;
-    String next = "null";
+//    String next = "null";
     Singleton singleton = null;
     public static final String APP_ID = "36609";
     public static final String AUTH_KEY = "MQmPJ49Qpdy4wdU";
@@ -56,10 +56,10 @@ public class FixdProApplication  extends Application {
         super.onCreate();
         instance = this;
         singleton = Singleton.getInstance();
-
+        singleton.doLogout();
         completedjoblist = singleton.getCompletedjoblist();
         schedulejoblist = singleton.getSchedulejoblist();;
-        next = singleton.nextCompleted;
+
 
         // Initialise QuickBlox SDK
         //
@@ -120,9 +120,11 @@ public class FixdProApplication  extends Application {
                     {
                         JSONArray results = jsonObject.getJSONObject("RESPONSE").getJSONArray("results");
                         JSONObject pagination = jsonObject.getJSONObject("RESPONSE").getJSONObject("pagination");
-//                        nextScheduled = pagination.getString("next");
+                        singleton.nextSchduled = pagination.getString("next");
+                        if (!singleton.nextSchduled.equals("null"))
+                            singleton.pageSheduled = Integer.parseInt(singleton.nextSchduled);
 //                        next = pagination.getString("next");
-                        Singleton.getInstance().setNextSchduled(pagination.getString("next"));
+                        Singleton.getInstance().setNextSchduled(singleton.nextSchduled);
                         for(int i = 0; i < results.length(); i++){
                             JSONObject obj = results.getJSONObject(i);
                             AvailableJobModal model = new AvailableJobModal();
@@ -218,6 +220,7 @@ public class FixdProApplication  extends Application {
                                 model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
                                 model.setTechnician_avg_rating(technician_object.getString("avg_rating"));
                                 model.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                                model.setCurrent_technician_scheduled_job_count("1");
                                 model.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
                                 if (!technician_object.isNull("profile_image")){
                                     JSONObject object_profile_image  = technician_object.getJSONObject("profile_image");
@@ -389,16 +392,15 @@ public class FixdProApplication  extends Application {
         HashMap<String,String> hashMap = new HashMap<String,String>();
 
             hashMap.put("api","read");
-            hashMap.put("where[status]", "Scheduled");
-        hashMap.put("object","jobs");
+            hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
+            hashMap.put("object","jobs");
         if (!_prefs.getString(Preferences.ROLE, "pro").equals("pro"))
             hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         else
             hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
 
-            hashMap.put("page", 1+"");
-
+        hashMap.put("page", singleton.pageSheduled+"");
         hashMap.put("per_page", "15");
         hashMap.put("order_by", "date_time_combined");
         hashMap.put("order", "ASC");
@@ -412,8 +414,9 @@ public class FixdProApplication  extends Application {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
-                    next = pagination.getString("next");
-                    Singleton.getInstance().setNextCompleted(next);
+                    singleton.nextCompleted = pagination.getString("next");
+                    if (!singleton.nextCompleted.equals("null"))
+                        singleton.compltedpage = Integer.parseInt(singleton.nextCompleted);
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -569,10 +572,7 @@ public class FixdProApplication  extends Application {
                         }
                         completedjoblist.add(model);
                     }
-                    Singleton.getInstance().setCompletedjoblist(completedjoblist);
-                    if (!next.equals("null")) {
-                        Singleton.getInstance().setNextSchduled(Integer.parseInt(next) + "");
-                    }
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

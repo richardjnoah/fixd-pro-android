@@ -102,7 +102,11 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
             case R.id.feedback:
                 Intent feedbackemailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
                         "mailto", "feedback@fixdrepair.com", null));
-                feedbackemailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fixd-Pro App Feedback(Ver: 1.0)");
+                try {
+                    feedbackemailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fixd-Pro App Feedback(Ver:"+ getPackageManager().getPackageInfo(getPackageName(), 0).versionName+")");
+                } catch (PackageManager.NameNotFoundException e) {
+                    e.printStackTrace();
+                }
                 startActivity(Intent.createChooser(feedbackemailIntent, "Send email..."));
                 break;
         }

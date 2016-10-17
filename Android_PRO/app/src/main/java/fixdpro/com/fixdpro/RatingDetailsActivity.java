@@ -1,8 +1,11 @@
 package fixdpro.com.fixdpro;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -21,8 +24,10 @@ public class RatingDetailsActivity extends AppCompatActivity {
     RatingListModal ratingListModal = null ;
     RatingBarView custom_ratingbar,customrating_tech ;
     public TextView txtKnowlageable,txtCourteous,txtAppearance;;
-    TextView txtToolbar,txtJobId,txtUserName,txtAddress,txtDateTime,txtArrivalTime,txtCompleteTime,txtTechName,txtDetailss;
+    TextView txtDispute,txtToolbar,txtJobId,txtUserName,txtAddress,txtDateTime,txtArrivalTime,txtCompleteTime,txtTechName,txtDetailss;
     Typeface fontfamily ;
+    String versionName = "";
+    int versionCode = 0;
     fixdpro.com.fixdpro.views.CircularImageView circleImage;
 
     @Override
@@ -37,6 +42,25 @@ public class RatingDetailsActivity extends AppCompatActivity {
             ratingListModal = (RatingListModal)getIntent().getSerializableExtra("RatingObject");
             setValues();
         }
+
+        try {
+             versionCode = getPackageManager().getPackageInfo(getPackageName(), 0).versionCode;
+             versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        txtDispute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent feedbackemailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                        "mailto", "dispute@fixdrepair.com", null));
+                feedbackemailIntent.putExtra(Intent.EXTRA_SUBJECT, "Fixd-Pro App Dispute (Ver : "+versionName + "), JobID : "+ ratingListModal.getJob_id());
+                startActivity(Intent.createChooser(feedbackemailIntent, "Send email."));
+            }
+        });
     }
 
     private void setToolbar() {
@@ -63,6 +87,7 @@ public class RatingDetailsActivity extends AppCompatActivity {
         customrating_tech = (RatingBarView)findViewById(R.id.customrating_tech);
         customrating_tech.setClickable(false);
 
+        txtDispute = (TextView)findViewById(R.id.txtDispute);
         txtJobId = (TextView)findViewById(R.id.txtJobId);
         txtUserName = (TextView)findViewById(R.id.txtUserName);
         txtAddress = (TextView)findViewById(R.id.txtAddress);

@@ -49,12 +49,13 @@
             <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/swipe_refresh_layout_schedule"
                 android:layout_width="match_parent"
+                android:layout_above="@+id/viewall"
                 android:layout_height="wrap_content">
             <ListView
                 android:id="@+id/scheduleJob_list_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_above="@+id/viewall"
+
                 android:listSelector="@drawable/selectore_listview"
                 android:divider="@color/register_button_text"
                 android:dividerHeight="1dp" />
