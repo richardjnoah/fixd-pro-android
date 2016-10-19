@@ -2,12 +2,13 @@ package fixdpro.com.fixdpro.activities;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -22,11 +23,9 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import fixdpro.com.fixdpro.R;
-import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.utilites.CheckAlertDialog;
-import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
@@ -120,8 +119,12 @@ public class SignUp_Account_Activity_Edit extends AppCompatActivity {
                 } else if (YearsExp.equals("") &&  !_prefs.getString(Preferences.ROLE,"pro").equals("pro")) {
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter experience.");
                 } else {
-                        GetApiResponseAsyncNew apiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", updateResponseListener, updateExceptionListener, SignUp_Account_Activity_Edit.this, "");
-                        apiResponseAsyncNew.execute(getProfileUpdateParameters());
+                    Intent intent = new Intent(SignUp_Account_Activity_Edit.this,LicensePicture_Activity_Edit.class);
+                    intent.putExtra("finalRequestParams",getProfileUpdateParameters());
+                    startActivity(intent);
+                    finish();
+//                        GetApiResponseAsyncNew apiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", updateResponseListener, updateExceptionListener, SignUp_Account_Activity_Edit.this, "");
+//                        apiResponseAsyncNew.execute(getProfileUpdateParameters());
                 }
             }
         });

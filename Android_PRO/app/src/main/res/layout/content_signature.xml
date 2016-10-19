@@ -108,7 +108,7 @@
 
                         <ImageView
                             android:id="@+id/imgAccept"
-                            android:layout_width="@dimen/size_110_dp"
+                            android:layout_width="@dimen/size_90_dp"
                             android:layout_height="@dimen/size_40_dp"
                             android:layout_gravity="right"
                             android:src="@drawable/accept" />
@@ -123,7 +123,7 @@
 
                         <ImageView
                             android:id="@+id/imgClear"
-                            android:layout_width="@dimen/size_100_dp"
+                            android:layout_width="@dimen/size_90_dp"
                             android:layout_height="@dimen/size_40_dp"
                             android:src="@drawable/clear" />
                     </LinearLayout>

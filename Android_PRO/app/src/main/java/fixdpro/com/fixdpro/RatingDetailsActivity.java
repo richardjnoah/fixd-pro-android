@@ -95,7 +95,7 @@ public class RatingDetailsActivity extends AppCompatActivity {
         txtArrivalTime = (TextView)findViewById(R.id.txtArrivalTime);
         txtCompleteTime = (TextView)findViewById(R.id.txtCompleteTime);
         txtTechName = (TextView)findViewById(R.id.txtTechName);
-        txtDetailss = (TextView)findViewById(R.id.txtDetailss);
+//        txtDetailss = (TextView)findViewById(R.id.txtDetailss);
 
         txtAppearance = (TextView) findViewById(R.id.txtAppearance);
         txtCourteous = (TextView) findViewById(R.id.txtCourteous);
@@ -133,10 +133,10 @@ public class RatingDetailsActivity extends AppCompatActivity {
 
 
         txtTechName.setText(ratingListModal.getJobs_technilcians_first_name() + " " + ratingListModal.getJobs_technilcians_last_name());
-        txtDetailss.setText(ratingListModal.getComments());
-
+//        txtDetailss.setText(ratingListModal.getComments());
+//
         custom_ratingbar.setStar((int) (Float.parseFloat(ratingListModal.getRatings())), true);
-        customrating_tech.setStar((int) (Float.parseFloat(ratingListModal.getJobs_technilcians_avg_rating())), true);
+//        customrating_tech.setStar((int) (Float.parseFloat(ratingListModal.getJobs_technilcians_avg_rating())), true);
         txtKnowlageable.setText(ratingListModal.getKnowledgeable());
         txtAppearance.setText(ratingListModal.getAppearance());
         txtCourteous.setText(ratingListModal.getCourteous());

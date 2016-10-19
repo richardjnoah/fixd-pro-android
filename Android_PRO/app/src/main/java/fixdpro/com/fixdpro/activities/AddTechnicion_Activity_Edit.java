@@ -184,6 +184,11 @@ public class AddTechnicion_Activity_Edit extends AppCompatActivity {
         adapter = new TechnicianAdapter(AddTechnicion_Activity_Edit.this,TechniciansListSinglton.getInstance().technicianModalsList,getResources());
         lstTechnicians.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        if (TechniciansListSinglton.getInstance().technicianModalsList.size() > 0){
+            txtNO.setText("DONE");
+        }else {
+            txtNO.setText("NO");
+        }
     }
 
     private void setWidgets() {

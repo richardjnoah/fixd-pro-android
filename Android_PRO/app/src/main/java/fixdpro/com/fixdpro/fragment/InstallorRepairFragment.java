@@ -86,6 +86,7 @@ public class InstallorRepairFragment extends Fragment {
     TextView txtJobTotal ;
     String total_cost ="0";
     boolean isAutoNotiForWorkOrder = false ;
+    InstallOrRepairJobAdapter adapter = null ;
     String job_id = "";
     String appliance_id = "";
     ArrayList<Location> locations_list = new ArrayList<Location>();
@@ -206,7 +207,9 @@ public class InstallorRepairFragment extends Fragment {
             collectDataForGoingTogetParts();
 
         }
-
+        if(adapter != null){
+            adapter.notifyDataSetChanged();
+        }
     }
     private void collectDataForGoingTogetParts(){
         if (start_going_to_get_parts_process){
@@ -662,7 +665,7 @@ public class InstallorRepairFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 0:{
-                    InstallOrRepairJobAdapter adapter = new InstallOrRepairJobAdapter(getActivity(),CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist(),getResources());
+                     adapter = new InstallOrRepairJobAdapter(getActivity(),CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist(),getResources());
                     lstInstallRepair.addFooterView(getFooterView());
                     lstInstallRepair.addHeaderView(getHeaderView());
                     lstInstallRepair.setAdapter(adapter);

@@ -760,7 +760,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                                 public void run() {
                                     getLocationRecursively();
                                 }
-                            }, 60000);
+                            }, 30000);
                         }
 
                     }

@@ -2,12 +2,14 @@ package fixdpro.com.fixdpro.activities;
 
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
     EditText txtBankName,txtRoutingNumber,txtAccountNumber;
     String bank_name = "",routing_number = "",account_number = "";
     SharedPreferences _prefs = null ;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +50,19 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
         initLayout();
     }
     private void initLayout(){
-        txtBankName.setText(_prefs.getString(Preferences.BANK_NAME,""));
-        txtRoutingNumber.setText(_prefs.getString(Preferences.BANK_ROUTING_NUMBER,""));
-        txtAccountNumber.setText(_prefs.getString(Preferences.BANK_ACCOUNT_NUMBER,""));
+        routing_number = _prefs.getString(Preferences.BANK_ROUTING_NUMBER,"");
+        account_number = _prefs.getString(Preferences.BANK_ACCOUNT_NUMBER,"");
+        bank_name = _prefs.getString(Preferences.BANK_NAME,"");
+        txtBankName.setText(bank_name);
+
+
+        if (routing_number.length() > 4){
+            txtRoutingNumber.setText(routing_number);
+            txtRoutingNumber.setTransformationMethod(new AsteriskPasswordTransformationMethod());
+        }if (account_number.length() > 4){
+            txtAccountNumber.setText(account_number);
+            txtAccountNumber.setTransformationMethod(new AsteriskPasswordTransformationMethod());
+        }
     }
     private void setWidgets() {
         imgClose = (ImageView) findViewById(R.id.imgClose);
@@ -118,6 +131,22 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
                 getApiResponseAsyncNew.execute(finalRequestParams);
             }
         });
+        txtRoutingNumber.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                txtRoutingNumber.setText("");
+                txtRoutingNumber.setTransformationMethod(null);
+                return false;
+            }
+        });
+        txtAccountNumber.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                txtAccountNumber.setText("");
+                txtAccountNumber.setTransformationMethod(null);
+                return false;
+            }
+        });
     }
 
     IHttpResponseListener updateResponseListener = new IHttpResponseListener() {
@@ -159,7 +188,36 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            showAlertDialog("Fixd-Pro",error_message);
+            showAlertDialog("Fixd-Pro", error_message);
         }
     };
+
+    public class AsteriskPasswordTransformationMethod extends PasswordTransformationMethod {
+        @Override
+        public CharSequence getTransformation(CharSequence source, View view) {
+            return new PasswordCharSequence(source);
+        }
+
+        private class PasswordCharSequence implements CharSequence {
+            private CharSequence mSource;
+            public PasswordCharSequence(CharSequence source) {
+                mSource = source; // Store char sequence
+            }
+            public char charAt(int index) {
+                if (mSource.length() > 4 && index  < mSource.length() - 4){
+                    return '*';
+                }else {
+                    return mSource.charAt(index);
+                }
+                 // This is the important part
+            }
+            public int length() {
+                return mSource.length(); // Return default
+            }
+            public CharSequence subSequence(int start, int end) {
+                return mSource.subSequence(start, end); // Return default
+            }
+        }
+    };
+
 }

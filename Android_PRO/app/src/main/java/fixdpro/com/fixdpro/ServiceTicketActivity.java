@@ -493,10 +493,15 @@ public class ServiceTicketActivity extends AppCompatActivity {
                 txtDescriptionTExt.setText(jobapplianceslist.get(i).getJob_appliances_appliance_description());
 
             ArrayList<Parts> partsArrayList = jobapplianceslist.get(i).getInstallOrRepairModal().getPartsContainer().getPartsArrayList();
+            String parts_total =  "";
+            String parts_desc =  "";
             for (int j = 0 ; j < partsArrayList.size() ; j++){
-                txtHomeandConnectionText.setText(partsArrayList.get(i).getDescription() +"\n");
-                txtPartsDollerTxxt.setText("$"+partsArrayList.get(i).getCost() +"\n");
+                parts_total = parts_total + "$"+partsArrayList.get(i).getCost() +"\n";
+                parts_desc = parts_desc + partsArrayList.get(i).getDescription() +"\n";
             }
+            if (parts_desc.length() != 0)
+            txtHomeandConnectionText.setText(parts_desc);
+            txtPartsDollerTxxt.setText(parts_total);
             subtotal = subtotal +Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getSub_total());
             tax = tax + Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getTax());
 

@@ -1,12 +1,147 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="fixdpro.com.fixdpro.activities.LicensePicture_Activity_Edit">
+    android:background="@color/orange_signin_back"
+    android:orientation="vertical">
 
+    <!--Layout Toolbar-->
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/size_14_dp"
+            android:src="@drawable/back_arrow" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_14_dp"
+                android:text="@string/liecensepic"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_21_sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+
+        android:orientation="vertical">
+
+        <!--Layout Profile Pic-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTakePic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:layout_marginBottom="@dimen/size_10_dp"
+                android:text="@string/addprofilepic"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_18_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fixdpro.com.fixdpro.views.CircularImageView
+                    android:id="@+id/imgProfilePic"
+                    android:layout_width="@dimen/size_120_dp"
+                    android:layout_height="@dimen/size_120_dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/profile_pic" />
+            </LinearLayout>
+        </LinearLayout>
+        <!--Layout Driver Liecense-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtAddDriverLi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:text="@string/adddriverliecense"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_18_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgAddDriverLiecense"
+                    android:layout_width="@dimen/size_200_dp"
+                    android:layout_height="@dimen/size_100_dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/licence" />
+            </LinearLayout>
+        </LinearLayout>
+        <!--Laoyout Next-->
+        <LinearLayout
+            android:id="@+id/layoutNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:layout_marginTop="@dimen/size_20_dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/signup_arrow" />
+
+            <TextView
+                android:id="@+id/txtNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_16_sp" />
+
+            <ImageView
+                android:id="@+id/imgScreeNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_14_dp"
+                android:src="@drawable/next2"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </LinearLayout>
 </RelativeLayout>

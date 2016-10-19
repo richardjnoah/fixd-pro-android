@@ -701,6 +701,12 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                 if (!jsonObject.isNull("description")){
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
                                 }
+                                if (!jsonObject.isNull("power_source")){
+                                    mod.setJob_appliances_power_source(jsonObject.getString("power_source"));
+                                }
+                                if (!jsonObject.isNull("brand_name")){
+                                    mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+                                }
                                 if (!jsonObject.isNull("service_type")){
                                     mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
                                 }

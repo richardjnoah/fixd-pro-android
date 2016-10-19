@@ -16,9 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
-
-import com.paging.listview.PagingListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,6 +37,7 @@ import fixdpro.com.fixdpro.utilites.CheckIfUserVarified;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsyncBatch;
+import fixdpro.com.fixdpro.utilites.HandlePagingResponse;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 import fixdpro.com.fixdpro.views.RatingBarView;
@@ -45,7 +45,7 @@ import fixdpro.com.fixdpro.views.RatingBarView;
 
 public class RatingFragment extends Fragment {
 //    private TextView txtAverageRating,txtnumtotaljob,txtjobstxt,txtnumreviews,txtreviewsltxt;
-    private PagingListView ratingListView;
+    private ListView ratingListView;
 //    private RatingBarView custom_ratingbar;
     private ImageView imgCenter;
     private Typeface fontfamily;
@@ -61,6 +61,9 @@ public class RatingFragment extends Fragment {
     static  int pageRating = 1 ;
     private boolean hasgotOverView = false ;
     String total_jobs = "",total_reviews = "0";
+    RatingListPageAdpater adapter = null ;
+    RatingBarView custom_ratingbar;
+    TextView txtnumtotaljob,txtnumreviews;
     public RatingFragment() {
     }
 
@@ -84,12 +87,23 @@ public class RatingFragment extends Fragment {
         setTypeface();
 
         setClickListner();
-
-        if (!hasgotOverView){
+        adapter = new RatingListPageAdpater(getActivity(), ratingListModalArrayList, getResources(), new HandlePagingResponse() {
+            @Override
+            public void handleChangePage() {
+                if (!next.equals("null")) {
+                    pageRating = Integer.parseInt(next);
+                    GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerRatings, getActivity(), "Loading");
+                    responseAsync.execute(getRequestParamsRatings());
+                }
+            }
+        });
+        ratingListView.addHeaderView(addHeader());
+        ratingListView.setAdapter(adapter);
+//        if (!hasgotOverView){
             GetApiResponseAsyncBatch responseAsyncOverview= new GetApiResponseAsyncBatch("POST", responseListenerOverview, getActivity(), "Loading");
             responseAsyncOverview.execute(getRequestParamsRatingsOverview());
 
-        }
+//        }
 
         return rootView;
     }
@@ -204,29 +218,10 @@ public class RatingFragment extends Fragment {
                     break;
                 }
                 case 2:{
-                    RatingListPageAdpater adapter = new RatingListPageAdpater(getActivity(),ratingListModalArrayList,getResources());
-                    ratingListView.addHeaderView(addHeader());
-                    ratingListView.setAdapter(adapter);
-                    ratingListView.onFinishLoading(true, ratingListModalArrayList);
-                    if (!next.equals("null")) {
-                        ratingListView.setHasMoreItems(true);
-                    }else {
-                        ratingListView.setHasMoreItems(false);
-                    }
-
-                    ratingListView.setPagingableListener(new PagingListView.Pagingable() {
-                        @Override
-                        public void onLoadMoreItems() {
-                            if (!next.equals("null")) {
-                                pageRating = Integer.parseInt(next);
-                                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerRatings, getActivity(), "Loading");
-                                responseAsync.execute(getRequestParamsRatings());
-                            } else {
-                                ratingListView.onFinishLoading(false, null);
-                            }
-                        }
-                    });
-
+                    txtnumtotaljob.setText(total_jobs);
+                    txtnumreviews.setText(ratingListModalArrayList.size()+"");
+                    custom_ratingbar.setStar(Integer.parseInt(total_reviews),true);
+                    adapter.notifyDataSetChanged();
                     break;
                 }
                 case 3:{
@@ -241,7 +236,7 @@ public class RatingFragment extends Fragment {
     };
     private void setWidgets(View v) {
 
-        ratingListView = (PagingListView)v.findViewById(R.id.ratingListView);
+        ratingListView = (ListView)v.findViewById(R.id.ratingListView);
 
     }
     private void setTypeface(){
@@ -273,7 +268,7 @@ public class RatingFragment extends Fragment {
         hashMap.put("select", "^*,customers.^*,jobs.contact_name,jobs.contact_name,jobs.started_at,jobs.finished_at,jobs.request_date,jobs.technicians.^*,jobs.job_customer_addresses.^*");
         hashMap.put("where[technician_id]", TechId);
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
-        hashMap.put("per_page", "10");
+        hashMap.put("per_page", "2");
         hashMap.put("page", pageRating + "");
         for ( String key : hashMap.keySet() ) {
             Log.e(""+key,"="+hashMap.get(key));
@@ -325,9 +320,9 @@ public class RatingFragment extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         ViewGroup v = (ViewGroup) inflater.inflate(R.layout.rating_list_header, ratingListView,
                 false);
-        TextView txtAverageRating,txtnumtotaljob,txtjobstxt,txtnumreviews,txtreviewsltxt;
+        TextView txtAverageRating,txtjobstxt,txtreviewsltxt;
 
-        RatingBarView custom_ratingbar;
+
         txtAverageRating = (TextView)v.findViewById(R.id.txtAverageRating);
         txtnumtotaljob = (TextView)v.findViewById(R.id.txtnumtotaljob);
         txtjobstxt = (TextView)v.findViewById(R.id.txtjobstxt);
@@ -343,9 +338,7 @@ public class RatingFragment extends Fragment {
 //        txtnumreviews.setTypeface(fontfamily);
 //        txtreviewsltxt.setTypeface(fontfamily);
 
-        txtnumtotaljob.setText(total_jobs);
-        txtnumreviews.setText(ratingListModalArrayList.size()+"");
-        custom_ratingbar.setStar(Integer.parseInt(total_reviews),true);
+
         return v;
     }
     @Override

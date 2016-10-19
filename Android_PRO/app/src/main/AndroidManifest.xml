@@ -447,7 +447,8 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.LicensePicture_Activity_Edit"></activity>
+        <activity android:name=".activities.LicensePicture_Activity_Edit"   android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"></activity>
 
         <service   android:name="main.java.com.mindscapehq.android.raygun4android.RaygunPostService"
             android:exported="false"

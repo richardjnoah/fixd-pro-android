@@ -141,7 +141,7 @@ public class JobCompletedActivity extends AppCompatActivity {
 //        txtCompletedTime.setText("Completed Time: "+Utilities.getFormattedTimeSlots(availableJobModal.getTimeslot_end()));
         txtCompletedTime.setText("Completed Time: "+dateTimeFinished[2] + dateTimeFinished[3]);
         txtTechName.setText(availableJobModal.getTechnician_fname() +" "+availableJobModal.getTechnician_lname());
-        txtTotalJobScheduled.setText(availableJobModal.getTechnician_fname() +" has" +availableJobModal.getTechnician_pickup_jobs() +" jobs scheduled at this time." );
+        txtTotalJobScheduled.setText(availableJobModal.getTechnician_fname() +" has" +" 0" +" jobs scheduled at this time." );
         txtTotal.setText("Total................$" + availableJobModal.getJob_line_items_pro_cut());
         custom_ratingbar_tech.setStar((int)Float.parseFloat(availableJobModal.getTechnician_avg_rating()),true);
         if (availableJobModal.getTechnician_profile_image().length() > 0)

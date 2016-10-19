@@ -85,7 +85,7 @@ public class AssignTechAdapter extends BaseAdapter {
             else
                 holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs schedule count");
         }else
-            holder.textJobSchedule.setText(modal.getFirstName());
+            holder.textJobSchedule.setText(modal.getFirstName() +" "+modal.getLasttName());
         holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" job schedule count");
 
         holder.cusRatingbar.setStar((int) Float.parseFloat(modal.getRating()),true);

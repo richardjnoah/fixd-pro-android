@@ -17,6 +17,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,6 +45,7 @@ public class SignatureActivity extends AppCompatActivity {
     String mPath = "";
     boolean isCancel = false;
     private static final int REQUEST_WRITE_STORAGE = 112;
+    TextView txtTitle ,txtTotal;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,13 +56,15 @@ public class SignatureActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null){
             isCancel = true ;
         }
-
-
+        txtTitle.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
+        txtTotal.setText("$"+singleTon.getInstallOrRepairModal().getWorkOrder().getTotal());
     }
     private void setWidgets(){
         imgClose = (ImageView)findViewById(R.id.imgClose);
         imgClear = (ImageView)findViewById(R.id.imgClear);
         imgAccept = (ImageView)findViewById(R.id.imgAccept);
+        txtTitle = (TextView)findViewById(R.id.txtTitle);
+        txtTotal = (TextView)findViewById(R.id.txtTotal);
         inkView = (fixdpro.com.fixdpro.views.InkView)findViewById(R.id.signatureView);
     }
     private void setListeners(){

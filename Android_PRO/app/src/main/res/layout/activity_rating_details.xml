@@ -35,12 +35,11 @@
                 android:gravity="center"
                 android:text="@string/rating_details"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_21_sp" />
+                android:textSize="@dimen/size_20_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 
     <ScrollView
-        android:layout_above="@+id/txtDispute"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
@@ -67,7 +66,7 @@
                     app:starCount="5"
                     app:starEmpty="@drawable/blank_star"
                     app:starFill="@drawable/fill_star"
-                    app:starImageSize="@dimen/size_40_dp" />
+                    app:starImageSize="@dimen/size_48_dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -91,7 +90,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
-                android:layout_marginTop="@dimen/size_5_dp"
+                android:layout_marginTop="@dimen/size_3_dp"
                 android:background="@android:color/white" />
 
             <LinearLayout
@@ -118,10 +117,10 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:padding="@dimen/size_5_dp"
+                    android:padding="@dimen/size_3_dp"
                     android:singleLine="true"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="@dimen/size_16_dp" />
 
                 <TextView
                     android:id="@+id/txtDateTime"
@@ -129,11 +128,11 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:padding="@dimen/size_5_dp"
+                    android:padding="@dimen/size_3_dp"
                     android:singleLine="true"
                     android:text=""
                     android:textColor="@color/white"
-                    android:textSize="@dimen/size_21_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -147,7 +146,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="@dimen/size_5_dp"
+                        android:padding="@dimen/size_3_dp"
                         android:singleLine="true"
                         android:text="Arrival Time:"
                         android:textColor="@color/white"
@@ -159,11 +158,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="@dimen/size_5_dp"
+                        android:padding="@dimen/size_3_dp"
                         android:singleLine="true"
                         android:text="(null)"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_20_sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -178,7 +177,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="@dimen/size_5_dp"
+                        android:padding="@dimen/size_3_dp"
                         android:singleLine="true"
                         android:text="Completed Time:"
                         android:textColor="@color/white"
@@ -190,11 +189,11 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:gravity="center"
-                        android:padding="@dimen/size_5_dp"
+                        android:padding="@dimen/size_3_dp"
                         android:singleLine="true"
                         android:text="(null)"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_20_sp" />
                 </LinearLayout>
 
 
@@ -203,13 +202,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:background="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -255,7 +254,7 @@
                             android:singleLine="true"
                             android:text="(null)"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/size_18_sp" />
+                            android:textSize="@dimen/size_17_sp" />
 
                         <TextView
                             android:id="@+id/txtAverage"
@@ -266,7 +265,7 @@
                             android:singleLine="true"
                             android:text="Average Rating"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/size_16_sp" />
+                            android:textSize="@dimen/size_17_sp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -297,13 +296,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1.5dp"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:background="@android:color/white" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_5_dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -368,7 +367,7 @@
                             android:text="Knowlageable"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/size_16_sp"
-                             />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtCourteous"
@@ -377,7 +376,7 @@
                             android:text="Courteous"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/size_16_sp"
-                             />
+                            android:textStyle="bold" />
 
                         <TextView
                             android:id="@+id/txtAppearance"
@@ -386,12 +385,12 @@
                             android:text="Appearance"
                             android:textColor="@android:color/white"
                             android:textSize="@dimen/size_16_sp"
-                             />
+                            android:textStyle="bold" />
                     </LinearLayout>
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txtDetailss"
+                    android:id="@+id/txtDispute"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -400,24 +399,11 @@
                     android:singleLine="false"
                     android:text="Comments"
                     android:textColor="@color/white"
-                    android:textSize="@dimen/size_18_sp"
+                    android:textSize="@dimen/size_17_sp"
                     android:visibility="gone" />
             </LinearLayout>
 
 
         </LinearLayout>
     </ScrollView>
-    <TextView
-        android:id="@+id/txtDispute"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/size_10_dp"
-        android:background="@color/orange_signin_back"
-        android:layout_alignParentBottom="true"
-        android:gravity="center"
-        android:singleLine="false"
-        android:text="Dispute"
-        android:textColor="@color/white"
-        android:textSize="@dimen/size_20_sp"
-         />
 </RelativeLayout>

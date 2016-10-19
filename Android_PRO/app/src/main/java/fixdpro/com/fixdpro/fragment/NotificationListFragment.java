@@ -340,6 +340,9 @@ public class NotificationListFragment extends Fragment {
                                 if (!jsonObject.isNull("customer_complaint")) {
                                     mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
                                 }
+                                if (!jsonObject.isNull("power_source")){
+                                    mod.setJob_appliances_power_source(jsonObject.getString("power_source"));
+                                }
                                 if (!jsonObject.isNull("image")){
                                     JSONObject image_obj = jsonObject.getJSONObject("image");
                                     if(!image_obj.isNull("original")){

@@ -371,10 +371,13 @@ public class PartsFragment extends Fragment {
         hashMap.put("object","job_parts_used");
         hashMap.put("data[job_appliance_id]",CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
         for (int i = 0 ; i < partsArrayList.size() ; i++){
-            hashMap.put("data[items][" + i + "][part_num]", partsArrayList.get(i).getNumber());
-            hashMap.put("data[items][" + i + "][part_cost]", partsArrayList.get(i).getCost());
-            hashMap.put("data[items][" + i + "][qty]", partsArrayList.get(i).getQuantity());
-            hashMap.put("data[items][" + i + "][part_desc]", partsArrayList.get(i).getDescription());
+            if (partsArrayList.get(i).getNumber().toString().trim().length() != 0 && partsArrayList.get(i).getCost().toString().trim().length() != 0 && partsArrayList.get(i).getQuantity().toString().trim().length() != 0 && partsArrayList.get(i).getDescription().toString().trim().length() != 0){
+                hashMap.put("data[items][" + i + "][part_num]", partsArrayList.get(i).getNumber());
+                hashMap.put("data[items][" + i + "][part_cost]", partsArrayList.get(i).getCost());
+                hashMap.put("data[items][" + i + "][qty]", partsArrayList.get(i).getQuantity());
+                hashMap.put("data[items][" + i + "][part_desc]", partsArrayList.get(i).getDescription());
+            }
+
         }
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
         return hashMap;

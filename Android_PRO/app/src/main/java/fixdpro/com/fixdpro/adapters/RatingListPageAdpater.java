@@ -19,6 +19,7 @@ import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.beans.RatingListModal;
+import fixdpro.com.fixdpro.utilites.HandlePagingResponse;
 import fixdpro.com.fixdpro.utilites.Utilities;
 import fixdpro.com.fixdpro.views.RatingBarView;
 
@@ -32,10 +33,12 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
     public Resources res;
     RatingListModal tempValues=null;
     Typeface fontfamily;
+    HandlePagingResponse handlePagingResponse ;
 
-    public  RatingListPageAdpater(Activity  activity, ArrayList<RatingListModal> list, Resources res){
+    public  RatingListPageAdpater(Activity  activity, ArrayList<RatingListModal> list, Resources res,HandlePagingResponse handlePagingResponse){
         this.list = list ;
         this.activity = activity;
+        this.handlePagingResponse = handlePagingResponse;
         this.res = res ;
         fontfamily = Typeface.createFromAsset(activity.getAssets(), "HelveticaNeue-Thin.otf");
 //
@@ -48,13 +51,13 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
 
     public int getCount() {
 
-        if(items.size()<=0)
-            return items.size();
-        return items.size();
+        if(list.size()<=0)
+            return list.size();
+        return list.size();
     }
     @Override
     public RatingListModal getItem(int position) {
-        return items.get(position);
+        return list.get(position);
     }
 
     @Override
@@ -68,7 +71,7 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
         public fixdpro.com.fixdpro.views.RatingBarView rating;
 
     }
-    /****** Depends upon items size called for each row , Create each ListView row *****/
+    /****** Depends upon list size called for each row , Create each ListView row *****/
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View vi = convertView;
@@ -96,16 +99,16 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
         else
             holder=(ViewHolder)vi.getTag();
 
-        if(items.size()<=0)
+        if(list.size()<=0)
         {
-//            holder.BName.setText("No items");
+//            holder.BName.setText("No list");
 
         }
         else
         {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
-            tempValues =  items.get( position );
+            tempValues =  list.get( position );
             holder.txtUserName.setText("Review by "+tempValues.getCustomers_first_name() + " " + tempValues.getCustomers_last_name());
             holder.txtComments.setText(tempValues.getComments());
 
@@ -131,8 +134,11 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             Float avd_rating  = Float.parseFloat(tempValues.getKnowledgeable()) + Float.parseFloat(tempValues.getCourteous()) + Float.parseFloat(tempValues.getAppearance()) ;
             avd_rating = avd_rating / 3 ;
             holder.rating.setStar((int)Math.round(avd_rating),true);
-            items.get(position).setRatings(avd_rating+"");
-
+            list.get(position).setRatings(avd_rating+"");
+            if (position == list.size() - 1){
+                if (handlePagingResponse != null)
+                    handlePagingResponse.handleChangePage();
+            }
         }
         return vi;
     }

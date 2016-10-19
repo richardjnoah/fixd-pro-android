@@ -15,12 +15,12 @@
         android:layout_marginLeft="@dimen/size_18_dp"
         android:layout_marginRight="@dimen/size_10_dp">
 
-        <com.paging.listview.PagingListView
+        <ListView
             android:id="@+id/ratingListView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:divider="@color/lb_tv_white"
-            android:dividerHeight="0dp"></com.paging.listview.PagingListView>
+            android:dividerHeight="0dp"></ListView>
     </RelativeLayout>
 
 </RelativeLayout>

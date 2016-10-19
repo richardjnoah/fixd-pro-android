@@ -67,7 +67,7 @@
         android:layout_below="@+id/txtTotalCost"
         android:layout_centerHorizontal="true"
         android:padding="@dimen/size_5_dp"
-        android:text="Jatinder Arora"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="@dimen/size_22_sp" />
 
@@ -78,7 +78,7 @@
         android:layout_below="@+id/txtName"
         android:layout_centerHorizontal="true"
         android:padding="@dimen/size_5_dp"
-        android:text="Jatinder Arora"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="@dimen/size_16_sp" />
 
@@ -93,7 +93,7 @@
         android:padding="@dimen/size_5_dp"
         android:paddingLeft="@dimen/size_7_dp"
         android:singleLine="true"
-        android:text="Job #000001"
+        android:text="Job #"
         android:textColor="#ffffff"
         android:textSize="@dimen/size_16_sp"
         android:textStyle="bold" />
@@ -191,7 +191,7 @@
                     android:layout_weight="1.6"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="Warrenty"
+                    android:text="Diagnostic"
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_18_sp" />
 
@@ -202,7 +202,7 @@
                     android:layout_weight="1.4"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="$ 75.00"
+                    android:text=""
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_18_sp" />
 
@@ -295,7 +295,7 @@
                     android:layout_weight="1.6"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="@string/total"
+                    android:text="Your Cut:"
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_21_sp" />
 

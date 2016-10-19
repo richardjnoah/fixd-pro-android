@@ -178,7 +178,7 @@ public class CalendarAdapter extends BaseAdapter {
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#fc7506"));
                 LinearLayout indicator = (LinearLayout)previousView.findViewById(R.id.event_indicator);
-                indicator.setBackgroundColor(Color.parseColor("#fc7506"));
+                indicator.setBackgroundResource(R.drawable.orange_circle);
             }else if(previousView.getTag().equals("2")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#fc7506"));
@@ -186,7 +186,7 @@ public class CalendarAdapter extends BaseAdapter {
                 TextView date = (TextView)previousView.findViewById(R.id.date);
                 date.setTextColor(Color.parseColor("#ffffff"));
                 LinearLayout indicator = (LinearLayout)previousView.findViewById(R.id.event_indicator);
-                indicator.setBackgroundColor(Color.parseColor("#fc7506"));
+                indicator.setBackgroundResource(R.drawable.orange_circle);
             }
             else if(previousView.getTag().equals("4")){
                 TextView date = (TextView)previousView.findViewById(R.id.date);
@@ -206,19 +206,15 @@ public class CalendarAdapter extends BaseAdapter {
             previousView = view;
             LinearLayout txtIndicator = (LinearLayout)view.findViewById(R.id.event_indicator);
             TextView txtDate = (TextView)view.findViewById(R.id.date);
-            txtIndicator.setBackgroundColor(Color.parseColor("#ffffff"));
+            txtIndicator.setBackgroundResource(R.drawable.white_circle);
             txtDate.setTextColor(Color.parseColor("#ffffff"));
             if (day_string.get(pos).equals(curentDateString) && hasEvent) {
                 previousView.setTag("1");
-
             }else if (day_string.get(pos).equals(curentDateString) && !hasEvent){
-
                 previousView.setTag("2");
             }else if (!day_string.get(pos).equals(curentDateString) && hasEvent){
-
                 previousView.setTag("3");
             }else if (!day_string.get(pos).equals(curentDateString) && !hasEvent){
-
                 previousView.setTag("4");
             }
 

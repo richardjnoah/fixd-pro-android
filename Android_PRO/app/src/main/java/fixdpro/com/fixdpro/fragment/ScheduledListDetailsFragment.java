@@ -191,7 +191,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
             else
                 custom_ratingbar.setStar(0, true);
         }
-        txtJobDetails.setText(model.getTechnician_fname() + " has " + model.getCurrent_technician_scheduled_job_count() + " jobs scheduled for this time");
+        txtJobDetails.setText(model.getTechnician_fname() + " has " + "1" + " jobs scheduled for this time");
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -204,7 +204,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 //        img_Pic
 
         contactName.setText(model.getContact_name());
-        address.setText(model.getJob_customer_addresses_zip() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
+        address.setText(model.getJob_customer_addresses_address() + " " + model.getJob_customer_addresses_address_2() + " - " + model.getJob_customer_addresses_city() + "," + model.getJob_customer_addresses_state());
         date.setText(Utilities.convertDate(model.getRequest_date()));
         timeinterval.setText(model.getTimeslot_name());
         setTechView();

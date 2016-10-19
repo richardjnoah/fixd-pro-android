@@ -75,7 +75,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="45"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="@dimen/size_20_sp" />
 
@@ -120,7 +120,7 @@
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:singleLine="true"
-                    android:text="3"
+                    android:text=""
                     android:textColor="@color/white"
                     android:textSize="@dimen/size_20_sp" />
 
