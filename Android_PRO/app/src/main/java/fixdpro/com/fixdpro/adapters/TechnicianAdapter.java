@@ -28,7 +28,7 @@ public class TechnicianAdapter extends BaseAdapter {
 
     /*********** Declare Used Variables *********/
     private Activity activity;
-    private ArrayList data;
+    private ArrayList<TechnicianModal> data;
     private static LayoutInflater inflater=null;
     public Resources res;
     TechnicianModal tempValues=null;
@@ -36,7 +36,7 @@ public class TechnicianAdapter extends BaseAdapter {
 
 
     /*************  CustomAdapter Constructor *****************/
-    public TechnicianAdapter(Activity a, ArrayList d,Resources resLocal) {
+    public TechnicianAdapter(Activity a, ArrayList<TechnicianModal> d,Resources resLocal) {
 
         /********** Take passed values **********/
         activity = a;
@@ -127,7 +127,7 @@ public class TechnicianAdapter extends BaseAdapter {
                 public void onClick(View v) {
                         Intent intent = new Intent(activity, TechnicianInformation_Activity.class);{
                         intent.putExtra("isedit",true);
-                        intent.putExtra("modal",tempValues);
+                        intent.putExtra("modal",data.get( position ));
                         intent.putExtra("position",position);
                         activity.startActivity(intent);
                         activity.overridePendingTransition(R.anim.enter, R.anim.exit);

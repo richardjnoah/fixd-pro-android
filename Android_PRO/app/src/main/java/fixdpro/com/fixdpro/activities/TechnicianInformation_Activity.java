@@ -72,7 +72,9 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                     modal = (TechnicianModal)getIntent().getSerializableExtra("modal");
                     txtDeactivate.setVisibility(View.VISIBLE);
                     initLayout();
-                }
+                }else {
+                txtDeactivate.setVisibility(View.GONE);
+            }
 
 
         }

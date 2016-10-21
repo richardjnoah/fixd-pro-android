@@ -79,6 +79,7 @@ public class RepairFragment extends Fragment {
     ArrayList<RepairType> arrayList = new ArrayList<RepairType>();
     MultipartUtility multipart = null;
     String install_or_repair_type_id = "";
+    String install_or_repair_type_type = "";
     String install_or_repair_type_price = "";
     String install_or_repair_labour_hour = "";
     JobAppliancesModal modal = null ;
@@ -210,6 +211,7 @@ public class RepairFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (!arrayList.get(position).getType().equals("Others")) {
                     install_or_repair_type_id = arrayList.get(position).getId();
+                    install_or_repair_type_type = arrayList.get(position).getType();
                     install_or_repair_type_price = arrayList.get(position).getPrice();
                     install_or_repair_labour_hour = arrayList.get(position).getLabor_hours();
                     GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
@@ -357,7 +359,8 @@ public class RepairFragment extends Fragment {
                     break;
                 }case 2:{
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setLabor_hours(install_or_repair_labour_hour);
-                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setType(install_or_repair_type_id);
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setId(install_or_repair_type_id);
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setType(install_or_repair_type_type);
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setPrice(install_or_repair_type_price);
                     CurrentScheduledJobSingleTon.getInstance().getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.REPAIR_TYPE_FRAGMENT);

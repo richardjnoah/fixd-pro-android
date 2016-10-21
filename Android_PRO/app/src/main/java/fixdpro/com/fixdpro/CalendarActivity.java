@@ -88,8 +88,8 @@ public class CalendarActivity extends AppCompatActivity {
                     if (!isJobRescheduled){
                         showAlertDialog("Fixd-Pro","Please Select a date before proceeding",false);
                     }else {
-                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-                        Intent j = new Intent(CalendarActivity.this, ConfirmationActivity.class);
+
+                        Intent j = new Intent(CalendarActivity.this, ConfirmRescheduleActivity.class);
                         j.putExtra("JOB_DETAIL",CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal());
                         j.putExtra("show_cal",false);
                         startActivity(j);

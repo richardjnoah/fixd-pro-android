@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
@@ -163,10 +164,10 @@ public class WorkOrderFragment extends Fragment {
         txtJobType.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
         txtUserNameAddress.setText((singleTon.getCurrentJonModal().getContact_name() +" - " +singleTon.getCurrentJonModal().getJob_customer_addresses_address()));
         txtcomplaint.setText(singleTon.getJobApplianceModal().getJob_appliances_customer_compalint());
-        txtDescValue.setText(singleTon.getJobApplianceModal().getJob_appliances_appliance_description());
+//        txtDescValue.setText(singleTon.getJobApplianceModal().getJob_appliances_appliance_description());
         if (singleTon.getInstallOrRepairModal().getRepairType().getType().length() > 0)
         txtRepairType.setText( singleTon.getInstallOrRepairModal().getRepairType().getType());
-
+        txtDescValue.setText(singleTon.getInstallOrRepairModal().getEquipmentInfo().getDescription());
         String parts = "" ;
         float cost = 0;
         for (int i = 0 ; i < singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().size() ; i++){
@@ -294,6 +295,8 @@ public class WorkOrderFragment extends Fragment {
                         submitPost();
                     }
                     if (workOrder.is_covered() && workOrder.getIs_claim().equals("1")){
+                        txtSubTotalDoller.setPaintFlags(txtSubTotalDoller.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                        txtTaxDoller.setPaintFlags(txtTaxDoller.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         txtDiagnosticDoller.setText("$"+workOrder.getWarranty_fee());
                         txtDiagnostic.setText("Warranty Fee:");
 
@@ -359,8 +362,6 @@ public class WorkOrderFragment extends Fragment {
         }else {
             showCustomDialog();
         }
-
-
 //        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WORK_ORDER_FRAGMENT);
     }
 
@@ -436,11 +437,10 @@ public class WorkOrderFragment extends Fragment {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+
                         CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
                         Intent intent = new Intent(getActivity(), SignatureActivity.class);
-                        startActivity(intent);
-                        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WORK_ORDER_FRAGMENT);
+                        startActivityForResult(intent, 200);
                     }
                 }, 300);
 
@@ -454,6 +454,7 @@ public class WorkOrderFragment extends Fragment {
         });
         dialog.show();
     }
+
 
     private void showhangTightDialog() {
         dialog = new Dialog(_context);
@@ -515,10 +516,10 @@ public class WorkOrderFragment extends Fragment {
                     public void run() {
                         dialog.dismiss();
                         singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
-                        CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
-                        Intent intent = new Intent(getActivity(), SignatureActivity.class);
-                        startActivity(intent);
-                        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WORK_ORDER_FRAGMENT);
+//                        CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
+//                        Intent intent = new Intent(getActivity(), SignatureActivity.class);
+//                        startActivity(intent);
+                        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
                     }
                 }, 300);
             }
@@ -561,6 +562,9 @@ public class WorkOrderFragment extends Fragment {
             public void onClick(View v) {
                 dialog.dismiss();
                 Intent intent = new Intent(getActivity(), CancelScheduledJob.class);
+                intent.putExtra("name",txtDiagnostic.getText().toString());
+                intent.putExtra("fees",txtDiagnosticDoller.getText().toString());
+                intent.putExtra("total",txtTotalDoller.getText().toString());
                 startActivity(intent);
             }
         });
@@ -743,6 +747,15 @@ public class WorkOrderFragment extends Fragment {
             collectDataForGoingTogetParts();
         }
     };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 200){
+            singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+            showDialogWorkOrderApproved();
+        }
+    }
 }
 
 

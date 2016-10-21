@@ -230,6 +230,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         }
 
         if (switch_tab.equals("Scheduled")){
+            schedulejoblist.clear();
             onClick(scheduled);
         }
         if (isFirstTechReg){
@@ -315,6 +316,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     }
     public void refresh(){
         if (isStateAvailable){
+            if (map!= null )
             map.clear();
             pageAvaileble  = 1 ;
             availablejoblist.clear();
@@ -325,6 +327,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
 
         }else{
+            if (map!= null )
             map.clear();
             pageSheduled  = 1 ;
             schedulejoblist.clear();
@@ -949,7 +952,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 availScheduleLayout.setBackgroundResource(R.drawable.available);
                 availableJob_listView.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.VISIBLE);
-                if (schedulejoblist .size() == 0){
+                if (schedulejoblist.size() == 0){
                     GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync1.execute(getRequestParams("Scheduled"));
                 }else{

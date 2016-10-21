@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    android:orientation="vertical"
+    tools:context="fixdpro.com.fixdpro.ConfirmationActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:local="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+
+        android:minHeight="?attr/actionBarSize"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_alignParentRight="true"
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/done"
+                android:layout_marginRight="@dimen/size_5_dp"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/confirmation"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_22_sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/size_10_dp"
+        android:src="@drawable/thumbs" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="@string/success"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_22_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:text="Your job has been rescheduled for:"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Sat, Jan 30, 2016"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_22_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:textSize="@dimen/size_16_sp"
+        android:text="@string/between"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/time_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:text="02:00PM - 04:00PM"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_20_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="@string/fortext"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="Gurusharan"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_20_sp" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:textSize="@dimen/size_16_sp"
+        android:text="9952 Tanglevine - The Colony,Texas"
+        android:textColor="@color/register_button_text" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="@dimen/size_30_dp"
+        android:src="@drawable/view_in_calendar" />
+</LinearLayout>

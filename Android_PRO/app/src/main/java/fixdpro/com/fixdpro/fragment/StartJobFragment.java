@@ -652,16 +652,6 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //        }catch (Exception e){
 //            e.printStackTrace();
 //        }
-//        if ((requestedDateStart < currentTime) && (currentTime  < requestDateEnd) ){
-//            if (distance < 61){
-////        if (true)
-//                showStartJobDialog();
-//        }
-//
-//        else {
-////            showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
-//
-//        }
     }
     public void showStartJobDialog(){
         dialog = new Dialog(_context);
@@ -758,7 +748,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    getLocationRecursively();
+//                                    getLocationRecursively();
                                 }
                             }, 30000);
                         }

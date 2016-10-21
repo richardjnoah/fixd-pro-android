@@ -3,20 +3,19 @@ package fixdpro.com.fixdpro;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
-import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
-public class ConfirmationActivity extends AppCompatActivity implements View.OnClickListener{
-    private Context context = ConfirmationActivity.this;
-    private String TAG = "ConfirmationActivity";
+public class ConfirmRescheduleActivity extends AppCompatActivity implements View.OnClickListener {
+    private Context context = ConfirmRescheduleActivity.this;
+    private String TAG = "ConfirmRescheduleActivity";
     TextView done, date, time_interval, contact_name, address;
     ImageView action;
     SharedPreferences _prefs = null;
@@ -25,26 +24,25 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_confirmation);
-//        getSupportActionBar().hide();
+        setContentView(R.layout.activity_confirm_reschedule);
         _prefs = Utilities.getSharedPreferences(context);
         model = (AvailableJobModal) getIntent().getSerializableExtra("JOB_DETAIL");
         setWidgets();
         setListeners();
-        if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("pro")){
-            action.setImageResource(R.drawable.assign_technician);
-            done.setVisibility(View.VISIBLE);
-            done.setText("Back");
-        }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("technician")){
-            action.setImageResource(R.drawable.view_in_calendar);
-            done.setVisibility(View.VISIBLE);
-        }
+//        if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("pro")){
+//            action.setImageResource(R.drawable.assign_technician);
+//            done.setVisibility(View.VISIBLE);
+//            done.setText("Back");
+//        }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, "").equals("technician")){
+//            action.setImageResource(R.drawable.view_in_calendar);
+//            done.setVisibility(View.VISIBLE);
+//        }
 
-        if (getIntent().getExtras() != null && !getIntent().getExtras().containsKey("confirm")){
-            isJobReschduled = true ;
-            action.setVisibility(View.GONE);
-            done.setVisibility(View.VISIBLE);
-        }
+//        if (getIntent().getExtras() != null && !getIntent().getExtras().containsKey("confirm")){
+//            isJobReschduled = true ;
+//            action.setVisibility(View.GONE);
+//            done.setVisibility(View.VISIBLE);
+//        }
         date.setText(Utilities.convertDate(model.getRequest_date()));
         time_interval.setText(model.getTimeslot_name());
         contact_name.setText(model.getContact_name());
@@ -69,30 +67,13 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.done:
-                if (done.getText().equals("Back")){
-                    finish();
-                }else{
+
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-                    Intent intent = new Intent(ConfirmationActivity.this,HomeScreenNew.class);
+                    Intent intent = new Intent(ConfirmRescheduleActivity.this,HomeScreenNew.class);
 
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
-            }
-
-
-                break;
-            case R.id.action:
-                if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro")){
-                    Intent i = new Intent(context,AssignTechnicianActivity.class);
-                    i.putExtra("isAvailable",true);
-                    i.putExtra("api","assign");
-                    i.putExtra("JOB_DETAIL",model);
-                    startActivity(i);
-                }else if(Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("technician")){
-                    Intent i = new Intent(context,CalendarActivity.class);
-                    startActivity(i);
-                }
                 break;
         }
     }

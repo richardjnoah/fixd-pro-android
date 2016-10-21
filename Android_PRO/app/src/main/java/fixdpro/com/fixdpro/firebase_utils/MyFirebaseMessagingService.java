@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -65,7 +66,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
 
                 if (remoteMessage.getData().containsKey("message")){
                     String message = remoteMessage.getData().get("message");
@@ -170,6 +170,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setSound(uri)
                         .setContentTitle("Fixd Pro")
                         .setContentText(modal.getMessage());
+
+
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder.setSmallIcon(R.drawable.pro_noti_icon);
+                } else {
+                    builder.setSmallIcon(R.mipmap.ic_launcher);
+                }
+
                 Notification n = builder.build();
                 notificationManager.notify((111111 + (int)(Math.random() * 999999)), n);
                 int notiCountTotal = 0 ;

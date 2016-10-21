@@ -219,7 +219,7 @@ public class NotificationListFragment extends Fragment {
                     } else {
                         //get the job
                         GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, getActivity(), "Loading");
-                        responseAsync.execute(getRequestParams(modal.getJobId()));
+                        responseAsync.execute(getRequestParams(modal.getJobId(),"read_open"));
                     }
                 } else if (value.equals("pjt") ||value.equals("cja") ) {//pickup job tech
                     modal.setJobId(listModal.getData().get("j").getValue());
@@ -232,7 +232,7 @@ public class NotificationListFragment extends Fragment {
                     } else {
                         //get the job
                         GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, getActivity(), "Loading");
-                        responseAsync.execute(getRequestParams(modal.getJobId()));
+                        responseAsync.execute(getRequestParams(modal.getJobId(),"read"));
                     }
                 } else if (value.equals("pjp")) {//pickup job pro
                     modal.setJobId(listModal.getData().get("j").getValue());
@@ -245,7 +245,7 @@ public class NotificationListFragment extends Fragment {
                     } else {
                         //get the job
                         GetApiResponseAsyncNew responseAsync = new  GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,exceptionListener, getActivity(), "Loading");
-                        responseAsync.execute(getRequestParams(modal.getJobId()));
+                        responseAsync.execute(getRequestParams(modal.getJobId(),"read"));
                     }
                 }
             }
@@ -254,9 +254,9 @@ public class NotificationListFragment extends Fragment {
     }
 
 
-    private HashMap<String, String> getRequestParams(String id) {
+    private HashMap<String, String> getRequestParams(String id,String api) {
         HashMap<String, String> hashMap = new HashMap<String, String>();
-        hashMap.put("api", "read");
+        hashMap.put("api", api);
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
@@ -402,6 +402,7 @@ public class NotificationListFragment extends Fragment {
                             jobModal.setTime_slot_id(time_slot_obj.getString("id"));
                             jobModal.setTimeslot_start(time_slot_obj.getString("start"));
                             jobModal.setTimeslot_end(time_slot_obj.getString("end"));
+                            jobModal.setTimeslot_name(time_slot_obj.getString("name"));
                             jobModal.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
                         }
 

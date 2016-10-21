@@ -268,7 +268,7 @@ public class RatingFragment extends Fragment {
         hashMap.put("select", "^*,customers.^*,jobs.contact_name,jobs.contact_name,jobs.started_at,jobs.finished_at,jobs.request_date,jobs.technicians.^*,jobs.job_customer_addresses.^*");
         hashMap.put("where[technician_id]", TechId);
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
-        hashMap.put("per_page", "2");
+        hashMap.put("per_page", "15");
         hashMap.put("page", pageRating + "");
         for ( String key : hashMap.keySet() ) {
             Log.e(""+key,"="+hashMap.get(key));

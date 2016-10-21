@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,37 +21,58 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
-import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
+import fixdpro.com.fixdpro.utilites.ExceptionListener;
+import fixdpro.com.fixdpro.utilites.GetApiResponseAsyncMutipart;
+import fixdpro.com.fixdpro.utilites.MultipartUtility;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class CancelScheduledJob extends AppCompatActivity {
     EditText txtCancelReason;
-    TextView back,done,txtSignature;
+    TextView back,done,txtSignature,txtDiagnostic,txtDiagnosticDoller,txtTotalDoller;
     Context _context = this ;
     String error_message = "",reason = "";
     String JobId = "" ;
     RelativeLayout tap_Signature;
     ImageView imgSignature ;
     String Path = "" ;
-
+    String DiagnosticFee = "";
+    String DiagnosticName ="";
+    String Total ="";
+    MultipartUtility multipart = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cancel_scheduled_job);
         setWidgets();
         setListeners();
+        if (getIntent().getExtras() != null){
+            DiagnosticFee = getIntent().getStringExtra("fees");
+            DiagnosticName = getIntent().getStringExtra("name");
+            Total = getIntent().getStringExtra("total");
+            initValues();
+        }
         JobId = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() ;
+    }
+    private void initValues(){
+        txtTotalDoller.setText(Total);
+        txtDiagnostic.setText(DiagnosticName);
+        txtDiagnosticDoller.setText(DiagnosticFee);
     }
     private void setWidgets(){
         txtCancelReason = (EditText)findViewById(R.id.txtCancelReason);
         back = (TextView)findViewById(R.id.back);
         txtSignature = (TextView)findViewById(R.id.txtSignature);
         done = (TextView)findViewById(R.id.done);
+        txtTotalDoller = (TextView)findViewById(R.id.txtTotalDoller);
+        txtDiagnostic = (TextView)findViewById(R.id.txtDiagnostic);
+        txtDiagnosticDoller = (TextView)findViewById(R.id.txtDiagnosticDoller);
         tap_Signature = (RelativeLayout)findViewById(R.id.tap_Signature);
         imgSignature = (ImageView)findViewById(R.id.imgSignature);
     }
@@ -72,8 +94,11 @@ public class CancelScheduledJob extends AppCompatActivity {
                     showAlertDialog("Fixd","Please sign below to proceed.",false);
                     return;
                 }
-                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerDeclineCancel, CancelScheduledJob.this, "Loading");
-                responseAsync.execute(getRequestParams());
+                executeCancelRequest();
+//                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerDeclineCancel, CancelScheduledJob.this, "Loading");
+//                responseAsync.execute(getRequestParams());
+
+
             }
         });
         tap_Signature.setOnClickListener(new View.OnClickListener() {
@@ -169,8 +194,8 @@ public class CancelScheduledJob extends AppCompatActivity {
                         // if this button is clicked, close
                         // current activity
                         dialog.cancel();
-                        if (success){
-                            Intent intent = new Intent(CancelScheduledJob.this,HomeScreenNew.class);
+                        if (success) {
+                            Intent intent = new Intent(CancelScheduledJob.this, HomeScreenNew.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                             finish();
@@ -205,5 +230,45 @@ public class CancelScheduledJob extends AppCompatActivity {
 //                imgSignature.setVisibility(View.VISIBLE);
             }
         }
+    }
+    public void executeCancelRequest() {
+        new AsyncTask<Void, Void, String>() {
+
+            @Override
+            protected String doInBackground(Void... params) {
+                try {
+                    multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
+//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
+                    multipart.addFormField("api", "cancel");
+                    multipart.addFormField("object", "job_appliances");
+                    multipart.addFormField("data[reason]", reason);
+
+//                    }else{
+//                        multipart.addFormField("api", "repair_info");
+//                        multipart.addFormField("object", "repair_flow");
+//
+//                    }
+                    if (Path != null && !Path.equals(""))
+                        multipart.addFilePart("data[customer_signature]", new File(Path));
+                    multipart.addFormField("token", Utilities.getSharedPreferences(CancelScheduledJob.this).getString(Preferences.AUTH_TOKEN, ""));
+                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, responseListenerDeclineCancel, new ExceptionListener() {
+                    @Override
+                    public void handleException(int exceptionStatus) {
+                        
+                    }
+                }, CancelScheduledJob.this, "Saving");
+                getApiResponseAsync.execute();
+            }
+        }.execute();
     }
 }

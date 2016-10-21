@@ -266,10 +266,10 @@
     <string name="diagnostic">Diagnostic:</string>
 
     <!--Pop UP-->
-    <string name="doyouhave">Do You Have What You Need?</string>
+    <string name="doyouhave">Do you have what you need?</string>
     <string name="owner_approval">We need homeowner approval!</string>
     <string name="owner_approval_desc">Please select an option to\nprocees and get work order\napproval for this job/</string>
-    <string name="ifyouhave">If you do not have the necessary parts or if\nparts need to be ordered please reschedule\njob now.</string>
+    <string name="ifyouhave">If you do not have the necessary parts or if parts need to be ordered please reschedule job now.</string>
     <string name="completejobnow">Complete Job Now</string>
     <string name="complete_here">Complete Here</string>
     <string name="edit_job">Edit job</string>
@@ -284,7 +284,7 @@
     <string name="brand">Brand</string>
     <string name="modalno">Model Number</string>
     <string name="serialno">Serial Number</string>
-    <string name="descriptionofwork">Description of work</string>
+    <string name="descriptionofwork">Description of work needed</string>
 
     <!--Done Popup-->
     <string name="wahoo">Wahoo!</string>

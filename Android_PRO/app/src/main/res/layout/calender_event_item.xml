@@ -77,7 +77,7 @@
             android:id="@+id/img_Reschedule_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/down_arrow_orange"
+            android:src="@drawable/return_a"
             android:visibility="gone" />
     </LinearLayout>
 </LinearLayout>

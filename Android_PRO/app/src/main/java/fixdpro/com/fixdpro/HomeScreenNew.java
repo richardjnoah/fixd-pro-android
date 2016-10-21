@@ -210,6 +210,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
         setContentView(R.layout.activity_home_screen_new);
         _prefs = Utilities.getSharedPreferences(_context);
+        role = _prefs.getString(Preferences.ROLE,"");
         checkALert = new CheckAlertDialog();
         singletonJobs = Singleton.getInstance();
         schedulejoblist = singletonJobs.getSchedulejoblist();;

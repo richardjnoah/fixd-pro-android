@@ -180,13 +180,13 @@ public class EquipmentInfoFragment extends Fragment {
                 Uri uri = Uri.fromFile(new File(equipmentInfo.getImage()));
                 Picasso.with(getActivity()).load(uri)
                         .into(imgMain);
-                txtTakepic.setVisibility(View.INVISIBLE);
+//                txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
             }else{
 //                Load image form server
                 Picasso.with(getActivity()).load(equipmentInfo.getImage())
                         .into(imgMain);
-                txtTakepic.setVisibility(View.INVISIBLE);
+//                txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
             }
         }
@@ -508,7 +508,7 @@ public class EquipmentInfoFragment extends Fragment {
                 photoFile = new File(Path);
 
 
-                txtTakepic.setVisibility(View.INVISIBLE);
+//                txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
                 Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
                         .into(imgMain);
@@ -587,7 +587,7 @@ public class EquipmentInfoFragment extends Fragment {
             photoFile = new File(Path);
 
 
-            txtTakepic.setVisibility(View.INVISIBLE);
+//            txtTakepic.setVisibility(View.INVISIBLE);
             img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
                     .into(imgMain);

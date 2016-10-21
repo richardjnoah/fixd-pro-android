@@ -16,7 +16,7 @@
             android:id="@+id/imgThumbLuck"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/thumb" />
+            android:src="@drawable/payment_hand" />
 
         <TextView
             android:id="@+id/titletext"
@@ -58,85 +58,129 @@
             android:gravity="center"
             android:padding="@dimen/size_4_dp"
             android:singleLine="true"
-            android:text="$50.00"
+            android:text="(null)"
             android:textColor="@color/register_button_text"
-            android:textSize="@dimen/size_40_sp" />
+            android:textSize="@dimen/size_27_sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:orientation="horizontal">
 
             <TextView
-
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center"
+
+                android:gravity="left"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Job Total"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_20_sp"
+                android:textSize="@dimen/size_18_sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtJobTotal1"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="right"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtArrivaltext"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="left"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
-                android:text="Our Fee"
+                android:text="Our Fee (10%)"
                 android:textColor="@color/register_button_text"
                 android:textSize="@dimen/size_18_sp" />
 
             <TextView
                 android:id="@+id/txtOurFee"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="right"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtGovtCut"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Government Cut"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtGovtCutValue"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout><LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txtCompletetext"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="left"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Your Cut"
@@ -145,15 +189,16 @@
 
             <TextView
                 android:id="@+id/txtYourCut"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="right"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -161,13 +206,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="left"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="Mileage"
@@ -176,15 +224,16 @@
 
             <TextView
                 android:id="@+id/txtMileage"
-                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:gravity="right"
                 android:padding="@dimen/size_5_dp"
                 android:singleLine="true"
                 android:text="(null)"
                 android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_20_sp" />
+                android:textSize="@dimen/size_18_sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -203,10 +252,11 @@
             android:scaleType="fitXY"
             android:text="Done"
             android:textColor="@color/white"
-            android:textSize="@dimen/size_22_sp" />
+            android:textSize="@dimen/size_18_sp" />
     </LinearLayout>
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/img_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

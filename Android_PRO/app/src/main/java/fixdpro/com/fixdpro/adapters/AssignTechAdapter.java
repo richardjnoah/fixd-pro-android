@@ -77,16 +77,16 @@ public class AssignTechAdapter extends BaseAdapter {
         }
         final AssignTechModal modal = (AssignTechModal)getItem(position);
 //        holder.circleImage.setImageResource(modal.getImage());
-        holder.textTitleName.setText(modal.getFirstName());
+        holder.textTitleName.setText(modal.getFirstName()+" "+modal.getLasttName());
 //        holder.cusRatingbar.setStar(modal.getRating());
         if (modal.getJobSchedule().length() > 0){
             if (modal.getJobSchedule().equals("1"))
-                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs schedule count");
+                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs scheduled for this time");
             else
-                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs schedule count");
+                holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" jobs scheduled for this time");
         }else
             holder.textJobSchedule.setText(modal.getFirstName() +" "+modal.getLasttName());
-        holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" job schedule count");
+        holder.textJobSchedule.setText(modal.getFirstName() +" has "+ modal.getJobSchedule()+" job schedule for this time");
 
         holder.cusRatingbar.setStar((int) Float.parseFloat(modal.getRating()),true);
         if (modal.getImage().length() > 0)

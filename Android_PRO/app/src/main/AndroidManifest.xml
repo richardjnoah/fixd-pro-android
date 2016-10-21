@@ -239,7 +239,6 @@
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
             android:name=".HomeScreenNew"
-
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_home_screen_new"
             android:screenOrientation="portrait"
@@ -264,7 +263,8 @@
             android:name=".CancelScheduledJob"
             android:label="@string/title_activity_cancel_scheduled_job"
             android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme.Base" />
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"
@@ -275,16 +275,17 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
 
-        <!--<service-->
-            <!--android:name=".gcm_components.MessageReceivingService"-->
-            <!--android:label="fixtpro.com.fixtpro.MessageReceivingService">-->
-            <!--<intent-filter>-->
-                <!--<action android:name="fixtpro.com.fixtpro.AndroidMobilePushApp" />-->
-                <!--<action android:name="fixtpro.com.fixtpro.ExternalReceiver" />-->
+        <!-- <service -->
+        <!-- android:name=".gcm_components.MessageReceivingService" -->
+        <!-- android:label="fixtpro.com.fixtpro.MessageReceivingService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="fixtpro.com.fixtpro.AndroidMobilePushApp" /> -->
+        <!-- <action android:name="fixtpro.com.fixtpro.ExternalReceiver" /> -->
 
-                <!--<category android:name="fixtpro.com.fixtpro" />-->
-            <!--</intent-filter>-->
-        <!--</service>-->
+
+        <!-- <category android:name="fixtpro.com.fixtpro" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
         <!-- UnComment it for GCM -->
         <!-- <receiver -->
         <!-- android:name="fixdpro.com.fixdpro.gcm_components.ExternalReceiver" -->
@@ -447,14 +448,22 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.LicensePicture_Activity_Edit"   android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme.Base"></activity>
+        <activity
+            android:name=".activities.LicensePicture_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
 
-        <service   android:name="main.java.com.mindscapehq.android.raygun4android.RaygunPostService"
+        <service
+            android:name="main.java.com.mindscapehq.android.raygun4android.RaygunPostService"
             android:exported="false"
-            android:process=":raygunpostservice"/>
-        <meta-data android:name="com.mindscapehq.android.raygun4android.apikey"
+            android:process=":raygunpostservice" />
+
+        <meta-data
+            android:name="com.mindscapehq.android.raygun4android.apikey"
             android:value="wWAQ7dppz/omulUa9zqgmA==" />
+
+        <activity android:name=".ConfirmRescheduleActivity" android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"></activity>
     </application>
 
 </manifest>

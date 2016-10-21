@@ -114,7 +114,7 @@ public class WhatsWrongFragment extends Fragment {
 
     private void setupToolBar() {
         ((HomeScreenNew) getActivity()).hideRight();
-        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name());
+        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name() +"-" +CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_customer_addresses_address());
         ((HomeScreenNew) getActivity()).setLeftToolBarText("Back");
     }
 

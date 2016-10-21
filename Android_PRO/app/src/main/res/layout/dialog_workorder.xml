@@ -39,21 +39,34 @@
                 android:gravity="center_horizontal"
                 android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
+                android:text="Work Order Approved!"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_18_sp" />  
+            <TextView
+                android:id="@+id/txtNeed1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
                 android:text="@string/doyouhave"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_22_sp" />
+                android:textSize="@dimen/size_18_sp" />
 
             <TextView
                 android:id="@+id/txt2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_8_dp"
                 android:background="@android:color/transparent"
-                android:gravity="center_horizontal"
+                android:paddingLeft="@dimen/size_8_dp"
+                android:paddingRight="@dimen/size_8_dp"
                 android:paddingBottom="@dimen/size_27_dp"
                 android:text="@string/ifyouhave"
+                android:gravity="center"
                 android:textColor="@android:color/white"
-                android:textSize="@dimen/size_16_sp" />
+                android:textSize="@dimen/size_12_sp" />
 
         </LinearLayout>
         <!--Complete Job Now...-->
@@ -70,7 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:text="@string/completejobnow"
                 android:textColor="@color/orange_signin_back"
@@ -87,7 +100,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_10_dp"></View>
+            android:layout_height="@dimen/size_8_dp"></View>
         <!-- resechedule Now...-->
         <LinearLayout
             android:id="@+id/layout_gettingParts"
@@ -102,7 +115,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:text="@string/going_to_get_parts"
                 android:textColor="@color/orange_signin_back"
@@ -119,7 +132,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_10_dp"></View>
+            android:layout_height="@dimen/size_8_dp"></View>
         <!-- resechedule Now...-->
         <LinearLayout
             android:id="@+id/layout_reschedule"
@@ -134,7 +147,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:text="@string/resechedule"
                 android:textColor="@color/orange_signin_back"
@@ -151,7 +164,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/size_10_dp"></View>
+            android:layout_height="@dimen/size_8_dp"></View>
         <!--Cancel JOb-->
         <LinearLayout
             android:id="@+id/layout_cancel_job"
@@ -166,7 +179,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1.4"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:text="@string/canceljob"
                 android:textColor="@color/orange_signin_back"

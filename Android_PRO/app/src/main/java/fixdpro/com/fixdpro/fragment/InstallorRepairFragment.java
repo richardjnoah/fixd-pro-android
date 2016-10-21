@@ -94,7 +94,7 @@ public class InstallorRepairFragment extends Fragment {
     GPSTracker gpsTracker = null ;
     long start_time = 0;
     boolean start_going_to_get_parts_process = false;
-    String total ="0",pro_cut="0",job_mileage="0",fixd_cut="0";
+    String total ="0",pro_cut="0",job_mileage="0",fixd_cut="0",govt_cut="0";
 
     public InstallorRepairFragment() {
         // Required empty public constructor
@@ -312,9 +312,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,time_slots.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,time_slots.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
 
         hashMap.put("where[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -609,6 +609,7 @@ public class InstallorRepairFragment extends Fragment {
                             model.setTime_slot_id(time_slot_obj.getString("id"));
                             model.setTimeslot_start(time_slot_obj.getString("start"));
                             model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_name(time_slot_obj.getString("name"));
                             model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
                         }
                         if (!obj.isNull("cost_details")) {
@@ -666,6 +667,7 @@ public class InstallorRepairFragment extends Fragment {
             switch (msg.what) {
                 case 0:{
                      adapter = new InstallOrRepairJobAdapter(getActivity(),CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist(),getResources());
+                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("0"))
                     lstInstallRepair.addFooterView(getFooterView());
                     lstInstallRepair.addHeaderView(getHeaderView());
                     lstInstallRepair.setAdapter(adapter);
@@ -692,7 +694,7 @@ public class InstallorRepairFragment extends Fragment {
                     break;
                 }
                 case 2:{
-                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+
                     // show pro cut popup
                     shoProcutPopupdialog();
                     break;
@@ -786,15 +788,17 @@ public class InstallorRepairFragment extends Fragment {
         TextView txtOurFee = (TextView)dialog.findViewById(R.id.txtOurFee);
         TextView txtYourCut = (TextView)dialog.findViewById(R.id.txtYourCut);
         TextView txtMileage = (TextView)dialog.findViewById(R.id.txtMileage);
+        TextView txtGovtCutValue = (TextView)dialog.findViewById(R.id.txtGovtCutValue);
+        TextView txtBigTotal = (TextView)dialog.findViewById(R.id.txtBigTotal);
         LinearLayout LinearLayout = (LinearLayout)dialog.findViewById(R.id.layout_mileage);
 
+        txtBigTotal.setText("$"+pro_cut);
         txtJobTotal1.setText("$"+total);
         txtOurFee.setText("$"+fixd_cut);
         txtYourCut.setText("$"+pro_cut);
         txtMileage.setText("$"+job_mileage);
-        if (job_mileage.length() > 0 && !job_mileage.equals("0")){
-
-        }else{
+        txtGovtCutValue.setText("$"+govt_cut);
+        if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("1")){
             LinearLayout.setVisibility(View.GONE);
         }
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -806,6 +810,7 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     Intent intent = new Intent(getActivity(),HomeScreenNew.class);
                     startActivity(intent);
                     getActivity().finish();
@@ -865,6 +870,7 @@ public class InstallorRepairFragment extends Fragment {
                     JSONObject cuts = Response.getJSONObject("RESPONSE").getJSONObject("cuts");
                     pro_cut = cuts.getString("pro_cut");
                     fixd_cut = cuts.getString("fixd_cut");
+                    govt_cut = cuts.getString("govt_cut");
                     if (!cuts.isNull("job_mileage"))
                     job_mileage = cuts.getString("job_mileage");
                     handler.sendEmptyMessage(2);

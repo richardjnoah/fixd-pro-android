@@ -29,7 +29,7 @@
                     android:layout_centerInParent="true"
                     android:text="Job #"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_18_sp" />
+                    android:textSize="@dimen/size_16_sp" />
             </RelativeLayout>
 
             <LinearLayout
@@ -46,7 +46,7 @@
                     android:singleLine="true"
                     android:text="Washer - Install"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_24_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <TextView
                     android:id="@+id/txtUserNameAddress"
@@ -57,7 +57,7 @@
                     android:singleLine="true"
                     android:text="UserName - Address"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_18_sp" />
+                    android:textSize="@dimen/size_16_sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -74,7 +74,7 @@
                     android:singleLine="true"
                     android:text="@string/customercomplaint"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_21_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <EditText
                     android:id="@+id/txtcomplaint"
@@ -91,7 +91,7 @@
                     android:textColor="@android:color/white"
                     android:textColorHint="@color/lb_tv_white"
                     android:textCursorDrawable="@color/lb_tv_white"
-                    android:textSize="@dimen/size_18_sp" />
+                    android:textSize="@dimen/size_16_sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -107,7 +107,7 @@
                     android:singleLine="true"
                     android:text="Description Of Work:"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_21_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <EditText
                     android:id="@+id/txtDescValue"
@@ -124,7 +124,7 @@
                     android:textColor="@android:color/white"
                     android:textColorHint="@color/lb_tv_white"
                     android:textCursorDrawable="@color/lb_tv_white"
-                    android:textSize="@dimen/size_18_sp" />
+                    android:textSize="@dimen/size_16_sp" />
 
                 <View
                     android:layout_width="match_parent"
@@ -141,7 +141,7 @@
                     android:singleLine="true"
                     android:text="@string/repairtype"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_21_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -159,7 +159,7 @@
                         android:layout_weight="2"
                         android:text="None"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
 
                     <TextView
                         android:id="@+id/txtReapirTypeCost"
@@ -170,7 +170,7 @@
                         android:singleLine="true"
                         android:text="$0.00"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp"
+                        android:textSize="@dimen/size_16_sp"
                         android:visibility="visible" />
 
                 </LinearLayout>
@@ -190,7 +190,7 @@
                     android:singleLine="true"
                     android:text="Parts:"
                     android:textColor="@color/register_button_text"
-                    android:textSize="@dimen/size_21_sp" />
+                    android:textSize="@dimen/size_20_sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -208,7 +208,7 @@
                         android:singleLine="true"
                         android:text="None"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
 
                     <TextView
                         android:id="@+id/partstxtDollerT"
@@ -219,7 +219,7 @@
                         android:singleLine="true"
                         android:text=""
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
                 </LinearLayout>
 
                 <View
@@ -245,7 +245,7 @@
                         android:singleLine="true"
                         android:text="@string/diagnostic"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
 
                     <TextView
                         android:id="@+id/txtDiagnosticDoller"
@@ -256,7 +256,7 @@
                         android:singleLine="true"
                         android:text="$ 75.00"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -275,7 +275,7 @@
                         android:singleLine="true"
                         android:text="@string/subtotal"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
 
                     <TextView
                         android:id="@+id/txtSubTotalDoller"
@@ -286,7 +286,7 @@
                         android:singleLine="true"
                         android:text="$ 75.00"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
 
                 </LinearLayout>
 
@@ -307,7 +307,7 @@
                         android:singleLine="true"
                         android:text="@string/tax"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_21_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtTaxDoller"
@@ -318,7 +318,7 @@
                         android:singleLine="true"
                         android:text="$ 75.00"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
                 </LinearLayout>
                 <!--Double Lines-->
 
@@ -344,7 +344,7 @@
                         android:singleLine="true"
                         android:text="@string/total"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_21_sp" />
+                        android:textSize="@dimen/size_20_sp" />
 
                     <TextView
                         android:id="@+id/txtTotalDoller"
@@ -355,7 +355,7 @@
                         android:singleLine="true"
                         android:text="$ 75.00"
                         android:textColor="@color/register_button_text"
-                        android:textSize="@dimen/size_18_sp" />
+                        android:textSize="@dimen/size_16_sp" />
                 </LinearLayout>
 
             </LinearLayout>
