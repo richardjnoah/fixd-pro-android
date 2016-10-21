@@ -130,7 +130,11 @@ public class ChatUserFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_user, container, false);
 
-        lstUser = (ListView)view.findViewById(R.id.lstUser);
+        lstUser = (ListView) view.findViewById(R.id.lstUser);
+
+        View emptyView = view.findViewById(R.id.emptyView);
+        lstUser.setEmptyView(emptyView);
+
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
                 .coordinatorLayout);
         lstUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {

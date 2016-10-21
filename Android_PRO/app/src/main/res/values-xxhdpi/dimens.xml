@@ -153,6 +153,7 @@
     <!--<dimen name="drawerwidth">300dp</dimen>-->
 
     <!--******************XXHDPI******************-->
+    <dimen name="font_medium">20sp</dimen>
     <dimen name="size_3_dp">4dp</dimen>
     <dimen name="size_4_dp">5dp</dimen>
     <dimen name="size_5_dp">6dp</dimen>
