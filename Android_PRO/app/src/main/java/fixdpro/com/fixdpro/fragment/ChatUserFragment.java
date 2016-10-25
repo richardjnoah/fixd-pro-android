@@ -7,10 +7,10 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,9 +58,11 @@ public class ChatUserFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ListView lstUser;
+    TextView txtISMessageOrNot;
     Dialog progressDialog = null;
     private static final String EXTRA_DIALOG = "dialog";
     NotificationModal modal = null ;
+    int try_count = 0 ;
     public ChatUserFragment() {
         // Required empty public constructor
     }
@@ -130,11 +132,8 @@ public class ChatUserFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chat_user, container, false);
 
-        lstUser = (ListView) view.findViewById(R.id.lstUser);
-
-        View emptyView = view.findViewById(R.id.emptyView);
-        lstUser.setEmptyView(emptyView);
-
+        lstUser = (ListView)view.findViewById(R.id.lstUser);
+        txtISMessageOrNot = (TextView)view.findViewById(R.id.txtISMessageOrNot);
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
                 .coordinatorLayout);
         lstUser.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -226,6 +225,11 @@ public class ChatUserFragment extends Fragment {
                 ChatSingleton.getInstance().dataSourceUsers.clear();
                 ChatSingleton.getInstance().dataSourceUsers.addAll(dialogs);
                 adapters.notifyDataSetChanged();
+                if (ChatSingleton.getInstance().dataSourceUsers.size() > 0){
+                    txtISMessageOrNot.setVisibility(View.GONE);
+                }else{
+                    txtISMessageOrNot.setVisibility(View.VISIBLE);
+                }
                 handleIfnotificationClick();
             }
 
@@ -234,8 +238,29 @@ public class ChatUserFragment extends Fragment {
 
                 if (progressDialog != null && progressDialog.isShowing())
                     progressDialog.dismiss();
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
-                dialog.setMessage("get dialogs errors: " + errors).create().show();
+                    if (try_count <  3){
+                        try_count = try_count + 1 ;
+                        if (getInternetStatus()){
+
+                            if (ChatSingleton.getInstance().dataSourceUsers.size() == 0){
+                                progressDialog = new Dialog(getActivity());
+                                progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                                LayoutInflater inflater1 = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                                View customView = inflater1.inflate(R.layout.dialog_progress_simple, null);
+                                progressDialog.setContentView(customView);
+                                progressDialog.setCancelable(false);
+                                progressDialog.show();
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        getChatUsers();
+                                    }
+                                },3000);
+
+                            }
+                        }
+                    }
+
             }
         },null);
     }

@@ -33,6 +33,15 @@ public class AvailableJobModal implements Serializable{
     String warranty = "";
     String is_claim = "";
     boolean start_going_to_get_parts_process = false;
+    public   String current_screen_tag = "";
+
+    public String getCurrent_screen_tag() {
+        return current_screen_tag;
+    }
+
+    public void setCurrent_screen_tag(String current_screen_tag) {
+        this.current_screen_tag = current_screen_tag;
+    }
 
     public boolean isStart_going_to_get_parts_process() {
         return start_going_to_get_parts_process;

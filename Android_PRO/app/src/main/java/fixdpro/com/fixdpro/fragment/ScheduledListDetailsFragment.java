@@ -396,7 +396,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                     // check if already enrouted job.
                     if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
                          // check if the same job is already enrouted
-                        if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
+                        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
                             showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
                         }else{
                             CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
@@ -538,10 +538,11 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
     private void enrouteJob(){
         if (model.getStarted_at().equals("0000-00-00 00:00:00")){
             fragment = new StartJobFragment();
-
+            model.setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
         }else {
             fragment = new InstallorRepairFragment();
+            model.setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
         }
     }

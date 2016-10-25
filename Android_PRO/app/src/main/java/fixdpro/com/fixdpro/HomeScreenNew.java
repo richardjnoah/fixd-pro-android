@@ -974,12 +974,21 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         continue_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                continue_job.setVisibility(View.GONE);
-                if (fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT) != null) {
-                    switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
-                } else {
-                    switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+                AvailableJobModal modal  = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+                if (modal != null){
+                    if (modal.getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
+                        switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+                    }else {
+                        switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+                    }
                 }
+                continue_job.setVisibility(View.GONE);
+//                continue_job.setVisibility(View.GONE);
+//                if (fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT) != null) {
+//                    switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+//                } else {
+//                    switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+//                }
 //                popInclusiveFragment(CurrentScheduledJobSingleTon.getInstance().LastFragment);
 //                    if (CurrentScheduledJobSingleTon.getInstance().LastFragment.equals(Constants.START_JOB_FRAGMENT))
 //                        switchFragment(new StartJobFragment(),Constants.START_JOB_FRAGMENT,true,null);

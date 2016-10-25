@@ -39,7 +39,7 @@ import fixdpro.com.fixdpro.utilites.Utilities;
 public class TechnicianInformation_Activity extends AppCompatActivity {
     Context context = this;
     ImageView imgClose, imgNext;
-    EditText txtFirstName, txtLastName, txtEmailAdd, txtMobile;
+    EditText txtFirstName, txtLastName, txtEmailAdd, txtMobile,txtExperiance;
     CheckBox checkJobPickUp;
     public String firstName ="", lastName ="", email ="", mobileNumber ="", middleName ="",technician_id ="",YearsExp = "";
     boolean ispickUp_jobs = false;
@@ -61,6 +61,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         setWidgets();
         if (_prefs.getString(Preferences.IS_VARIFIED,"0").equals("1")){
             layout_card.setVisibility(View.VISIBLE);
+            txtExperiance.setVisibility(View.GONE);
         }
         setCLickListner();
         if (getIntent().getExtras() != null){
@@ -98,6 +99,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         txtLastName = (EditText) findViewById(R.id.txtLastName);
         txtEmailAdd = (EditText) findViewById(R.id.txtEmail);
         txtMobile = (EditText) findViewById(R.id.txtPhone);
+        txtExperiance = (EditText) findViewById(R.id.txtExperiance);
         txtDeactivate = (TextView) findViewById(R.id.txtDeactivate);
         txtCardNumber = (TextView) findViewById(R.id.txtCardNumber);
         txtEditCard = (TextView) findViewById(R.id.txtEditCard);
@@ -109,7 +111,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        txtCardNumber.setText("****"+_prefs.getString(Preferences.CREDIT_CARD_NUMBER,""));
+        txtCardNumber.setText("\u25CF\u25CF\u25CF\u25CF"+_prefs.getString(Preferences.CREDIT_CARD_NUMBER,""));
     }
 
     private void setCLickListner() {

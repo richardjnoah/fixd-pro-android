@@ -81,15 +81,20 @@ import main.java.com.mindscapehq.android.raygun4android.RaygunClient;
 public class HomeFragment extends Fragment implements View.OnClickListener{
     MapView mapView;
     GoogleMap map;
-    LinearLayout availScheduleLayout, calenderviewall;
-    TextView available, scheduled;
-    ListView availableJob_listView;ListView scheduleJob_listView;
+    LinearLayout availScheduleLayout, calenderviewall,inProgresslayout;
+    TextView available, scheduled,inProgress;
+    ListView availableJob_listView;
+    ListView scheduleJob_listView;
+    ListView inProgressJob_list_view;
     public static int pageAvaileble = 1 ;
     public static int pageSheduled = 1 ;
+    public static int pageProgress = 1 ;
 
-    ArrayList<AvailableJobModal> availablejoblist, schedulejoblist;
+    private String tab_selected = "Available";
 
-    RelativeLayout scheduleLayout;
+    ArrayList<AvailableJobModal> availablejoblist, schedulejoblist,progressJobList;
+
+    RelativeLayout scheduleLayout, availablelayout, progresslayout;
 //    String nextScheduled = "null";
 //    String nextAvaileble = "null";
     public static boolean isStateAvailable =  true ;
@@ -107,8 +112,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     private CoordinatorLayout coordinatorLayout;
     JobsPagingAdapter adapterAvailable ;
     JobsPagingAdapter adapterSchedule ;
+    JobsPagingAdapter adapterProgress ;
     fixdpro.com.fixdpro.views.CircularProgressView progressView ;
-    SwipeRefreshLayout swipe_refresh_layout_schedule, swipe_refresh_layout_available;
+    SwipeRefreshLayout swipe_refresh_layout_schedule, swipe_refresh_layout_available,swipe_refresh_layout_inProgress;
     String switch_tab = "Available";
     boolean isFirstTechReg = false ;
     public HomeFragment() {
@@ -173,6 +179,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             e.printStackTrace();
         }
 
+
+        availablejoblist = singleton.getAvailablejoblist();
+        schedulejoblist = singleton.getSchedulejoblist();;
+        progressJobList = singleton.getProgressjoblist();;
+
+        adapterAvailable = new JobsPagingAdapter(getActivity(),availablejoblist,getResources(),pagingResponseAvailable,"Open");
+        availableJob_listView.setAdapter(adapterAvailable);
+
+        adapterSchedule = new JobsPagingAdapter(getActivity(),schedulejoblist,getResources(),pagingResponseScheduled,"Schduled");
+        scheduleJob_listView.setAdapter(adapterSchedule);
+
+        adapterProgress = new JobsPagingAdapter(getActivity(),progressJobList,getResources(),pagingResponseProgress,"Progress");
+        inProgressJob_list_view.setAdapter(adapterProgress);
+
         availableJob_listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -209,16 +229,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
             }
         });
-        availablejoblist = singleton.getAvailablejoblist();
-        schedulejoblist = singleton.getSchedulejoblist();;
-
-        adapterAvailable = new JobsPagingAdapter(getActivity(),availablejoblist,getResources(),pagingResponseAvailable,"Open");
-        availableJob_listView.setAdapter(adapterAvailable);
-
-        adapterSchedule = new JobsPagingAdapter(getActivity(),schedulejoblist,getResources(),pagingResponseScheduled,"Schduled");
-        scheduleJob_listView.setAdapter(adapterSchedule);
-
-
+        inProgressJob_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch_tab = "Progress";
+                AvailableJobModal job_detail = new AvailableJobModal();
+                job_detail = progressJobList.get(position);
+                fragment = new ScheduledListDetailsFragment();
+//                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("modal", job_detail);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+            }
+        });
 
         if (availablejoblist.size() > 0){
             handler.sendEmptyMessage(0);
@@ -250,7 +273,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         public void handleChangePage() {
            getNextScheduled();
         }
-    };HandlePagingResponse pagingResponseAvailable = new HandlePagingResponse() {
+    };
+    HandlePagingResponse pagingResponseAvailable = new HandlePagingResponse() {
         @Override
         public void handleChangePage() {
             if (!singleton.nextAvailable.equals("null")) {
@@ -263,6 +287,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
              pageAvaileble = Integer.parseInt(singleton.nextAvailable);
             GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAvailable,iHttpExceptionListener, getActivity(), "Loading");
             responseAsync.execute(getRequestParams("Open"));
+            }
+        }
+    };
+    HandlePagingResponse pagingResponseProgress = new HandlePagingResponse() {
+        @Override
+        public void handleChangePage() {
+            if (!singleton.nextProgress.equals("null")) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+//                        progressView.setVisibility(View.VISIBLE);
+                    }
+                });
+             pageProgress = Integer.parseInt(singleton.nextProgress);
+            GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
+            responseAsync.execute(getRequestParamsPregressJob());
             }
         }
     };
@@ -315,7 +355,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.NOTIFICATION_LIST_FRAGMENT, false, b);
     }
     public void refresh(){
-        if (isStateAvailable){
+//        if (isStateAvailable){
+        if (tab_selected.equals("Available")){
             if (map!= null )
             map.clear();
             pageAvaileble  = 1 ;
@@ -326,7 +367,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 responseAsync.execute(getRequestParams("Open"));
             }
 
-        }else{
+        }else if (tab_selected.equals("Scheduled")){
             if (map!= null )
             map.clear();
             pageSheduled  = 1 ;
@@ -335,6 +376,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (getInternetStatus()){
                 GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                 responseAsync1.execute(getRequestParams("Scheduled"));
+            }
+
+        } else {
+            if (map!= null )
+                map.clear();
+            pageProgress  = 1 ;
+            progressJobList.clear();
+            adapterProgress.notifyDataSetChanged();
+            if (getInternetStatus()){
+                GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
+                responseAsync1.execute(getRequestParamsPregressJob());
             }
 
         }
@@ -378,16 +430,22 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         // Gets the MapView from the XML layout and creates it
         mapView = (MapView) view.findViewById(R.id.mapview);
         availScheduleLayout = (LinearLayout) view.findViewById(R.id.availschedule_layout);
+//        inProgresslayout = (LinearLayout) view.findViewById(R.id.inProgresslayout);
         available = (TextView) view.findViewById(R.id.available);
         scheduled = (TextView) view.findViewById(R.id.scheduled);
+        inProgress = (TextView) view.findViewById(R.id.inProgress);
         availableJob_listView = (ListView) view.findViewById(R.id.availableJob_list_view);
         scheduleJob_listView = (ListView) view.findViewById(R.id.scheduleJob_list_view);
+        inProgressJob_list_view = (ListView) view.findViewById(R.id.inProgressJob_list_view);
         scheduleLayout = (RelativeLayout) view.findViewById(R.id.schedulelayout);
+        progresslayout = (RelativeLayout) view.findViewById(R.id.progresslayout);
+        availablelayout = (RelativeLayout) view.findViewById(R.id.availablelayout);
         calenderviewall = (LinearLayout) view.findViewById(R.id.viewall);
         swipe_refresh_layout_available = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_available);
         swipe_refresh_layout_schedule = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_schedule);
-        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
-                .coordinatorLayout);
+        swipe_refresh_layout_inProgress = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_inProgress);
+//        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
+//                .coordinatorLayout);
 //        progressView = (fixtpro.com.fixtpro.views.CircularProgressView)view.findViewById(R.id.progress_view);
     }
 
@@ -415,7 +473,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onInfoWindowClick(Marker marker) {
                 int pos = Integer.parseInt(marker.getSnippet());
-                if (isStateAvailable) {
+                if (tab_selected.equals("Available")) {
                     // send where details is object
                     if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
                         showAccountSetupDialog();
@@ -430,9 +488,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     Intent i = new Intent(getActivity(), AvailableJobListClickActivity.class);
                     i.putExtra("JOB_DETAIL", job_detail);
                     startActivity(i);
-                } else {
+                } else if (tab_selected.equals("Scheduled")){
                     AvailableJobModal job_detail = new AvailableJobModal();
                     job_detail = schedulejoblist.get(pos);
+                    fragment = new ScheduledListDetailsFragment();
+//                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("modal", job_detail);
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+                }else {
+                    AvailableJobModal job_detail = new AvailableJobModal();
+                    job_detail = progressJobList.get(pos);
                     fragment = new ScheduledListDetailsFragment();
 //                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(job_detail);
                     Bundle bundle = new Bundle();
@@ -446,6 +512,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     void setListeners(){
         available.setOnClickListener(this);
         scheduled.setOnClickListener(this);
+        inProgress.setOnClickListener(this);
         calenderviewall.setOnClickListener(this);
         swipe_refresh_layout_schedule.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -459,6 +526,14 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onRefresh() {
                 swipe_refresh_layout_available.setRefreshing(true);
+
+                refresh();
+            }
+        });
+        swipe_refresh_layout_inProgress.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipe_refresh_layout_inProgress.setRefreshing(true);
 
                 refresh();
             }
@@ -682,6 +757,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
             if (swipe_refresh_layout_schedule.isRefreshing()){
                 swipe_refresh_layout_schedule.setRefreshing(false);
+            } if (swipe_refresh_layout_inProgress.isRefreshing()){
+                swipe_refresh_layout_inProgress.setRefreshing(false);
             }
             switch (msg.what){
                 case 0:{
@@ -706,6 +783,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
                 case 3:{
+
+                    break;
+                } case 4:{
+                    adapterProgress.notifyDataSetChanged();
+//                    }
+
+                    setMarkers(progressJobList);
 
                     break;
                 }
@@ -873,6 +957,159 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         }
     };
+    IHttpResponseListener responseListenerProgress = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
+                    JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
+                    singleton.nextProgress = pagination.getString("next");
+                    for(int i = 0; i < results.length(); i++){
+                        JSONObject obj = results.getJSONObject(i);
+                        AvailableJobModal model = new AvailableJobModal();
+                        model.setContact_name(obj.getString("contact_name"));
+                        model.setCreated_at(obj.getString("created_at"));
+                        model.setCustomer_id(obj.getString("customer_id"));
+                        model.setCustomer_notes(obj.getString("customer_notes"));
+                        model.setFinished_at(obj.getString("finished_at"));
+                        model.setId(obj.getString("id"));
+                        model.setJob_id(obj.getString("job_id"));
+//                        model.setLatitude(obj.getDouble("latitude"));
+                        model.setLocked_by(obj.getString("locked_by"));
+                        model.setLocked_on(obj.getString("locked_on"));
+//                        model.setLongitude(obj.getDouble("longitude"));
+                        model.setPhone(obj.getString("phone"));
+                        model.setPro_id(obj.getString("pro_id"));
+                        model.setRequest_date(obj.getString("request_date"));
+//                        model.setService_id(obj.getString("service_id"));
+//                        model.setService_type(obj.getString("service_type"));
+                        model.setStarted_at(obj.getString("started_at"));
+                        model.setStatus(obj.getString("status"));
+                        model.setTechnician_id(obj.getString("technician_id"));
+                        model.setTime_slot_id(obj.getString("time_slot_id"));
+                        model.setTitle(obj.getString("title"));
+//                        model.setTotal_cost(obj.getString("total_cost"));
+                        model.setUpdated_at(obj.getString("updated_at"));
+//                        model.setWarranty(obj.getString("warranty"));
+                        model.setIs_claim(obj.getString("is_claim"));
+//                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
+                            JSONArray jobAppliances = obj.getJSONArray("job_appliances");
+                            ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
+                            if(jobAppliances != null){
+                            for (int j = 0; j < jobAppliances.length(); j++) {
+                                JSONObject jsonObject = jobAppliances.getJSONObject(j);
+                                JobAppliancesModal mod = new JobAppliancesModal();
+                                mod.setJob_appliances_id(jsonObject.getString("id"));
+                                mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
+                                mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+
+                                if (!jsonObject.isNull("description")){
+                                    mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("service_type")){
+                                    mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                                }
+                                if (!jsonObject.isNull("customer_complaint")) {
+                                    mod.setJob_appliances_customer_compalint(jsonObject.getString("customer_complaint"));
+                                }
+                                if (!jsonObject.isNull("image")){
+                                    JSONObject image_obj = jsonObject.getJSONObject("image");
+                                    if(!image_obj.isNull("original")){
+                                        mod.setImg_original(image_obj.getString("original"));
+                                        mod.setImg_160x170(image_obj.getString("160x170"));
+                                        mod.setImg_150x150(image_obj.getString("150x150"));
+                                        mod.setImg_75x75(image_obj.getString("75x75"));
+                                        mod.setImg_30x30(image_obj.getString("30x30"));
+                                    }
+                                }
+                                if (!jsonObject.isNull("appliance_types")){
+                                    JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                                    mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                                    mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                                    mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                                    mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                                    mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                                    if (!appliance_type_obj.isNull("image")){
+                                        JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                                        if( !image_obj.isNull("original")){
+                                            mod.setAppliance_type_image_original(image_obj.getString("original"));
+
+                                        }
+                                    }
+                                    if (!appliance_type_obj.isNull("services")){
+                                        JSONObject services_obj = appliance_type_obj.getJSONObject("services");
+                                        mod.setService_id(services_obj.getString("id"));
+                                        mod.setService_name(services_obj.getString("name"));
+                                        mod.setService_created_at(services_obj.getString("created_at"));
+                                        mod.setService_updated_at(services_obj.getString("updated_at"));
+                                    }
+
+                                }
+
+
+
+                                jobapplianceslist.add(mod);
+                            }
+//                            }
+                            model.setJob_appliances_arrlist(jobapplianceslist);
+                        }
+                        if (!obj.isNull("technicians")){
+                            JSONObject technician_object  =  obj.getJSONObject("technicians");
+                            model.setTechnician_technicians_id(technician_object.getString("id"));
+                            model.setTechnician_user_id(technician_object.getString("user_id"));
+                            model.setTechnician_fname(technician_object.getString("first_name"));
+                            model.setTechnician_lname(technician_object.getString("last_name"));
+                            model.setTechnician_pickup_jobs(technician_object.getString("pickup_jobs"));
+                            model.setTechnician_avg_rating(technician_object.getString("avg_rating"));
+                            model.setCurrent_technician_scheduled_job_count("1");
+                            model.setTechnician_scheduled_job_count(technician_object.getString("scheduled_jobs_count"));
+                            model.setTechnician_completed_job_count(technician_object.getString("completed_jobs_count"));
+                            if (!technician_object.isNull("profile_image")){
+                                JSONObject object_profile_image  = technician_object.getJSONObject("profile_image");
+                                if (!object_profile_image.isNull("original"))
+                                    model.setTechnician_profile_image(object_profile_image.getString("original"));
+                            }
+
+                        }
+                        if (!obj.isNull("time_slots")){
+                            JSONObject time_slot_obj = obj.getJSONObject("time_slots");
+                            model.setTime_slot_id(time_slot_obj.getString("id"));
+                            model.setTimeslot_start(time_slot_obj.getString("start"));
+                            model.setTimeslot_name(time_slot_obj.getString("name"));
+                            model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
+                        }
+
+
+                        if (!obj.isNull("job_customer_addresses")){
+                            JSONObject job_customer_addresses_obj = obj.getJSONObject("job_customer_addresses");
+                            model.setJob_customer_addresses_id(job_customer_addresses_obj.getString("id"));
+                            model.setJob_customer_addresses_zip(job_customer_addresses_obj.getString("zip"));
+                            model.setJob_customer_addresses_city(job_customer_addresses_obj.getString("city"));
+                            model.setJob_customer_addresses_state(job_customer_addresses_obj.getString("state"));
+                            model.setJob_customer_addresses_address(job_customer_addresses_obj.getString("address"));
+                            model.setJob_customer_addresses_address_2(job_customer_addresses_obj.getString("address_2"));
+                            model.setJob_customer_addresses_updated_at(job_customer_addresses_obj.getString("updated_at"));
+                            model.setJob_customer_addresses_created_at(job_customer_addresses_obj.getString("created_at"));
+                            model.setJob_customer_addresses_job_id(job_customer_addresses_obj.getString("job_id"));
+                            model.setJob_customer_addresses_latitude(job_customer_addresses_obj.getDouble("latitude"));
+                            model.setJob_customer_addresses_longitude(job_customer_addresses_obj.getDouble("longitude"));
+                        }
+                        progressJobList.add(model);
+                    }
+
+                    handler.sendEmptyMessage(4);
+                }else {
+                    handler.sendEmptyMessage(3);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
     private boolean getInternetStatus(){
         if (!Utilities.isNetworkAvailable(getActivity())){
 //            Snackbar snackbar = Snackbar
@@ -931,6 +1168,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
 
         return hashMap;
     }
+    private HashMap<String,String> getRequestParamsPregressJob(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","read");
+        hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled,Scheduled");
+        hashMap.put("order_by", "date_time_combined");
+        hashMap.put("order", "ASC");
+        hashMap.put("object","jobs");
+        if (!role.equals("pro"))
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+        else
+            hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("page", pageProgress+"");
+        hashMap.put("per_page", "15");
+
+        return hashMap;
+    }
 
     @Override
     public void onClick(View v) {
@@ -940,18 +1194,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 if (map != null)
                 map.clear();
                 isStateAvailable  = true ;
-                availScheduleLayout.setBackgroundResource(R.drawable.scheduled);
-                availableJob_listView.setVisibility(View.VISIBLE);
+                tab_selected = "Available";
+                availScheduleLayout.setBackgroundResource(R.drawable.available);
+//                inProgresslayout.setVisibility(View.GONE);
+                progresslayout.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.GONE);
+                availablelayout.setVisibility(View.VISIBLE);
                 setMarkers(availablejoblist);
                 break;
             case R.id.scheduled:
                 if (map != null)
-                map.clear();
+                    map.clear();
                 isStateAvailable  = false ;
-                availScheduleLayout.setBackgroundResource(R.drawable.available);
-                availableJob_listView.setVisibility(View.GONE);
+                tab_selected = "Scheduled";
+                availScheduleLayout.setBackgroundResource(R.drawable.scheduled);
+//                inProgresslayout.setVisibility(View.GONE);
+                progresslayout.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.VISIBLE);
+                availablelayout.setVisibility(View.GONE);
                 if (schedulejoblist.size() == 0){
                     GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync1.execute(getRequestParams("Scheduled"));
@@ -960,6 +1220,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     handler.sendEmptyMessage(2);
                 }
 
+                break;
+            case R.id.inProgress:
+                if (map != null)
+                    map.clear();
+                tab_selected = "Progress";
+                availScheduleLayout.setBackgroundResource(R.drawable.in_progress);
+//                inProgresslayout.setVisibility(View.VISIBLE);
+                progresslayout.setVisibility(View.VISIBLE);
+                scheduleLayout.setVisibility(View.GONE);
+                availablelayout.setVisibility(View.GONE);
+                if (progressJobList.size() == 0){
+                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
+                    responseAsync1.execute(getRequestParamsPregressJob());
+                }else{
+//                    setMarkers(schedulejoblist);
+                    handler.sendEmptyMessage(4);
+                }
                 break;
             case R.id.viewall:
                 Intent i = new Intent(getActivity(), CalendarActivity.class);
@@ -981,7 +1258,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             // Add a marker
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(new LatLng(intLatitude, intLongitude)));
-            if (!isStateAvailable){
+            if (tab_selected.equals("Scheduled") || tab_selected.equals("Progress")){
                 marker.setTitle(arrayList.get(k).getContact_name() +"\n"+ arrayList.get(k).getJob_customer_addresses_address() +" "+arrayList.get(k).getJob_customer_addresses_city());
             }else {
                 marker.setTitle(arrayList.get(k).getContact_name());

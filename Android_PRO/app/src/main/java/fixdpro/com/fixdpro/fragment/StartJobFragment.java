@@ -57,11 +57,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.LocationResponseListener;
@@ -212,6 +214,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             public void onClick(View v) {
                 // show open direction Dialog....
                 layout_heading.setVisibility(View.GONE);
+                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                 ((HomeScreenNew) getActivity()).popStack();
 
             }
@@ -627,31 +630,31 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //        showStartJobDialog();
 //        return;
         //check time
-//        try {
-//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-//
-//            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
-//            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
-//            Date startDate = formatter.parse(requestedDateStart);
-//            Date endDate = formatter.parse(requestDateEnd);
-//            Date currentDate = formatter.parse( formatter.format(new Date()));
-//            Log.e("",""+startDate);
-//            Log.e("",""+endDate);
-//            Log.e("",""+currentDate);
-//            if (startDate.before(currentDate) && currentDate.before(endDate)){
-//                if (distance < 61){
+        try {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
+            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
+            Date startDate = formatter.parse(requestedDateStart);
+            Date endDate = formatter.parse(requestDateEnd);
+            Date currentDate = formatter.parse( formatter.format(new Date()));
+            Log.e("",""+startDate);
+            Log.e("",""+endDate);
+            Log.e("",""+currentDate);
+            if (startDate.before(currentDate) && currentDate.before(endDate)){
+                if (distance < 61){
                     showStartJobDialog();
-//                }else {
-//                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
-//                }
-//            }else {
-//                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
-//            }
-//
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
+                }else {
+                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
+                }
+            }else {
+                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
     public void showStartJobDialog(){
         dialog = new Dialog(_context);

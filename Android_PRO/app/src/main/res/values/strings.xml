@@ -1,8 +1,6 @@
 <resources>
     <string name="app_name">Fixd-Pro</string>
 
-    <string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>
-
     <string name="hello_world">Hello world!</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_search">Search</string>
@@ -341,7 +339,7 @@
 
     <!-- Chat Strings-->
     <string name="chat_sample">Chat Sample</string>
-    <string name="no_new_message">No new message is available</string>
+
     <string name="menu_new_chat">New Chat</string>
     <string name="menu_chat_info">Chat info</string>
     <string name="menu_add_users_to_chat">Add Users to Chat</string>
@@ -482,6 +480,8 @@
 
     <string name="dealerserviceagre">Dealer Service Agreement</string>
     <string name="termscondtiontextstr">Terms and Conditions</string>
+
+    <string name="no_new_message">No New Message is available</string>
 
 
 </resources>

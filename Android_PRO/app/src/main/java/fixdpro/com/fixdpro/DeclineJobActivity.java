@@ -25,7 +25,8 @@ import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class DeclineJobActivity extends AppCompatActivity implements View.OnClickListener{
-    ImageView cancel, yesdecline_cancel_img;
+    ImageView cancel;
+    TextView yesdecline_cancel_img;
     TextView title, areusure_text, backup_text;
     EditText editText;
     String JobType, objectType, JobId, message;
@@ -44,7 +45,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
             areusure_text.setText(getString(R.string.areusure_cancel));
             backup_text.setText(getString(R.string.backup_cancel));
             editText.setHint(getString(R.string.canceledittext));
-            yesdecline_cancel_img.setImageResource(R.drawable.yescancel);
+//            yesdecline_cancel_img.setImageResource(R.drawable.yescancel);
         }
     }
 
@@ -54,7 +55,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         areusure_text = (TextView)findViewById(R.id.areusure_text);
         backup_text = (TextView)findViewById(R.id.backup_text);
         editText = (EditText)findViewById(R.id.edittext);
-        yesdecline_cancel_img = (ImageView)findViewById(R.id.yesdecline_cancel_img);
+        yesdecline_cancel_img = (TextView)findViewById(R.id.yesdecline_cancel_img);
     }
 
     public void setListeners(){

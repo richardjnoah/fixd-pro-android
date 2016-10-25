@@ -371,6 +371,7 @@ public class CalendarActivity extends AppCompatActivity {
                             model.setTime_slot_id(time_slot_obj.getString("id"));
                             model.setTimeslot_start(time_slot_obj.getString("start"));
                             model.setTimeslot_end(time_slot_obj.getString("end"));
+                            model.setTimeslot_name(time_slot_obj.getString("name"));
                             model.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
 
                             if (!obj.isNull("job_customer_addresses")){
@@ -551,7 +552,8 @@ public class CalendarActivity extends AppCompatActivity {
                     for (int i = 0 ; i < result.length() ; i++){
                         JSONObject jsonObject = result.getJSONObject(i);
                         IDS[i] = jsonObject.getString("id");
-                        TYPES[i] = jsonObject.getString("start") + " - " + jsonObject.getString("end");
+                        TYPES[i] = jsonObject.getString("name");
+//                        TYPES[i] = jsonObject.getString("start") + " - " + jsonObject.getString("end");
                     }
                     handler.sendEmptyMessage(4);
                 }else {

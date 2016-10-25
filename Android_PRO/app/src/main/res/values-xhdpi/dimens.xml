@@ -173,7 +173,6 @@
 
   <dimen name="fab_margin">16dp</dimen>
 
-  <dimen name="font_medium">18sp</dimen>
   <dimen name="size_48">48dp</dimen>
   <dimen name="size_23sp">23sp</dimen>
   <dimen name="size_22dp">22dp</dimen>

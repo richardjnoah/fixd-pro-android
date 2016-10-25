@@ -232,7 +232,18 @@ public class JSONParserNew {
 
         } catch (IOException e) {
             e.printStackTrace();
+            if (e.getClass().getName().equals("java.net.UnknownHostException")){
+                exceptionListener.handleException("The Internet connection appears to be offline.");
+            }else if (e.getClass().getName().equals("java.net.SocketTimeoutException")){
+                exceptionListener.handleException("The request timed out.");
+            }
+            else{
+                exceptionListener.handleException("Server not found.");
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
         }
+
 
         conn.disconnect();
 

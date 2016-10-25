@@ -19,8 +19,10 @@
     </RelativeLayout>
 
     <ScrollView
+        android:layout_above="@+id/txtVersion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/scroll"
         android:layout_below="@id/nav_header_container">
 
         <LinearLayout
@@ -355,6 +357,8 @@
         android:textSize="@dimen/size_16sp"
         android:textColor="@color/white"
         android:id="@+id/txtVersion"
+        android:text="Version"
+        android:padding="2dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

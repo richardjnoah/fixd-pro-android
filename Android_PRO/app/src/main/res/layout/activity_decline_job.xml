@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -36,6 +36,11 @@
                 android:textSize="@dimen/size_22_sp" />
         </RelativeLayout>
     </android.support.v7.widget.Toolbar>
+    <LinearLayout
+        android:layout_below="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -87,14 +92,19 @@
         android:padding="@dimen/size_5_dp"
         android:textColor="@color/register_button_text"
         android:textColorHint="@color/register_button_text" />
+    </LinearLayout>
 
-    <ImageView
+    <TextView
         android:id="@+id/yesdecline_cancel_img"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="@dimen/size_5_dp"
-        android:layout_marginTop="@dimen/size_30_dp"
-        android:src="@drawable/yesdecline" />
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/size_10_dp"
+        android:textSize="@dimen/size_18_sp"
+        android:text="Cancel"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:background="@color/orange_signin_back"
+        />
 
-</LinearLayout>
+</RelativeLayout>

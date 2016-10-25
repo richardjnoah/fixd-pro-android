@@ -13,10 +13,12 @@ public class Singleton {
     ArrayList<AvailableJobModal> availablejoblist = new ArrayList<AvailableJobModal>();
     ArrayList<AvailableJobModal> schedulejoblist  = new ArrayList<AvailableJobModal>();
     ArrayList<AvailableJobModal> completedjoblist  = new ArrayList<AvailableJobModal>();
+    ArrayList<AvailableJobModal> progressjoblist  = new ArrayList<AvailableJobModal>();
 
     public  int pageAvaileble = 1 ;
     public  int pageSheduled = 1 ;
     public  int compltedpage = 1 ;
+    public  int progresspage = 1 ;
 
     public int getPageAvaileble() {
         return pageAvaileble;
@@ -69,6 +71,7 @@ public class Singleton {
     public  String nextCompleted = "null";
     public  String nextSchduled = "null";
     public  String nextAvailable = "null";
+    public  String nextProgress = "null";
     /* A private Constructor prevents any other
      * class from instantiating.
      */
@@ -108,11 +111,38 @@ public class Singleton {
         completedjoblist.clear();
         schedulejoblist.clear();
         availablejoblist.clear();
+        progressjoblist.clear();
         nextCompleted = "null";
         nextSchduled = "null";
         nextAvailable = "null";
+        nextProgress = "null";
         pageAvaileble = 1 ;
         pageSheduled = 1 ;
         compltedpage = 1 ;
+        progresspage = 1 ;
+    }
+
+    public ArrayList<AvailableJobModal> getProgressjoblist() {
+        return progressjoblist;
+    }
+
+    public void setProgressjoblist(ArrayList<AvailableJobModal> progressjoblist) {
+        this.progressjoblist = progressjoblist;
+    }
+
+    public int getProgresspage() {
+        return progresspage;
+    }
+
+    public void setProgresspage(int progresspage) {
+        this.progresspage = progresspage;
+    }
+
+    public String getNextProgress() {
+        return nextProgress;
+    }
+
+    public void setNextProgress(String nextProgress) {
+        this.nextProgress = nextProgress;
     }
 }

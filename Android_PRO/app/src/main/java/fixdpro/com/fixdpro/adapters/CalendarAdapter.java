@@ -294,6 +294,7 @@ public class CalendarAdapter extends BaseAdapter {
 
                 if (day_string.get(pos).equals(date)) {
                     txt.setVisibility(View.VISIBLE);
+                    //txt.setPadding(5,5,5,5);
                     break;
 //                    return  true;
 //                    txt.setBackgroundColor(Color.parseColor("#343434"));

@@ -370,7 +370,7 @@ public class Utilities {
             return R.drawable.package_unit;
         else  if (appliance.equals("Pipes"))
             return R.drawable.pipes;
-        else  if (appliance.equals("Pool & spa (All)"))
+        else  if (appliance.equals("Pool & spa (All)") || appliance.equals("Hot tub") || appliance.equals("Pool"))
             return R.drawable.pool_spa_all;
         else  if (appliance.equals("Range"))
             return R.drawable.range;

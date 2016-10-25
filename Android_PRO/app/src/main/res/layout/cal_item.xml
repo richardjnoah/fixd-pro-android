@@ -20,9 +20,7 @@
             android:id="@+id/date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
             android:gravity="center_vertical"
-            android:padding="1dp"
             android:textColor="#000000"
             android:textSize="@dimen/size_12_sp"
             android:textStyle="bold" />
@@ -30,12 +28,11 @@
         <LinearLayout
             android:layout_gravity="center_horizontal"
             android:id="@+id/event_indicator"
-            android:layout_width="@dimen/size_5_dp"
-            android:layout_height="@dimen/size_5_dp"
+            android:layout_width="@dimen/size_8_dp"
+            android:layout_height="@dimen/size_8_dp"
             android:layout_alignBottom="@+id/date"
             android:background="@drawable/orange_circle"
             android:gravity="center_horizontal"
-
             android:textSize="@dimen/size_14_sp"
             android:textStyle="bold"
             android:visibility="invisible"

@@ -153,7 +153,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/api_key" />
+            android:value="AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw" />
 
         <activity
             android:name=".CalendarActivity"

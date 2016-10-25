@@ -201,9 +201,13 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                         intent.putExtra("JOB_DETAIL",modelAvail);
                         context.startActivity(intent);
                     }else {
-                        Intent intent = new Intent();
-                        intent.putExtra("tech",modal);
-                        setResult(999,intent);
+//                        Intent intent = new Intent();
+//                        intent.putExtra("tech",modal);
+//                        setResult(999,intent);
+                        Intent intent = new Intent(AssignTechnicianActivity.this,HomeScreenNew.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.putExtra("switch_tab", "Scheduled");
+                        startActivity(intent);
                         finish();
                     }
 

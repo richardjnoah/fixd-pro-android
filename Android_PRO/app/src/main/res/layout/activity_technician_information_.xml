@@ -40,7 +40,7 @@
     <ScrollView
 
         android:id="@+id/scroll"
-
+        android:layout_above="@+id/txtDeactivate"
         android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/size_20_dp"
             android:layout_marginRight="@dimen/size_20_dp"
-            android:layout_marginTop="@dimen/size_10_dp"
+            android:layout_marginTop="@dimen/size_5_dp"
             android:background="@color/white"
             android:orientation="vertical">
 
@@ -68,7 +68,7 @@
                 android:gravity="left"
                 android:hint="@string/first_name"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
@@ -90,7 +90,7 @@
                 android:gravity="left"
                 android:hint="@string/last_name"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
@@ -113,7 +113,7 @@
                 android:hint="@string/mobile"
                 android:imeOptions="actionNext"
                 android:inputType="number"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
@@ -136,7 +136,7 @@
                 android:gravity="left"
                 android:hint="@string/emailonly"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
@@ -158,7 +158,7 @@
                 android:gravity="left"
                 android:hint="@string/year_exp"
                 android:imeOptions="actionNext"
-                android:padding="@dimen/size_10_dp"
+                android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
                 android:textColorHint="@color/color_grey"
@@ -172,7 +172,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/layout1"
-            android:layout_marginTop="@dimen/size_5_dp"
+            android:layout_marginTop="3dp"
             android:orientation="vertical">
 
             <CheckBox
@@ -184,17 +184,18 @@
                 android:drawablePadding="@dimen/size_18_dp"
                 android:text="@string/techcanpick"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16_sp" />
+                android:textSize="@dimen/size_13_sp" />
 
             <TextView
                 android:id="@+id/txtNote"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_18_dp"
+                android:layout_marginRight="@dimen/size_18_dp"
                 android:padding="@dimen/size_5_dp"
                 android:text="@string/note"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16_sp"
+                android:textSize="@dimen/size_13_sp"
                 android:textStyle="italic" />
 
         </LinearLayout>
@@ -222,7 +223,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="@dimen/size_5_dp"
                 android:gravity="center_vertical"
-                android:text="****4444"
+                android:text=""
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_16_dp" />
 
@@ -257,7 +258,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/next"
-                android:paddingBottom="@dimen/size_10_dp"
+                android:paddingBottom="@dimen/size_8_dp"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_16_sp" />
 
@@ -276,16 +277,13 @@
     </ScrollView>
 
     <TextView
-
         android:id="@+id/txtDeactivate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerVertical="true"
+        android:padding="@dimen/size_8_dp"
         android:background="@color/white"
         android:gravity="center"
-        android:padding="@dimen/size_10_dp"
-        android:layout_below="@+id/scroll"
         android:text="Deactivate"
         android:textColor="@color/orange_signin_back"
         android:textSize="@dimen/size_18_sp"
