@@ -278,7 +278,9 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         loc.setLongitude(modal.getJob_customer_addresses_longitude());//
 //        loc.setLatitude(30.710940);
 //        loc.setLongitude(76.686212);
-        float distance  =gpsTracker.getLocation().distanceTo(loc);
+
+        float distance = 0;
+        if (gpsTracker.getLocation() != null && loc != null) distance = gpsTracker.getLocation().distanceTo(loc);
 
 //        Toast.makeText(getActivity(),distance+"",Toast.LENGTH_LONG).show();
 //        Toast.makeText(getActivity(),gpsTracker.getLocation().getLongitude()+"",Toast.LENGTH_LONG).show();
