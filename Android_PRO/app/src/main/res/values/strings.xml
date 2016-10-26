@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Fixd-Pro</string>
 
+    <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>--> <!-- Old -->
+    <string name="api_key">AIzaSyBTt-C4WZaumhCLsdmy0t2bdXeASvpZ3K0</string>
+
     <string name="hello_world">Hello world!</string>
     <string name="action_refresh">Refresh</string>
     <string name="action_search">Search</string>
@@ -25,6 +28,7 @@
     <string name="phone_number">Phone Number</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="enter_valid_code">Please enter valid code</string>
     <string name="title_activity_user_profile_screen">UserProfileScreen</string>
 
     <!-- Profile Screen-->

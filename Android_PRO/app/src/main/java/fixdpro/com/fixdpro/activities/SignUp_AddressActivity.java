@@ -73,7 +73,6 @@ public class SignUp_AddressActivity extends AppCompatActivity {
         lstPlaces.setAdapter(adapter);
     }
 
-
     private void setWidgets() {
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         imgNext = (ImageView) findViewById(R.id.imgNext);
@@ -147,12 +146,14 @@ public class SignUp_AddressActivity extends AppCompatActivity {
             }
         });
     }
-    private void getGoogleResultInDetails(String id){
+
+    private void getGoogleResultInDetails(String id) {
         String Url = "https://maps.googleapis.com/maps/api/place/details/json";
 //        String Url = "https://maps.googleapis.com/maps/api/place/autocomplete/json?input="+placeName+"&language=en&key="+ Constants.GOOGLE_PLACE_SERVER_KEY+"&components=country:us";
         GetApiResponseAsyncNoProgress getApiResponseAsync = new GetApiResponseAsyncNoProgress(Url,"GET",iHttpResponseListener,exceptionListener,this,"Loading");
         getApiResponseAsync.execute(getRequestParamsForDetails(id));
     }
+
     private void getGoogleResults(String placeName){
         String Url = "https://maps.googleapis.com/maps/api/place/autocomplete/json";
         GetApiResponseAsyncNoProgress getApiResponseAsync = new GetApiResponseAsyncNoProgress(Url,"GET",googlePlaceResponseListener,exceptionListener,this,"Loading");
@@ -167,6 +168,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
         hashMap.put("components", "country:us");
         return hashMap;
     }
+
     private HashMap<String,String> getRequestParamsForDetails(String id){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("placeid",id);
@@ -182,6 +184,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
             try{
                 String status = response.getString("status");
                 if (status.equals("OK")){
+                    mZip = mState = mCity = "";
                     JSONArray address_components = response.getJSONObject("result").getJSONArray("address_components");
                     if (address_components.length() > 0){
                         for (int i = 0 ; i < address_components.length() ; i++){
@@ -281,7 +284,8 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                     if (modal.getPlace_id().length() > 0)
                     finalRequestParams.put("data[address_uid]", modal.getPlace_id());
                     finalRequestParams.put("data[pros][working_radius_miles]","200");
-                    if (mZip == null ||mState == null ||mCity == null  ){
+                    if (mZip == null ||mState == null ||mCity == null
+                            || mZip.isEmpty() || mState.isEmpty() || mCity.isEmpty()){
                         Intent intent = new Intent(SignUp_AddressActivity.this,New_Address_Activity.class);
                         intent.putExtra("ispro",true);
                         intent.putExtra("modal",modal);

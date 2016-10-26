@@ -166,8 +166,13 @@ public class NotificationListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
+
         /*****Setting Up Notifications******/
         listview_Notifications = (ListView)view.findViewById(R.id.listview_Notifications);
+
+        View emptyView = view.findViewById(R.id.emptyView);
+        listview_Notifications.setEmptyView(emptyView);
+
         adapterNotification = new NotificationListAdapter(getActivity(), notificationlist, getResources(),pagingResponseNotification);
         listview_Notifications.setAdapter(adapterNotification);
         adapterNotification.notifyDataSetChanged();

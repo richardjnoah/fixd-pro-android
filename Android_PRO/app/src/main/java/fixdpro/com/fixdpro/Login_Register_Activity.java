@@ -359,7 +359,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
                     break;
                 }
                 case 2:{
-                     showAlertDialog("Fixd-pro","Already used code");
+                     showAlertDialog("Fixd-pro", getResources().getString(R.string.enter_valid_code));
                     break;
                 }
                 default:{

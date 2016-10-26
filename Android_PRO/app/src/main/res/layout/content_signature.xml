@@ -108,8 +108,8 @@
 
                         <ImageView
                             android:id="@+id/imgAccept"
-                            android:layout_width="@dimen/size_90_dp"
-                            android:layout_height="@dimen/size_40_dp"
+                            android:layout_width="@dimen/size_80_dp"
+                            android:layout_height="@dimen/size_36_dp"
                             android:layout_gravity="right"
                             android:src="@drawable/accept" />
                     </LinearLayout>
@@ -123,8 +123,8 @@
 
                         <ImageView
                             android:id="@+id/imgClear"
-                            android:layout_width="@dimen/size_90_dp"
-                            android:layout_height="@dimen/size_40_dp"
+                            android:layout_width="@dimen/size_80_dp"
+                            android:layout_height="@dimen/size_36_dp"
                             android:src="@drawable/clear" />
                     </LinearLayout>
                 </LinearLayout>

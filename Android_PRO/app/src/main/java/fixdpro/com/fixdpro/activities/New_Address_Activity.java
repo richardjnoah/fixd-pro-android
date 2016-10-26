@@ -166,6 +166,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                 }else if (State.equals("")){
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter state.");
                 }else{
+                    // TODO: MH -- Check Address validity from server here
                     finalRequestParams.put("data[pros][address]", Address1);
                     finalRequestParams.put("data[pros][address_2]", Address2);
                     finalRequestParams.put("data[pros][city]", City);
