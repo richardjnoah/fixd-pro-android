@@ -243,7 +243,7 @@
             android:label="@string/title_activity_home_screen_new"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".SignatureActivity"
             android:label="@string/title_activity_signature"

@@ -54,14 +54,16 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         setCLickListner();
         initLayout();
     }
-    private void initLayout(){
 
+    private void initLayout(){
         txtCompanyName.setText(_prefs.getString(Preferences.COMPANY_NAME,""));
         txtYearInBusiness.setText(_prefs.getString(Preferences.YEARS_IN_BUSINESS, ""));
         txtEniNumber.setText(_prefs.getString(Preferences.EIN_NUMEBR, ""));
         txtInsuranceCarr.setText(_prefs.getString(Preferences.INSURANCE, ""));
         txtPolicyNumber.setText(_prefs.getString(Preferences.INSURANCE_POLICY, ""));
-        txtHourlyRate.setText("$"+Math.round(Float.parseFloat(_prefs.getString(Preferences.HOURLY_RATE, ""))));
+        String hourlyRate = _prefs.getString(Preferences.HOURLY_RATE, "");
+        if (!hourlyRate.contains("$")) txtHourlyRate.setText("$"+Math.round(Float.parseFloat(hourlyRate)));
+        else txtHourlyRate.setText(hourlyRate);
     }
 
     private void setCLickListner() {

@@ -129,6 +129,7 @@
             android:gravity="top"
             android:hint="@string/descriptionofwork"
             android:imeOptions="actionDone"
+            android:layout_marginBottom="50dp"
             android:padding="@dimen/size_10_dp"
             android:singleLine="false"
             android:textColor="@color/lb_tv_white"

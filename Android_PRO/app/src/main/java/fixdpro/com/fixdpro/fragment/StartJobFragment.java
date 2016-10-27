@@ -280,7 +280,9 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //        loc.setLongitude(76.686212);
 
         float distance = 0;
-        if (gpsTracker.getLocation() != null && loc != null) distance = gpsTracker.getLocation().distanceTo(loc);
+        if (gpsTracker.getLocation() != null && loc != null) {
+            distance = gpsTracker.getLocation().distanceTo(loc);
+        }
 
 //        Toast.makeText(getActivity(),distance+"",Toast.LENGTH_LONG).show();
 //        Toast.makeText(getActivity(),gpsTracker.getLocation().getLongitude()+"",Toast.LENGTH_LONG).show();
@@ -625,7 +627,11 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         loc.setLatitude(modal.getJob_customer_addresses_latitude());
         loc.setLongitude(modal.getJob_customer_addresses_longitude());
 
-        float distance  = gpsTracker.getLocation().distanceTo(loc);
+        float distance = 0;
+        if (gpsTracker.getLocation() != null && loc != null) {
+            distance = gpsTracker.getLocation().distanceTo(loc);
+        }
+
         String requestedDateStart = "";
         String requestDateEnd = "";
         String currentTime = "";
