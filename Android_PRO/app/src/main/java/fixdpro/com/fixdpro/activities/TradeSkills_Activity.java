@@ -233,7 +233,6 @@ public class TradeSkills_Activity extends AppCompatActivity {
         gridView.setAdapter(tradeSkillAdapter);
     }
 
-
     private void registerPro(){
         new AsyncTask<Void, Void, String>() {
             @Override

@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -25,7 +24,7 @@ import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class DeclineJobActivity extends AppCompatActivity implements View.OnClickListener{
-    ImageView cancel;
+    TextView cancel;
     TextView yesdecline_cancel_img;
     TextView title, areusure_text, backup_text;
     EditText editText;
@@ -45,12 +44,18 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
             areusure_text.setText(getString(R.string.areusure_cancel));
             backup_text.setText(getString(R.string.backup_cancel));
             editText.setHint(getString(R.string.canceledittext));
+            editText.setVisibility(View.VISIBLE);
+            yesdecline_cancel_img.setText("CANCEL");
 //            yesdecline_cancel_img.setImageResource(R.drawable.yescancel);
+        }else if (JobType.equals("Available")){
+            editText.setVisibility(View.GONE);
+            yesdecline_cancel_img.setText("DECLINE");
+            title.setText(getString(R.string.declinejob));
         }
     }
 
     public void setWidgets(){
-        cancel = (ImageView)findViewById(R.id.cancel);
+        cancel = (TextView)findViewById(R.id.cancel);
         title = (TextView)findViewById(R.id.title);
         areusure_text = (TextView)findViewById(R.id.areusure_text);
         backup_text = (TextView)findViewById(R.id.backup_text);

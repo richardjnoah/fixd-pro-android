@@ -376,6 +376,7 @@
     <string name="dialogs_deletion_error">Dialog deletion errors</string>
     <string name="dialogs_list_hint">Select a Dialog to Chat</string>
     <string name="dialogs_get_error">Get dialogs errors</string>
+    <string name="dialogs_driver_image_error">Driver license image is required.</string>
 
     <string name="select_users_list_hint">Select Users you want to chat</string>
     <string name="select_users_create_chat">Create new chat</string>
@@ -464,7 +465,7 @@
 
     <string name="liecensepic">License and Picture</string>
     <string name="addprofilepic">Add Profile Picture</string>
-    <string name="adddriverliecense">Add Driver\'s License</string>
+    <string name="adddriverliecense">Add Driver\'s License*</string>
     <string name="tradeliecenseno">Trade License Numbers</string>
     <string name="mobile">Mobile Number</string>
     <string name="accountinfo">Account Information</string>
@@ -480,6 +481,7 @@
     <string name="address11">Address 1</string>
     <string name="address22">Address 2</string>
     <string name="zip_code11">Zip Code</string>
+    <string name="error_msg_enter_valid_zip">Please enter the valid zip code.</string>
 
 
     <string name="dealerserviceagre">Dealer Service Agreement</string>

@@ -79,14 +79,13 @@
                 android:textSize="@dimen/size_18_sp" />
 
             <EditText
-
                 android:id="@+id/editMOdalNum"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/size_10_dp"
                 android:background="@drawable/white_rectangle"
                 android:hint="@string/modalno"
-
+                android:inputType="text|textNoSuggestions"
                 android:imeOptions="actionNext"
                 android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
@@ -103,6 +102,7 @@
                 android:background="@drawable/white_rectangle"
                 android:hint="@string/serialno"
                 android:imeOptions="actionNext"
+                android:inputType="text|textNoSuggestions"
                 android:padding="@dimen/size_10_dp"
                 android:singleLine="true"
                 android:textColor="@color/lb_tv_white"
@@ -128,6 +128,7 @@
             android:background="@drawable/white_rectangle"
             android:gravity="top"
             android:hint="@string/descriptionofwork"
+            android:inputType="text|textNoSuggestions"
             android:imeOptions="actionDone"
             android:layout_marginBottom="50dp"
             android:padding="@dimen/size_10_dp"

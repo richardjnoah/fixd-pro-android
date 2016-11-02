@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Handler;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -632,6 +633,12 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
             public void onError(QBResponseException e) {
                 progressBar.setVisibility(View.GONE);
                 snackbar = showErrorSnackbar(R.string.connection_error, e, null);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        initChat();
+//                    }
+//                },2000);
             }
         });
     }

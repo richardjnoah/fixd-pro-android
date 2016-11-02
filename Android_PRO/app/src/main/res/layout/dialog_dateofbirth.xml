@@ -8,13 +8,15 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
         android:background="@color/orange_signin_back"
-          android:text="Select Date of Birth"
+          android:text="   Select Date of Birth   "
           android:gravity="center"
           android:textSize="@dimen/size_20_sp"
           android:textColor="@color/white"
           android:padding="@dimen/size_10_dp"/>
 
     <DatePicker
+        android:layout_marginRight="@dimen/size_24_dp"
+        android:layout_marginLeft="@dimen/size_24_dp"
         android:layout_marginTop="@dimen/size_15_dp"
         android:id="@+id/datePicker"
         style="@style/MyDatePickerDialogTheme"
@@ -42,7 +44,7 @@
             android:padding="@dimen/size_10_dp"
             android:text="Cancel"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/size_20_sp" />
+            android:textSize="@dimen/size_18_sp" />
 
         <TextView
             android:id="@+id/txtOk"
@@ -55,7 +57,7 @@
             android:padding="@dimen/size_10_dp"
             android:text="OK"
             android:textColor="@android:color/white"
-            android:textSize="@dimen/size_20_sp" />
+            android:textSize="@dimen/size_18_sp" />
 
     </LinearLayout>
 

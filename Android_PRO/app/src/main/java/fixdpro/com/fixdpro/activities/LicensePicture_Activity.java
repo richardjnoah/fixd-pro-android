@@ -2,6 +2,7 @@ package fixdpro.com.fixdpro.activities;
 
 import android.Manifest;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ContentUris;
@@ -146,14 +147,12 @@ public class LicensePicture_Activity extends AppCompatActivity {
 //                    return;
 //                }
                 if (ispro) {
-                    Intent intent = new Intent(_context, TradeLiecenseNo_Activity.class);
-                    intent.putExtra("finalRequestParams", finalRequestParams);
-                    intent.putExtra("ispro", ispro);
-                    intent.putExtra("driver_image", selectedImagePathDriver);
-                    intent.putExtra("user_image", selectedImagePathUser);
-                    intent.putExtra("iscompleting", iscompleting);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                    if (selectedImagePathDriver == null || selectedImagePathDriver.isEmpty()) {
+                        showAlertDialog(getResources().getString(R.string.app_name)
+                                , getResources().getString(R.string.dialogs_driver_image_error));
+                    } else {
+                        sartTradeSkillsActivity();
+                    }
                 } else {
                     Intent intent = new Intent(_context, TradeSkills_Activity.class);
                     intent.putExtra("ispro", ispro);
@@ -167,6 +166,17 @@ public class LicensePicture_Activity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void sartTradeSkillsActivity() {
+        Intent intent = new Intent(_context, TradeLiecenseNo_Activity.class);
+        intent.putExtra("finalRequestParams", finalRequestParams);
+        intent.putExtra("ispro", ispro);
+        intent.putExtra("driver_image", selectedImagePathDriver);
+        intent.putExtra("user_image", selectedImagePathUser);
+        intent.putExtra("iscompleting", iscompleting);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
     private void showAlertDialog(String Title, String Message) {
@@ -457,7 +467,7 @@ public class LicensePicture_Activity extends AppCompatActivity {
 //                }
                 }
             }
-        }else if (requestCode == CAMERA_REQUEST && isDriver) {
+        }else if (requestCode == CAMERA_REQUEST && isDriver && Activity.RESULT_OK == resultCode) {
             selectedImagePathDriver = photoFile.getPath();
             photoFile = new File(selectedImagePathDriver);
             Uri uri1 = Uri.fromFile(photoFile);
@@ -469,7 +479,7 @@ public class LicensePicture_Activity extends AppCompatActivity {
 //            img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(this).load(Uri.fromFile(photoFile))
                     .into(imgAddDriverLiecense);
-        } else if (requestCode == CAMERA_REQUEST && isUser) {
+        } else if (requestCode == CAMERA_REQUEST && isUser && Activity.RESULT_OK == resultCode) {
             selectedImagePathUser = photoFile.getPath();
             photoFile = new File(selectedImagePathUser);
             Uri uri2 = Uri.fromFile(photoFile);
@@ -486,7 +496,7 @@ public class LicensePicture_Activity extends AppCompatActivity {
 
     private String gettingMarshmallowSelectedImagePath(Context context,Uri uri){
         String imgPath = "";
-        imgPath = ImageHelper2.compressImage(uri,context);
+        imgPath = ImageHelper2.compressImage(uri, context);
         return  imgPath;
     }
 
@@ -527,7 +537,6 @@ public class LicensePicture_Activity extends AppCompatActivity {
         if (hasWriteExternalExtewrnalPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        showCamraGalleryPopUp();
 //        if (isUser) {
 //            showCamraGalleryPopUp();
 //        } else if (isDriver) {
@@ -536,6 +545,9 @@ public class LicensePicture_Activity extends AppCompatActivity {
 
         if (listPermissionsNeeded.size() > 0) {
             requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CODE_ASK_PERMISSIONS);
+        }else{
+
+            showCamraGalleryPopUp();
         }
     }
 
@@ -557,7 +569,9 @@ public class LicensePicture_Activity extends AppCompatActivity {
                     showCamraGalleryPopUp();
                 } else {
                     // Permission Denied
-                    insertDummyContactWrapper();
+//                    insertDummyContactWrapper();
+                    overridePendingTransition(R.anim.pop_enter, R.anim.pop_exit);
+                    finish();
                 }
                 break;
             default:

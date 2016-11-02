@@ -178,7 +178,8 @@
         <activity
             android:name=".DeclineJobActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme.Base" />
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
         <activity
             android:name=".ConfirmationActivity"
             android:screenOrientation="portrait"
@@ -264,7 +265,7 @@
             android:label="@string/title_activity_cancel_scheduled_job"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"
-            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".ChatActivity"
             android:label="@string/title_activity_chat"

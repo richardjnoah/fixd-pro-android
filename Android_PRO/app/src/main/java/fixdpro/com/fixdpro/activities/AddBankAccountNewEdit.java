@@ -48,7 +48,38 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
         setWidgets();
         setCLickListner();
         initLayout();
+        setTouchListner();
     }
+
+    private void setTouchListner() {
+        txtRoutingNumber.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    clearTextFromEditText();
+                    return true;
+                }
+
+                return false;
+            }
+        });
+        txtAccountNumber.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (MotionEvent.ACTION_UP == event.getAction()) {
+                    clearTextFromEditText();
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    public void clearTextFromEditText(){
+        txtRoutingNumber.setText("");
+        txtAccountNumber.setText("");
+    }
+
     private void initLayout(){
         routing_number = _prefs.getString(Preferences.BANK_ROUTING_NUMBER,"");
         account_number = _prefs.getString(Preferences.BANK_ACCOUNT_NUMBER,"");

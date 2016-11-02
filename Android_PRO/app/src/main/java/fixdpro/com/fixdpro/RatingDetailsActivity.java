@@ -140,6 +140,9 @@ public class RatingDetailsActivity extends AppCompatActivity {
         txtKnowlageable.setText(ratingListModal.getKnowledgeable());
         txtAppearance.setText(ratingListModal.getAppearance());
         txtCourteous.setText(ratingListModal.getCourteous());
+        Float avd_rating  = Float.parseFloat(ratingListModal.getKnowledgeable()) + Float.parseFloat(ratingListModal.getCourteous()) + Float.parseFloat(ratingListModal.getAppearance()) ;
+        avd_rating = avd_rating / 3 ;
+        customrating_tech.setStar((int) Math.round(avd_rating), true);
         if (ratingListModal.getJobs_technilcians_img_original().length() > 0)
         Picasso.with(this).load(ratingListModal.getJobs_technilcians_img_original()).into(circleImage);
     }

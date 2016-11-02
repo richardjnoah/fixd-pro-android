@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/orange_signin_back"
-    tools:context=".activities.BackgroundCheck_Activity">
+    tools:context=".activities.AddTechnicion_Activity">
 
     <!--Layout Toolbar-->
     <RelativeLayout

@@ -2,7 +2,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/orange_signin_back"
+    tools:context=".activities.LastStep_Activity"
     android:orientation="vertical">
 
     <ScrollView

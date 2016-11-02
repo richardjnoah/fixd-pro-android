@@ -85,6 +85,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         txtLastName.setText(modal.getLastName());
         txtEmailAdd.setText(modal.getEmail());
         txtMobile.setText(modal.getPhone());
+        txtExperiance.setText(modal.getExperience());
         if (modal.ispickjob()){
             checkJobPickUp.setChecked(true);
         }else {
@@ -149,6 +150,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                 lastName = txtLastName.getText().toString().trim();
                 email = txtEmailAdd.getText().toString().trim();
                 mobileNumber = txtMobile.getText().toString().trim();
+                YearsExp = txtExperiance.getText().toString().trim();
                 if (firstName.equals("")) {
                     showAlertDialog(TechnicianInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Please enter the first name.");
@@ -280,6 +282,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                     technicianModal.setPhone(txtMobile.getText().toString().trim());
                     technicianModal.setFirstName(fname);
                     technicianModal.setLastName(lname);
+                    technicianModal.setExperience(YearsExp);
 //                    if (!technicians.isNull("profile_image")){
 //                        JSONObject profile_image = technicians.getJSONObject("profile_image");
 //                        if (!profile_image.isNull("original"))

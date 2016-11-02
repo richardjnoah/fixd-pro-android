@@ -59,6 +59,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
     String State = "";
     String StateAbre = "";
     String error_message = "",Id = "";
+    private String error_msg_update_profile = "";
     CheckAlertDialog checkALert;
     SharedPreferences _prefs = null ;
     GoogleResponseBean modal = null ;
@@ -155,33 +156,40 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                 ZipCode = txtZipCode.getText().toString().trim();
                 City = txtCity.getText().toString().trim();
                 State = txtState.getText().toString().trim();
-                if (Address1.equals("")){
+                if (Address1.equals("")) {
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter Address1.");
-                }else if (false){
+                } else if (false) {
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter Address2.");
-                }else  if (ZipCode.equals("")){
+                } else  if (ZipCode.equals("")){
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter zip code.");
-                }else if (City.equals("")){
+                } else if (City.equals("")){
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter city.");
-                }else if (State.equals("")){
+                } else if (State.equals("")){
                     checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter state.");
-                }else{
+                } else {
+                    GetApiResponseAsync apiResponseAsync = new GetApiResponseAsync(Constants.BASE_URL, "POST", profileUpdateResponseListener, profileExceptionListener, activity, "Getting");
+                    apiResponseAsync.execute(getProfileUpdateRequestParams());
                     // TODO: MH -- Check Address validity from server here
-                    finalRequestParams.put("data[pros][address]", Address1);
-                    finalRequestParams.put("data[pros][address_2]", Address2);
-                    finalRequestParams.put("data[pros][city]", City);
-                    finalRequestParams.put("data[pros][zip]", ZipCode);
-                    finalRequestParams.put("data[pros][state]", State);
-                    Intent intent = new Intent(activity,SignUp_Account_Activity.class);
-                    intent.putExtra("finalRequestParams",finalRequestParams);
-                    intent.putExtra("ispro",ispro);
-                    intent.putExtra("ispro",ispro);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
+//                    startNextActivity();
                 }
             }
         });
     }
+
+    private void startNextActivity() {
+        finalRequestParams.put("data[pros][address]", Address1);
+        finalRequestParams.put("data[pros][address_2]", Address2);
+        finalRequestParams.put("data[pros][city]", City);
+        finalRequestParams.put("data[pros][zip]", ZipCode);
+        finalRequestParams.put("data[pros][state]", State);
+        Intent intent = new Intent(activity,SignUp_Account_Activity.class);
+        intent.putExtra("finalRequestParams",finalRequestParams);
+        intent.putExtra("ispro",ispro);
+        intent.putExtra("ispro",ispro);
+        startActivity(intent);
+        overridePendingTransition(R.anim.enter, R.anim.exit);
+    }
+
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
         if (v.getId() == R.id.txtZipCode && actionId == EditorInfo.IME_ACTION_DONE ){
@@ -200,11 +208,11 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                 if (response.getString("STATUS").equals("SUCCESS")) {
                     JSONArray results = response.getJSONObject("RESPONSE").getJSONArray("results");
                     if (results.length() == 0){
-                        error_message = "Please enter valid zip code" ;
+                        error_message = getResources().getString(R.string.error_msg_enter_valid_zip);
                         handler.sendEmptyMessage(4);
-                    }else {
+                    } else {
                         arrayListCityBeans.clear();
-                        for (int i = 0 ; i < results.length() ; i++){
+                        for (int i = 0 ; i < results.length() ; i++) {
                             JSONObject jsonObject = results.getJSONObject(i);
                             CityBeans cityBeans = new CityBeans();
                             City = jsonObject.getString("cityname");
@@ -245,6 +253,34 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         }
     };
 
+    IHttpResponseListener profileUpdateResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject response) {
+            try {
+                Log.i(TAG, "handleResponse: " + response);
+                if (response.getString("STATUS").equals("SUCCESS")) {
+                    startNextActivity();
+                } else {
+                    JSONObject errors = response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
+                        error_message = errors.getString(key);
+                    }
+                    handler.sendEmptyMessage(3);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    IHttpExceptionListener profileExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+
+        }
+    };
 
     private HashMap<String,String> getZipRequestParams() {
         HashMap<String,String> hashMap = new HashMap<String,String>();
@@ -256,22 +292,44 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         return hashMap;
     }
 
+    private HashMap<String,String> getProfileUpdateRequestParams() {
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","update");
+        hashMap.put("object", "pros");
+        hashMap.put("token", "$2y$10$mG.FhawLE.YovBDLHyapZubRPLJkexyQm8upWn44EQgQwGdCmoWo2");
+        hashMap.put("data|user_services]|0]", "6");
+        hashMap.put("data[pros][address]", Address1);
+        hashMap.put("data[pros][address_2]", Address2);
+        hashMap.put("data[pros][zip]", ZipCode);
+        hashMap.put("data[pros][city]", City);
+        hashMap.put("data[pros][state]", State);
+        return hashMap;
+    }
+
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what){
-                case 1:{
-                    checkALert.showcheckAlert(activity,activity.getResources().getString(R.string.alert_title),"Please enter the valid zip code.");
+                case 1:
+                case 4: {
+                    checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title),
+                            activity.getResources().getString(R.string.error_msg_enter_valid_zip));
                     break;
                 }
-                case 2:{
-                    if (arrayListCityBeans.size() > 1){
+                case 2: {
+                    if (arrayListCityBeans.size() > 1) {
                         showcityList();
-                    }else {
+                    } else {
                         txtState.setText(State);
                         txtCity.setText(City);
                     }
+                    break;
+                }
+                case 3: {
+                    checkALert.showcheckAlert(activity,
+                            activity.getResources().getString(R.string.alert_title),
+                            error_msg_update_profile);
                     break;
                 }
             }

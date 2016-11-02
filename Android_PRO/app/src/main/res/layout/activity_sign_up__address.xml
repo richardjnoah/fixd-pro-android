@@ -105,8 +105,8 @@
             android:id="@+id/layoutNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/txtdontSee"
-            android:layout_marginTop="@dimen/size_70_dp"
+            android:layout_below="@+id/lstPlaces"
+            android:layout_marginTop="@dimen/size_16_dp"
             android:orientation="vertical">
 
             <ImageView
@@ -146,7 +146,7 @@
             android:layout_marginRight="@dimen/size_22_dp"
             android:background="@android:color/white"
             android:dividerHeight="0.5dp"
-            android:visibility="gone"></ListView>
+            android:visibility="invisible"></ListView>
 
         <fixdpro.com.fixdpro.views.CircularProgressView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/progress_view"

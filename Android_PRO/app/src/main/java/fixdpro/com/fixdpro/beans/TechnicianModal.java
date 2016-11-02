@@ -13,6 +13,16 @@ public class TechnicianModal implements Serializable{
     String firstName = "";
     String profile_image = "";
     String lastName = "";
+    String experience = "";
+
+    public String getExperience() {
+        return experience;
+    }
+
+    public void setExperience(String experience) {
+        this.experience = experience;
+    }
+
     boolean ispickjob = false;
 
     public String getProfile_image() {

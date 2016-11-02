@@ -122,19 +122,19 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                     arrayListTemp.clear();
                     getGoogleResults(s.toString());
                 } else {
-                    lstPlaces.setVisibility(View.GONE);
+                    lstPlaces.setVisibility(View.INVISIBLE);
                 }
 
             }
         });
 
-        imgNext.setOnClickListener(new View.OnClickListener() {
+        layoutNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditAddress = txtAddress.getText().toString();
-                if (EditAddress.equals("")) {
-                    handler.sendEmptyMessage(1);
-                }
+//                if (EditAddress.equals("")) {
+                handler.sendEmptyMessage(1);
+//                }
             }
         });
 
