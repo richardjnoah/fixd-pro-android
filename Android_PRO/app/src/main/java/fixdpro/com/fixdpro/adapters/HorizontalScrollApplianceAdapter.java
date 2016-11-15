@@ -46,7 +46,7 @@ public class HorizontalScrollApplianceAdapter extends ArrayAdapter<JobAppliances
             convertView = mInflater.inflate(R.layout.jobs_image_title_item, parent, false);
 
             // Create and save off the holder in the tag so we get quick access to inner fields
-            // This must be done for performance reasons
+            // This must be done for performance reasons..................
             holder = new Holder();
             holder.textView = (TextView) convertView.findViewById(R.id.txtTypeTitle);
             holder.imageView  = (ImageView)convertView.findViewById(R.id.imgType);

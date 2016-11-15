@@ -17,7 +17,7 @@ import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 
 /**
- * Created by sahil on 09-03-2016.
+ * Created by sahil on 09-03-2016.................................
  */
 public class PaymentsJobsPagingAdaper extends PagingBaseAdapter<AvailableJobModal> {
     ArrayList<AvailableJobModal> list;

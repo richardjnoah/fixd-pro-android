@@ -21,7 +21,7 @@ import fixdpro.com.fixdpro.beans.GoogleResponseBean;
  */
 public class GooglePlaceAdapter extends BaseAdapter {
 
-    /*********** Declare Used Variables *********/
+    /*********** Declare Used Variables ********************************************/
     private Activity activity;
     private ArrayList data;
     private static LayoutInflater inflater=null;

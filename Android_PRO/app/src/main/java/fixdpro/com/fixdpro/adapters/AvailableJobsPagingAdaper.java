@@ -95,7 +95,10 @@ public class AvailableJobsPagingAdaper extends PagingBaseAdapter<AvailableJobMod
         }
         else
         {
-            /***** Get each Model object from Arraylist ********/
+//
+//
+//
+//            /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues =  items.get( position );
             /************  Set Model values in Holder elements ***********/
