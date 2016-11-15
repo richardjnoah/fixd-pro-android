@@ -14,8 +14,11 @@ public class Constants {
 //      public static final String BASE_URL = "https://dev.api.fixdrepair.com/v1/r";
 //      public static final String BASE_URL_BATCH = "https://dev.api.fixdrepair.com/v1/b";
 
-      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
-      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1/b";
+//      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
+//      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1/b";
+//
+      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.02/r";
+      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.02/b";
 
     public static  final String CHARSET = "UTF-8";
 

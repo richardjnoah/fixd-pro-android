@@ -13,7 +13,10 @@
 
     </style>
 
-
+    <style name="fade_animation">
+        <item name="@android:windowEnterAnimation">@anim/popup_show</item>
+        <item name="@android:windowExitAnimation">@anim/popup_hide</item>
+    </style>
     <style name="MyMaterialTheme.Base." parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <!--Any text styling can be done here-->
         <item name="android:textSize">@dimen/top_heading_textsize</item>

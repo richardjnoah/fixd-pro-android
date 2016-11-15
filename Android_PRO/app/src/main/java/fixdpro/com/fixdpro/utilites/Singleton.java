@@ -3,6 +3,7 @@ package fixdpro.com.fixdpro.utilites;
 import java.util.ArrayList;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
+import fixdpro.com.fixdpro.singleton.TechniciansListSinglton;
 
 /**
  * Created by sahil on 02-03-2016.
@@ -112,6 +113,7 @@ public class Singleton {
         schedulejoblist.clear();
         availablejoblist.clear();
         progressjoblist.clear();
+        TechniciansListSinglton.getInstance().technicianModalsList.clear();
         nextCompleted = "null";
         nextSchduled = "null";
         nextAvailable = "null";
@@ -120,6 +122,7 @@ public class Singleton {
         pageSheduled = 1 ;
         compltedpage = 1 ;
         progresspage = 1 ;
+        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
     }
 
     public ArrayList<AvailableJobModal> getProgressjoblist() {

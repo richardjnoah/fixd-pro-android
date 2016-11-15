@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
@@ -115,20 +116,38 @@ public class JobsPagingAdapter extends BaseAdapter {
             }
 
             String STR_appliance_types_name_and_service_type = "";
+            HashMap<String,Integer> hashMap = new HashMap<>();
             if (tempValues.getJob_appliances_arrlist().size() == 1){
                 for(int j = 0; j < tempValues.getJob_appliances_arrlist().size(); j++)
                 {
                     STR_appliance_types_name_and_service_type = tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type();
                 }
             }else {
-                for(int j = 0; j < tempValues.getJob_appliances_arrlist().size() - 1; j++)
+                for(int j = 0; j < tempValues.getJob_appliances_arrlist().size() ; j++)
                 {
-                    STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type() +"\n";
+                    String key = tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type();
+                    if (hashMap.containsKey(key)){
+                        hashMap.put(key,hashMap.get(key)+1);
+                    }else {
+                        hashMap.put(key,1);
+                    }
+
+//                    STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get(j).getService_name() + " " +tempValues.getJob_appliances_arrlist().get(j).getJob_appliances_service_type() +"\n";
                 }
-                STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getService_name() + " " +tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getJob_appliances_service_type();
+                for (String key : hashMap.keySet()) {
+                    // ...
+                    int value = hashMap.get(key);
+                    if (value > 1){
+                        STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + key + "("+value+")\n" ;
+                    }else {
+                        STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + key + "\n" ;
+                    }
+                }
+//                STR_appliance_types_name_and_service_type = STR_appliance_types_name_and_service_type + tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getService_name() + " " +tempValues.getJob_appliances_arrlist().get((tempValues.getJob_appliances_arrlist().size() -1)).getJob_appliances_service_type();
+
             }
 
-            holder.appliance_types_name_and_service_type.setText(STR_appliance_types_name_and_service_type);
+            holder.appliance_types_name_and_service_type.setText(STR_appliance_types_name_and_service_type.trim());
             STR_appliance_types_name_and_service_type = "";
             if (position == list.size() - 1){
                 if (handlePagingResponse != null)

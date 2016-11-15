@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transperant"
+    tools:context=".MainActivity">
+
+    <com.albinmathew.photocrop.photoview.PhotoView
+        android:id="@+id/iv_photo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="center" />
+
+    <com.albinmathew.photocrop.cropoverlay.CropOverlayView
+        android:id="@+id/crop_overlay"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerInParent="true"
+        app:borderColor="@color/white"
+        app:cornerRadius="20dp"
+        app:drawCircle="true"
+        app:guideLines="false"
+        app:marginSide="30dp"
+        app:marginTop="50dp"
+        app:overlayColor="#80000000" />
+
+    <TextView
+        android:id="@+id/sendBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/size_10_dp"
+        android:paddingBottom="@dimen/size_5_dp"
+        android:paddingLeft="@dimen/size_5_dp"
+        android:paddingRight="@dimen/size_15_dp"
+        android:paddingTop="@dimen/size_5_dp"
+        android:text="Choose"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_16_sp" />
+
+    <TextView
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/size_10_dp"
+        android:background="@android:color/transparent"
+        android:paddingBottom="@dimen/size_5_dp"
+        android:paddingLeft="@dimen/size_5_dp"
+        android:paddingRight="@dimen/size_15_dp"
+        android:paddingTop="@dimen/size_5_dp"
+        android:text="Cancel"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_16_sp" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@android:color/transparent"
+        android:text="Move and Scale"
+        android:layout_marginTop="@dimen/size_20_dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_16_sp" />
+</RelativeLayout>

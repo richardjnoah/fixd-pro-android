@@ -179,7 +179,7 @@
             android:name=".DeclineJobActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"
-            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"/>
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
         <activity
             android:name=".ConfirmationActivity"
             android:screenOrientation="portrait"
@@ -242,6 +242,7 @@
             android:name=".HomeScreenNew"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/title_activity_home_screen_new"
+
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"
             android:windowSoftInputMode="adjustResize" />
@@ -426,11 +427,11 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
-            android:name=".round_img_ropper.ImageCropActivity"
+            android:name=".round_image_cropper.ImageCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
-            android:name=".round_img_ropper.ImageViewActivity"
+            android:name=".round_image_cropper.New_LicensePicture_Activity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
@@ -465,8 +466,20 @@
             android:name="com.mindscapehq.android.raygun4android.apikey"
             android:value="wWAQ7dppz/omulUa9zqgmA==" />
 
-        <activity android:name=".ConfirmRescheduleActivity" android:screenOrientation="portrait"
+        <activity
+            android:name=".ConfirmRescheduleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddProTechnician_Activity"
+            android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base"></activity>
+        <activity
+            android:name="fixdpro.com.fixdpro.circular_image_crop.ImageCropActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/MyMaterialTheme.Base">
+        </activity>
     </application>
 
 </manifest>

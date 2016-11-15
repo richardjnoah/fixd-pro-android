@@ -2,6 +2,7 @@ package fixdpro.com.fixdpro;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import java.util.Iterator;
 
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.Preferences;
+import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 
@@ -142,7 +144,16 @@ public class ChangePassword extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    finish();
+
+                    if (_prefs.edit().clear().commit()){
+                        Singleton.getInstance().doLogout();
+                        Intent intent = new Intent(ChangePassword.this, Login_Register_Activity.class);
+                        intent.putExtra("action","change_password");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        startActivity(intent);
+                        finish();
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
                     break;
                 }
                 case 1:{

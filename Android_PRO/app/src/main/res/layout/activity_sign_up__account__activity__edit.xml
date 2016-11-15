@@ -231,7 +231,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="@dimen/size_5_dp"
-            android:text="Save"
+            android:text="Next"
             android:textColor="@color/white"
             android:textSize="@dimen/size_16_sp" />
 

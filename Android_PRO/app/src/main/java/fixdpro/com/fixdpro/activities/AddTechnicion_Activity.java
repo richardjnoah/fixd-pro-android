@@ -1,6 +1,8 @@
 package fixdpro.com.fixdpro.activities;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -64,6 +66,11 @@ public class AddTechnicion_Activity extends AppCompatActivity {
         adapter = new TechnicianAdapter(AddTechnicion_Activity.this,technicianModalsList,getResources());
         lstTechnicians.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        if (technicianModalsList.size() > 0){
+            txtNO.setText("DONE");
+        }else {
+            txtNO.setText("NO");
+        }
     }
 
     private void setWidgets() {
@@ -93,6 +100,11 @@ public class AddTechnicion_Activity extends AppCompatActivity {
         txtNO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String pro_is_tech = finalRequestParams.get("[data][technicians][field_work]");
+                if (pro_is_tech.equals("0") && technicianModalsList.size() == 0){
+                    showAlertDialog("Alert!","You must have atleast one technician to pick up jobs.");
+                    return;
+                }
                 Intent i = new Intent(AddTechnicion_Activity.this, LastStep_Activity.class);
                 i.putExtra("ispro",ispro);
                 i.putExtra("finalRequestParams",finalRequestParams);
@@ -106,7 +118,27 @@ public class AddTechnicion_Activity extends AppCompatActivity {
         });
 
     }
-
+    private void showAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                AddTechnicion_Activity.this);
+        // set title
+        alertDialogBuilder.setTitle(Title);
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();

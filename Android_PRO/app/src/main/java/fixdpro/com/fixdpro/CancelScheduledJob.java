@@ -3,6 +3,7 @@ package fixdpro.com.fixdpro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -148,6 +149,8 @@ public class CancelScheduledJob extends AppCompatActivity {
             switch (msg.what){
                 case 0:{
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"none").commit();
                     showAlertDialog("SUCCESS", "Job is Cancelled.",true);
                     break;
                 }
@@ -195,6 +198,7 @@ public class CancelScheduledJob extends AppCompatActivity {
                         // current activity
                         dialog.cancel();
                         if (success) {
+                            finishAffinity();
                             Intent intent = new Intent(CancelScheduledJob.this, HomeScreenNew.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);

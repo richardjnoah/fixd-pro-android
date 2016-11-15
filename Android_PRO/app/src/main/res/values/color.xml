@@ -43,4 +43,12 @@
     <color name="text_color_medium_dark_grey">#747474</color>
     <color name="text_color_dark_grey">#6e6e6e</color>
     <color name="text_color_green">@color/color_green_qb</color>
+
+
+
+
+    <!--Image Cropper Colors-->
+    <color name="ultra_dark">#29303F</color>
+    <color name="dark">#696E79</color>
+    <color name="ultra_dark_overlay">#0D29303F</color>
 </resources>

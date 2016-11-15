@@ -34,14 +34,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.quickblox.auth.QBAuth;
+import com.quickblox.auth.model.QBSession;
+import com.quickblox.chat.model.QBDialog;
+import com.quickblox.core.QBEntityCallback;
+import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.model.QBUser;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import fixdpro.com.fixdpro.activities.SetupCompleteAddressActivity;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
@@ -66,7 +88,6 @@ import fixdpro.com.fixdpro.fragment.WhatTypeOfServiceFragment;
 import fixdpro.com.fixdpro.fragment.WhatsWrongFragment;
 import fixdpro.com.fixdpro.fragment.WhichApplianceAddServiceFragment;
 import fixdpro.com.fixdpro.fragment.WorkOrderFragment;
-import fixdpro.com.fixdpro.gcm_components.MessageReceivingService;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
@@ -81,28 +102,6 @@ import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
 import fixdpro.com.fixdpro.utilites.chat_utils.SharedPreferencesUtil;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
-import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.quickblox.auth.QBAuth;
-import com.quickblox.auth.model.QBSession;
-import com.quickblox.chat.model.QBDialog;
-import com.quickblox.core.QBEntityCallback;
-import com.quickblox.core.exception.QBResponseException;
-import com.quickblox.users.model.QBUser;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 //http://stackoverflow.com/questions/13895149/sliding-menu-locks-touch-event-on-upper-view
 public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener, StartJobFragment.OnFragmentInteractionListener, ConnectionCallbacks,
@@ -400,6 +399,14 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
         }
         if (modal.getType().equals("ja")) {
+            if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+                showAccountSetupDialog();
+                return;
+            }
+            if (_prefs.getString(Preferences.IS_VARIFIED, "").equals("0")) {
+                showAlertBackGroundSaftyDialog();
+                return;
+            }
             AvailableJobModal job_detail = getJobforIdAvalable(modal.getJobId());
             if (job_detail != null) {
                 Intent i = new Intent(HomeScreenNew.this, AvailableJobListClickActivity.class);
@@ -426,15 +433,31 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
         }
     }
+    private void showAlertBackGroundSaftyDialog(){
+     final Dialog   dialogCheck = new Dialog(_context);
+        dialogCheck.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogCheck.setContentView(R.layout.dialog_alert_background_check);
+        dialogCheck.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialogCheck.findViewById(R.id.img_close);
+        Button btnFinish = (Button)dialogCheck.findViewById(R.id.btnFinish);
+        btnFinish.setVisibility(View.GONE);
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogCheck.dismiss();
+            }
+        });
+        dialogCheck.show();
+    }
     private HashMap<String, String> getRequestParams(String id,String api) {
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("api", api);
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*");
         hashMap.put("where[id]", id + "");
         hashMap.put("token", Utilities.getSharedPreferences(HomeScreenNew.this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
@@ -779,6 +802,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                             JSONObject time_slot_obj = obj.getJSONObject("time_slots");
                             jobModal.setTime_slot_id(time_slot_obj.getString("id"));
                             jobModal.setTimeslot_start(time_slot_obj.getString("start"));
+                            jobModal.setTimeslot_name(time_slot_obj.getString("name"));
                             jobModal.setTimeslot_end(time_slot_obj.getString("end"));
                             jobModal.setTimeslot_soft_deleted(time_slot_obj.getString("_soft_deleted"));
                         }
@@ -910,6 +934,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                 dialog.dismiss();
                                 Bundle data = new Bundle();
                                 data.putSerializable("data", modal);
+                                if(modal != null && modal.getType().equals("cn"))
                                 switchFragment(new ChatUserFragment(), Constants.CHATUSER_FRAGMENT, true, data);
 
                             }
@@ -1417,6 +1442,25 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
         }
         setNotficationCounts();
+        if (currentFragmentTag.equals(Constants.HOME_FRAGMENT) || currentFragmentTag.equals("")){
+            Gson gson = new Gson();
+            String json = _prefs.getString(Preferences.JOB_MODAL, "");
+            if (json.length() > 0){
+                AvailableJobModal model = gson.fromJson(json, AvailableJobModal.class);
+                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+                if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
+                    fragment = new StartJobFragment();
+                    model.setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
+                    switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
+                }else if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+                    fragment = new InstallorRepairFragment();
+                    model.setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
+                    switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+                }
+
+            }
+        }
+
     }
 
     @Override

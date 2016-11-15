@@ -75,10 +75,13 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.yesdecline_cancel_img:
-                if (editText.getText().toString().trim().length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the reason before proceeding");
-                    return;
+                if (!JobType.equals("Available")){
+                    if (editText.getText().toString().trim().length() == 0){
+                        showAlertDialog("Fixd-Pro","Please enter the reason before proceeding");
+                        return;
+                    }
                 }
+
                 HashMap<String,String> hashMap = null ;
                 if (JobType.equals("Scheduled")) {
                     hashMap = getRequestParamsScheduled();
@@ -181,6 +184,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                 }
                 case 2:{
                     removeJobFromScheduledList();
+                    finishAffinity();
                     Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
                     intent.putExtra("switch_tab","Scheduled");
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);

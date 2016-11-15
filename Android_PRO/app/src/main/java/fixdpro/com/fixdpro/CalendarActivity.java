@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -81,6 +82,7 @@ public class CalendarActivity extends AppCompatActivity {
             getTimeSlotes();
 
             done = (TextView) findViewById(R.id.done);
+            if (Rescheduling.equals("1"))
             done.setVisibility(View.VISIBLE);
             done.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -482,6 +484,9 @@ public class CalendarActivity extends AppCompatActivity {
                 }
                 case 2:{
                     CalendarCollection.date_collection_arr.clear();
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    SharedPreferences _prefs = Utilities.getSharedPreferences(CalendarActivity.this);
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"none").commit();
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", eventListener1, CalendarActivity.this, "Loading");
                     responseAsync.execute(getEventsRequestParams());
 

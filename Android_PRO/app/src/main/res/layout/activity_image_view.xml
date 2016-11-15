@@ -1,36 +1,189 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/orange_signin_back"
+    android:orientation="vertical">
 
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    <!--Layout Toolbar-->
+    <RelativeLayout
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
         <ImageView
-            android:layout_marginTop="50dp"
+            android:id="@+id/imgClose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/size_14_dp"
+            android:src="@drawable/back_arrow" />
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@android:color/transparent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_14_dp"
+                android:text="@string/liecensepic"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_21_sp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar"
+
+        android:orientation="vertical">
+
+        <!--Layout Profile Pic-->
+        <LinearLayout
+            android:id="@+id/btnUpdatePic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtTakePic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:layout_marginBottom="@dimen/size_10_dp"
+                android:text="@string/addprofilepic"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_18_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <fixdpro.com.fixdpro.views.CircularImageView
+                    android:id="@+id/iv_user_pic"
+                    android:layout_width="@dimen/size_120_dp"
+                    android:layout_height="@dimen/size_120_dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/profile_pic" />
+            </LinearLayout>
+        </LinearLayout>
+        <!--Layout Driver Liecense-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_10_dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtAddDriverLi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:text="@string/adddriverliecense"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_18_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgAddDriverLiecense"
+                    android:layout_width="@dimen/size_200_dp"
+                    android:layout_height="@dimen/size_100_dp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/licence" />
+            </LinearLayout>
+        </LinearLayout>
+        <!--Laoyout Next-->
+        <LinearLayout
+            android:id="@+id/layoutNext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:layout_marginTop="@dimen/size_20_dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgNext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/signup_arrow" />
+
+            <TextView
+                android:id="@+id/txtNext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="@dimen/size_16_sp" />
+
+            <ImageView
+                android:id="@+id/imgScreeNo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_14_dp"
+                android:src="@drawable/next2"
+                android:visibility="invisible" />
+        </LinearLayout>
+    </LinearLayout>
+</RelativeLayout>
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/orange_signin_back">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
             android:id="@+id/iv_user_pic"
             android:layout_width="300dp"
             android:layout_height="300dp"
-            android:src="@drawable/background_grey_blur"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="50dp"
+            android:src="@drawable/background_grey_blur" />
 
         <Button
             android:id="@+id/btnUpdatePic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_user_pic"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:layout_marginTop="20dp"
             android:paddingBottom="5dp"
             android:paddingLeft="14dp"
             android:paddingRight="14dp"
             android:paddingTop="5dp"
-            android:layout_marginTop="20dp"
             android:text="Update Profile Picture"
             android:textAllCaps="true"
             android:textColor="@android:color/white"
-            android:textSize="12sp"
-            android:layout_below="@+id/iv_user_pic"
-            android:layout_centerHorizontal="true"
-            android:layout_gravity="bottom" />
-</RelativeLayout>
-    </ScrollView>
+            android:textSize="12sp" />
+    </RelativeLayout>
+</ScrollView>
+-->

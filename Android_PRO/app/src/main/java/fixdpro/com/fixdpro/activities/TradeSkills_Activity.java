@@ -17,7 +17,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -199,8 +198,13 @@ public class TradeSkills_Activity extends AppCompatActivity {
                     break;
                 }
                 case 2:{
-                    Intent intent = new Intent(TradeSkills_Activity.this, HomeScreenNew.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    Intent intent = new Intent(TradeSkills_Activity.this, HomeScreenNew.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    startActivity(intent);
+//                    finish();
+                    finishAffinity();
+                    Intent intent = new Intent(getApplicationContext(), HomeScreenNew.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
                     finish();
                     break;

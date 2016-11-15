@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Created by sahil on 22-07-2016.
  */
 public class NotificationListModal implements Serializable {
-    String ID = "";
+    String ID = "0";
     String UserID = "";
     String JobID = "";
     String Text = "";
@@ -19,6 +19,17 @@ public class NotificationListModal implements Serializable {
     String IconImage = "";
     String IsRead = "";
     String is_active = "";
+
+    long id = 0;
+
+    public long getId() {
+
+        return Long.valueOf(ID);
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getIs_active() {
         return is_active;

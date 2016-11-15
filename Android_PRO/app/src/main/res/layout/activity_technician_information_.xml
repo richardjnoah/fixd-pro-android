@@ -136,6 +136,7 @@
                 android:gravity="left"
                 android:hint="@string/emailonly"
                 android:imeOptions="actionNext"
+                android:inputType="textEmailAddress"
                 android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"

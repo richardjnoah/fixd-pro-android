@@ -1,54 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@drawable/grey_background">
+
+    <ImageView
+        android:id="@+id/img_Cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/cross_new" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/grey_background"
         android:orientation="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10_dp"
-            android:gravity="center"
-            android:padding="@dimen/size_10_dp"
-            android:text="Enter Brand Name"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/size_18_sp"
-            android:textStyle="bold" />
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/editBrandName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/size_18_dp"
-            android:layout_marginLeft="@dimen/size_14_dp"
-            android:layout_marginRight="@dimen/size_14_dp"
-            android:layout_marginTop="@dimen/size_18_dp"
-            android:background="@drawable/white_rectangewithblackline"
-            android:hint="Brand Name"
-            android:padding="@dimen/size_10_dp"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/size_18_sp" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:gravity="center"
+                android:padding="@dimen/size_10_dp"
+                android:text="Enter Brand Name"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_18_sp"
+                android:textStyle="bold" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@android:color/black"></View>
+            <EditText
+                android:id="@+id/editBrandName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_18_dp"
+                android:layout_marginLeft="@dimen/size_14_dp"
+                android:layout_marginRight="@dimen/size_14_dp"
+                android:layout_marginTop="@dimen/size_18_dp"
+                android:background="@drawable/white_rectangewithblackline"
+                android:hint="Brand Name"
+                android:padding="@dimen/size_10_dp"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_18_sp" />
 
-        <TextView
-            android:id="@+id/txtOK"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/size_10_dp"
-            android:gravity="center"
-            android:padding="@dimen/size_10_dp"
-            android:text="OK"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/size_18_sp" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@android:color/black"></View>
+
+            <TextView
+                android:id="@+id/txtOK"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:gravity="center"
+                android:padding="@dimen/size_10_dp"
+                android:text="OK"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+
+</RelativeLayout>

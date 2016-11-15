@@ -83,4 +83,9 @@ public class Preferences {
     public static final String CHAT_NOTI_COUNT = "chat_noti_count";
     public static final String NORMAL_NOTI_COUNT = "normal_noti_count";
 
+    public static final String SCREEEN_NAME = "screen_name";
+    public static final String JOB_MODAL = "job_modal";
+
+
+
 }

@@ -6,11 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -116,6 +116,24 @@ public class LastStep_Activity extends AppCompatActivity {
     }
 
     private void setCLickListner() {
+//        txtCardNumber.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//            if (txtCardNumber.getText().length() >5){
+//                txtCardNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_visa, 0);
+//            }
+//            }
+//        });
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -454,6 +472,14 @@ public class LastStep_Activity extends AppCompatActivity {
                                 editor.putString(Preferences.PROFILE_IMAGE, image_original);
                             }
                         }
+                        if (!Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").isNull("driver_license_image")){
+                            JSONObject driver_license_image = null;
+                            driver_license_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("driver_license_image");
+                            if (driver_license_image.has("original")) {
+                                String image_original = driver_license_image.getString("original");
+                                editor.putString(Preferences.DRIVER_LICENSE_IMAGE, image_original);
+                            }
+                        }
                     }
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("quickblox_accounts")) {
                         JSONObject quickblox_accounts = null;
@@ -472,16 +498,10 @@ public class LastStep_Activity extends AppCompatActivity {
                     editor.putString(Preferences.CREDIT_CARD_FIRST_NAME, first_name);
                     editor.putString(Preferences.CREDIT_CARD_LAST_NAME, last_name);
                     if (editor.commit()) {
-                        if (_prefs.getString(Preferences.ROLE, "").equals("pro")) {
                             Intent intent = new Intent(LastStep_Activity.this, HomeScreenNew.class);
+                            intent.putExtra("ispro",true);
                             startActivity(intent);
                             overridePendingTransition(R.anim.enter, R.anim.exit);
-                        } else {
-                            Intent intent = new Intent(LastStep_Activity.this, HomeScreenNew.class);
-                            startActivity(intent);
-                            overridePendingTransition(R.anim.enter, R.anim.exit);
-                        }
-
                     }
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");

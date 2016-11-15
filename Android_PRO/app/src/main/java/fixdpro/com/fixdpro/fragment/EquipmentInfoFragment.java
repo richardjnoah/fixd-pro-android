@@ -249,6 +249,13 @@ public class EquipmentInfoFragment extends Fragment {
                     subDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                     final EditText editBrandName = (EditText) subDialog.findViewById(R.id.editBrandName);
                     TextView txtOK = (TextView) subDialog.findViewById(R.id.txtOK);
+                    ImageView img_Cancel = (ImageView) subDialog.findViewById(R.id.img_Cancel);
+                    img_Cancel.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            subDialog.dismiss();
+                        }
+                    });
                     txtOK.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {

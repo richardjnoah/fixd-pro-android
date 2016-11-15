@@ -2,7 +2,7 @@
     <string name="app_name">Fixd-Pro</string>
 
     <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>--> <!-- Old -->
-    <string name="api_key">AIzaSyBTt-C4WZaumhCLsdmy0t2bdXeASvpZ3K0</string>
+    <string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_refresh">Refresh</string>
@@ -430,6 +430,7 @@
     <string name="finish">Finish</string>
     <string name="backgroundcheck">Background Check</string>
     <string name="would">Would you like to add additional technicians under your account?</string>
+    <string name="would_as_tech">Would you like to add yourself as technicians?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="taptosign">TAP TO SIGN</string>
@@ -488,6 +489,28 @@
     <string name="termscondtiontextstr">Terms and Conditions</string>
 
     <string name="no_new_message">No New Message is available</string>
+    <string name="swingin">Animation in adapters</string>
+    <string name="itemmanipulation">Item manipulation</string>
+    <string name="bottomin">Bottom in</string>
+    <string name="rightin">Right in</string>
+    <string name="leftin">Left in</string>
+    <string name="bottomrightin">Bottom right in</string>
+    <string name="scalein">Scale in</string>
+    <string name="alphain">Alpha in</string>
+    <string name="googlecards">Google cards example</string>
+    <string name="gridviewexample">GridView example</string>
+    <string name="swipedismiss">Swipe to dismiss</string>
+    <string name="animateremoval">Animate dismiss</string>
 
+    <string name="removeselected">Remove selected</string>
+    <string name="contextualundo">Contextual Undo</string>
+    <string name="expandablelistitemadapter">Expand List Items</string>
+    <string name="itemdeleted">Item deleted</string>
+    <string name="taptoundo">Tap to undo</string>
 
+    <string name="explainexpand">Tap on cards to expand or collapse them</string>
+    <string name="expandorcollapsecard">This is card number %d</string>
+    <string name="undo">Undo</string>
+    <string name="undoall">Undo All</string>
+    <string name="notideleted">Notification Deleted.</string>
 </resources>

@@ -12,6 +12,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -31,6 +32,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -50,6 +52,8 @@ import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.imageupload.ImageHelper2;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncMutipartNoProgress;
+import fixdpro.com.fixdpro.round_image_cropper.ImageCropActivity;
+import fixdpro.com.fixdpro.round_image_cropper.PicModeSelectDialogFragment;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
 import fixdpro.com.fixdpro.utilites.MultipartUtility;
@@ -60,7 +64,7 @@ import fixdpro.com.fixdpro.utilites.chat_utils.SchemeType;
 import fixdpro.com.fixdpro.utilites.chat_utils.StorageUtils;
 import fixdpro.com.fixdpro.utilites.image_compressor.SiliCompressor;
 
-public class LicensePicture_Activity_Edit extends AppCompatActivity {
+public class LicensePicture_Activity_Edit extends AppCompatActivity implements PicModeSelectDialogFragment.IPicModeSelectListener{
     Context _context = LicensePicture_Activity_Edit.this;
     public static final String TAG = "LicensePicture_Activity_Edit";
     ImageView imgClose, imgProfilePic, imgAddDriverLiecense, imgNext;
@@ -92,6 +96,8 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
     Dialog progressDialog;
     SharedPreferences _prefs = null ;
     String error_message = "";
+    public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+    public static final int REQUEST_CODE_UPDATE_PIC = 300;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -118,7 +124,21 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
 
         }
     }
-
+    private void actionProfilePic(String action) {
+        Intent intent = new Intent(this, ImageCropActivity.class);
+        intent.putExtra("ACTION", action);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_PIC);
+    }
+    private void showAddProfilePicDialog() {
+        PicModeSelectDialogFragment dialogFragment = new PicModeSelectDialogFragment();
+        dialogFragment.setiPicModeSelectListener(this);
+        dialogFragment.show(getFragmentManager(), "picModeSelector");
+    }
+    @Override
+    public void onPicModeSelected(String mode) {
+        String action = mode.equalsIgnoreCase(fixdpro.com.fixdpro.round_image_cropper.Constants.PicModes.CAMERA) ? fixdpro.com.fixdpro.round_image_cropper.Constants.IntentExtras.ACTION_CAMERA : fixdpro.com.fixdpro.round_image_cropper.Constants.IntentExtras.ACTION_GALLERY;
+        actionProfilePic(action);
+    }
     private void setCLickListner() {
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +155,8 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= 23) {
                     insertDummyContactWrapper();
                 } else {
-                    showCamraGalleryPopUp();
+//                    showCamraGalleryPopUp();
+                    showAddProfilePicDialog();
                 }
 
             }
@@ -156,37 +177,7 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
         imgNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                GetApiResponseAsyncNew apiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", updateResponseListener, updateExceptionListener, LicensePicture_Activity_Edit.this, "");
-//                apiResponseAsyncNew.execute(finalRequestParams);
 
-//                if (selectedImagePathUser == null) {
-//                    showAlertDialog(LicensePicture_Activity_Edit.this.getResources().getString(R.string.alert_title),
-//                            "Please select user picture.");
-//                    return;
-//                }
-//                if (selectedImagePathDriver == null) {
-//                    showAlertDialog(LicensePicture_Activity_Edit.this.getResources().getString(R.string.alert_title),
-//                            "Please select driver licence picture.");
-//                    return;
-//                }
-//                if (ispro) {
-//                    Intent intent = new Intent(_context, TradeLiecenseNo_Activity.class);
-//                    intent.putExtra("finalRequestParams", finalRequestParams);
-//                    intent.putExtra("ispro", ispro);
-//                    intent.putExtra("driver_image", selectedImagePathDriver);
-//                    intent.putExtra("user_image", selectedImagePathUser);
-//                    intent.putExtra("iscompleting", iscompleting);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.anim.enter, R.anim.exit);
-//                } else {
-//                    Intent intent = new Intent(_context, TradeSkills_Activity.class);
-//                    intent.putExtra("ispro", ispro);
-//                    intent.putExtra("driver_image", selectedImagePathDriver);
-//                    intent.putExtra("user_image", selectedImagePathUser);
-//                    intent.putExtra("finalRequestParams", finalRequestParams);
-//                    startActivity(intent);
-//                    overridePendingTransition(R.anim.enter, R.anim.exit);
-//                }
                 sendRequest();
             }
         });
@@ -452,7 +443,7 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (data != null) {
+        if (data != null && requestCode != REQUEST_CODE_UPDATE_PIC) {
             String imageFilePath = null;
             Uri uri = data.getData();
             String uriScheme = uri.getScheme();
@@ -574,7 +565,7 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
 //                }
                 }
             }
-        }else if (requestCode == CAMERA_REQUEST && isDriver && requestCode == RESULT_OK) {
+        }else if (requestCode == CAMERA_REQUEST && isDriver && resultCode == RESULT_OK) {
             selectedImagePathDriver = photoFile.getPath();
             photoFile = new File(selectedImagePathDriver);
             Uri uri1 = Uri.fromFile(photoFile);
@@ -586,7 +577,7 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
 //            img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(this).load(Uri.fromFile(photoFile))
                     .into(imgAddDriverLiecense);
-        } else if (requestCode == CAMERA_REQUEST && isUser && requestCode == RESULT_OK) {
+        } else if (requestCode == CAMERA_REQUEST && isUser && resultCode == RESULT_OK) {
             selectedImagePathUser = photoFile.getPath();
             photoFile = new File(selectedImagePathUser);
             Uri uri2 = Uri.fromFile(photoFile);
@@ -599,8 +590,24 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
             Picasso.with(this).load(Uri.fromFile(photoFile))
                     .into(imgProfilePic);
         }
-    }
+        if (requestCode == REQUEST_CODE_UPDATE_PIC) {
+            if (resultCode == RESULT_OK) {
+                selectedImagePathUser = data.getStringExtra(fixdpro.com.fixdpro.round_image_cropper.Constants.IntentExtras.IMAGE_PATH);
+                showCroppedImage(selectedImagePathUser);
+            } else if (resultCode == RESULT_CANCELED) {
 
+            } else {
+                String errorMsg = data.getStringExtra(ImageCropActivity.ERROR_MSG);
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+    private void showCroppedImage(String mImagePath) {
+        if (mImagePath != null) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(mImagePath);
+            imgProfilePic.setImageBitmap(myBitmap);
+        }
+    }
     private String gettingMarshmallowSelectedImagePath(Context context,Uri uri){
         String imgPath = "";
         imgPath = ImageHelper2.compressImage(uri, context);
@@ -644,7 +651,7 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
         if (hasWriteExternalExtewrnalPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        showCamraGalleryPopUp();
+//        showCamraGalleryPopUp();
 //        if (isUser) {
 //            showCamraGalleryPopUp();
 //        } else if (isDriver) {
@@ -653,7 +660,15 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
 
         if (listPermissionsNeeded.size() > 0) {
             requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CODE_ASK_PERMISSIONS);
+        }else {
+            if (isUser){
+                showAddProfilePicDialog();
+            }else {
+                showCamraGalleryPopUp();
+            }
         }
+
+
     }
 
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
@@ -671,7 +686,11 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity {
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    showCamraGalleryPopUp();
+                    if (isUser){
+                        showAddProfilePicDialog();
+                    }else {
+                        showCamraGalleryPopUp();
+                    }
                 } else {
                     // Permission Denied
                     insertDummyContactWrapper();

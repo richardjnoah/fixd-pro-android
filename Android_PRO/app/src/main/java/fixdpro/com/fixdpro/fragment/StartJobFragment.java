@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -42,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 import com.nostra13.universalimageloader.cache.memory.impl.WeakMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -57,13 +59,11 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.LocationResponseListener;
@@ -128,6 +128,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     GPSTracker gpsTracker = null ;
     boolean isnotificationClicked = false;
     GetLocationRecursivelyTask getLocationRecursivelyTask = null ;
+    SharedPreferences _prefs = null ;
     public StartJobFragment() {
         // Required empty public constructor
     }
@@ -173,6 +174,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             // handle notification click
             isnotificationClicked = true ;
         }
+        _prefs = Utilities.getSharedPreferences(getActivity());
     }
 
     @Override
@@ -224,6 +226,13 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         imgNo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //                save screen for future use
+                Gson gson = new Gson();
+                SharedPreferences.Editor editor = _prefs.edit();
+                editor.putString(Preferences.SCREEEN_NAME,Constants.START_JOB_FRAGMENT);
+                String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
+                editor.putString(Preferences.JOB_MODAL, json);
+                editor.commit();
                 layout_heading.setVisibility(View.GONE);
                 if (checkIfProArrived()) {
 //                        showStartJobDialog();
@@ -638,31 +647,31 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //        showStartJobDialog();
 //        return;
         //check time
-        try {
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-
-            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
-            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
-            Date startDate = formatter.parse(requestedDateStart);
-            Date endDate = formatter.parse(requestDateEnd);
-            Date currentDate = formatter.parse( formatter.format(new Date()));
-            Log.e("",""+startDate);
-            Log.e("",""+endDate);
-            Log.e("",""+currentDate);
-            if (startDate.before(currentDate) && currentDate.before(endDate)){
-                if (distance < 61){
+//        try {
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+//
+//            requestedDateStart = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_start();
+//            requestDateEnd = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getRequest_date() + " " + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getTimeslot_end();
+//            Date startDate = formatter.parse(requestedDateStart);
+//            Date endDate = formatter.parse(requestDateEnd);
+//            Date currentDate = formatter.parse( formatter.format(new Date()));
+//            Log.e("",""+startDate);
+//            Log.e("",""+endDate);
+//            Log.e("",""+currentDate);
+//            if (startDate.before(currentDate) && currentDate.before(endDate)){
+//                if (distance < 61){
                     showStartJobDialog();
-                }else {
-                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
-                }
-            }else {
-                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
-            }
+//                }else {
+//                    showAlertDialog("Fixd-Pro","You cannot start job untill you reach the distace between 0 to 60");
+//                }
+//            }else {
+//                 showStartJobAlertDialog("Fixd-Pro", "Are you sure you want to start this job? It is outside of scheduled time.",distance);
+//            }
 
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
     }
     public void showStartJobDialog(){
         dialog = new Dialog(_context);

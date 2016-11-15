@@ -52,27 +52,38 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
     }
 
     private void setTouchListner() {
-        txtRoutingNumber.setOnTouchListener(new View.OnTouchListener() {
+        txtRoutingNumber.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_UP == event.getAction()) {
-                    clearTextFromEditText();
-                    return true;
-                }
-
-                return false;
+            public void onClick(View v) {
+                clearTextFromEditText();
+            }
+        });txtAccountNumber.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clearTextFromEditText();
             }
         });
-        txtAccountNumber.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (MotionEvent.ACTION_UP == event.getAction()) {
-                    clearTextFromEditText();
-                    return true;
-                }
-                return false;
-            }
-        });
+//        txtRoutingNumber.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (MotionEvent.ACTION_UP == event.getAction()) {
+//                    clearTextFromEditText();
+//                    return true;
+//                }
+//
+//                return false;
+//            }
+//        });
+//        txtAccountNumber.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                if (MotionEvent.ACTION_UP == event.getAction()) {
+//                    clearTextFromEditText();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
     }
 
     public void clearTextFromEditText(){

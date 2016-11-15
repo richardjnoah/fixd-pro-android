@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#9E000000"
+    >
+    <View
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        android:background="@color/orange_signin_back"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+        <TextView android:id="@+id/text"
+            android:padding="@dimen/size_8_dp"
+            android:textSize="@dimen/size_16_sp"
+            android:textColor="@color/white"
+            android:gravity="left|center"
+            android:text="@string/notideleted"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+        <!-- <View
+             android:layout_weight="0"
+             android:layout_marginRight="8dp"
+             android:layout_marginLeft="8dp"
+             android:layout_marginTop="15dp"
+             android:layout_marginBottom="15dp"
+             android:layout_width="1dp"
+             android:layout_height="fill_parent"
+             android:background="#000"/>-->
+        <Button android:id="@+id/undo"
+            android:textColor="@color/orange_signin_back"
+            android:text="Undo"
+            android:layout_weight="1"
+            android:paddingRight="@dimen/size_15_dp"
+            android:textSize="@dimen/size_18_sp"
+            android:background="@color/transperant"
+            android:textAllCaps="false"
+            android:gravity="left|center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</LinearLayout>

@@ -93,6 +93,7 @@ public class AddTechnicion_Activity_Edit extends AppCompatActivity {
                         modal.setId(jsonObject.getString("user_id"));
                         modal.setFirstName(jsonObject.getString("first_name"));
                         modal.setLastName(jsonObject.getString("last_name"));
+                        modal.setExperience(jsonObject.getString("years_in_business"));
                         if (jsonObject.getString("pickup_jobs").equals("0"))
                             modal.setIspickjob(false);
                         else

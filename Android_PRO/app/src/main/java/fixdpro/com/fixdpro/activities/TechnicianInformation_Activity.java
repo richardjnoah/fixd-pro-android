@@ -50,18 +50,23 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
     String Error = "";
     int position = 0 ;
     LinearLayout layout_card;
+    ImageView imgCard;
     TextView txtDeactivate, txtCardNumber, txtEditCard;
+    private boolean iscompleting = false ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_technician_information_);
         _prefs = Utilities.getSharedPreferences(this);
-
         setWidgets();
         if (_prefs.getString(Preferences.IS_VARIFIED,"0").equals("1")){
             layout_card.setVisibility(View.VISIBLE);
             txtExperiance.setVisibility(View.GONE);
+        }
+        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+            txtExperiance.setVisibility(View.GONE);
+            iscompleting = true ;
         }
         setCLickListner();
         if (getIntent().getExtras() != null){
@@ -86,6 +91,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         txtEmailAdd.setText(modal.getEmail());
         txtMobile.setText(modal.getPhone());
         txtExperiance.setText(modal.getExperience());
+//        imgCard.setImageResource(Utilities.getCreditCardImage(modal.get));
         if (modal.ispickjob()){
             checkJobPickUp.setChecked(true);
         }else {
@@ -95,6 +101,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
     }
     private void setWidgets() {
         imgClose = (ImageView) findViewById(R.id.imgClose);
+        imgCard = (ImageView) findViewById(R.id.imgCard);
         imgNext = (ImageView) findViewById(R.id.imgNext);
         txtFirstName = (EditText) findViewById(R.id.txtFirstName);
         txtLastName = (EditText) findViewById(R.id.txtLastName);
@@ -219,6 +226,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         paramHashMap.put("data[last_name]", lastName);
         paramHashMap.put("data[email]", email);
         paramHashMap.put("data[phone]", mobileNumber);
+        if (!_prefs.getString(Preferences.ROLE,"pro").equals("pro"))
         paramHashMap.put("data[years_in_business]",YearsExp);
         if (ispickUp_jobs)
             paramHashMap.put("data[pickup_jobs]", "1");
@@ -235,6 +243,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         paramHashMap.put("api", "update");
         paramHashMap.put("data[user_id]", modal.getId());
         paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        if (!_prefs.getString(Preferences.ROLE,"pro").equals("pro"))
         paramHashMap.put("data[years_in_business]",YearsExp);
 //        if (profile_image_file  != null)
 //        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
@@ -252,8 +261,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         paramHashMap.put("object", "technicians");
         paramHashMap.put("api", "deactivate");
         paramHashMap.put("data[tech_user_id]", modal.getId());
-        paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
-        paramHashMap.put("data[years_in_business]",YearsExp);
+        paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         return paramHashMap;
     }
 

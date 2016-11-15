@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -27,7 +28,8 @@ import java.util.Iterator;
 import fixdpro.com.fixdpro.AvailableJobListClickActivity;
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
-import fixdpro.com.fixdpro.adapters.NotificationListAdapter;
+import fixdpro.com.fixdpro.adapters.NotificationAdapter;
+import fixdpro.com.fixdpro.adapters.swipe_undo.SwipeDismissList;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.beans.NotificationListModal;
@@ -35,6 +37,7 @@ import fixdpro.com.fixdpro.beans.NotificationModal;
 import fixdpro.com.fixdpro.beans.NotificationTypeData;
 import fixdpro.com.fixdpro.net.GetApiResponseAsync;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
+import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.singleton.NotificationSingleton;
@@ -76,7 +79,7 @@ public class NotificationListFragment extends Fragment {
 
     String next = "null";
 
-    NotificationListAdapter adapterNotification = null ;
+    NotificationAdapter adapterNotification = null ;
 
     NotificationSingleton singleton;
 
@@ -90,6 +93,12 @@ public class NotificationListFragment extends Fragment {
     AvailableJobModal jobModal = null ;
     NotificationModal modal;
     String role = "pro";
+    private SwipeDismissList mSwipeList;
+    /**
+     * The key of the {@link Bundle} extra we store the mode of the list the
+     * user selected.
+     */
+    private final static String EXTRA_MODE = "MODE";
     public NotificationListFragment() {
         // Required empty public constructor
     }
@@ -161,21 +170,143 @@ public class NotificationListFragment extends Fragment {
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_notification_list, container, false);
-
+        SwipeDismissList.UndoMode mode = SwipeDismissList.UndoMode.SINGLE_UNDO;
         /*****Setting Up Notifications******/
         listview_Notifications = (ListView)view.findViewById(R.id.listview_Notifications);
 
         View emptyView = view.findViewById(R.id.emptyView);
         listview_Notifications.setEmptyView(emptyView);
 
-        adapterNotification = new NotificationListAdapter(getActivity(), notificationlist, getResources(),pagingResponseNotification);
+        adapterNotification = new NotificationAdapter(getActivity(), notificationlist,getActivity().getResources(), pagingResponseNotification);
+//        ContextualUndoAdapter contextualUndoAdapter = new ContextualUndoAdapter(adapterNotification, R.layout.undo_row, R.id.undo_row_undobutton);
+//        contextualUndoAdapter.setAbsListView(listview_Notifications);
         listview_Notifications.setAdapter(adapterNotification);
+//        contextualUndoAdapter.setDeleteItemCallback(new MyDeleteItemCallback());
         adapterNotification.notifyDataSetChanged();
+        // Create a new SwipeDismissList from the activities listview.
+        mSwipeList = new SwipeDismissList(
+                // 1st parameter is the ListView you want to use
+                listview_Notifications,
+                // 2nd parameter is an OnDismissCallback, that handles the deletion
+                // and undo of list items. It only needs to implement onDismiss.
+                // This method can return an Undoable (then this deletion can be undone)
+                // or null (if the user shouldn't get the possibility to undo the
+                // deletion).
+                new SwipeDismissList.OnDismissCallback() {
+                    /**
+                     * Will be called, whenever the user swiped out an list item.
+                     *
+                     * @param listview_Notifications The {@link ListView} that the item was deleted
+                     * from.
+                     * @param position The position of the item, that was deleted.
+                     * @return An {@link Undoable} or {@code null} if this deletion
+                     * shouldn't be undoable.
+                     */
+                    public SwipeDismissList.Undoable onDismiss(AbsListView listview_Notifications, final int position) {
+
+                        // Get item that should be deleted from the adapter.
+                        final NotificationListModal item = adapterNotification.getItem(position);
+                        // Delete that item from the adapter.
+                        GetApiResponseAsyncNoProgress apiResponseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL, "POST", iHttpResponseListener, iHttpExceptionListener, getActivity(), "Loading");
+                        apiResponseAsync.execute(getDeleteUndoParams("delete", notificationlist.get(position).getID()));
+                        adapterNotification.remove(position);
+
+                        // Return an Undoable, for that deletion. If you write return null
+                        // instead, this deletion won't be undoable.
+                        return new SwipeDismissList.Undoable() {
+                            /**
+                             * Optional method. If you implement this method, the
+                             * returned String will be presented in the undo view to the
+                             * user.
+                             */
+                            @Override
+                            public String getTitle() {
+                                return "  Notification" + " Deleted.    ";
+                            }
+
+                            /**
+                             * Will be called when the user hits undo. You want to
+                             * reinsert the item to the adapter again. The library will
+                             * always call undo in the reverse order the item has been
+                             * deleted. So you can insert the item at the position it
+                             * was deleted from, unless you have modified the list
+                             * (added or removed items) somewhere else in your activity.
+                             * If you do so, you might want to call
+                             * {@link SwipeDismissList#discardUndo()}, so the user
+                             * cannot undo the action anymore. If you still want the
+                             * user to be able to undo the deletion (after you modified
+                             * the list somewhere else) you will need to calculate the
+                             * new position of this item yourself.
+                             */
+                            @Override
+                            public void undo() {
+                                // Reinsert the item at its previous position.
+
+                                adapterNotification.insert(item, position);
+                                GetApiResponseAsyncNoProgress apiResponseAsync = new GetApiResponseAsyncNoProgress(Constants.BASE_URL, "POST", iHttpResponseListener, iHttpExceptionListener, getActivity(), "Loading");
+                                apiResponseAsync.execute(getDeleteUndoParams("undo_delete", notificationlist.get(position).getID()));
+                            }
+
+                            /**
+                             * Will be called, when the user doesn't have the
+                             * possibility to undo the action anymore. This can either
+                             * happen, because the undo timed out or
+                             * {@link SwipeDismissList#discardUndo()} was called. If you
+                             * have stored your objects somewhere persistent (e.g. a
+                             * database) you might want to use this method to delete the
+                             * object from this persistent storage.
+                             */
+                            @Override
+                            public void discard() {
+                                // Just write a log message (use logcat to see the effect)
+                                Log.w("DISCARD", "item " + item + " now finally discarded");
+                            }
+                        };
+
+                    }
+                },
+                // 3rd parameter needs to be the mode the list is generated.
+                mode);
+
+        // If we have a MULTI_UNDO list (several items can be undone one by one),
+        // set the UndoMultipleString to null. If you set this to null the undo popup
+        // will show the title of the item that will be undone next. If you don't
+        // set this to null (leave it default, or set some other string), the string
+        // will be shown (and first placeholder %d replaced with number of pending undos).
+        if (mode == SwipeDismissList.UndoMode.MULTI_UNDO) {
+            mSwipeList.setUndoMultipleString(null);
+        }
+        
+        
+        
+
+//        SimpleSwipeUndoAdapter swipeUndoAdapter = new SimpleSwipeUndoAdapter(adapterNotification, getActivity(),
+//                new OnDismissCallback() {
+//                    @Override
+//                    public void onDismiss(@NonNull final ViewGroup listview_Notifications, @NonNull final int[] reverseSortedPositions) {
+//                        for (int position : reverseSortedPositions) {
+//                            adapterNotification.remove(position);
+//                        }
+//                    }
+//                }
+//        );
+//        swipeUndoAdapter.setAbsListView(listview_Notifications);
+//        listview_Notifications.setAdapter(swipeUndoAdapter);
+//        listview_Notifications.enableSwipeToDismiss(new OnDismissCallback() {
+//            @Override
+//            public void onDismiss(@NonNull ViewGroup viewGroup, @NonNull int[] ints) {
+//                for (int position : ints) {
+//                    adapterNotification.remove(position);
+//                }
+//            }
+//        });
+
 //        listview_Notifications.setHasMoreItems(false);
         notificationlist.clear();
         if (notificationlist.size() > 0){
@@ -660,7 +791,30 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("token","alerts");
         hashMap.put("data[is_read]","1");
         hashMap.put("where[id]",notificationlist.get(position).getID());
-        hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         return hashMap;
     }
+
+    private HashMap<String, String> getDeleteUndoParams(String  api,String id) {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", api);
+        hashMap.put("object", "alerts");
+        hashMap.put("data[id]", id);
+        hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
+
+
+        return hashMap;
+    }
+    IHttpResponseListener iHttpResponseListener = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject response) {
+            Log.e("","");
+        }
+    };
+    IHttpExceptionListener iHttpExceptionListener = new IHttpExceptionListener() {
+        @Override
+        public void handleException(String exception) {
+
+        }
+    };
 }

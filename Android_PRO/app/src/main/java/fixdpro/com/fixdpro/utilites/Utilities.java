@@ -457,4 +457,40 @@ public class Utilities {
         return strMyImagePath;
 
     }
+
+
+
+
+    public static int getCreditCardImage(int number) {
+        if (number == 34 || number == 37) {
+//            AmericanExpress image
+            return R.drawable.american_express;
+        } else if (number == 36) {
+//            Diners club image
+            return R.drawable.check;
+        } else if (number == 38) {
+//            Carte Blanche image
+            return R.drawable.check;
+        } else if (number >= 51 && number <= 55) {
+//            Mastercard image
+            return R.drawable.mastercard;
+        } else if (number >= 51 && number <= 55) {
+//            Mastercard image
+            return R.drawable.mastercard;
+        } else if (number == 2014 && number == 2149) {
+//            EnRoute image
+            return R.drawable.check;
+        } else if (number == 2131 && number == 1800) {
+//            JCB image
+            return R.drawable.check;
+        } else if (number == 6011) {
+//            Discover image
+            return R.drawable.discover;
+        } else if (number >= 300 && number <= 305) {
+//            American Diners Club image
+            return R.drawable.check;
+        }
+
+        return R.drawable.credit_card;
+    }
 }

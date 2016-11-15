@@ -80,7 +80,7 @@ public class JobCompletedActivity extends AppCompatActivity {
             if (Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()) != -1){
                 imageView.setImageResource(Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()));
             }else {
-                if (jobapplianceslist.get(count).getAppliance_type_image_original().length() > 0){
+                if (jobapplianceslist.get(i).getAppliance_type_image_original().length() > 0){
                     Picasso.with(context).load(jobapplianceslist.get(i).getAppliance_type_image_original()).into(imageView);
                 }
             }

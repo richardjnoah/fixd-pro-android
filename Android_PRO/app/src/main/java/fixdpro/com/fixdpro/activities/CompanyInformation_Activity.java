@@ -5,9 +5,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -15,11 +15,12 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import java.util.Arrays;
 import java.util.HashMap;
 
 import fixdpro.com.fixdpro.R;
+import fixdpro.com.fixdpro.beans.ProfileComplitionValuesBean;
+import fixdpro.com.fixdpro.singleton.TemporaryProfileComplitionSignleton;
 import fixdpro.com.fixdpro.views.WheelView;
 
 public class CompanyInformation_Activity extends AppCompatActivity {
@@ -32,6 +33,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
     HashMap<String,String> finalRequestParams = null ;
     boolean ispro = false ;
     boolean iscompleting = false;
+    ProfileComplitionValuesBean temporaryProfileComplitionSignleton = TemporaryProfileComplitionSignleton.getInstance().getInstance().getProfileComplitionValuesBean();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +54,18 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                 iscompleting = bundle.getBoolean("iscompleting");
             }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        txtCompanyName.setText(temporaryProfileComplitionSignleton.getCompanyName());
+        txtYearInBusiness.setText(temporaryProfileComplitionSignleton.getYearInBusiness());
+        txtInsuranceCarr.setText(temporaryProfileComplitionSignleton.getInsuranceCarrier());
+        txtEniNumber.setText(temporaryProfileComplitionSignleton.getEniNumber());
+        txtPolicyNumber.setText(temporaryProfileComplitionSignleton.getPolicyNumber());
+        txtHourlyRate.setText("$"+temporaryProfileComplitionSignleton.getHourlyRate());
+
     }
 
     private void setCLickListner() {
@@ -109,17 +123,23 @@ public class CompanyInformation_Activity extends AppCompatActivity {
                     finalRequestParams.put("data[pros][insurance]", InsuranceCarrier);
                     finalRequestParams.put("data[pros][insurance_policy]", PolicyNumber);
                     finalRequestParams.put("data[pros][hourly_rate]", HourlyRate);
+                    temporaryProfileComplitionSignleton.setCompanyName(CompanyName);
+                    temporaryProfileComplitionSignleton.setYearInBusiness(YearInBusiness);
+                    temporaryProfileComplitionSignleton.setEniNumber(EniNumber);
+                    temporaryProfileComplitionSignleton.setInsuranceCarrier(InsuranceCarrier);
+                    temporaryProfileComplitionSignleton.setPolicyNumber(PolicyNumber);
+                    temporaryProfileComplitionSignleton.setHourlyRate(HourlyRate);
                     if (HourlyRate.equals("125")){
                         showAlertDialogRate("Fixd-Pro","Keep in mind Pros with lower labor ates will see available job first.Higher labor rates may limit your job availability");
                     }else{
                         Intent intent = new Intent(CompanyInformation_Activity.this,LicensePicture_Activity.class);
+//                        Intent intent = new Intent(CompanyInformation_Activity.this,New_LicensePicture_Activity.class);
                         intent.putExtra("ispro", ispro);
                         intent.putExtra("iscompleting", iscompleting);
                         intent.putExtra("finalRequestParams", finalRequestParams);
                         startActivity(intent);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     }
-
 
                 }
 
@@ -136,7 +156,6 @@ public class CompanyInformation_Activity extends AppCompatActivity {
         txtInsuranceCarr = (EditText) findViewById(R.id.txtInsuranceCarr);
         txtPolicyNumber = (EditText) findViewById(R.id.txtPolicyNumber);
         txtHourlyRate = (TextView) findViewById(R.id.txtHourlyRate);
-
     }
 
     @Override

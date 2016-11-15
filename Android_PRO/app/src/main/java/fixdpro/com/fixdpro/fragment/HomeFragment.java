@@ -256,9 +256,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             schedulejoblist.clear();
             onClick(scheduled);
         }
-        if (isFirstTechReg){
-            showDialogVerificaitonTokenSuccess();
-        }
         return rootView;
     }
     private void getNextScheduled(){
@@ -330,7 +327,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 intent.putExtra("iscompleting", true);
                 startActivity(intent);
                 dialog.dismiss();
-
             }
         });
         img_close.setOnClickListener(new View.OnClickListener() {
@@ -764,8 +760,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 case 0:{
                     adapterAvailable.notifyDataSetChanged();
                     setMarkers(availablejoblist);
-                    if (_prefs.getBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,false)){
-                        showAccountSetupCompletdDialog();
+//                    if (_prefs.getBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,false)){
+//                        showAccountSetupCompletdDialog();
+//                    }
+                    if (isFirstTechReg){
+                        showDialogVerificaitonTokenSuccess();
                     }
                     break;
                 }
@@ -1342,17 +1341,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
-                dialog.dismiss();
+                dialogSuccess.dismiss();
             }
         });
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 _prefs.edit().putBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,true).commit();
-                dialog.dismiss();
+                dialogSuccess.dismiss();
             }
         });
-        dialog.show();
+        dialogSuccess.show();
     }
     private void showAlertBackGroundSaftyDialog(){
         dialog = new Dialog(_context);

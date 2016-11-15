@@ -9,12 +9,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Handler;
+import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -409,7 +408,8 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
         for (int i = 0 ; i < endpoint_arn.size() ; i++){
 
             String GCM1 = "{\"data\":{\"message\":\"New message \\\"" + text + "\\\"\"" + "," + "\"dialogId\"" +":"+ "\"" + qbDialog.getDialogId() + "\"}}";
-            String APNS1 = "{\"dialogId\"" + ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\":\"New message \\\"" + text +"\\\"\"}}";
+            String APNS1 = "{\"dialogId\"" + ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\":\"New message \\\"" + text +"\\\"\"" + "," +  "\"sound\"" + ":" + "\"default\"}}";
+//            String APNS1 = "{\"dialogId\"" + ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\":\"New message \\\"" + text +"\\\"\" }}";
 //            String APNS1 = "{\"dialogId\""+ ":" + "\"" + qbDialog.getDialogId() + "\"" + ","+"\"aps\":{\"alert\"" + ":" + "\"" +  text  + "\"}}";
             final PublishRequest publishRequest = new PublishRequest();
             JSONObject jsonObjectMain = null;

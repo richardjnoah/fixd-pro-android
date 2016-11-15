@@ -176,7 +176,8 @@ public class TradeLiecenseNo_Activity extends AppCompatActivity {
                 final TextView txtName = (TextView)addView.findViewById(R.id.txtName);
                 txtItem.setTag(i+"");
                 txtItem.setHint(arrayList.get(i).getTitle());
-                txtName.setText(arrayList.get(i).getTitle()+":");
+                txtName.setText(arrayList.get(i).getTitle() + ":");
+                txtItem.setText(arrayList.get(i).getNumber());
                 txtItem.addTextChangedListener(new TextWatcher() {
                     @Override
                     public void beforeTextChanged(CharSequence s, int start, int count, int after) {

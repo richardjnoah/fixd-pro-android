@@ -7,9 +7,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -19,8 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,7 +38,7 @@ public class BackgroundCheck_Activity extends AppCompatActivity {
     Dialog dialog1;
     boolean ispro = false ;
     HashMap<String,String> finalRequestParams = null ;
-    String middleName, bithDay, driverLiecenseNo, driverLiecenceState;
+    String middleName = "", bithDay = "", driverLiecenseNo = "", driverLiecenceState = "";
     String security_number = "";
     String selectedImagePathUser = null ;
     String  selectedImagePathDriver = null;
@@ -85,7 +83,7 @@ public class BackgroundCheck_Activity extends AppCompatActivity {
         txtUserName = (TextView) findViewById(R.id.txtUserName);
         txtSocialSecurityNo = (EditText) findViewById(R.id.txtSocialSecurityNo);
         checkMiddleName = (CheckBox) findViewById(R.id.checkMiddleName);
-        txtUserName.setText(_prefs.getString(Preferences.FIRST_NAME,"")+ " "+_prefs.getString(Preferences.LAST_NAME,""));
+        txtUserName.setText(_prefs.getString(Preferences.FIRST_NAME, "") + " " + _prefs.getString(Preferences.LAST_NAME, ""));
     }
 
     private void setCLickListner() {
@@ -123,42 +121,54 @@ public class BackgroundCheck_Activity extends AppCompatActivity {
                 driverLiecenseNo = txtDriverLiecenseNo.getText().toString().trim();
                 driverLiecenceState = txtDriverLiecenseState.getText().toString().trim();
 
-                if (middleName.equals("") && !checkMiddleName.isChecked()){
-                    showAlertDialog(context.getResources().getString(R.string.alert_title),"Please enter the middle name.");
-                }else if (bithDay.equals("")){
-                    showAlertDialog(context.getResources().getString(R.string.alert_title),"Please enter the birthday.");
-                }else if (security_number.length() != 9) {
+                if (middleName.equals("") && !checkMiddleName.isChecked()) {
+                    showAlertDialog(context.getResources().getString(R.string.alert_title), "Please enter the middle name.");
+                } else if (bithDay.equals("")) {
+                    showAlertDialog(context.getResources().getString(R.string.alert_title), "Please enter the birthday.");
+                } else if (security_number.length() != 9) {
                     showAlertDialog("Fixd-Pro", "Security number seems to be invalid.");
                     return;
-                } else if (driverLiecenseNo.equals("")){
-                    showAlertDialog(context.getResources().getString(R.string.alert_title),"Please enter the driver liecense number.");
-                }else if (driverLiecenceState.equals("")){
-                    showAlertDialog(context.getResources().getString(R.string.alert_title),"Please enter the driver liecense state");
-                }else {
+                } else if (driverLiecenseNo.equals("")) {
+                    showAlertDialog(context.getResources().getString(R.string.alert_title), "Please enter the driver liecense number.");
+                } else if (driverLiecenceState.equals("")) {
+                    showAlertDialog(context.getResources().getString(R.string.alert_title), "Please enter the driver liecense state");
+                } else {
                     /****Run Api****/
-                    String temp_securiyt_number = security_number.substring(0,3) +"-"+security_number.substring(3,5)+"-"+security_number.substring(5,security_number.length() );
-                    if (ispro){
-                        finalRequestParams.put("data[technicians][middle_name]",middleName);
+                    String temp_securiyt_number = security_number.substring(0, 3) + "-" + security_number.substring(3, 5) + "-" + security_number.substring(5, security_number.length());
+                    if (ispro) {
+                        finalRequestParams.put("data[technicians][middle_name]", middleName);
                         finalRequestParams.put("data[technicians][dob]", bithDay);
                         finalRequestParams.put("data[technicians][driver_license_number]", driverLiecenseNo);
                         finalRequestParams.put("data[technicians][driver_license_state]", driverLiecenceState);
                         finalRequestParams.put("data[technicians][social_security_number]", temp_securiyt_number);
-                    }else {
-                        finalRequestParams.put("data[technicians][middle_name]",middleName);
+                    } else {
+                        finalRequestParams.put("data[technicians][middle_name]", middleName);
                         finalRequestParams.put("dob", bithDay);
                         finalRequestParams.put("driver_license_number", driverLiecenseNo);
                         finalRequestParams.put("driver_license_state", driverLiecenceState);
                         finalRequestParams.put("social_security_number", temp_securiyt_number);
                     }
 
-                    Intent i = new Intent(BackgroundCheck_Activity.this, BackgroundCheck_Next_Activity.class);
-                    i.putExtra("ispro",ispro);
-                    i.putExtra("iscompleting", iscompleting);
-                    i.putExtra("finalRequestParams", finalRequestParams);
-                    i.putExtra("driver_image", selectedImagePathDriver);
-                    i.putExtra("user_image", selectedImagePathUser);
-                    startActivity(i);
-                    overridePendingTransition(R.anim.enter, R.anim.exit);
+                    if ( finalRequestParams.containsKey("[data][technicians][field_work]") && finalRequestParams.get("[data][technicians][field_work]").equals("1") || !finalRequestParams.containsKey("[data][technicians][field_work]")) {
+                        Intent i = new Intent(BackgroundCheck_Activity.this, BackgroundCheck_Next_Activity.class);
+                        i.putExtra("ispro", ispro);
+                        i.putExtra("iscompleting", iscompleting);
+                        i.putExtra("finalRequestParams", finalRequestParams);
+                        i.putExtra("driver_image", selectedImagePathDriver);
+                        i.putExtra("user_image", selectedImagePathUser);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                    } else {
+                        Intent i = new Intent(BackgroundCheck_Activity.this, AddTechnicion_Activity.class);
+                        i.putExtra("ispro", ispro);
+                        i.putExtra("iscompleting", iscompleting);
+                        i.putExtra("finalRequestParams", finalRequestParams);
+                        i.putExtra("driver_image", selectedImagePathDriver);
+                        i.putExtra("user_image", selectedImagePathUser);
+                        startActivity(i);
+                        overridePendingTransition(R.anim.enter, R.anim.exit);
+                    }
+
                 }
             }
         });

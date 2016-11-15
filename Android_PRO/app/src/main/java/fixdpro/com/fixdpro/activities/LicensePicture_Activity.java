@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -27,10 +28,10 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,15 +40,17 @@ import java.util.List;
 
 import fixdpro.com.fixdpro.FixdProApplication;
 import fixdpro.com.fixdpro.R;
-import fixdpro.com.fixdpro.imageupload.ImageHelper2;
+import fixdpro.com.fixdpro.round_image_cropper.Constants;
+import fixdpro.com.fixdpro.round_image_cropper.ImageCropActivity;
+import fixdpro.com.fixdpro.round_image_cropper.PicModeSelectDialogFragment;
 import fixdpro.com.fixdpro.utilites.chat_utils.ImageUtils;
 import fixdpro.com.fixdpro.utilites.chat_utils.SchemeType;
 import fixdpro.com.fixdpro.utilites.chat_utils.StorageUtils;
 import fixdpro.com.fixdpro.utilites.image_compressor.SiliCompressor;
 
-public class LicensePicture_Activity extends AppCompatActivity {
+public class LicensePicture_Activity extends AppCompatActivity implements PicModeSelectDialogFragment.IPicModeSelectListener{
     Context _context = LicensePicture_Activity.this;
-    public static final String TAG = "LicensePicture_Activity";
+
     ImageView imgClose, imgProfilePic, imgAddDriverLiecense, imgNext;
     Dialog dialog;
     Typeface fontfamily;
@@ -74,6 +77,10 @@ public class LicensePicture_Activity extends AppCompatActivity {
     private static final String CAMERA_FILE_NAME_PREFIX = "FIXD_";
     File photoFile ;
     File photoFileDriver ;
+
+    public static final String TAG = "New_LicensePicture_Activity";
+    public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
+    public static final int REQUEST_CODE_UPDATE_PIC = 300;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,7 +105,21 @@ public class LicensePicture_Activity extends AppCompatActivity {
             }
         }
     }
-
+    private void actionProfilePic(String action) {
+        Intent intent = new Intent(this, ImageCropActivity.class);
+        intent.putExtra("ACTION", action);
+        startActivityForResult(intent, REQUEST_CODE_UPDATE_PIC);
+    }
+    private void showAddProfilePicDialog() {
+        PicModeSelectDialogFragment dialogFragment = new PicModeSelectDialogFragment();
+        dialogFragment.setiPicModeSelectListener(this);
+        dialogFragment.show(getFragmentManager(), "picModeSelector");
+    }
+    @Override
+    public void onPicModeSelected(String mode) {
+        String action = mode.equalsIgnoreCase(Constants.PicModes.CAMERA) ? Constants.IntentExtras.ACTION_CAMERA : Constants.IntentExtras.ACTION_GALLERY;
+        actionProfilePic(action);
+    }
     private void setCLickListner() {
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -115,7 +136,8 @@ public class LicensePicture_Activity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= 23) {
                     insertDummyContactWrapper();
                 } else {
-                    showCamraGalleryPopUp();
+//                    showCamraGalleryPopUp();
+                    showAddProfilePicDialog();
                 }
 
             }
@@ -259,44 +281,6 @@ public class LicensePicture_Activity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showCamraGalleryPopUpDriver() {
-        dialog = new Dialog(_context);
-        dialog = new Dialog(_context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.dialog_camra_gallery);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        // set the custom dialog components - text, image and button
-        ImageView img_close = (ImageView) dialog.findViewById(R.id.img_close);
-        TextView txtTakePicture = (TextView) dialog.findViewById(R.id.txtTakePicture);
-        TextView txtCamera = (TextView) dialog.findViewById(R.id.txtCamera);
-        TextView txtGallery = (TextView) dialog.findViewById(R.id.txtGallery);
-        // set the typeface...
-        txtCamera.setTypeface(fontfamily);
-        txtGallery.setTypeface(fontfamily);
-        txtTakePicture.setTypeface(fontfamily);
-        // set the click listner...
-        img_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        txtCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                openCameraDriver();
-            }
-        });
-        txtGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                openGalleryDriver();
-            }
-        });
-        dialog.show();
-    }
     private static String getTemporaryCameraFileName() {
         return CAMERA_FILE_NAME_PREFIX + System.currentTimeMillis() + ".jpg";
     }
@@ -330,22 +314,22 @@ public class LicensePicture_Activity extends AppCompatActivity {
         startActivityForResult(intent, GALLERY_REQUEST);
     }
 
-    private void openCameraDriver() {
-        Intent driverIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(driverIntent, CAMERA_REQUEST_DRIVER);
-    }
-
-    private void openGalleryDriver() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(intent, GALLERY_REQUEST_DRIVER);
-    }
+//    private void openCameraDriver() {
+//        Intent driverIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        startActivityForResult(driverIntent, CAMERA_REQUEST_DRIVER);
+//    }
+//
+//    private void openGalleryDriver() {
+//        Intent intent = new Intent();
+//        intent.setType("image/*");
+//        intent.setAction(Intent.ACTION_GET_CONTENT);
+//        startActivityForResult(intent, GALLERY_REQUEST_DRIVER);
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (data != null) {
+        if (data != null && requestCode != REQUEST_CODE_UPDATE_PIC) {
             String imageFilePath = null;
             Uri uri = data.getData();
             String uriScheme = uri.getScheme();
@@ -396,75 +380,15 @@ public class LicensePicture_Activity extends AppCompatActivity {
 
 
                 if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK && isUser) {
-//                isUser = false;
-//
-//                // Getting Data as a bitmap
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                // SettingUp bitmap to imageview
-//                imgProfilePic.setImageBitmap(photo);
-//                // Getting Uri of intent
-//                uriUser = getImagePathURI(_context, photo);
-//                Log.e(TAG,"Uri+++++++++++++++"+uriUser);
-//                // Getting Image Actual Path
-//                if (Build.VERSION.SDK_INT >= 23){
-////                    selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context, uriUser);
-//                    selectedImagePathUser = ImageHelper2.compressImage(uriUser,_context);
-//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-//                }else{
-//                    selectedImagePathUser = getPath(_context, uriUser);
-//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-//                }
+
                 } else if (requestCode == CAMERA_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
-//                isDriver = false;
-//                // Getting Data as a bitmap
-//                Bitmap photo = (Bitmap) data.getExtras().get("data");
-//                // SettingUp bitmap to imageview
-//                imgAddDriverLiecense.setImageBitmap(photo);
-//                // Getting uri of image
-////                Uri uri = data.getData();
-//                // Getting Image Actual Path
-//                uriDriver = getImagePathURI(_context,photo);
-//                if (Build.VERSION.SDK_INT >= 23){
-////                    selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context, uriDriver);
-//                    selectedImagePathDriver = ImageHelper2.compressImage(uriDriver,_context);
-//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-//                }else{
-//                    selectedImagePathDriver = getPath(_context,uriDriver);
-//                    Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-//                }
+
 
                 } else if (requestCode == GALLERY_REQUEST && resultCode == RESULT_OK && isUser) {
-//                isUser = false;
-//                // Get the uri from data
-//                Uri selectedImageUri = data.getData();
-//                if (null != selectedImageUri) {
-//                    // Set the image in ImageView
-//                    imgProfilePic.setImageURI(selectedImageUri);
-//                    if (Build.VERSION.SDK_INT >= 23){
-//                        selectedImagePathUser = gettingMarshmallowSelectedImagePath(_context,selectedImageUri);
-//                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathUser);
-//                    }else{
-//                        // Get the actual path of image from the Uri
-//                        selectedImagePathUser = getPathFromURI(selectedImageUri);
-//                    }
-//                }
+
 
                 } else if (requestCode == GALLERY_REQUEST_DRIVER && resultCode == RESULT_OK && isDriver) {
-//                isDriver = false;
-//                // Get the url from data
-//                Uri selectedImageUriDriver = data.getData();
-//                if (null != selectedImageUriDriver) {
-//                    // Set the image in ImageView
-//                    imgAddDriverLiecense.setImageURI(selectedImageUriDriver);
-//                    if (Build.VERSION.SDK_INT >= 23){
-//                        selectedImagePathDriver = gettingMarshmallowSelectedImagePath(_context,selectedImageUriDriver);
-//                        Log.e(TAG,"ActualPath+++++++++++++++"+selectedImagePathDriver);
-//                    }else{
-//                        // Get the path from the Uri
-//                        selectedImagePathDriver = getPathFromURI(selectedImageUriDriver);
-//                    }
-//
-//                }
+
                 }
             }
         }else if (requestCode == CAMERA_REQUEST && isDriver && Activity.RESULT_OK == resultCode) {
@@ -474,9 +398,6 @@ public class LicensePicture_Activity extends AppCompatActivity {
             selectedImagePathDriver = SiliCompressor.with(this).compress(uri1.toString(), true);
             photoFile = new File(selectedImagePathDriver);
 
-
-//            txtTakepic.setVisibility(View.INVISIBLE);
-//            img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(this).load(Uri.fromFile(photoFile))
                     .into(imgAddDriverLiecense);
         } else if (requestCode == CAMERA_REQUEST && isUser && Activity.RESULT_OK == resultCode) {
@@ -486,42 +407,27 @@ public class LicensePicture_Activity extends AppCompatActivity {
             selectedImagePathUser = SiliCompressor.with(this).compress(uri2.toString(), true);
             photoFile = new File(selectedImagePathUser);
 
-
-//            txtTakepic.setVisibility(View.INVISIBLE);
-//            img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(this).load(Uri.fromFile(photoFile))
                     .into(imgProfilePic);
         }
-    }
+        if (requestCode == REQUEST_CODE_UPDATE_PIC) {
+            if (resultCode == RESULT_OK) {
+                selectedImagePathUser = data.getStringExtra(Constants.IntentExtras.IMAGE_PATH);
+                showCroppedImage(selectedImagePathUser);
+            } else if (resultCode == RESULT_CANCELED) {
 
-    private String gettingMarshmallowSelectedImagePath(Context context,Uri uri){
-        String imgPath = "";
-        imgPath = ImageHelper2.compressImage(uri, context);
-        return  imgPath;
-    }
-
-    // get the path/....
-    public Uri getImagePathURI(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-
-    /* Get the real path from the URI */
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
+            } else {
+                String errorMsg = data.getStringExtra(ImageCropActivity.ERROR_MSG);
+                Toast.makeText(this, errorMsg, Toast.LENGTH_LONG).show();
+            }
         }
-        cursor.close();
-        return res;
     }
-
+    private void showCroppedImage(String mImagePath) {
+        if (mImagePath != null) {
+            Bitmap myBitmap = BitmapFactory.decodeFile(mImagePath);
+            imgProfilePic.setImageBitmap(myBitmap);
+        }
+    }
     @TargetApi(Build.VERSION_CODES.M)
     private void insertDummyContactWrapper() {
         int hasWriteCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
@@ -537,17 +443,16 @@ public class LicensePicture_Activity extends AppCompatActivity {
         if (hasWriteExternalExtewrnalPermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-//        if (isUser) {
-//            showCamraGalleryPopUp();
-//        } else if (isDriver) {
-//            showCamraGalleryPopUpDriver();
-//        }
 
         if (listPermissionsNeeded.size() > 0) {
             requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]), REQUEST_CODE_ASK_PERMISSIONS);
         }else{
+            if (isUser){
+                showAddProfilePicDialog();
+            }else {
+                showCamraGalleryPopUp();
+            }
 
-            showCamraGalleryPopUp();
         }
     }
 
@@ -566,7 +471,11 @@ public class LicensePicture_Activity extends AppCompatActivity {
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    showCamraGalleryPopUp();
+                    if (isUser){
+                        showAddProfilePicDialog();
+                    }else {
+                        showCamraGalleryPopUp();
+                    }
                 } else {
                     // Permission Denied
 //                    insertDummyContactWrapper();

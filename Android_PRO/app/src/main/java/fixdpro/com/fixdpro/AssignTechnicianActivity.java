@@ -82,7 +82,7 @@ public class AssignTechnicianActivity extends AppCompatActivity {
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
                     next = pagination.getString("next");
                     for (int i = 0 ; i < results.length() ; i++){
-                    AssignTechModal modal = new AssignTechModal();
+                        AssignTechModal modal = new AssignTechModal();
                         JSONObject jsonObject = results.getJSONObject(i);
                         modal.setTechId(jsonObject.getString("id"));
                         modal.setTech_User_id(jsonObject.getString("user_id"));
@@ -296,6 +296,7 @@ public class AssignTechnicianActivity extends AppCompatActivity {
             hashMap.put("per_page","999");
             hashMap.put("where[verified]","1");
             hashMap.put("page", "1");
+            hashMap.put("where[field_work]", "1");
             hashMap.put("data[job_id]", FixdProApplication.SelectedAvailableJobId);
             return hashMap;
     }

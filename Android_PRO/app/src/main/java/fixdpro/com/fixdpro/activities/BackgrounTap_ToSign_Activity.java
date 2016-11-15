@@ -366,7 +366,7 @@ public class BackgrounTap_ToSign_Activity extends AppCompatActivity {
                         String company_name = pros.getString("company_name");
                         String ein_number="" ;
                         if (!pros.isNull("ein_number"))
-                            ein_number = pros.getString("ein_number");
+                             ein_number = pros.getString("ein_number");
                         String bank_name = pros.getString("bank_name");
                         String bank_routing_number = pros.getString("bank_routing_number");
                         String bank_account_number = pros.getString("bank_account_number");
@@ -415,7 +415,6 @@ public class BackgrounTap_ToSign_Activity extends AppCompatActivity {
                         editor.putString(Preferences.JOB_LOST_NOTIFICATION, pro_settings.getString("job_lost_notification"));
                         editor.putString(Preferences.JOB_RESECHDULED, pro_settings.getString("job_rescheduled"));
                         editor.putString(Preferences.JOB_CANCELLED, pro_settings.getString("job_canceled"));
-
                     }
                     if (!Response.getJSONObject("RESPONSE").getJSONObject("users").isNull("technicians")){
                         JSONObject technicians = null;

@@ -5,11 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
@@ -61,6 +61,12 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
             startActivity(i);
             finish();
         }
+        if (getIntent().getExtras() != null){
+            String action = getIntent().getStringExtra("action");
+            if (action.equals("change_password")){
+                showAlertDialog("Password Reset Successful","Please login using new Password");
+            }
+        }
     }
     private  void setTypeface(){
         fontfamily = Typeface.createFromAsset(getAssets(), "HelveticaNeue-Thin.otf");
@@ -79,6 +85,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
                 //Intent intent = new Intent(_context, Add_TechScreen.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
+
             }
         });
 
@@ -86,7 +93,7 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(_context, LoginActivity.class);
-//                Intent intent = new Intent(_context, LicensePicture_Activity.class);
+//                Intent intent = new Intent(_context, LastStep_Activity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.enter, R.anim.exit);
             }

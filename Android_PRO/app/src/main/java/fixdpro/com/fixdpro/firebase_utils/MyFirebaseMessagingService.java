@@ -201,11 +201,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 //        notiCountTotal = notiCountNormal + notiCountChat;
                 ShortcutBadger.applyCount(this, notiCountNormal);
             }
-//                    }
-
-//                }
-//            }
-
         }
 
         // Check if message contains a notification payload.
@@ -214,15 +209,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             String body = remoteMessage.getNotification().getBody() ;
         }
 
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
-//        sendNotification(modal.getMessage());
     }
-    // [END receive_message]
 
-    /**
-     * Create and show a simple notification containing the received FCM message.
-     *
-     * @param messageBody FCM message body received.
-     */
 }

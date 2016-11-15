@@ -10,7 +10,8 @@ android {
         minSdkVersion 17
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.20"
+        versionName "1.0.26"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -40,7 +41,6 @@ dependencies {
     compile 'com.android.support:leanback-v17:23.4.0'
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.android.support:design:23.4.0'
-
     compile 'com.github.nicolasjafelle:paginglistview:1.2'
     compile 'com.android.support:support-v4:23.4.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -54,13 +54,15 @@ dependencies {
     compile files('libs/retrofit-1.9.0-sources.jar')
     compile 'com.amazonaws:aws-android-sdk-sns:2.2.+'
     compile 'me.leolin:ShortcutBadger:1.1.6@aar'
-    compile project(':photo-crop-library')
     compile 'com.google.firebase:firebase-core:9.6.0'
     compile 'com.google.firebase:firebase-messaging:9.6.0'
-
     // Existing dependencies may go here
     compile 'com.google.code.gson:gson:2.1'
     compile 'com.mindscapehq.android:raygun4android:2.0.0'
+    // Dependency for Croper Activity
+    compile project(':photo-crop-library')
+    compile 'com.android.support:multidex:1.0.0'
+
 }
 // Add to the bottom of the file
 apply plugin: 'com.google.gms.google-services'

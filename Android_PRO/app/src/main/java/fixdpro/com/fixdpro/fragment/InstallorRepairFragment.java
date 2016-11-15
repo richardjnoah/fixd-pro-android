@@ -27,6 +27,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -143,6 +145,12 @@ public class InstallorRepairFragment extends Fragment {
         role = _prefs.getString(Preferences.ROLE, "pro");
         setWidgets(view);
         setListeners();
+        Gson gson = new Gson();
+        SharedPreferences.Editor editor = _prefs.edit();
+        editor.putString(Preferences.SCREEEN_NAME,Constants.INSTALL_OR_REPAIR_FRAGMENT);
+        String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
+        editor.putString(Preferences.JOB_MODAL, json);
+        editor.commit();
 //        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
 //            handler.sendEmptyMessage(0);
 //        }else{
@@ -210,6 +218,7 @@ public class InstallorRepairFragment extends Fragment {
         if(adapter != null){
             adapter.notifyDataSetChanged();
         }
+
     }
     private void collectDataForGoingTogetParts(){
         if (start_going_to_get_parts_process){
@@ -281,7 +290,8 @@ public class InstallorRepairFragment extends Fragment {
     }
     private void setupToolBar() {
         ((HomeScreenNew) getActivity()).hideRight();
-        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name() +"-" +CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_customer_addresses_address());
+
+        ((HomeScreenNew) getActivity()).setTitletext(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getContact_name() + "-" + CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_customer_addresses_address());
         ((HomeScreenNew) getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
 
@@ -810,7 +820,9 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"").commit();
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    getActivity().finishAffinity();
                     Intent intent = new Intent(getActivity(),HomeScreenNew.class);
                     startActivity(intent);
                     getActivity().finish();

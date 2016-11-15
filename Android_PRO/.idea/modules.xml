@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/FixtPro 8-02-2016.iml" filepath="$PROJECT_DIR$/FixtPro 8-02-2016.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Android_PRO.iml" filepath="$PROJECT_DIR$/Android_PRO.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/library/library.iml" filepath="$PROJECT_DIR$/library/library.iml" />
       <module fileurl="file://$PROJECT_DIR$/photo-crop-library/photo-crop-library.iml" filepath="$PROJECT_DIR$/photo-crop-library/photo-crop-library.iml" />

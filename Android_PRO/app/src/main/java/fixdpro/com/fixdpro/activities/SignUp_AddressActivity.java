@@ -57,6 +57,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
     GoogleResponseBean modal = null ;
     String EditAddress,Description,PlaceID,ValueName;
     HashMap<String,String> finalRequestParams = new HashMap<String,String>();
+    SharedPreferences _prefs = null ;
 
 
     @Override
@@ -71,6 +72,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
         setClickListner();
         adapter = new GooglePlaceAdapter(this,arrayList,getResources());
         lstPlaces.setAdapter(adapter);
+
     }
 
     private void setWidgets() {
@@ -218,6 +220,10 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         modal.setmZip(mZip);
                         modal.setmState(mState);
                         modal.setmCity(mCity);
+                        /*Set the Addess in Prefrances to show in Address (Review) Screen When
+                        * Search the address and select the address from the list in fi*/
+
+
                         handler.sendEmptyMessage(1);
                     }else {
                         Intent intent = new Intent(SignUp_AddressActivity.this,New_Address_Activity.class);
@@ -250,6 +256,16 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         JSONObject jsonObject = predictions.getJSONObject(i);
                         modal.setPlace_id(jsonObject.getString("place_id"));
                         modal.setDescription(jsonObject.getString("description"));
+//                        if(!jsonObject.isNull("description")){
+//                            String actualFullAddress = jsonObject.getString("description");
+//                            String [] splitAddressArray = actualFullAddress.split(",");
+//                            for ( int j = 0; j < splitAddressArray.length; j++){
+//                                if (splitAddressArray[j].length() > 0){
+//                                    modal.setmAddress1(splitAddressArray[0]);
+//                                    modal.setmAddress2(splitAddressArray[1]);
+//                                }
+//                            }
+//                        }
                         JSONArray  terms = jsonObject.getJSONArray("terms");
                         if (terms.length() > 0){
                             modal.setName(terms.getJSONObject(0).getString("value"));
@@ -297,6 +313,8 @@ public class SignUp_AddressActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignUp_AddressActivity.this,SignUp_Account_Activity.class);
                         intent.putExtra("ispro",true);
                         intent.putExtra("finalRequestParams",finalRequestParams);
+                        finalRequestParams.put("data[pros][address]", mAddress1);
+                        finalRequestParams.put("data[pros][address_2]", mAddress2);
                         finalRequestParams.put("data[pros][city]", mCity);
                         finalRequestParams.put("data[pros][zip]", mZip);
                         finalRequestParams.put("data[pros][state]", mState);

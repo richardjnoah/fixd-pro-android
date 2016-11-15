@@ -19,7 +19,7 @@ public class AddBankAccountNew extends AppCompatActivity {
     boolean ispro = false ;
 
     EditText txtBankName,txtRoutingNumber,txtAccountNumber;
-    String bank_name,routing_number,account_type = "",account_number;
+    String bank_name = "",routing_number = "",account_type = "",account_number ="";
     String selectedImagePathUser = null ;
     String  selectedImagePathDriver = null;
     boolean iscompleting = false ;
@@ -98,21 +98,22 @@ public class AddBankAccountNew extends AppCompatActivity {
                 bank_name = txtBankName.getText().toString().trim();
                 routing_number = txtRoutingNumber.getText().toString().trim();
                 account_number = txtAccountNumber.getText().toString().trim();
-                if (bank_name.length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the bank name.");
-                    return;
-                }else if (routing_number.length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the routing number.");
-                    return;
-                }else if (account_number.length() == 0){
-                    showAlertDialog("Fixd-Pro","Please enter the account number.");
-                    return;
-                }
+//                if (bank_name.length() == 0){
+//                    showAlertDialog("Fixd-Pro","Please enter the bank name.");
+//                    return;
+//                }else if (routing_number.length() == 0){
+//                    showAlertDialog("Fixd-Pro","Please enter the routing number.");
+//                    return;
+//                }else if (account_number.length() == 0){
+//                    showAlertDialog("Fixd-Pro","Please enter the account number.");
+//                    return;
+//                }
                 finalRequestParams.put("data[pros][bank_name]",bank_name);
-                finalRequestParams.put("data[pros][bank_routing_number]","011103093");
+                finalRequestParams.put("data[pros][bank_routing_number]",routing_number);
 //                        finalRequestParams.put("data[pros][bank_routing_number]",routing_number);
                 finalRequestParams.put("data[pros][bank_account_number]",account_number);
-                Intent i = new Intent(AddBankAccountNew.this, BackgroundCheck_Activity.class);
+//                Intent i = new Intent(AddBankAccountNew.this, BackgroundCheck_Activity.class);
+                Intent i = new Intent(AddBankAccountNew.this, AddProTechnician_Activity.class);
                 i.putExtra("ispro", ispro);
                 i.putExtra("iscompleting", iscompleting);
                 i.putExtra("finalRequestParams", finalRequestParams);

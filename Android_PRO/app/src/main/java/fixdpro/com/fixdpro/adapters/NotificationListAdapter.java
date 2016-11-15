@@ -48,7 +48,7 @@ public class NotificationListAdapter extends BaseAdapter {
         /***********  Layout inflator to call external xml layout () ***********/
         inflater = ( LayoutInflater )activity.
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        this.handlePagingResponse = handlePagingResponse;
+        activity = a;
     }
     /******** What is the size of Passed Arraylist Size ************/
     public int getCount() {
@@ -68,10 +68,10 @@ public class NotificationListAdapter extends BaseAdapter {
 
     /********* Create a holder Class to contain inflated xml file elements *********/
     public static class ViewHolder{
-        public TextView txtTitle;
-        public TextView txtDateTime;
-        public ImageView imgPicture;
-        LinearLayout container;
+            public TextView txtTitle;
+            public TextView txtDateTime;
+            public ImageView imgPicture;
+            LinearLayout container;
     }
 
     /****** Depends upon data size called for each row , Create each ListView row *****/

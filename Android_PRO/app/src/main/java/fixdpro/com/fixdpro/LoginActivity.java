@@ -258,6 +258,14 @@ public class LoginActivity extends AppCompatActivity {
                                 editor.putString(Preferences.PROFILE_IMAGE, image_original);
                             }
                         }
+                        if (!Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").isNull("driver_license_image")){
+                            JSONObject driver_license_image = null;
+                            driver_license_image = Response.getJSONObject("RESPONSE").getJSONObject("users").getJSONObject("technicians").getJSONObject("driver_license_image");
+                            if (driver_license_image.has("original")) {
+                                String image_original = driver_license_image.getString("original");
+                                editor.putString(Preferences.DRIVER_LICENSE_IMAGE, image_original);
+                            }
+                        }
                     }
                     String account_id = "";
                     String login = "";
