@@ -63,7 +63,7 @@ public class AddProTechnician_Activity extends AppCompatActivity {
         txtYes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalRequestParams.put("[data][technicians][field_work]","1");
+                finalRequestParams.put("data[technicians][field_work]","1");
                 Intent i = new Intent(AddProTechnician_Activity.this, BackgroundCheck_Activity.class);
                 i.putExtra("ispro",ispro);
                 i.putExtra("finalRequestParams",finalRequestParams);
@@ -77,7 +77,7 @@ public class AddProTechnician_Activity extends AppCompatActivity {
         txtNO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finalRequestParams.put("[data][technicians][field_work]","0");
+                finalRequestParams.put("data[technicians][field_work]","0");
                 Intent i = new Intent(AddProTechnician_Activity.this, BackgroundCheck_Activity.class);
                 i.putExtra("ispro",ispro);
                 i.putExtra("finalRequestParams",finalRequestParams);

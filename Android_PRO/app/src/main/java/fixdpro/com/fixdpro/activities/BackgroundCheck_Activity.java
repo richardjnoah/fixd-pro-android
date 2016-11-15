@@ -149,7 +149,7 @@ public class BackgroundCheck_Activity extends AppCompatActivity {
                         finalRequestParams.put("social_security_number", temp_securiyt_number);
                     }
 
-                    if ( finalRequestParams.containsKey("[data][technicians][field_work]") && finalRequestParams.get("[data][technicians][field_work]").equals("1") || !finalRequestParams.containsKey("[data][technicians][field_work]")) {
+                    if ( finalRequestParams.containsKey("data[technicians][field_work]") && finalRequestParams.get("data[technicians][field_work]").equals("1") || !finalRequestParams.containsKey("data[technicians][field_work]")) {
                         Intent i = new Intent(BackgroundCheck_Activity.this, BackgroundCheck_Next_Activity.class);
                         i.putExtra("ispro", ispro);
                         i.putExtra("iscompleting", iscompleting);

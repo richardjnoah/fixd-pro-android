@@ -1439,7 +1439,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         }
         if (count > 0){
 
-            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();   ;;;;;;;
+            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
         }
         setNotficationCounts();
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT) || currentFragmentTag.equals("")){

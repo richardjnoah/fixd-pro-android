@@ -100,7 +100,7 @@ public class AddTechnicion_Activity extends AppCompatActivity {
         txtNO.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String pro_is_tech = finalRequestParams.get("[data][technicians][field_work]");
+                String pro_is_tech = finalRequestParams.get("data[technicians][field_work]");
                 if (pro_is_tech.equals("0") && technicianModalsList.size() == 0){
                     showAlertDialog("Alert!","You must have atleast one technician to pick up jobs.");
                     return;
