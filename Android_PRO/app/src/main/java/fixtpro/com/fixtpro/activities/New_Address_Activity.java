@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.CityListAdapter;
 import fixtpro.com.fixtpro.adapters.StateListAdapter;
 import fixtpro.com.fixtpro.beans.CityBeans;

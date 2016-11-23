@@ -37,7 +37,7 @@ import fixtpro.com.fixtpro.Add_TechScreen;
 import fixtpro.com.fixtpro.ChangePassword;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.Login_Register_Activity;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.UserProfileScreen;
 import fixtpro.com.fixtpro.WorkingRadiusActivity;

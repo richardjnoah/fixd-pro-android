@@ -25,7 +25,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.StateListAdapter;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;

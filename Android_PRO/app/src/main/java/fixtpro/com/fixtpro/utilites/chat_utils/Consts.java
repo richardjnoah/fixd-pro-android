@@ -1,7 +1,7 @@
 package fixtpro.com.fixtpro.utilites.chat_utils;
 
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public interface Consts {
     // In GCM, the Sender ID is a project ID that you acquire from the API console

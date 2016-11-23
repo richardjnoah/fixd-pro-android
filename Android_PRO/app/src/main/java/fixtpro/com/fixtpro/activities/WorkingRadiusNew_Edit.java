@@ -33,7 +33,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.fragment.CompanyInformation_Activity_Edit;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
 import fixtpro.com.fixtpro.net.IHttpExceptionListener;
@@ -175,8 +175,7 @@ public class WorkingRadiusNew_Edit extends AppCompatActivity {
         txtYourRightsUnder = (TextView)findViewById(R.id.txtYourRightsUnder);
         txtMiles.setText(Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"))+" Miles");
 
-        mMap = ((SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.location_map)).getMap();
+      ////  mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.location_map)).getMap();
 
     }
 

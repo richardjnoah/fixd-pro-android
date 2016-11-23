@@ -31,6 +31,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.gcm_components.MessageReceivingService;
 import fixtpro.com.fixtpro.utilites.ChatService;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;

@@ -20,7 +20,7 @@ import android.util.Log;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 /*
  * This service is designed to run in the background and receive messages from gcm. If the app is in the foreground

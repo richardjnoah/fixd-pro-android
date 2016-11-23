@@ -26,7 +26,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
 import fixtpro.com.fixtpro.activities.LicensePicture_Activity;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;

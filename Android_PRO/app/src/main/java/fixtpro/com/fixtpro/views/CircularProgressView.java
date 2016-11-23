@@ -21,7 +21,7 @@ import android.view.animation.LinearInterpolator;
 import java.util.ArrayList;
 import java.util.List;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 
 /**

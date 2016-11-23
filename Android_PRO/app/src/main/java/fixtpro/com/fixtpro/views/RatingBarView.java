@@ -10,7 +10,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class RatingBarView extends LinearLayout {
 

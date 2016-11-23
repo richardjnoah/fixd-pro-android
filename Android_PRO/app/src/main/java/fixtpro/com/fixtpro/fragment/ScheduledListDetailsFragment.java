@@ -61,7 +61,7 @@ import fixtpro.com.fixtpro.ChatActivityNew;
 import fixtpro.com.fixtpro.DeclineJobActivity;
 import fixtpro.com.fixtpro.FixdProApplication;
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;

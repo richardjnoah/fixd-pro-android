@@ -9,7 +9,7 @@ import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class TermsAndConditions_Activity extends AppCompatActivity {
     Context context = TermsAndConditions_Activity.this;

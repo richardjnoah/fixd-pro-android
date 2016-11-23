@@ -14,6 +14,7 @@ import com.quickblox.core.exception.QBResponseException;
 
 import java.lang.reflect.Field;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.chat_utils.ErrorUtils;
 
 public class CoreBaseActivity extends AppCompatActivity {

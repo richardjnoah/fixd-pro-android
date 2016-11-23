@@ -45,7 +45,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class ImageCropActivity extends AppCompatActivity {
 

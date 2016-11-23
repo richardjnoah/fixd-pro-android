@@ -14,6 +14,7 @@ import android.view.WindowManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.fragment.FragmentDrawer1;
 
     public class BaseActivity extends SlidingFragmentActivity {

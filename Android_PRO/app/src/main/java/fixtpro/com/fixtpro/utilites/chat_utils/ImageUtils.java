@@ -22,7 +22,7 @@ import java.util.Collections;
 import java.util.List;
 
 import fixtpro.com.fixtpro.FixdProApplication;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class ImageUtils {
 

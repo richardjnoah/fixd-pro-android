@@ -66,7 +66,7 @@ import java.util.List;
 import fixtpro.com.fixtpro.AvailableJobListClickActivity;
 import fixtpro.com.fixtpro.CalendarActivity;
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
 import fixtpro.com.fixtpro.UserProfileScreen;
@@ -409,7 +409,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         mapView.onCreate(savedInstanceState);
 
         // Gets to GoogleMap from the MapView and does initialization stuff
-        map = mapView.getMap();
+      ////  map = mapView.getMap();
 //        map.getUiSettings().setMyLocationButtonEnabled(false);
 
         // Needs to call MapsInitializer before doing any CameraUpdateFactory calls

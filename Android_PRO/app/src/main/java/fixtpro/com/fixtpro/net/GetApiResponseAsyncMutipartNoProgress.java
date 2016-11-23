@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.utilites.ExceptionListener;
 import fixtpro.com.fixtpro.utilites.MultipartUtility;

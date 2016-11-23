@@ -21,7 +21,7 @@ import com.squareup.picasso.Target;
 
 import java.util.ArrayList;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.activities.TechnicianInformation_Activity;
 import fixtpro.com.fixtpro.beans.TechnicianModal;
 import fixtpro.com.fixtpro.utilites.Preferences;

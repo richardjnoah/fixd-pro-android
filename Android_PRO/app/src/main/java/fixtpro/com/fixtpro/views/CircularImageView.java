@@ -26,7 +26,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.ImageView;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class CircularImageView extends ImageView {
     // For logging purposes

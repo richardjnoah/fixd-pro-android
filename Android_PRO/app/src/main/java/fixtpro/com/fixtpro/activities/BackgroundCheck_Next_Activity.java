@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.utilites.chat_utils.ImagePickHelper;
 

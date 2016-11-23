@@ -33,7 +33,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.ChatService;
 import fixtpro.com.fixtpro.utilites.Utilities;
 

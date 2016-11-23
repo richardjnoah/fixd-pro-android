@@ -36,7 +36,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.imageupload.ImageHelper2;
 import fixtpro.com.fixtpro.round_img_ropper.ImageCropActivity;
 

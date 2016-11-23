@@ -23,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.TradeSkillAdapter;
 import fixtpro.com.fixtpro.beans.SkillTrade;
 import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;

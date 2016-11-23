@@ -25,7 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.chat_utils.App;
 import fixtpro.com.fixtpro.utilites.chat_utils.ResourceUtils;
 import fixtpro.com.fixtpro.utilites.chat_utils.chat.ChatHelper;

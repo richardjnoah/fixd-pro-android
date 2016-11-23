@@ -13,7 +13,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 
 public class InkView extends View

@@ -24,7 +24,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.Register_Activity;
 import fixtpro.com.fixtpro.UserProfileScreen;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;

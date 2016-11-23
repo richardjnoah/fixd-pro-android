@@ -25,6 +25,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.SkillTrade;
 import fixtpro.com.fixtpro.singleton.TradeSkillSingleTon;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;

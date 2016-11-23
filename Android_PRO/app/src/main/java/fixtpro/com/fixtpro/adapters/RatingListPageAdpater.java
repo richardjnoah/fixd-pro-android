@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.RatingListModal;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.RatingBarView;

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import fixdpro.com.fixdpro.R;
+
 public class Splash extends AppCompatActivity {
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 2500;

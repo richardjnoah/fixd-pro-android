@@ -28,7 +28,7 @@ import java.util.Iterator;
 
 import fixtpro.com.fixtpro.AvailableJobListClickActivity;
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.NotificationListAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;

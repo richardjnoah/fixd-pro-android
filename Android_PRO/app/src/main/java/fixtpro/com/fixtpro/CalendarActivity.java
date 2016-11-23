@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.CalanderEventsAdapter;
 import fixtpro.com.fixtpro.adapters.CalendarAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;

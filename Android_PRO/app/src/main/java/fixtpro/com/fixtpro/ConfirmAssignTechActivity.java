@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.AssignTechModal;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;

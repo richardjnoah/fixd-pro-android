@@ -39,7 +39,7 @@ import fixtpro.com.fixtpro.AvailableJobListClickActivity;
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.JobCompletedActivity;
 //import fixtpro.com.fixtpro.MyJobsSearchActivity;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.ScheduledJobListClickActivity;
 import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;

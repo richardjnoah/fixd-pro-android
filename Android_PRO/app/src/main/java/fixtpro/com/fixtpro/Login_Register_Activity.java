@@ -29,6 +29,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.activities.LicensePicture_Activity;
 import fixtpro.com.fixtpro.activities.SignUp_Account_Activity;
 import fixtpro.com.fixtpro.activities.SignUp_AddressActivity;

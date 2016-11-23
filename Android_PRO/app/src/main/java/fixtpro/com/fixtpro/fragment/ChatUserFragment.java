@@ -35,7 +35,7 @@ import java.util.Iterator;
 import fixtpro.com.fixtpro.ChatActivity;
 import fixtpro.com.fixtpro.ChatActivityNew;
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.UserChatAdapters;
 import fixtpro.com.fixtpro.beans.NotificationModal;
 import fixtpro.com.fixtpro.utilites.ChatService;

@@ -3,6 +3,8 @@ package fixtpro.com.fixtpro;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import fixdpro.com.fixdpro.R;
+
 public class Update_AddTechScreen extends AppCompatActivity {
 
     @Override

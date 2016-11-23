@@ -41,6 +41,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.GetApiResponseAsync;
 import fixtpro.com.fixtpro.utilites.Preferences;
 import fixtpro.com.fixtpro.utilites.Utilities;
@@ -119,8 +120,7 @@ public class WorkingRadiusActivity extends AppCompatActivity {
         txtMiles = (TextView)findViewById(R.id.txtMiles);
         txtMiles.setText(Double.parseDouble(_prefs.getString(Preferences.WORKING_RADIUS_MILES, "100.0"))+" Miles");
         txtcode.setText(_prefs.getString(Preferences.ZIP,""));
-        mMap = ((SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.location_map)).getMap();
+ ////       mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.location_map)).getMap();
     }
 
     private void setTypeface() {

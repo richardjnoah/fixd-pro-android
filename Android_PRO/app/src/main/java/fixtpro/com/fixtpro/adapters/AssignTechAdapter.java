@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import fixtpro.com.fixtpro.ConfirmAssignTechActivity;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.AssignTechModal;
 import fixtpro.com.fixtpro.beans.RatingListModal;
 import fixtpro.com.fixtpro.views.RatingBarView;

@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.activities.AddBankAccountNewEdit;
 import fixtpro.com.fixtpro.adapters.AssignTechAdapter;
 import fixtpro.com.fixtpro.beans.AssignTechModal;

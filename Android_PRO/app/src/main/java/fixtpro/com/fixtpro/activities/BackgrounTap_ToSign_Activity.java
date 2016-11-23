@@ -37,7 +37,7 @@ import java.util.List;
 
 import fixtpro.com.fixtpro.Add_TechScreen;
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncMutipartNoProgress;
 import fixtpro.com.fixtpro.utilites.Constants;

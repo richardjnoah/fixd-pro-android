@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.NotificationListModal;
 import fixtpro.com.fixtpro.utilites.HandlePagingResponse;
 import fixtpro.com.fixtpro.utilites.TimeUtils;

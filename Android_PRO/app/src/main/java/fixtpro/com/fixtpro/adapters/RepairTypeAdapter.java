@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filterable;
 import android.widget.TextView;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.install_repair_beans.RepairType;
 
 import android.widget.Filter;

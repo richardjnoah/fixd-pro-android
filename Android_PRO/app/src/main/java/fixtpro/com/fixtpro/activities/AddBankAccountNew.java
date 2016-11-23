@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class AddBankAccountNew extends AppCompatActivity {
     ImageView imgNext, imgClose;

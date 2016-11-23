@@ -14,7 +14,7 @@ import com.paging.listview.PagingBaseAdapter;
 
 import java.util.ArrayList;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.fragment.HomeFragment;
 import fixtpro.com.fixtpro.utilites.HandlePagingResponse;

@@ -10,7 +10,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 /**
  * Created by sahil on 05-05-2016.

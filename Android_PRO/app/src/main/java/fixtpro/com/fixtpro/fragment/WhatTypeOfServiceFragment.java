@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.WhatTypeOfServiceAdapter;
 import fixtpro.com.fixtpro.singleton.CurrentServiceAddingSingleTon;
 import fixtpro.com.fixtpro.utilites.Constants;

@@ -29,7 +29,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.GooglePlaceAdapter;
 import fixtpro.com.fixtpro.beans.GoogleResponseBean;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNoProgress;

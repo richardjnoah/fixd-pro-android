@@ -19,7 +19,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
 import fixtpro.com.fixtpro.net.IHttpExceptionListener;
 import fixtpro.com.fixtpro.net.IHttpResponseListener;

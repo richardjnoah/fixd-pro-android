@@ -10,7 +10,7 @@ import android.support.annotation.IntRange;
 
 import java.util.Random;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 public class UiUtils {
 

@@ -36,7 +36,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import fixtpro.com.fixtpro.HomeScreenNew;
 import fixtpro.com.fixtpro.LocationResponseListener;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.NotificationModal;

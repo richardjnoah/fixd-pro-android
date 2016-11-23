@@ -60,6 +60,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.chat_adapters.AttachmentPreviewAdapter;
 import fixtpro.com.fixtpro.adapters.chat_adapters.ChatAdapter;
 import fixtpro.com.fixtpro.fragment.ProgressDialogFragment;

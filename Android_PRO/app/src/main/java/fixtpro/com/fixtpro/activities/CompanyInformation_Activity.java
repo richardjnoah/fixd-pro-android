@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.fragment.CompanyInformation_Activity_Edit;
 import fixtpro.com.fixtpro.net.GetApiResponseAsyncNew;
 import fixtpro.com.fixtpro.utilites.Constants;

@@ -62,6 +62,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.ChatAdapter;
 import fixtpro.com.fixtpro.beans.RatingListModal;
 import fixtpro.com.fixtpro.imageupload.ImageHelper2;

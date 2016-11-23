@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import fixtpro.com.fixtpro.HomeScreenNew;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.ResponseListener;
 import fixtpro.com.fixtpro.adapters.AppliancesAdapter;
 import fixtpro.com.fixtpro.adapters.HasPowerSourceAdapter;

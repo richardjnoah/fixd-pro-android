@@ -14,6 +14,7 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.chat_utils.Consts;
 
 

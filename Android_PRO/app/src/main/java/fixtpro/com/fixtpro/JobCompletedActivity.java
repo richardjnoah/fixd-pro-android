@@ -22,6 +22,7 @@ import com.squareup.picasso.Target;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.adapters.HorizontalScrollApplianceAdapter;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 import fixtpro.com.fixtpro.beans.JobAppliancesModal;

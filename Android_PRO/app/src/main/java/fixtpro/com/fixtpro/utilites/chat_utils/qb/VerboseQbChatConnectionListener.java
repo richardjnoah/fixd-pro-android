@@ -9,7 +9,7 @@ import android.view.View;
 import org.jivesoftware.smack.ConnectionListener;
 import org.jivesoftware.smack.XMPPConnection;
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.chat_utils.App;
 
 public class VerboseQbChatConnectionListener implements ConnectionListener {

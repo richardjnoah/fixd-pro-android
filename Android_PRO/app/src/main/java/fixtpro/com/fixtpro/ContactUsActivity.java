@@ -28,7 +28,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contact_us);
+////        setContentView(R.layout.activity_contact_us);
         _prefs = getSharedPreferences(Preferences.FIXIT_PRO_PREFERNCES,MODE_PRIVATE);
 //        getSupportActionBar().hide();
         setWidgets();
@@ -36,10 +36,10 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     }
 
     public void setWidgets(){
-        cancel = (ImageView)findViewById(R.id.cancel);
-        email = (ImageView)findViewById(R.id.email);
-        call = (ImageView)findViewById(R.id.call);
-        feedback = (ImageView)findViewById(R.id.feedback);
+////        cancel = (ImageView)findViewById(R.id.cancel);
+////        email = (ImageView)findViewById(R.id.email);
+////        call = (ImageView)findViewById(R.id.call);
+////        feedback = (ImageView)findViewById(R.id.feedback);
     }
 
     public void setListeners(){
@@ -52,7 +52,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_contact_us, menu);
+////        getMenuInflater().inflate(R.menu.menu_contact_us, menu);
         return true;
     }
 
@@ -64,16 +64,16 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
+        ////if (id == R.id.action_settings) {
+  ////          return true;
+    ////    }
 
         return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+/*////        switch (v.getId()){
             case R.id.cancel:
                 finish();
                 break;
@@ -107,6 +107,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                 startActivity(Intent.createChooser(feedbackemailIntent, "Send email..."));
                 break;
         }
+        */
     }
     @TargetApi(Build.VERSION_CODES.M)
     private void insertDummyContactWrapper() {

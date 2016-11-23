@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.fragment.FragmentDrawer1;
 import fixtpro.com.fixtpro.fragment.HomeFragment;
 import fixtpro.com.fixtpro.fragment.MyJobsFragment;

@@ -18,6 +18,7 @@ import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
 import com.quickblox.users.model.QBUser;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.fragment.ProgressDialogFragment;
 import fixtpro.com.fixtpro.utilites.chat_utils.ErrorUtils;
 import fixtpro.com.fixtpro.utilites.chat_utils.SharedPreferencesUtil;

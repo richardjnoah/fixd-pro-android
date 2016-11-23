@@ -10,6 +10,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import fixdpro.com.fixdpro.R;
+
 public class SetupCompleteScreen extends AppCompatActivity {
     private TextView text_setupcomplete, text_belowthumb, text_inthe,text_voila, text_watch_video;
     Typeface fontfamily;

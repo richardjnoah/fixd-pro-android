@@ -47,6 +47,7 @@ import com.google.android.gms.location.LocationSettingsResult;
 import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.activities.BackgroundCheck_Next_Activity;
 import fixtpro.com.fixtpro.activities.CompanyInformation_Activity;
 import fixtpro.com.fixtpro.activities.SetupCompleteAddressActivity;

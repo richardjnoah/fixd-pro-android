@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.RatingListModal;
 import fixtpro.com.fixtpro.utilites.Utilities;
 import fixtpro.com.fixtpro.views.CircularImageView;
@@ -70,7 +71,7 @@ public class RatingDetailsActivity extends AppCompatActivity {
         txtArrivalTime = (TextView)findViewById(R.id.txtArrivalTime);
         txtCompleteTime = (TextView)findViewById(R.id.txtCompleteTime);
         txtTechName = (TextView)findViewById(R.id.txtTechName);
-        txtDetailss = (TextView)findViewById(R.id.txtDetailss);
+     ////   txtDetailss = (TextView)findViewById(R.id.txtDetailss);
 
         txtAppearance = (TextView) findViewById(R.id.txtAppearance);
         txtCourteous = (TextView) findViewById(R.id.txtCourteous);

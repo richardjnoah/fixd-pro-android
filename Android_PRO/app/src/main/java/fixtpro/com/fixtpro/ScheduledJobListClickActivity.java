@@ -16,6 +16,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.beans.AvailableJobModal;
 
 public class ScheduledJobListClickActivity extends AppCompatActivity implements View.OnClickListener{
@@ -46,8 +47,7 @@ public class ScheduledJobListClickActivity extends AppCompatActivity implements 
     }
 
     public void setWidgets(){
-        mMap = ((SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.location_map)).getMap();
+ ////       mMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.location_map)).getMap();
         cancel = (ImageView) findViewById(R.id.cancel);
         en_routeimg = (ImageView) findViewById(R.id.enroute);
         cancel_jobimg = (ImageView) findViewById(R.id.canceljob);

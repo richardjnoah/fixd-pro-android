@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 
 import fixtpro.com.fixtpro.AttachmentImageActivity;
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 import fixtpro.com.fixtpro.utilites.chat_utils.Consts;
 import fixtpro.com.fixtpro.utilites.chat_utils.ResourceUtils;
 import fixtpro.com.fixtpro.utilites.chat_utils.TimeUtils;

@@ -13,7 +13,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 
-import fixtpro.com.fixtpro.R;
+import fixdpro.com.fixdpro.R;
 
 
 /**
