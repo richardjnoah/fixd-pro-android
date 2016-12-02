@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -224,7 +225,12 @@ public class ChatUserFragment extends Fragment {
                     progressDialog.dismiss();
                 ChatSingleton.getInstance().dataSourceUsers.clear();
                 ChatSingleton.getInstance().dataSourceUsers.addAll(dialogs);
-                adapters.notifyDataSetChanged();
+                try {
+                    adapters.notifyDataSetChanged();
+                }catch (Exception e){
+                    Log.d("EEEE", e.getMessage());
+                    e.printStackTrace();
+                }
                 if (ChatSingleton.getInstance().dataSourceUsers.size() > 0){
                     txtISMessageOrNot.setVisibility(View.GONE);
                 }else{

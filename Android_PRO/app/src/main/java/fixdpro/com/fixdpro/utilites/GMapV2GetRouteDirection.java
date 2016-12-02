@@ -3,7 +3,9 @@ package fixdpro.com.fixdpro.utilites;
 /**
  * Created by sahil on 31-03-2016.
  */
-import java.util.ArrayList;
+import android.util.Log;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -16,12 +18,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.google.android.gms.maps.model.LatLng;
-import android.util.Log;
+import java.util.ArrayList;
 
 public class GMapV2GetRouteDirection {
     public final static String MODE_DRIVING = "driving";
     public final static String MODE_WALKING = "walking";
+
+//    public final static String API_KEY = "AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g";
+
     public final static String API_KEY = "AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g";
     StringBuilder total = new StringBuilder();
     String responseStr = "";

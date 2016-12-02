@@ -4,7 +4,7 @@
     <!--Develop-->
     <string name="api_key">AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g</string>
     <!--Release-->
-    <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>  -->
+    <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
 
     <string name="hello_world">Hello world!</string>
     <string name="action_refresh">Refresh</string>

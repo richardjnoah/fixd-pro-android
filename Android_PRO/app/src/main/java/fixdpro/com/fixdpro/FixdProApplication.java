@@ -1,9 +1,11 @@
 package fixdpro.com.fixdpro;
 
 import android.app.Application;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.quickblox.core.QBEntityCallback;
@@ -49,6 +51,12 @@ public class FixdProApplication  extends Application {
     ArrayList<AvailableJobModal> schedulejoblist;
     public static synchronized FixdProApplication getInstance() {
         return instance;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     @Override
