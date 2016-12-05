@@ -111,6 +111,7 @@ public class EquipmentInfoFragment extends Fragment {
     private static final int REQUEST_READ_STORAGE = 111;
     private static final String CAMERA_FILE_NAME_PREFIX = "FIXD_";
     File photoFile ;
+
     public EquipmentInfoFragment() {
         // Required empty public constructor
     }
@@ -798,23 +799,28 @@ public class EquipmentInfoFragment extends Fragment {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
 //                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
-                    multipart.addFormField("api", "save");
-                    multipart.addFormField("object", "equipment_info");
+
 
 //                    }else{
 //                        multipart.addFormField("api", "repair_info");
 //                        multipart.addFormField("object", "repair_flow");
 //
 //                    }
-                    if (Path != null && !Path.equals(""))
-                    multipart.addFilePart("data[image]", new File(Path));
-                    multipart.addFormField("data[model_number]", modal_number);
-                    multipart.addFormField("data[brand_name]", brand);
-                    multipart.addFormField("data[serial_number]", serial_number);
-                    multipart.addFormField("data[description]", description);
+                    multipart.addFormField("api", "save_slot");
+                    multipart.addFormField("object", "equipment_images");
+                    multipart.addFormField("data[slot]", "1");
+                    multipart.addFormField("_company_id", "FIXD");
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    if (Path != null && !Path.equals(""))
+                        multipart.addFilePart("data[image]", new File(Path));
+//                    multipart.addFormField("data[model_number]", modal_number);
+//                    multipart.addFormField("data[brand_name]", brand);
+//                    multipart.addFormField("data[serial_number]", serial_number);
+//                    multipart.addFormField("data[description]", description);
+
                 } catch (IOException e) {
+                    Log.e("eeeee", e.getMessage());
                     e.printStackTrace();
                 }
                 return null;
