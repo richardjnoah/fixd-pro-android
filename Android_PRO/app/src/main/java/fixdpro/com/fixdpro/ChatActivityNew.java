@@ -173,7 +173,6 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
 //                        for (int i = 0 ; i < jsonArray.length(); i++){
 //                            endpoint_arn.add(jsonArray.getString(i));
 //                        }
-                        break;
                     } catch (JSONException e) {
                         // Something went wrong!
                     }
