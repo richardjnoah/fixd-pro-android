@@ -965,13 +965,13 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         if(!obj.isNull("job_line_items")){
                             JSONObject job_line_items_obj = obj.getJSONObject("job_line_items");
                             model.setJob_line_items_tax(job_line_items_obj.getString("tax"));
-                            model.setJob_line_items_fixd_cut(job_line_items_obj.getString("fixd_cut"));
-                            model.setJob_line_items_govt_cut(job_line_items_obj.getString("govt_cut"));
+                            //model.setJob_line_items_fixd_cut(job_line_items_obj.getString("fixd_cut"));
+                            //model.setJob_line_items_govt_cut(job_line_items_obj.getString("govt_cut"));
                             model.setJob_line_items_pro_cut(job_line_items_obj.getString("pro_cut"));
                             model.setJob_line_items_sub_total(job_line_items_obj.getString("sub_total"));
                             model.setJob_line_items_total(job_line_items_obj.getString("total"));
                             model.setJob_line_items_diagnostic_fee(job_line_items_obj.getString("diagnostic_fee"));
-                            model.setJob_line_items_is_covered(job_line_items_obj.getString("is_covered"));
+                            //model.setJob_line_items_is_covered(job_line_items_obj.getString("is_covered"));
                         }
                         completedjoblist.add(model);
 //                        Collections.reverse(completedjoblist);
