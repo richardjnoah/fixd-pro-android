@@ -164,7 +164,7 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
                                         if (!jsonObject.isNull("job_appliance_repair_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_repair_types");
-                                            if (!jsonObjectRepairType.isNull("maintain_types")){
+                                            if (!jsonObjectRepairType.isNull("repair_types")){
                                                 JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("repair_types");
                                                 installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
@@ -197,8 +197,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
 
                                         if (!jsonObject.isNull("job_appliance_install_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_install_types");
-                                            if (!jsonObjectRepairType.isNull("maintain_types")){
-                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("maintain_types");
+                                            if (!jsonObjectRepairType.isNull("install_types")){
+                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("install_types");
                                                 installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
