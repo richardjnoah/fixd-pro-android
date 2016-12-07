@@ -44,6 +44,7 @@ import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.CalendarCollection;
 import fixdpro.com.fixdpro.beans.CalenderScheduledJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
+import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.Preferences;
@@ -486,7 +487,7 @@ public class CalendarActivity extends AppCompatActivity {
                     CalendarCollection.date_collection_arr.clear();
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     SharedPreferences _prefs = Utilities.getSharedPreferences(CalendarActivity.this);
-                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"none").commit();
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", eventListener1, CalendarActivity.this, "Loading");
                     responseAsync.execute(getEventsRequestParams());
 

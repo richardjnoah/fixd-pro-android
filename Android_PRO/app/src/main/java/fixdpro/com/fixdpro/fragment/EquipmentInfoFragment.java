@@ -46,6 +46,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import fixdpro.com.fixdpro.FixdProApplication;
@@ -59,6 +60,7 @@ import fixdpro.com.fixdpro.singleton.BrandNamesSingleton;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
+import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsyncMutipart;
 import fixdpro.com.fixdpro.utilites.MultipartUtility;
 import fixdpro.com.fixdpro.utilites.Preferences;
@@ -814,10 +816,7 @@ public class EquipmentInfoFragment extends Fragment {
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
                     if (Path != null && !Path.equals(""))
                         multipart.addFilePart("data[image]", new File(Path));
-//                    multipart.addFormField("data[model_number]", modal_number);
-//                    multipart.addFormField("data[brand_name]", brand);
-//                    multipart.addFormField("data[serial_number]", serial_number);
-//                    multipart.addFormField("data[description]", description);
+
 
                 } catch (IOException e) {
                     Log.e("eeeee", e.getMessage());
@@ -829,7 +828,7 @@ public class EquipmentInfoFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, repairTypeResponseListener, repairTypeexceptionListener, getActivity(), "Saving");
+                GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, repairTypeResponseListener, repairTypeexceptionListener, getActivity(), "Uploading");
                 getApiResponseAsync.execute();
             }
         }.execute();
@@ -850,6 +849,7 @@ public class EquipmentInfoFragment extends Fragment {
                     break;
                 }
                 case 2: {
+
                     if (Path != null && Path.length() > 0){
                         equipmentInfo.setImage(Path);
                         equipmentInfo.setIsLocal(true);
@@ -868,13 +868,19 @@ public class EquipmentInfoFragment extends Fragment {
             }
         }
     };
+
     ResponseListener repairTypeResponseListener = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
             Log.e("", "Response" + Response.toString());
             try {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
-                    handler.sendEmptyMessage(2);
+
+                    GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerSaveEquipmentInfo, getActivity(), "Saving");
+                    responseAsyncCompleted.execute(getRequestParams());
+
+//                    handler.sendEmptyMessage(2);
+
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
@@ -894,6 +900,46 @@ public class EquipmentInfoFragment extends Fragment {
         @Override
         public void handleException(int exceptionStatus) {
             handler.sendEmptyMessage(exceptionStatus);
+        }
+    };
+
+
+    private HashMap<String,String> getRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api","save");
+        hashMap.put("object","equipment_info");
+        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("data[brand_name]", brand);
+        hashMap.put("data[model_number]", modal_number);
+        hashMap.put("data[serial_number]", serial_number);
+        hashMap.put("data[description]", description);
+
+        return hashMap;
+    }
+
+    ResponseListener responseListenerSaveEquipmentInfo = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response.toString()" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS")){
+
+                    handler.sendEmptyMessage(2);
+
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                    }
+                    handler.sendEmptyMessage(3);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         }
     };
 }

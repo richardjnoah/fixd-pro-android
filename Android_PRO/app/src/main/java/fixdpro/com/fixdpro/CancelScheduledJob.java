@@ -150,7 +150,7 @@ public class CancelScheduledJob extends AppCompatActivity {
                 case 0:{
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
-                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"none").commit();
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     showAlertDialog("SUCCESS", "Job is Cancelled.",true);
                     break;
                 }

@@ -1457,10 +1457,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                     model.setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
                     switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
                 }
-
             }
         }
-
     }
 
     @Override

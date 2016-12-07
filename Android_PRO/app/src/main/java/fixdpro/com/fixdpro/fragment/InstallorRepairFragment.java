@@ -820,7 +820,7 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    _prefs.edit().putString(Preferences.SCREEEN_NAME,"").commit();
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     getActivity().finishAffinity();
                     Intent intent = new Intent(getActivity(),HomeScreenNew.class);

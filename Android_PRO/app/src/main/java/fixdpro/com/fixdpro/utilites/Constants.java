@@ -48,16 +48,22 @@ public class Constants {
     public static  final String JOB_SEARCH_FRAGMENT = "job_search_fragment";
     public static  final String NOTIFICATION_LIST_FRAGMENT = "notification_list_fragment";
 
-//    Repair Installs Start Job Processs Constants
+//    Repair Installs Start Job Processs Constants (currentJobScreen)
+
+    public static  final String NO_JOB = "none";
+    public static  final String ON_ENROUTE = "On EnRoute";
+    public static  final String STEPS_SCREEN = "On Steps Screen";
     public static  final String WHATS_WRONG = "Whats Wrong";
+    public static  final String WORK_ORDER = "Work Order";
+    public static  final String REPAIR_INFO = "Repair Info";
+    public static  final String PARTS = "Parts";
+
     public static  final String EQUIPMENT_INFO = "Equipment Info";
     public static  final String REPAIR_TYPE = "Repair Type";
     public static  final String INSTALL_TYPE = "Install Type";
     public static  final String MAINTAIN_TYPE = "Maintain Type";
-    public static  final String PARTS = "Parts";
-    public static  final String WORK_ORDER = "Work Order";
-    public static  final String REPAIR_INFO = "Repair Info";
     public static  final String INSTALL_INFO = "Install Info";
     public static  final String MAINTAIN_INFO = "Maintain Info";
     public static  final String SIGNATURE = "Homeowner Signature";
+
 }

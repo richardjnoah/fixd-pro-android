@@ -373,6 +373,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 responseAsync.execute(getRequestParams());
                 break;
             case R.id.enroute_job:
+
                 if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
                     showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
                 }else {
@@ -390,6 +391,35 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
                 break;
             case R.id.txtEnrouteJob:
+
+//                String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
+//                AvailableJobModal currentModel = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+//                String userId = _prefs.getString(Preferences.ID, "");
+//
+//
+//                if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
+//                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
+//                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
+//                    return;
+//                }
+//
+//                if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
+//                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
+//                    return;
+//                }
+//
+//                if (!((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) && (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())))) {
+//                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+//                } else{
+//                    if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
+//                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+//                    }
+//                }
+//
+//                enrouteJob();
+
+
+
                 if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
                     showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
                 }else {
