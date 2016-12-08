@@ -8,8 +8,10 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
@@ -34,8 +36,8 @@ public class PaymentDetailsActivity extends AppCompatActivity {
     private Typeface fontfamily;
     ImageView img_Cancel;
     TextView titletext,txtPayment,txtJobID,txtName,txtAddress,txtDateTime,txtArrivaltxt,txtArrivalTime,
-            txtCompletedtxt,txtCompletedTime,txtSummary,txtTripCharges,txtTripChargesDoller,txtRepairType,
-    txtRepairCost ,txtSubTotal,txtSubTotaldDoller,txtFixdFee,txtFixdFeeDoller,txtTotalEared,txtTotalEaredDoller;
+            txtCompletedtxt,txtCompletedTime,txtSummary,txtTripCharges,txtTripChargesDoller, txtSubTotal,txtSubTotaldDoller,txtFixdFee,txtFixdFeeDoller,txtTotalEared,txtTotalEaredDoller;
+    LinearLayout applianceReceiptContainer;
     AvailableJobModal availableJobModal = null ;
     ArrayList<ApplianceReceipt> applianceReceipts = new ArrayList<>();
 
@@ -69,9 +71,17 @@ public class PaymentDetailsActivity extends AppCompatActivity {
                         txtTripCharges.setVisibility(View.GONE);
                         txtTripChargesDoller.setVisibility(View.GONE);
                     }
+
+                    LayoutInflater layoutInflater =
+                            (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
                     for (int i = 0 ; i < applianceReceipts.size() ; i++){
-                    txtRepairType.setText(applianceReceipts.get(i).getAppliance_name());
-                    txtRepairCost.setText("$" +applianceReceipts.get(i).getPro_sub_total());
+                        final View itemView = layoutInflater.inflate(R.layout.item_receipt, null);
+                        TextView txtRepairType= (TextView)itemView.findViewById(R.id.txtRepairType);
+                        TextView txtRepairCost= (TextView)itemView.findViewById(R.id.txtRepairCost);
+                        txtRepairType.setText(applianceReceipts.get(i).getAppliance_name());
+                        txtRepairCost.setText("$" +applianceReceipts.get(i).getPro_sub_total());
+                        applianceReceiptContainer.addView(itemView);
                     }
 
                     txtSubTotaldDoller.setText("$" + subtotal);
@@ -183,8 +193,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         txtSummary = (TextView)findViewById(R.id.txtSummary);
         txtTripCharges= (TextView)findViewById(R.id.txtTripCharges);
         txtTripChargesDoller = (TextView)findViewById(R.id.txtTripChargesDoller);
-        txtRepairType= (TextView)findViewById(R.id.txtRepairType);
-        txtRepairCost= (TextView)findViewById(R.id.txtRepairCost);
+        applianceReceiptContainer = (LinearLayout)findViewById(R.id.layout_appliance_container);
         txtSubTotal= (TextView)findViewById(R.id.txtSubTotal);
         txtSubTotaldDoller= (TextView)findViewById(R.id.txtSubTotaldDoller);
         txtFixdFee= (TextView)findViewById(R.id.txtFixdFee);
