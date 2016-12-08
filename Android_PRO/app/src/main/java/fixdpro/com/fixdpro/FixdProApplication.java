@@ -424,7 +424,7 @@ public class FixdProApplication  extends Application {
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
                     singleton.nextCompleted = pagination.getString("next");
                     if (!singleton.nextCompleted.equals("null"))
-                        singleton.compltedpage = Integer.parseInt(singleton.nextCompleted);
+                        //singleton.compltedpage = Integer.parseInt(singleton.nextCompleted);
                     for (int i = 0; i < results.length(); i++) {
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
