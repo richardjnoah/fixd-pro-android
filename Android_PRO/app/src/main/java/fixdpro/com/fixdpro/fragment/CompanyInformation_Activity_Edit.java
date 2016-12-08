@@ -61,9 +61,9 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         txtEniNumber.setText(_prefs.getString(Preferences.EIN_NUMEBR, ""));
         txtInsuranceCarr.setText(_prefs.getString(Preferences.INSURANCE, ""));
         txtPolicyNumber.setText(_prefs.getString(Preferences.INSURANCE_POLICY, ""));
-        String hourlyRate = _prefs.getString(Preferences.HOURLY_RATE, "");
-        if (!hourlyRate.contains("$")) txtHourlyRate.setText("$"+Math.round(Float.parseFloat(hourlyRate)));
-        else txtHourlyRate.setText(hourlyRate);
+        HourlyRate = _prefs.getString(Preferences.HOURLY_RATE, "");
+        if (!HourlyRate.contains("$")) txtHourlyRate.setText("$"+Math.round(Float.parseFloat(HourlyRate)));
+        else txtHourlyRate.setText(HourlyRate);
     }
 
     private void setCLickListner() {
@@ -87,7 +87,6 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
                 EniNumber = txtEniNumber.getText().toString().trim();
                 InsuranceCarrier = txtInsuranceCarr.getText().toString().trim();
                 PolicyNumber = txtPolicyNumber.getText().toString().trim();
-                HourlyRate = txtHourlyRate.getText().toString().trim();
                 if (CompanyName.equals("")){
                     showAlertDialog(CompanyInformation_Activity_Edit.this.getResources().getString(R.string.alert_title),
                             "Pleae enter the company name.");
@@ -122,7 +121,7 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
                     finalRequestParams.put("data[pros][insurance_policy]", PolicyNumber);
                     finalRequestParams.put("data[pros][hourly_rate]", HourlyRate);
                     finalRequestParams.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
-                    if (HourlyRate.equals("$125")){
+                    if (HourlyRate.equals("125") || HourlyRate.equals(("125.00"))){
                         showAlertDialogRate("Fixd-Pro","Keep in mind Pros with lower labor ates will see available job first.Higher labor rates may limit your job availability");
                     }else{
                         GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST",updateResponseListener,exceptionListener,CompanyInformation_Activity_Edit.this,"");
