@@ -496,8 +496,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
             String parts_total =  "";
             String parts_desc =  "";
             for (int j = 0 ; j < partsArrayList.size() ; j++){
-                parts_total = parts_total + "$"+partsArrayList.get(i).getCost() +"\n";
-                parts_desc = parts_desc + partsArrayList.get(i).getDescription() +"\n";
+                parts_total = parts_total + "$"+partsArrayList.get(j).getCost() +"\n";
+                parts_desc = parts_desc + partsArrayList.get(j).getDescription() +"\n";
             }
             if (parts_desc.length() != 0)
             txtHomeandConnectionText.setText(parts_desc);
