@@ -496,7 +496,9 @@ public class ServiceTicketActivity extends AppCompatActivity {
             String parts_total =  "";
             String parts_desc =  "";
             for (int j = 0 ; j < partsArrayList.size() ; j++){
-                parts_total = parts_total + "$"+partsArrayList.get(j).getCost() +"\n";
+                float cost = Float.parseFloat(partsArrayList.get(j).getCost());
+                float quantity = Float.parseFloat(partsArrayList.get(j).getQuantity());
+                parts_total = parts_total + "$"+ (cost*quantity) +"\n";
                 parts_desc = parts_desc + partsArrayList.get(j).getDescription() +"\n";
             }
             if (parts_desc.length() != 0)
