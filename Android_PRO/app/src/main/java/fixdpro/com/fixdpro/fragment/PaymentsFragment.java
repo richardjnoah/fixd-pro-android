@@ -44,6 +44,7 @@ import fixdpro.com.fixdpro.utilites.Utilities;
 public class PaymentsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     PagingListView completed_listview ;
+    ViewGroup header;
     public static int pagePayment = 1 ;
     public  static int compltedpage = 1 ;
     Context _context ;
@@ -152,10 +153,10 @@ public class PaymentsFragment extends Fragment {
                     break;
                 }
                 case 2:{
-                    PaymentsJobsPagingAdaper adapter = new PaymentsJobsPagingAdaper(getActivity(),completedjoblist,getResources());
-                    completed_listview.addHeaderView(addHeader());;
-                    completed_listview.setAdapter(adapter);
+                    PaymentsJobsPagingAdaper adapter = new PaymentsJobsPagingAdaper(getActivity(), completedjoblist, getResources());
+                    if (header == null)  completed_listview.addHeaderView(addHeader());
 
+                    completed_listview.setAdapter(adapter);
 
                     completed_listview.onFinishLoading(true, completedjoblist);
                     if (!next.equals("null")) {
@@ -250,8 +251,8 @@ public class PaymentsFragment extends Fragment {
                         model.setPhone(obj.getString("phone"));
                         model.setPro_id(obj.getString("pro_id"));
                         model.setRequest_date(obj.getString("request_date"));
-                        model.setService_id(obj.getString("service_id"));
-                        model.setService_type(obj.getString("service_type"));
+////                        model.setService_id(obj.getString("service_id"));
+////                        model.setService_type(obj.getString("service_type"));
                         model.setStarted_at(obj.getString("started_at"));
                         model.setStatus(obj.getString("status"));
                         model.setTechnician_id(obj.getString("technician_id"));
@@ -348,8 +349,8 @@ public class PaymentsFragment extends Fragment {
                         if(!obj.isNull("job_line_items")){
                             JSONObject job_line_items_obj = obj.getJSONObject("job_line_items");
                             model.setJob_line_items_tax(job_line_items_obj.getString("tax"));
-                            model.setJob_line_items_fixd_cut(job_line_items_obj.getString("fixd_cut"));
-                            model.setJob_line_items_govt_cut(job_line_items_obj.getString("govt_cut"));
+//                            model.setJob_line_items_fixd_cut(job_line_items_obj.getString("fixd_cut"));
+//                            model.setJob_line_items_govt_cut(job_line_items_obj.getString("govt_cut"));
                             model.setJob_line_items_pro_cut(job_line_items_obj.getString("pro_cut"));
                             model.setJob_line_items_sub_total(job_line_items_obj.getString("sub_total"));
                             model.setJob_line_items_total(job_line_items_obj.getString("total"));
@@ -376,6 +377,8 @@ public class PaymentsFragment extends Fragment {
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","read");
         hashMap.put("object","jobs");
+        hashMap.put("order_by", "finished_at");
+        hashMap.put("order", "DESC");
 //        if (_prefs.getString(Preferences.ROLE,"pro").equals("pro")){
             hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
 //        }else{
@@ -385,13 +388,13 @@ public class PaymentsFragment extends Fragment {
 //        hashMap.put("select", "^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
         hashMap.put("where[status]", Status);
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
-        hashMap.put("page", compltedpage+"");
+        hashMap.put("page", compltedpage + "");
         hashMap.put("per_page", "20");
         return hashMap;
     }
     private ViewGroup addHeader(){
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.payment_list_header, completed_listview,
+        header = (ViewGroup) inflater.inflate(R.layout.payment_list_header, completed_listview,
                 false);
         TextView txtTotalEarningNum,txtTotalEarning,txtnumtotaljobAccepted,txtjobstxt,txtHourtxt,txtnumhours;
         txtTotalEarningNum = (TextView)header.findViewById(R.id.txtTotalEarningNum);
@@ -422,7 +425,7 @@ public class PaymentsFragment extends Fragment {
     }
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).hideRight();
-        ((HomeScreenNew)getActivity()).setTitletext("Payments");
+        ((HomeScreenNew)getActivity()).setTitletext("Earnings");
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
 }
