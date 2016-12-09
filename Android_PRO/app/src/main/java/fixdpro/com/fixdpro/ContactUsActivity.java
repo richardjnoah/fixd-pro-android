@@ -88,12 +88,12 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
                     if (listPermissionsNeeded.size() > 0){
                         requestPermissions(listPermissionsNeeded.toArray(new String[listPermissionsNeeded.size()]),REQUEST_CODE_ASK_PERMISSIONS);
                     }else {
-                        String number = "tel:" + "80-01111111";
+                        String number = "tel:" + "8443493669";
                         Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                         startActivity(callIntent);
                     }
                 } else {
-                    String number = "tel:" + "80-01111111";
+                    String number = "tel:" + "8443493669";
                     Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                     startActivity(callIntent);
                 }
@@ -129,7 +129,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    String number = "tel:" + "80-01111111";
+                    String number = "tel:" + "8443493669";
                     Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                     startActivity(callIntent);
                 } else {

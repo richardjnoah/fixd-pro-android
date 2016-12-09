@@ -127,7 +127,7 @@ public class ContactUsActivity extends AppCompatActivity implements View.OnClick
             case REQUEST_CODE_ASK_PERMISSIONS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission Granted
-                    String number = "tel:" + "80-01111111";
+                    String number = "tel:" + "8443493669";
                     Intent callIntent = new Intent(Intent.ACTION_CALL, Uri.parse(number));
                     startActivity(callIntent);
                 } else {
