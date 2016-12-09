@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,10 +11,7 @@ import android.widget.TextView;
 
 import com.paging.listview.PagingBaseAdapter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.beans.RatingListModal;
@@ -67,7 +63,7 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
     /********* Create a holder Class to contain inflated xml file elements *********/
     public static class ViewHolder{
 
-        public TextView txtUserName, txtComments ,txtRateingInterval,txtKnowlageable,txtCourteous,txtAppearance;;
+        public TextView txtUserName, txtComments ,txtDate, txtRatingMark, txtKnowlageable,txtCourteous,txtAppearance;;
         public fixdpro.com.fixdpro.views.RatingBarView rating;
 
     }
@@ -87,7 +83,8 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             holder = new ViewHolder();
             holder.rating = (RatingBarView) vi.findViewById(R.id.custom_ratingbar);
             holder.txtComments = (TextView) vi.findViewById(R.id.txtComments);
-            holder.txtRateingInterval = (TextView) vi.findViewById(R.id.txtRateingInterval);
+            holder.txtDate = (TextView) vi.findViewById(R.id.txtDate);
+            holder.txtRatingMark = (TextView) vi.findViewById(R.id.txtRateingMark);
             holder.txtUserName = (TextView) vi.findViewById(R.id.txtUserName);
             holder.txtAppearance = (TextView) vi.findViewById(R.id.txtAppearance);
             holder.txtCourteous = (TextView) vi.findViewById(R.id.txtCourteous);
@@ -109,31 +106,22 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             /***** Get each Model object from Arraylist ********/
             tempValues=null;
             tempValues =  list.get( position );
-            holder.txtUserName.setText("Review by "+tempValues.getCustomers_first_name() + " " + tempValues.getCustomers_last_name());
+            holder.txtUserName.setText("Review by "+tempValues.getCustomers_first_name() + " " + tempValues.getCustomers_last_name().charAt(0) + ".");
             holder.txtComments.setText(tempValues.getComments());
 
             holder.txtKnowlageable.setText(tempValues.getKnowledgeable());
             holder.txtAppearance.setText(tempValues.getAppearance());
             holder.txtCourteous.setText(tempValues.getCourteous());
-            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-            long time1 = cal.getTimeInMillis();
-            long time2 = 0;
-            try {
-                time2 = Utilities.getTimeInMilliseconds(tempValues.getCreated_at()) ;
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            long difference = time1 - time2 ;
-            Log.e("", "difference" + difference);
             if (!tempValues.getCreated_at().equals("0000-00-00 00:00:00"))
-
-            holder.txtRateingInterval.setText(Utilities.timeMedthod(difference/1000l));
+                holder.txtDate.setText(Utilities.getRatingDate(tempValues.getFinished_at()));
             else
-            holder.txtRateingInterval.setVisibility(View.INVISIBLE);
+                holder.txtDate.setVisibility(View.INVISIBLE);
+
             /************  Set Model values in Holder elements ***********/
             Float avd_rating  = Float.parseFloat(tempValues.getKnowledgeable()) + Float.parseFloat(tempValues.getCourteous()) + Float.parseFloat(tempValues.getAppearance()) ;
             avd_rating = avd_rating / 3 ;
             holder.rating.setStar((int)Math.round(avd_rating),true);
+            holder.txtRatingMark.setText(String.format("%.1f", avd_rating));
             list.get(position).setRatings(avd_rating+"");
             if (position == list.size() - 1){
                 if (handlePagingResponse != null)

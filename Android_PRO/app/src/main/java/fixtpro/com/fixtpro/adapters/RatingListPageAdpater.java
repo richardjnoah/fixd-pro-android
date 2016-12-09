@@ -84,7 +84,7 @@ public class RatingListPageAdpater extends PagingBaseAdapter<RatingListModal> {
             holder = new ViewHolder();
             holder.rating = (RatingBarView) vi.findViewById(R.id.custom_ratingbar);
             holder.txtComments = (TextView) vi.findViewById(R.id.txtComments);
-            holder.txtRateingInterval = (TextView) vi.findViewById(R.id.txtRateingInterval);
+            holder.txtRateingInterval = (TextView) vi.findViewById(R.id.txtDate);
             holder.txtUserName = (TextView) vi.findViewById(R.id.txtUserName);
             holder.txtAppearance = (TextView) vi.findViewById(R.id.txtAppearance);
             holder.txtCourteous = (TextView) vi.findViewById(R.id.txtCourteous);

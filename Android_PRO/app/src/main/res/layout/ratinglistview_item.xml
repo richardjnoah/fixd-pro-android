@@ -14,8 +14,7 @@
 
         <fixdpro.com.fixdpro.views.RatingBarView
             android:id="@+id/custom_ratingbar"
-            android:layout_width="0dp"
-            android:layout_weight="1.6"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:gravity="left"
@@ -25,16 +24,37 @@
             app:starImageSize="@dimen/size_25_dp" />
 
         <TextView
-            android:id="@+id/txtRateingInterval"
-            android:layout_width="0dp"
-            android:layout_weight="0.4"
+            android:id="@+id/txtRateingMark"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="right|center"
             android:gravity="right|center"
             android:singleLine="true"
-            android:text="1 w"
-            android:textColor="@color/lb_tv_white"
+            android:text="0.0"
+            android:textStyle="bold"
+            android:textColor="@color/orange_signin_back"
+            android:textSize="@dimen/size_17_sp"
+            android:layout_marginLeft="@dimen/size_15_dp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/orange_signin_back"
+            android:layout_marginBottom="@dimen/size_3_dp"
+            android:layout_marginTop="@dimen/size_3_dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:background="#ffffff"
+            />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="00-04-2016"
+            android:textColor="#ffffff"
             android:textSize="@dimen/size_17_sp" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -159,6 +159,30 @@ public class Utilities {
         }
         return OurDate;
     }
+
+    public static String getRatingDate(String OurDate)
+    {
+        try
+        {
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            //formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            Date value = formatter.parse(OurDate);
+
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy"); //this format changeable
+            dateFormatter.setTimeZone(TimeZone.getDefault());
+            OurDate = dateFormatter.format(value);
+
+            //Log.d("OurDate", OurDate);
+        }
+        catch (Exception e)
+        {
+            OurDate = "00-00-0000 00:00";
+        }
+        return OurDate;
+    }
+
+
+
     public static String convertDate(String date){
         String date1 = null;
         final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
