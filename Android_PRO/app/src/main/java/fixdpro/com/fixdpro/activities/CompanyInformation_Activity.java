@@ -65,7 +65,7 @@ public class CompanyInformation_Activity extends AppCompatActivity {
         txtEniNumber.setText(temporaryProfileComplitionSignleton.getEniNumber());
         txtPolicyNumber.setText(temporaryProfileComplitionSignleton.getPolicyNumber());
         txtHourlyRate.setText("$"+temporaryProfileComplitionSignleton.getHourlyRate());
-
+        HourlyRate = temporaryProfileComplitionSignleton.getHourlyRate();
     }
 
     private void setCLickListner() {
