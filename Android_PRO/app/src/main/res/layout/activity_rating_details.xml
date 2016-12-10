@@ -229,19 +229,29 @@
                     android:layout_gravity="center"
                     android:layout_marginTop="@dimen/size_10_dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <fixdpro.com.fixdpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                        android:id="@+id/circleImage"
-                        android:layout_width="@dimen/size_70_dp"
-                        android:layout_height="@dimen/size_70_dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="@dimen/size_10_dp"
-                        android:background="@drawable/addphoto_img"
-                        app:civ_border_color="#ffffff" />
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content">
+
+                        <fixdpro.com.fixdpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                            android:id="@+id/circleImage"
+                            android:layout_width="@dimen/size_70_dp"
+                            android:layout_height="@dimen/size_70_dp"
+                            android:layout_gravity="center"
+                            android:layout_marginLeft="@dimen/size_10_dp"
+                            android:background="@drawable/addphoto_img"
+                            app:civ_border_color="#ffffff" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
@@ -250,7 +260,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            android:gravity="left"
                             android:singleLine="true"
                             android:text="(null)"
                             android:textColor="@color/white"
@@ -261,7 +271,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:gravity="center"
+                            android:gravity="left"
                             android:singleLine="true"
                             android:text="Average Rating"
                             android:textColor="@color/white"
@@ -270,17 +280,16 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:gravity="center"
-                            android:orientation="horizontal"
-                            android:paddingLeft="@dimen/size_10_dp">
+                            android:layout_gravity="left"
+                            android:gravity="left"
+                            android:orientation="horizontal">
 
                             <fixdpro.com.fixdpro.views.RatingBarView
                                 android:id="@+id/customrating_tech"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:gravity="center"
+                                android:layout_gravity="left"
+                                android:gravity="left"
                                 app:starCount="5"
                                 app:starEmpty="@drawable/blank_star"
                                 app:starFill="@drawable/fill_star"
