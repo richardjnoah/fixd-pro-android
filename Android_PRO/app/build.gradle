@@ -62,6 +62,7 @@ dependencies {
     // Dependency for Croper Activity
     compile project(':photo-crop-library')
     compile 'com.android.support:multidex:1.0.0'
+    compile 'com.github.bumptech.glide:glide:3.5.2'
 
 }
 // Add to the bottom of the file

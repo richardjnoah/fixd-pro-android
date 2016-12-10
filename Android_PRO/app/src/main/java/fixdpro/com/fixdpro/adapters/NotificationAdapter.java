@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
@@ -114,9 +114,11 @@ public class NotificationAdapter extends BaseAdapter {
                     holder.imgPicture.setImageResource(Utilities.getApplianceImageByName(tempValues.getServiceName()));
                 }else{
                     if (tempValues.getIconImage().length() > 0){
-                        Picasso.with(activity).load(tempValues.getIconImage()).into(holder.imgPicture);
-                    }
 
+                        Glide.with(activity)
+                                .load(tempValues.getIconImage())
+                                .into(holder.imgPicture);
+                    }
                 }
 
                 holder.txtTitle.setText(tempValues.getText());

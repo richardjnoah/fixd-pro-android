@@ -376,7 +376,7 @@ public class Utilities {
             return R.drawable.garbage_disposal;
         else  if (appliance.equals("Hot Water Dispenser"))
             return R.drawable.hot_water_dispenser;
-        else  if (appliance.equals("Hot Water Heater"))
+        else  if (appliance.equals("Water Heater"))
             return R.drawable.hot_water_heater;
         else  if (appliance.equals("Ice Maker"))
             return R.drawable.ice_maker;
@@ -392,7 +392,7 @@ public class Utilities {
             return R.drawable.oven;
         else  if (appliance.equals("Package Unit"))
             return R.drawable.package_unit;
-        else  if (appliance.equals("Pipes"))
+        else  if (appliance.equals("Pipe"))
             return R.drawable.pipes;
         else  if (appliance.equals("Pool & spa (All)") || appliance.equals("Hot tub") || appliance.equals("Pool"))
             return R.drawable.pool_spa_all;
