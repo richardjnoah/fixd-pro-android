@@ -166,7 +166,7 @@ public class AddBankAccountNewEdit extends AppCompatActivity {
                 finalRequestParams.put("data[bank_name]", bank_name);
                 finalRequestParams.put("data[bank_routing_number]", routing_number);
                 finalRequestParams.put("data[bank_account_number]", account_number);
-                finalRequestParams.put(" data[bank_account_type]", "Company");
+                finalRequestParams.put("data[bank_account_type]", "Company");
 
                 finalRequestParams.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
                 GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST",updateResponseListener,exceptionListener,AddBankAccountNewEdit.this,"");
