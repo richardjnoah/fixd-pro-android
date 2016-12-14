@@ -112,7 +112,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         txtAddress1 = (EditText)findViewById(R.id.txtAddress1);
         txtAddress2 = (EditText)findViewById(R.id.txtAddress2);
         txtZipCode = (EditText)findViewById(R.id.txtZipCode);
-        txtZipCode.setOnEditorActionListener(this);
+        //txtZipCode.setOnEditorActionListener(this);
         txtCity = (TextView)findViewById(R.id.txtCity);
         txtState = (TextView)findViewById(R.id.txtState);
         txtFinish = (TextView)findViewById(R.id.txtFinish);
@@ -132,11 +132,12 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                 if (arrayListCityBeans.size() == 0) {
                     if (txtZipCode.getText().toString().trim().equals("")) {
                         checkALert.showcheckAlert(activity, activity.getResources().getString(R.string.alert_title), "Please enter zip code.");
-                    } else {
-                        Utilities.hideKeyBoad(activity, v);
-                        GetApiResponseAsync apiResponseAsync = new GetApiResponseAsync(Constants.BASE_URL, "POST", zipResponseListener, zipExceptionListener, activity, "Getting");
-                        apiResponseAsync.execute(getZipRequestParams());
                     }
+//                    else {
+//                        Utilities.hideKeyBoad(activity, v);
+//                        GetApiResponseAsync apiResponseAsync = new GetApiResponseAsync(Constants.BASE_URL, "POST", zipResponseListener, zipExceptionListener, activity, "Getting");
+//                        apiResponseAsync.execute(getZipRequestParams());
+//                    }
                 }else {
                     showcityList();
                 }
@@ -265,7 +266,7 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
                     Iterator<String> keys = errors.keys();
                     if (keys.hasNext()) {
                         String key = (String) keys.next();
-                        error_message = errors.getString(key);
+                        error_msg_update_profile = errors.getString(key);
                     }
                     handler.sendEmptyMessage(3);
                 }
