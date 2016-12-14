@@ -1,5 +1,6 @@
 package fixdpro.com.fixdpro.fragment;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -7,12 +8,14 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -61,6 +64,7 @@ public class WhatsWrongFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     ProgressBar progressBar ;
     ListView listWhatsWrong ;
+    Dialog progressDialog;
     Fragment fragment = null ;
     TextView txtProgress, txtCancelJOb,txtRescheduleJob;
     WhatsWrongAdapter adapter = null ;
@@ -353,6 +357,13 @@ public class WhatsWrongFragment extends Fragment {
         return hashMap;
     }
     private void getBrands(){
+
+        progressDialog = new Dialog(getActivity());
+        progressDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressDialog.setContentView(R.layout.dialog_progress_simple);
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+
         new AsyncTask<Void, Void, Void>() {
             JSONObject jsonObject = null;
 
@@ -379,6 +390,8 @@ public class WhatsWrongFragment extends Fragment {
                             brands1.setBrand_name("Other Brand");
                             arrayListBrands.add(brands1);
 
+                            handler.sendEmptyMessage(0);
+
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -390,5 +403,14 @@ public class WhatsWrongFragment extends Fragment {
             }
         }.execute();
     }
+
+    Handler handler = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            progressDialog.dismiss();
+        }
+    };
 }
 
