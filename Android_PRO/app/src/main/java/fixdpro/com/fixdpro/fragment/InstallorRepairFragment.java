@@ -169,8 +169,10 @@ public class InstallorRepairFragment extends Fragment {
 
     private void setListeners() {
         lstInstallRepair.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (id==-1) return; // Header is tapped
                 fragment = new WhatsWrongFragment();
                 CurrentScheduledJobSingleTon.getInstance().setSelectedJobApplianceModal(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(position - 1));
 
