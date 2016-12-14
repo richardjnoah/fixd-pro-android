@@ -135,9 +135,19 @@ public class WhatsWrongFragment extends Fragment {
         if (arrayListBrands.size() <= 1)
             getBrands();
         if (isAutoNotiForWorkOrder){
+            ArrayList<ReapirInstallProcessModal> modalList = CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList();
+            for(int i = 0 ; i< modalList.size();i++){
+                ReapirInstallProcessModal workOrder = modalList.get(i);
+                if (workOrder.getName().equals(Constants.WORK_ORDER)) {
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentReapirInstallProcessModal(workOrder);
+                    break;
+                }
+            }
+
             fragment = new WorkOrderFragment();
             Bundle bundle = new Bundle();
             bundle.putBoolean("isAutoNotiForWorkOrder",isAutoNotiForWorkOrder);
+
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WORK_ORDER_FRAGMENT, true, bundle);
         }
         return view;
