@@ -94,7 +94,11 @@ public class WorkingRadiusNew extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                drawCircle();
+                try {
+                    drawCircle();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         }, 300);
         // For dropping a marker at a point on the Map
