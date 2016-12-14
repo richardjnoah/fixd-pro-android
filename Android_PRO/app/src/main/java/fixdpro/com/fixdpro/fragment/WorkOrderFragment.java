@@ -287,7 +287,9 @@ public class WorkOrderFragment extends Fragment {
                     if (repairType.getCalculatedBy().equals("FIXED")){
                         txtReapirTypeCost.setText(repairType.getFixed_cost());
                     }else {
-                        float value = Float.parseFloat(workOrder.getHourly_rate()) * Float.parseFloat(repairType.getLabor_hours());
+                        String labor_hours = repairType.getLabor_hours();
+                        if (labor_hours == null || labor_hours.equals("")) labor_hours = "0.00"; // temporary, should get it from server in InstallorRepairFragment when RepairType == "Thumbling...."
+                        float value = Float.parseFloat(workOrder.getHourly_rate()) * Float.parseFloat(labor_hours);
                         txtReapirTypeCost.setText("$"+value);
                     }
 
