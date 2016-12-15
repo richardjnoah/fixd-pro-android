@@ -263,9 +263,9 @@
     <string name="partnum">Part number</string>
     <string name="qty">Qty</string>
     <string name="partcost">Part cost</string>
-    <string name="tap_add_parts">"<![CDATA[<font color='#ffffff'>Tap </font><font color='#873e10'>Add Part</font><font color='#ffffff'> to enter a dispoasal fee. </font>]]>"</string>
-    <string name="enter_parts_cost">"<![CDATA[<font color='#ffffff'>Please enter </font><font color='#873e10'>whole sale parts cost.</font>]]>"</string>
-    <string name="disposal_fess">"<![CDATA[<font color='#ffffff'>Enter </font><font color='#873e10'>disposal fee </font><font color='#ffffff'>above if applicable. </font>]]>"</string>
+    <string name="tap_add_parts">"<![CDATA[<font color='#ffffff'>Tap </font><font color='#fa7507'>Add Part</font><font color='#ffffff'> to enter a dispoasal fee. </font>]]>"</string>
+    <string name="enter_parts_cost">"<![CDATA[<font color='#ffffff'>- Please enter the </font><font color='#fa7507'>total wholesale parts cost</font><font color='#ffffff'> including sales tax and shipping. </font>]]>"</string>
+    <string name="disposal_fess">"<![CDATA[<font color='#ffffff'>- Enter </font><font color='#fa7507'>disposal fee </font><font color='#ffffff'>above if applicable. </font>]]>"</string>
     <!--Work Order...-->
     <string name="neednew">Need new washer installed</string>
     <string name="repairtype">Repair Type:</string>
