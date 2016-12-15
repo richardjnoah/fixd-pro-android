@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@drawable/orange_background">
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_27_dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgThumbLuck"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/payment_hand" />
+
+        <TextView
+            android:id="@+id/titletext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_27_dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Wahoo!!"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_27_sp" />
+
+        <TextView
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/size_5_dp"
+            android:singleLine="true"
+            android:text="We will deposit your payment in your account"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_14_sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtBigTotal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="@dimen/size_4_dp"
+            android:singleLine="true"
+            android:text="(null)"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_27_sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Job Total"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtJobTotal1"
+                android:layout_weight="1"
+                android:textStyle="bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtArrivaltext"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Our Fee (10%)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtOurFee"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtGovtCut"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Government Cut"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtGovtCutValue"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout><LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtCompletetext"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Your Cut"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtYourCut"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_mileage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="left"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="Mileage"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtMileage"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="right"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="(null)"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout2"
+        android:layout_marginTop="@dimen/size_27_dp"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/img_Finish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/delete_box"
+            android:scaleType="fitXY"
+            android:text="Done"
+            android:textColor="@color/white"
+            android:textSize="@dimen/size_18_sp" />
+    </LinearLayout>
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cross_new" />
+</RelativeLayout>

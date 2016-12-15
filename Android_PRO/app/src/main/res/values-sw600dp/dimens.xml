@@ -1,0 +1,116 @@
+<resources>
+    <!-- Dimensions   for xhdpi.... -->
+    <!--common attributes for all screens-->
+    <!-- Common Dimen-->
+
+    <dimen name="padding_header_items">13dp</dimen>
+    <dimen name="text_size_header_items">30sp</dimen>
+    <!-- Verification Screen -->
+    <dimen name="top_heading_textsize">35sp</dimen>
+    <dimen name="varfication_box_height">65dp</dimen>
+    <dimen name="varfication_box_width">40dp</dimen>
+    <dimen name="varfication_box_margin">22dp</dimen>
+    <dimen name="varfication_text_size">30sp</dimen>
+    <dimen name="login_register_text_size">35sp</dimen>
+    <dimen name="login_register_padding">45dp</dimen>
+    <dimen name="login_top_margin">28dp</dimen>
+
+    <!--Common Dimens for multiple Activities.....1> User Profile Screen
+     2>Add_Driver_LicScreen
+     3>BackgroundSaftyCheckScreen
+    *
+    *add tech Dialog.....
+    -->
+    <dimen name="profile_pic_hei_wid">172dp</dimen>
+    <dimen name="edittext_size">35sp</dimen>
+    <dimen name="add_photo_size">28sp</dimen>
+    <dimen name="edittext_padding">14dp</dimen>
+    <dimen name="layout_padding">28dp</dimen>
+    <dimen name="add_photo_text_padding">19dp</dimen>
+
+    <!--BackgroundSaftyCheckScreen...-->
+    <dimen name="small_text_size">22sp</dimen>
+    <dimen name="very_small_text_size">16sp</dimen>
+    <dimen name="text_between_margin">35dp</dimen>
+    <dimen name="details_hei">300dp</dimen>
+    <!--Add_TechScreen....-->
+    <dimen name="margin_top">80dp</dimen>
+
+    <!-- Add Driver screen-->
+    <dimen name="top_margin">24dp</dimen>
+    <!-- Select Trade Skill-->
+    <dimen name="trade_skill_text_size">20sp</dimen>
+
+    <!--Setup complete Screen Diamens.....-->
+    <dimen name="margin">20dp</dimen>
+    <dimen name="txt_normal_w">20sp</dimen>
+    <dimen name="txt_voila">35sp</dimen>
+    <dimen name="padd">15dp</dimen>
+
+
+    <!--values-sw600dp 7'' AND 10'' TABLETS-->
+    <dimen name="size_3_dp">5dp</dimen>
+    <dimen name="size_4_dp">7dp</dimen>
+    <dimen name="size_5_dp">9dp</dimen>
+    <dimen name="size_7_dp">12dp</dimen>
+    <dimen name="size_8_dp">11dp</dimen>
+    <dimen name="size_10_dp">15dp</dimen>
+    <dimen name="size_11_sp">15sp</dimen>
+    <dimen name="size_12_dp">16dp</dimen>
+    <dimen name="size_12_sp">16sp</dimen>
+    <dimen name="size_13_dp">17dp</dimen>
+    <dimen name="size_13_sp">17sp</dimen>
+    <dimen name="size_14_sp">18sp</dimen>
+    <dimen name="size_14_dp">18dp</dimen>
+    <dimen name="size_15_dp">19dp</dimen>
+    <dimen name="size_15_sp">19sp</dimen>
+    <dimen name="size_16_dp">20dp</dimen>
+    <dimen name="size_16_sp">22sp</dimen>
+    <dimen name="size_17_sp">21sp</dimen>
+    <dimen name="size_18_dp">21dp</dimen>
+    <dimen name="size_18_sp">26sp</dimen>
+    <dimen name="size_19_sp">22sp</dimen>
+    <dimen name="size_20_sp">26sp</dimen>
+    <dimen name="size_20_dp">26dp</dimen>
+    <dimen name="size_21_dp">27dp</dimen>
+    <dimen name="size_21_sp">27sp</dimen>
+    <dimen name="size_22_sp">31sp</dimen>
+    <dimen name="size_22_dp">26dp</dimen>
+    <dimen name="size_24_sp">28sp</dimen>
+    <dimen name="size_24_dp">28dp</dimen>
+    <dimen name="size_25_dp">29dp</dimen>
+    <dimen name="size_27_sp">32sp</dimen>
+    <dimen name="size_27_dp">32dp</dimen>
+    <dimen name="size_28_dp">39dp</dimen>
+    <dimen name="size_30_dp">35dp</dimen>
+    <dimen name="size_32_dp">37dp</dimen>
+    <dimen name="size_36_dp">40dp</dimen>
+    <dimen name="size_37_sp">43sp</dimen>
+    <dimen name="size_40_dp">60dp</dimen>
+    <dimen name="size_40_sp">48sp</dimen>
+    <dimen name="size_45_dp">50dp</dimen>
+    <dimen name="size_48_dp">55dp</dimen>
+    <dimen name="size_50_dp">57dp</dimen>
+    <dimen name="size_54_dp">61dp</dimen>
+    <dimen name="size_57_dp">70dp</dimen>
+    <dimen name="size_60_dp">70dp</dimen>
+    <dimen name="size_65_dp">79dp</dimen>
+    <dimen name="size_70_dp">150dp</dimen>
+    <dimen name="size_73_dp">87dp</dimen>
+    <dimen name="size_75_dp">90dp</dimen>
+    <dimen name="size_80_dp">94dp</dimen>
+    <dimen name="size_90_dp">130dp</dimen>
+    <dimen name="size_95_dp">110dp</dimen>
+    <dimen name="size_100_dp">170dp</dimen>
+    <dimen name="size_110_dp">150dp</dimen>
+    <dimen name="size_120_dp">135dp</dimen>
+    <dimen name="size_125_dp">148dp</dimen>
+    <dimen name="size_150_dp">170dp</dimen>
+    <dimen name="size_160_dp">180dp</dimen>
+    <dimen name="size_175_dp">195dp</dimen>
+    <dimen name="size_200_dp">320dp</dimen>
+    <dimen name="size_210_dp">238dp</dimen>
+    <dimen name="size_220_dp">305dp</dimen>
+    <dimen name="size_250_dp">300dp</dimen>
+
+</resources>

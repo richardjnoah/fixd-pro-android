@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/size_10_dp"
+    tools:ignore="RtlHardcoded,RtlSymmetry,ContentDescription">
+
+    <ImageView
+        android:id="@+id/image_attachment_preview"
+        android:layout_width="@dimen/size_80_dp"
+        android:layout_height="@dimen/size_80_dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop" />
+
+    <View
+        android:layout_width="@dimen/size_80_dp"
+        android:layout_height="@dimen/size_80_dp"
+        android:adjustViewBounds="true"
+        android:background="@drawable/gradient_attachment" />
+
+    <ImageButton
+        android:id="@+id/button_attachment_preview_delete"
+        android:layout_width="@dimen/size_24_dp"
+        android:layout_height="@dimen/size_24_dp"
+        android:layout_gravity="top|right"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_action_remove" />
+
+    <ProgressBar
+        android:id="@+id/progress_attachment_preview"
+        android:layout_width="@dimen/size_18_dp"
+        android:layout_height="@dimen/size_18_dp"
+        android:layout_gravity="center"
+        android:indeterminateOnly="false"
+        android:max="100"
+        android:progressDrawable="@drawable/shape_progressbar_circle" />
+
+</FrameLayout>

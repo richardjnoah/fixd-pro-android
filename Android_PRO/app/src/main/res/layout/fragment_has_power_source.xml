@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fixdpro.com.fixdpro.fragment.AddServiceFragment">
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/add_service_header_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/size_12_dp"
+        android:text="Choose Power Source?"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/orange_signin_back" />
+
+    <ListView
+        android:id="@+id/lstChoosePowerSource"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/add_service_header_text"
+        android:divider="#81ffffff"
+        android:dividerHeight="0.7dp"></ListView>
+</RelativeLayout>

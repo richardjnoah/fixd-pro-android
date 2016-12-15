@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orange_background">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10_dp">
+
+            <ImageView
+                android:id="@+id/imgThumbLuck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/thumb" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtYouHave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_12_dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:text="You Have Arrived!"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_22_sp" />
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text="Gurusharan singshssa"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+                android:id="@+id/txtUserDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:text="2399 ,Gurusharan singshssa is not the able to sratrl"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_16_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <HorizontalScrollView
+                android:id="@+id/horizontalScrollView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/size_10_dp">
+
+                <LinearLayout
+
+                    android:id="@+id/scrollViewLatout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"></LinearLayout>
+
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout3"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnStartJob"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/start_job" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cross_new" />
+</RelativeLayout>

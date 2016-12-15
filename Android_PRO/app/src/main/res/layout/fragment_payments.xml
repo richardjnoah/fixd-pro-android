@@ -1,0 +1,17 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    android:orientation="vertical"
+    android:padding="@dimen/size_10_dp">
+
+
+    <com.paging.listview.PagingListView
+        android:id="@+id/completed_listview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@color/register_button_text"
+        android:dividerHeight="0.7dp" />
+
+</LinearLayout>

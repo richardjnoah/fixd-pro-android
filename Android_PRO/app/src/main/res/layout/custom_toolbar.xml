@@ -1,0 +1,71 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/size_57_dp"
+    android:background="@color/actionbar_bg"
+    android:gravity="center">
+
+    <ImageView
+        android:id="@+id/img_Toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/size_12_dp"
+        android:src="@drawable/menu_icon" />
+
+    <TextView
+        android:id="@+id/txtBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/size_12_sp"
+        android:text="@string/back"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_18_sp"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/titletext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:maxLength="15"
+        android:padding="@dimen/size_12_sp"
+        android:singleLine="true"
+        android:text="Title"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_22_sp" />
+    <ImageView
+        android:id="@+id/img_Right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/size_12_sp"
+        android:src="@drawable/white_bell"
+        android:text="@string/done" />
+    <TextView
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_12_dp"
+        android:text="0"
+        android:layout_centerVertical="true"
+        android:id="@+id/badge_home"
+        android:background="@drawable/orange_circle"
+        android:layout_width="@dimen/size_18_dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="@dimen/size_18_dp"
+        />
+    <TextView
+        android:id="@+id/txtDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/size_12_sp"
+        android:text="@string/done"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_18_sp"
+        android:visibility="gone" />
+</RelativeLayout>

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fc7506">
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_27_dp"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgWatch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/clock" />
+
+            <TextView
+                android:id="@+id/titletext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_15_dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/choosetime"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_21_sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_5_dp">
+
+            <TextView
+                android:id="@+id/txtSelectDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="#d55705"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="@string/selectdate"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/txtSelectTime"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:background="#d55705"
+                android:gravity="center"
+                android:padding="@dimen/size_5_dp"
+                android:singleLine="true"
+                android:text="@string/selecttime"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+        </LinearLayout>
+        <!--Date Time Picker-->
+        <RelativeLayout
+            android:id="@+id/date_and_time_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <DatePicker
+                android:id="@+id/datePicker"
+                style="@style/DateTimePickerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarTextColor="@android:color/white"
+                android:calendarViewShown="false"
+                android:datePickerMode="spinner"
+                android:yearListSelectorColor="@android:color/white"></DatePicker>
+
+            <TimePicker
+                android:id="@+id/timePicker"
+                style="@style/DateTimePickerTheme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:calendarTextColor="@android:color/white"
+                android:timePickerMode="spinner"
+                android:visibility="gone"
+
+                ></TimePicker>
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/date_and_time_container"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_Reschedule"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/reschedule" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

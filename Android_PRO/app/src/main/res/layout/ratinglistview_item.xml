@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/size_12_dp"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <fixdpro.com.fixdpro.views.RatingBarView
+            android:id="@+id/custom_ratingbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:gravity="left"
+            app:starCount="5"
+            app:starEmpty="@drawable/blank_star"
+            app:starFill="@drawable/fill_star"
+            app:starImageSize="@dimen/size_25_dp" />
+
+        <TextView
+            android:id="@+id/txtRateingMark"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="right|center"
+            android:singleLine="true"
+            android:text="0.0"
+            android:textStyle="bold"
+            android:textColor="@color/orange_signin_back"
+            android:textSize="@dimen/size_17_sp"
+            android:layout_marginLeft="@dimen/size_15_dp"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:textColor="@color/orange_signin_back"
+            android:layout_marginBottom="@dimen/size_3_dp"
+            android:layout_marginTop="@dimen/size_3_dp"
+            android:layout_marginLeft="@dimen/size_5_dp"
+            android:layout_marginRight="@dimen/size_5_dp"
+            android:background="#ffffff"
+            />
+
+        <TextView
+            android:id="@+id/txtDate"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:singleLine="true"
+            android:text="00-04-2016"
+            android:textColor="#ffffff"
+            android:textSize="@dimen/size_17_sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtUserName"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="@dimen/size_3_dp"
+            android:singleLine="true"
+            android:text="George Son"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_22_sp" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:text="Knowlageable"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Courteous"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:text="Appearance"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtKnowlageable"
+                    android:text="Knowlageable"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtCourteous"
+                    android:text="Courteous"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/txtAppearance"
+                    android:text="Appearance"
+                    android:textSize="@dimen/size_20_sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/txtComments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:padding="@dimen/size_3_dp"
+            android:text=""
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_16_sp" />
+
+
+    </LinearLayout>
+
+    <View
+        android:layout_marginTop="5dp"
+        android:background="@android:color/white"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+</LinearLayout>

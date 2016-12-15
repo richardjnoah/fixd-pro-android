@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_blur"
+    tools:context="fixdpro.com.fixdpro.Login_Register_Activity">
+
+    <RelativeLayout
+
+        android:id="@+id/header_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_10_dp"
+            android:text="@string/back"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_18_sp" />
+
+        <TextView
+            android:id="@+id/txtDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/size_10_dp"
+            android:text="@string/done"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_18_sp" />
+
+    </RelativeLayout>
+
+    <ListView
+        android:id="@+id/lstTradeSkill"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header_items"></ListView>
+
+
+</RelativeLayout>

@@ -1,0 +1,256 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    android:orientation="vertical"
+    tools:context="fixdpro.com.fixdpro.ContactUsActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:local="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00000000"
+        android:minHeight="?attr/actionBarSize"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:text="@string/back"
+                android:textSize="@dimen/size_18_sp"
+                android:textColor="@color/register_button_text" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center"
+                android:text="@string/cancel_job"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_21_sp" />
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="12dp"
+                android:textSize="@dimen/size_18_sp"
+                android:text="@string/cancel"
+                android:textColor="@color/register_button_text" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:src="@drawable/declinejob_cross" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:gravity="center"
+                android:text="@string/ohno"
+                android:textColor="@color/register_button_text"
+                android:textSize="22sp" />
+
+            <TextView
+
+                android:id="@+id/areusure_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:gravity="center"
+                android:text="@string/sure_cancel"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_18_sp" />
+
+            <TextView
+                android:id="@+id/backup_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/size_10_dp"
+                android:gravity="center"
+                android:text="@string/charge_customer"
+                android:textColor="@color/register_button_text" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="@dimen/size_16_dp"
+                android:background="@android:color/white"></View>
+
+            <EditText
+
+                android:id="@+id/txtCancelReason"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_110_dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/size_18_dp"
+                android:layout_marginRight="@dimen/size_18_dp"
+                android:layout_marginTop="@dimen/size_14_dp"
+                android:background="@drawable/round_white_back_transparent_border"
+                android:gravity="top"
+                android:hint="@string/canceledittext"
+                android:padding="@dimen/size_8_dp"
+                android:textColor="@color/register_button_text"
+                android:textColorHint="@color/register_button_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtDiagnostic"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/diagnostic"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtDiagnosticDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtSubTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/tax"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtSubTotalDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="$ 75.00"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <include layout="@layout/leftmar_line"></include>
+            <!--Total..-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/total"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_21_sp" />
+
+                <TextView
+                    android:id="@+id/txtTotalDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/tap_Signature"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_48_dp"
+                android:layout_gravity="bottom"
+                android:gravity="bottom"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="12dp"
+
+                android:layout_marginLeft="@dimen/size_8_dp"
+                android:layout_marginRight="@dimen/size_8_dp"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:background="@drawable/round_corner_white">
+
+                <TextView
+                    android:id="@+id/txtSignature"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_centerInParent="true"
+                    android:gravity="center"
+                    android:padding="@dimen/size_10_dp"
+                    android:text="@string/owner_signature"
+                    android:textColor="@color/orange_signin_back"
+                    android:textSize="@dimen/size_14_sp" />
+
+                <ImageView
+                    android:id="@+id/imgSignature"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

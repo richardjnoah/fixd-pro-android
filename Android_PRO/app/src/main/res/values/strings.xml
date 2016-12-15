@@ -1,0 +1,518 @@
+<resources>
+    <string name="app_name">Fixd-Pro</string>
+
+    <!--Develop-->
+    <string name="api_key">AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g</string>
+    <!--Release-->
+    <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_refresh">Refresh</string>
+    <string name="action_search">Search</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_login__register_">Login_Register_Activity</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+
+    <!-- Common Text-->
+    <string name="back">Back</string>
+    <string name="done">Done</string>
+    <string name="next">Next</string>
+
+    <!-- Varification Screen-->
+    <string name="varification_text">"<![CDATA[<font color='#ffffff'>enter your </font><font color='#fc7506'>verification code</font>]]>"</string>
+    <string name="sign_in">"SIGN IN"</string>
+    <string name="register">"REGISTER"</string>
+    <string name="title_activity_register_">Register_Activity</string>
+
+    <!-- Register Screen-->
+    <string name="phone_number">Phone Number</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="enter_valid_code">Please enter valid code</string>
+    <string name="title_activity_user_profile_screen">UserProfileScreen</string>
+
+    <!-- Profile Screen-->
+    <string name="add_photo">Add Photo</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="email">Email Address</string>
+    <string name="year_exp">Years Experience</string>
+    <string name="company_name">Company Name</string>
+    <string name="address">Address</string>
+    <string name="address2">Address2</string>
+    <string name="city">City</string>
+    <string name="state">State</string>
+    <string name="zip_code">Zip</string>
+    <string name="any_correction">Any correction needed?</string>
+
+    <string name="companyinfo">Company Information</string>
+    <string name="companyname">Company Name</string>
+    <string name="yearinbusi">Year in Business</string>
+    <string name="eninumber">EIN Number</string>
+    <string name="insurancecarrer">Insurance Carrier</string>
+
+    <!--Add_Driver_LicScreen-->
+    <string name="title_activity_driver__info_">Driver_Info_Activity</string>
+    <string name="driver_info">Add Drivers License</string>
+    <string name="ein_number">EIN Number</string>
+    <string name="txtinsurance">Insurance Carrier</string>
+    <string name="policyno">Policy Number</string>
+    <string name="tradelinenceno">Trade License Number</string>
+    <string name="drivinglinenceno">Driving License Number</string>
+    <string name="drivinglinencestate">Driving License State</string>
+    <string name="date_of_birth">Date of Birth</string>
+    <string name="yearsin">Years In Business</string>
+    <string name="tradeskill">Trade Skill</string>
+    <string name="hourlyrate">Hourly Rate</string>
+    <string name="title_activity_main">MainActivity</string>
+
+    <!--BackgroundSaftyCheckScreen...-->
+    <string name="backgroun_title">Background Safety Check</string>
+    <string name="back_descripiton">Before we send you work, all Pros must go\nthrough a simple check for safety.</string>
+    <string name="securityno">Social Security Number</string>
+    <string name="this_number">This Number is kept private and only used for background checks.</string>
+    <string name="details_">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor. </string>
+    <string name="check_text">I acknowledge I have read and understand the terms</string>
+
+    <!--Add_TechScreen-->
+    <string name="add_account">Would you like to add\ntechs under your account?</string>
+    <!--add_tech_dialog.xml-->
+    <string name="dialog_checktext">Tech can pick up jobs through the app</string>
+    <string name="title_activity_add_bank_account">AddBankAccountActivity</string>
+
+    <!-- Bank Account Screen-->
+    <string name="add_bank_account">Bank Information</string>
+    <string name="bank_name">Bank Name</string>
+    <string name="routing_number">Routing Number</string>
+    <string name="account_number">Account Number</string>
+    <string name="account_type">Account Type</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_select_trade_licence">SelectTradeLicence</string>
+
+    <!-- Select Trade Skills-->
+    <string name="select_skill">Select your Trade Skills</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_setup_complete_screen">SetupCompleteScreen</string>
+
+    <!-- Setup Complete Screen-->
+    <string name="setupcomplete">Setup Complete</string>
+    <string name="voila">Voila!</string>
+    <string name="text1">Your account setup is complete. Hang tight \n while we complete your background safety \n check. This process can take upto 48 hours.</string>
+    <string name="text2">In the meantime, Check Out this video \n on how Fixt works.</string>
+    <string name="watchvideo">WATCH THE VIDEO</string>
+    <string name="title_activity_home_screen">HomeScreen</string>
+
+
+    <string name="welcomedroid">Welcome Droid!</string>
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_myjobs">My Jobs</string>
+    <string name="nav_item_payments">Earnings</string>
+    <string name="nav_item_message">Message</string>
+    <string name="nav_item_myratings">My Ratings</string>
+    <string name="nav_item_settings">Settings</string>
+    <string name="nav_item_notifications">Notifications</string>
+    <string name="nav_item_contactus">Contact Us</string>
+    <string name="nav_item_logout">Logout</string>
+
+    <!--<string name="google_api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- home Screen-->
+    <string name="viewall">View All</string>
+    <string name="title_activity_calendar">CalendarActivity</string>
+    <string name="title_activity_my_jobs_search">MyJobsSearchActivity</string>
+
+    <!--<string name="google_app_id">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
+    <string name="cancel">Cancel</string>
+    <string name="search">Search</string>
+    <string name="searchresults">Search Jobs</string>
+
+    <!-- Settings Screen-->
+    <string name="changepassword">Change Password</string>
+    <string name="editprofile">Edit Profile</string>
+    <string name="editcompanyinfo">Edit Company Info</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="editbankinfo">Edit Bank Account Info</string>
+    <string name="edittechnicians">Edit Technicians</string>
+    <string name="change_radius">Change Radius</string>
+    <string name="edit_trade_skills">Edit Trade Skills</string>
+    <string name="locationservices">Location Services</string>
+    <string name="textmessaging">Text Messaging</string>
+    <string name="notifications">NOTIFICATIONS</string>
+    <string name="availablejobs">Available Jobs</string>
+    <string name="jobwon">Job Won</string>
+    <string name="joblost">Job Lost</string>
+    <string name="jobrescheduled">Job Rescheduled</string>
+    <string name="jobcancelled">Job Cancelled</string>
+    <string name="title_activity_contact_us">ContactUsActivity</string>
+    <string name="charge_fifty">"<![CDATA[<font color='#ffffff'>The <b>$50</> fee for the background safety check will be charged to:</font>]]>"</string>
+
+    <!-- Contact US screen-->
+    <string name="contactus">Contact Us</string>
+    <string name="contactustext">If you have questions or\nfeedback, please let me know.</string>
+    <string name="title_activity_available_job_list_click">AvailableJobListClickActivity</string>
+
+    <!-- AvailableJobListClickActivity-->
+    <string name="availablejob">Available Job</string>
+    <string name="problem_image">Problem Image</string>
+
+    <!-- ScheduledJobListClickActivity-->
+    <string name="scheduledjob">Scheduled Job</string>
+
+    <!-- Decline and Cancel Job activity-->
+    <string name="declinejob">Decline Job</string>
+    <string name="ohno">Oh No!</string>
+    <string name="areusure_decline">Are you sure you want to decline this job?</string>
+    <string name="backup_decline">Once you decline a job, you cannot pick it back up.</string>
+    <string name="declineedittext">Tell us why you are declining.</string>
+
+    <string name="canceljob">Cancel Job</string>
+    <string name="areusure_cancel">Are you sure you want to cancel this job?</string>
+    <string name="backup_cancel">Once you cancel a job, you cannot pick it back up.</string>
+    <string name="canceledittext">Tell us why you are cancelling.</string>
+
+
+    <!-- Confirmation Activity-->
+    <string name="confirmation">Confirmation</string>
+    <string name="success">Success!</string>
+    <string name="confirmtext">You won the job.</string>
+    <string name="between">Between</string>
+    <string name="fortext">for</string>
+    <string name="title_activity_change_password">ChangePassword</string>
+
+    <!--Job Completed...Activity-->
+    <string name="job_complete">Job Completed</string>
+    <string name="serviceticket">Service Ticket</string>
+    <string name="jobinfo">Job Info</string>
+
+    <!--Service Ticket-->
+    <string name="customer">Customer:</string>
+    <string name="jobname">Job Name:</string>
+    <string name="type">Type :</string>
+    <string name="unit1">Unit 1:</string>
+    <string name="unit2">Unit 2:</string>
+    <string name="customercomplaint">Customer Complaint:</string>
+    <string name="part">Part:</string>
+    <string name="installation">Garbage Disposal-Installation:</string>
+    <string name="ice_instalation">Ice Maker-Installation:</string>
+    <string name="tax">Tax:</string>
+    <string name="total">Total:</string>
+    <string name="contractor">Contractor Repair Fee:</string>
+
+    <!--Rating Fragment-->
+    <string name="averagerating">Average Rating</string>
+    <string name="totaljobs">Total Jobs</string>
+    <string name="totalreviews">Total Reviews</string>
+
+    <!--Working Radius Activity-->
+    <string name="workingradius">Working Radius</string>
+    <string name="howfarareyou">How far are you willing to travel for job\'s?</string>
+    <string name="howfarareyouwilling">How far are you willing to travel from 75283</string>
+
+    <!--Background Safty Check Dialog..........Strings-->
+    <string name="almostdone">Almost Done!</string>
+    <string name="becauseour">Because our service is free, the only thing we\nask our pro\' to pay for is the required\nbackground safety check.</string>
+    <string name="cardno">Card Number</string>
+    <string name="date">MM/YYYY</string>
+    <string name="cw">CVV</string>
+    <string name="scancard">Scan Card</string>
+    <string name="byclicking">By clicking \"Finish\"  you agree to the : </string>
+    <string name="termsandcon"><u>terms and conditions</u> and</string>
+    <string name="termsandcon11"><u>dealer service agreement.</u></string>
+
+
+    <!--Camra Gallery PopUP-->
+    <string name="cam_gallery">Take Picture</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+
+    <!--Assign Techncian Activity-->
+    <string name="assigntech">Assign Technician</string>
+    <string name="assign">Assign</string>
+
+    <!--fixtpro.com.fixtpro.views-->
+    <string name="preferences_key">fixtpro.com.fixtpro.views</string>
+    <string name="title_activity_payment_details">PaymentDetailsActivity</string>
+
+    <!--Payment and Playment Details-->
+    <string name="paymentdetails">Payment Details</string>
+    <string name="totalearning">Total Earnings</string>
+    <string name="jobsaccepted">Jobs Accepted</string>
+    <string name="hoursworked">Hours Worked</string>
+    <string name="arrivaltime">Arrival Time:</string>
+    <string name="completetime">Completed Time:</string>
+    <string name="summary">Summary</string>
+    <string name="tripchanges">Trip Charges:</string>
+    <string name="moterrebinding">Motor Rebinding Repair:</string>
+    <string name="subtotal">Subtotal:</string>
+    <string name="fixdfee">Fixd Fee(5%):</string>
+    <string name="totalearned">Total Earned:</string>
+
+
+    <!--Rating Details-->
+
+    <string name="rating_details">Rating Details</string>
+
+
+    <!--PartNeeded Screen-->
+    <string name="partdes">Part description</string>
+    <string name="partnum">Part number</string>
+    <string name="qty">Qty</string>
+    <string name="partcost">Part cost</string>
+    <string name="tap_add_parts">"<![CDATA[<font color='#ffffff'>Tap </font><font color='#fa7507'>Add Part</font><font color='#ffffff'> to enter a dispoasal fee. </font>]]>"</string>
+    <string name="enter_parts_cost">"<![CDATA[<font color='#ffffff'>- Please enter the </font><font color='#fa7507'>total wholesale parts cost</font><font color='#ffffff'> including sales tax and shipping. </font>]]>"</string>
+    <string name="disposal_fess">"<![CDATA[<font color='#ffffff'>- Enter </font><font color='#fa7507'>disposal fee </font><font color='#ffffff'>above if applicable. </font>]]>"</string>
+    <!--Work Order...-->
+    <string name="neednew">Need new washer installed</string>
+    <string name="repairtype">Repair Type:</string>
+    <string name="diagnostic">Diagnostic:</string>
+
+    <!--Pop UP-->
+    <string name="doyouhave">Do you have what you need?</string>
+    <string name="owner_approval">We need homeowner approval!</string>
+    <string name="owner_approval_desc">Please select an option to\nprocees and get work order\napproval for this job/</string>
+    <string name="ifyouhave">If you do not have the necessary parts or if parts need to be ordered please reschedule job now.</string>
+    <string name="completejobnow">Complete Job Now</string>
+    <string name="complete_here">Complete Here</string>
+    <string name="edit_job">Edit job</string>
+    <string name="send_to_Owner">Send To Owner</string>
+    <string name="resend_to_Owner">Re-Send Work Order</string>
+    <string name="resechedule">Reschedule</string>
+    <string name="going_to_get_parts">Going to get Parts</string>
+
+    <!--Install Information-->
+    <string name="takeapic">Take a picture of the problem</string>
+    <string name="unitman">Unit Manufacturer</string>
+    <string name="brand">Brand</string>
+    <string name="modalno">Model Number</string>
+    <string name="serialno">Serial Number</string>
+    <string name="descriptionofwork">Description of work needed</string>
+
+    <!--Done Popup-->
+    <string name="wahoo">Wahoo!</string>
+    <string name="youwill">You will receive payment with 48hrs.</string>
+    <string name="jottotal">Job Total = </string>
+    <string name="yourcut">Your Cut = </string>
+    <string name="outfee">Our Fee (10%) = </string>
+    <string name="govtcuts">Governments Cut = </string>
+    <string name="title_activity_tech_profile_screen">TechProfileScreen</string>
+
+    <!--Reschedule Popup-->
+    <string name="choosetime">Choose a time</string>
+    <string name="selectdate">Set Date</string>
+    <string name="selecttime">Set Time</string>
+    <string name="title_activity_sliding_menu">SlidingMenuActivity</string>
+    <string name="title_activity_base">BaseActivity</string>
+    <string name="title_activity_home_screen_new">HomeScreenNew</string>
+
+    <string name="tellus">Enter diagnosis and resolution</string>
+    <string name="title_activity_signature">SignatureActivity</string>
+
+    <!--Signature Activity-->
+    <string name="acknowledge">i acknowledge and accept receipt of goods and/or services performed and agree to the total amount listed</string>
+    <string name="title_activity_beat">BeatActivity</string>
+    <string name="title_activity_confirm_assign_tech">ConfirmAssignTechActivity</string>
+    <string name="title_activity_cancel_scheduled_job">CancelScheduledJob</string>
+
+    <!-- Reschedule Cancel-->
+    <string name="cancel_job">Cancel Job</string>
+    <string name="sure_cancel"> Are you sure you want to cancel this job?</string>
+    <string name="charge_customer"> The customer will still be charged a diagnostic fee</string>
+    <string name="owner_signature"> Tap for Owner Signature</string>
+    <string name="title_activity_chat">ChatActivity</string>
+
+    <!-- GCM Strings-->
+    <string name="project_number">44977128671</string>
+    <string name="introduction">Welcome! </string>
+    <string name="clear_screen">Clear Screen</string>
+    <string name="first_launch">First Launch</string>
+    <string name="num_of_missed_messages">MissedMessageCount</string>
+    <string name="lines_of_message_count">LinesOfMessageCount</string>
+    <string name="preferences">PreferencesFile</string>
+    <string name="notification_number">1337</string>
+
+    <string name="wewilldeposit">We Will deposit payment into your account.</string>
+    <string name="jobtotal">Job Total</string>
+    <string name="ourfee">Our Fee(10%)</string>
+    <string name="govtcut">Government Cut</string>
+    <string name="yourcut11">Your Cut</string>
+
+    <string name="alert_title">Fixd!</string>
+
+    <!-- Chat Strings-->
+    <string name="chat_sample">Chat Sample</string>
+
+    <string name="menu_new_chat">New Chat</string>
+    <string name="menu_chat_info">Chat info</string>
+    <string name="menu_add_users_to_chat">Add Users to Chat</string>
+    <string name="menu_leave_chat">Leave Chat</string>
+    <string name="menu_delete_chat">Delete Chat</string>
+    <string name="menu_dialogs_logout">Logout</string>
+    <string name="menu_dialogs_delete">Delete</string>
+    <string name="menu_select_people_done">Done</string>
+
+    <!--<string name="dlg_loading">Loading</string>-->
+    <string name="dlg_restoring_chat_session">Restoring chat session…</string>
+    <string name="dlg_restoring_chat_session_logout">Restoring session and logout</string>
+    <string name="create_chat">Creating chat…</string>
+    <string name="dlg_login">Login…</string>
+
+    <string name="placeholder_username_you">%s (you)</string>
+    <string name="error_recreate_session">Login Chat error</string>
+
+    <string name="login_title">@string/chat_sample</string>
+
+    <string name="splash_app_title">@string/chat_sample</string>
+    <string name="splash_create_session_error">Create session errors:</string>
+
+    <string name="login_select_user_for_login">Select User for Login to Chat</string>
+    <string name="login_cant_obtain_users">Can\'t obtain users errors</string>
+    <string name="login_chat_login_error">Login Chat error. Please relogin. Error</string>
+
+    <string name="dialogs_logged_in_as">Logged in as %s</string>
+    <string name="dialogs_creation_error">Dialog creation errors</string>
+    <string name="dialogs_deletion_error">Dialog deletion errors</string>
+    <string name="dialogs_list_hint">Select a Dialog to Chat</string>
+    <string name="dialogs_get_error">Get dialogs errors</string>
+    <string name="dialogs_driver_image_error">Driver license image is required.</string>
+
+    <string name="select_users_list_hint">Select Users you want to chat</string>
+    <string name="select_users_create_chat">Create new chat</string>
+    <string name="select_users_edit_chat">Add Users to chat</string>
+    <string name="select_users_get_users_error">Get users errors</string>
+    <string name="select_users_choose_users">Please, choose at least one participant</string>
+
+    <string name="chat_sticker">Sticker</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_edit_text_hint">Message</string>
+    <string name="chat_me">Me</string>
+    <string name="chat_friend">Friend</string>
+    <string name="chat_join_error">Error join group chat</string>
+    <string name="chat_send_message_error">Failed to send a message</string>
+    <string name="chat_load_history_error">Load chat history errors</string>
+    <string name="chat_load_users_error">Load chat users errors</string>
+    <string name="chat_attachment_error">Can\'t load chosen file</string>
+    <string name="chat_attachment">Attachment</string>
+    <string name="chat_empty_you_are_alone_here">You\'re all alone out here.</string>
+    <string name="chat_empty_start_new_chat">Start new chat.</string>
+    <string name="chat_unsupported_type">Unsupported dialog type</string>
+    <string name="chat_wait_for_attachments_to_upload">Wait for all attachments to upload</string>
+    <string name="notification_title">Quickblox Chat Notification</string>
+    <string name="connection_error">Chat connection has been dropped</string>
+    <string name="reconnect_alert">Reconnecting in %s seconds</string>
+
+    <string name="chat_info">Chat info</string>
+    <string name="chat_info_add_people_error">Add people errors</string>
+
+    <string name="group_chat_join_error">Could not join chat, errors:</string>
+    <string name="public_group_chat_cannot_be_deleted">Public Group chat can be deleted only by owner</string>
+    <string name="error_leave_chat">Error leaving room</string>
+
+    <string name="please_wait">Please wait…</string>
+
+    <string name="dlg_error">Error</string>
+    <string name="dlg_ok">OK</string>
+    <string name="dlg_cancel">Cancel</string>
+    <string name="dlg_loading">Loading…</string>
+    <string name="dlg_choose_image_from">Select photo from…</string>
+    <string name="dlg_retry">Retry</string>
+
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="addresshint">Address</string>
+    <string name="thisisyour">This is your company headquarters.</string>
+    <string name="poweredbygoogle">powered by Google</string>
+
+    <!--TradeSkillsActivity-->
+    <string name="tradeskills">Trade Skills</string>
+    <string name="pleaseselect">Please select the skills your company is licensed for.</string>
+    <string name="finish">Finish</string>
+    <string name="backgroundcheck">Background Check</string>
+    <string name="would">Would you like to add additional technicians under your account?</string>
+    <string name="would_as_tech">Would you like to add yourself as technicians?</string>
+    <string name="yes">YES</string>
+    <string name="no">NO</string>
+    <string name="taptosign">TAP TO SIGN</string>
+
+    <string name="middlename">Middle Name</string>
+    <string name="idonthave">I don\'t have a middle name</string>
+    <string name="birthday">Birth Day</string>
+    <string name="mm_dd_yyy">mm/dd/yyy</string>
+    <string name="driverliecenseno">Driver License Number</string>
+    <string name="driverliecensestate">Driver License State</string>
+    <string name="socialsecurityno">Social Security Number</string>
+    <string name="informationfor">Information for</string>
+    <string name="yourrights">Your Rights Under FCRA</string>
+    <string name="iacknowledge">I acknowledge receipt of the summery of Your Rights Under the Fair Credit Reporting A(FCRA) and certify that i have read and understand this document </string>
+    <string name="discloserback">I acknowledge receipt of the Disclosure Regarding Background Investigation and certify that i have read and understand this document.</string>
+    <!--SignUp_AddressActivity -->
+    <string name="emailonly">Email</string>
+    <string name="submit">Submit</string>
+    <string name="dang">Dang!</string>
+    <string name="itlookslike">It looks like we are not servicing this area yet. Please enter your email to be notified when we came to your city.</string>
+
+    <string name="techcanpick">Tech can pick up jobs through the app.</string>
+    <string name="note">Note: A $50 fee for the background safty check will be charged for every technician. </string>
+    <string name="laststep">Last Step!</string>
+    <string name="pleaseprovideavalid">Please provide a valid credit card for the background check(s). We will not charge you for any thing else, especially jobs!</string>
+    <string name="apply">Apply</string>
+    <string name="discountcode">Discount Code</string>
+    <string name="cardnumber">Card Number</string>
+    <string name="expiration">Expiration</string>
+    <string name="securitycode">Security Code</string>
+    <string name="backgroundchecks2">Background Check (2)</string>
+
+
+    <string name="liecensepic">License and Picture</string>
+    <string name="addprofilepic">Add Profile Picture</string>
+    <string name="adddriverliecense">Add Driver\'s License*</string>
+    <string name="tradeliecenseno">Trade License Numbers</string>
+    <string name="mobile">Mobile Number</string>
+    <string name="accountinfo">Account Information</string>
+
+
+    <string name="techniciansinfo">Technician Information</string>
+    <string name="appliance">APPLIANCE</string>
+    <string name="hvac">HVAC</string>
+
+    <string name="create_account">CREATE ACCOUNT</string>
+    <string name="add_phote">Add Photo</string>
+    <string name="email_phone">Email/Phone</string>
+    <string name="address11">Address 1</string>
+    <string name="address22">Address 2</string>
+    <string name="zip_code11">Zip Code</string>
+    <string name="error_msg_enter_valid_zip">Please enter the valid zip code.</string>
+
+
+    <string name="dealerserviceagre">Dealer Service Agreement</string>
+    <string name="termscondtiontextstr">Terms and Conditions</string>
+
+    <string name="no_new_message">No New Message is available</string>
+    <string name="swingin">Animation in adapters</string>
+    <string name="itemmanipulation">Item manipulation</string>
+    <string name="bottomin">Bottom in</string>
+    <string name="rightin">Right in</string>
+    <string name="leftin">Left in</string>
+    <string name="bottomrightin">Bottom right in</string>
+    <string name="scalein">Scale in</string>
+    <string name="alphain">Alpha in</string>
+    <string name="googlecards">Google cards example</string>
+    <string name="gridviewexample">GridView example</string>
+    <string name="swipedismiss">Swipe to dismiss</string>
+    <string name="animateremoval">Animate dismiss</string>
+
+    <string name="removeselected">Remove selected</string>
+    <string name="contextualundo">Contextual Undo</string>
+    <string name="expandablelistitemadapter">Expand List Items</string>
+    <string name="itemdeleted">Item deleted</string>
+    <string name="taptoundo">Tap to undo</string>
+
+    <string name="explainexpand">Tap on cards to expand or collapse them</string>
+    <string name="expandorcollapsecard">This is card number %d</string>
+    <string name="undo">Undo</string>
+    <string name="undoall">Undo All</string>
+    <string name="notideleted">Notification Deleted.</string>
+</resources>

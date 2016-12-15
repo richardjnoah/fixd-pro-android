@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orange_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_27_dp"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <fixdpro.com.fixdpro.views.CircularProgressView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/progress_view"
+                android:layout_width="@dimen/size_95_dp"
+                android:layout_height="@dimen/size_95_dp"
+                app:cpv_animAutostart="true"
+                app:cpv_color="@android:color/white"
+                app:cpv_indeterminate="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:text="Hang Tight.\n We are getting\n homeowner approval\n now"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_27_dp" />
+
+        </LinearLayout>
+
+
+        <!--Cancel JOb-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/txtCancelJOb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.4"
+                android:padding="@dimen/size_10_dp"
+                android:singleLine="true"
+                android:text="@string/canceljob"
+                android:textColor="@color/orange_signin_back"
+                android:textSize="@dimen/size_20_sp" />
+
+            <ImageView
+                android:id="@+id/img_nextCanceljob"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="0.6"
+                android:src="@drawable/right_job_arrow" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/size_20_dp"></View>
+
+    </LinearLayout>
+
+
+    <ImageView
+
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/screen_cross" />
+</RelativeLayout>

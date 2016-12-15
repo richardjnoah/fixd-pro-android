@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/orange_background">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10_dp">
+
+            <ImageView
+                android:id="@+id/imgThumbLuck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/hand" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtYouHave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_12_dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:text="Horray!"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_40_dp"
+                android:layout_marginRight="@dimen/size_40_dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:text="Your account setup is complete. Hang tight while we process your background check."
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+                android:id="@+id/txtUserDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:text="2399 ,Gurusharan singshssa is not the able to sratrl"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_15_sp"
+                android:visibility="invisible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout2"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:paddingBottom="@dimen/size_10_dp"
+                android:text="This will take 48 hours from submission.\nwe will notify you when your\naccount is approved."
+
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_15_sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout3"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnFinish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/finish" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/screen_cross" />
+</RelativeLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_blur"
+    tools:context="fixdpro.com.fixdpro.WorkingRadiusActivity">
+
+    <RelativeLayout
+        android:id="@+id/header_items"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/txtBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/size_10_dp"
+            android:text="@string/back"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_18_sp" />
+
+        <TextView
+            android:id="@+id/txtDone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/size_10_dp"
+            android:text="@string/done"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_18_sp" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/mainLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/header_items"
+        android:layout_marginLeft="@dimen/size_10_dp"
+        android:layout_marginRight="@dimen/size_10_dp">
+
+        <LinearLayout
+            android:id="@+id/linear1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtWorkingradius"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/size_100_dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/workingradius"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_24_sp" />
+
+            <TextView
+                android:id="@+id/txthowfar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@string/howfarareyou"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_16_sp" />
+
+            <TextView
+                android:id="@+id/txtcode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/size_18_dp"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="575847"
+                android:textColor="@color/orange_signin_back"
+                android:textSize="@dimen/size_27_sp" />
+        </LinearLayout>
+        <!-- Drop Down.....Layout-->
+        <LinearLayout
+            android:id="@+id/linear2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/linear1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtMiles"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/size_18_dp"
+                android:background="@drawable/rectangle_full"
+                android:drawableRight="@drawable/dropicon"
+                android:paddingBottom="@dimen/size_5_dp"
+                android:paddingLeft="@dimen/size_15_dp"
+                android:paddingRight="@dimen/size_5_dp"
+                android:paddingTop="@dimen/size_5_dp"
+                android:text="Miles"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_24_sp" />
+        </LinearLayout>
+        <!--MapView Layout-->
+        <LinearLayout
+            android:id="@+id/linear3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/linear2"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/location_map"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/size_10_dp" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

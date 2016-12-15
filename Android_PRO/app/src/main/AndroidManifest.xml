@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="fixdpro.com.fixdpro">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Permission to vibrate - recommended, allows vibration feedback on scan -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Permission to use camera - required -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="fixtpro.com.fixtpro.permission.MAPS_RECEIVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
+    <uses-permission android:name="com.google.android.c2dm.permission.REGISTER" />
+    <uses-permission android:name="fixtpro.com.fixtpro.permission.C2D_MESSAGE" />
+
+    <permission
+        android:name="fixdpro.com.fixdpro.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <permission
+        android:name="fixdpro.com.fixdpro.permission.MAPS_RECEIVE"
+        android:protectionLevel="signature" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <!-- Camera features - recommended -->
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.flash"
+        android:required="false" />
+
+    <supports-screens
+        android:anyDensity="true"
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:resizeable="true"
+        android:smallScreens="true"
+        android:xlargeScreens="true" />
+
+    <application
+        android:name=".FixdProApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Splash"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Login_Register_Activity"
+            android:label="@string/title_activity_login__register_"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".Register_Activity"
+            android:label="@string/title_activity_register_"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".UserProfileScreen"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_user_profile_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".Add_Driver_LicScreen"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".BackgroundSaftyCheckScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".Add_TechScreen"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".Update_AddTechScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".AddBankAccountActivity"
+            android:label="@string/title_activity_add_bank_account"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".SelectTradeLicence"
+            android:label="@string/title_activity_select_trade_licence"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".HomeActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".SetupCompleteScreen"
+            android:label="@string/title_activity_setup_complete_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".HomeScreen"
+            android:label="@string/title_activity_home_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowActionBar="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/api_key" />
+
+        <activity
+            android:name=".CalendarActivity"
+            android:label="@string/title_activity_calendar"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <!-- <activity -->
+        <!-- android:name=".MyJobsSearchActivity" -->
+        <!-- android:label="@string/title_activity_my_jobs_search" -->
+        <!-- android:screenOrientation="portrait" -->
+        <!-- android:theme="@style/MyMaterialTheme.Base" /> -->
+        <activity
+            android:name=".ContactUsActivity"
+            android:label="@string/title_activity_contact_us"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".AvailableJobListClickActivity"
+            android:label="@string/title_activity_available_job_list_click"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".DeclineJobActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan" />
+        <activity
+            android:name=".ConfirmationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ScheduledJobListClickActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ChangePassword"
+            android:label="@string/title_activity_change_password"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden" />
+        <activity
+            android:name=".JobCompletedActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ServiceTicketActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".WorkingRadiusActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".AssignTechnicianActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".PaymentDetailsActivity"
+            android:label="@string/title_activity_payment_details"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RatingDetailsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".TechProfileScreen"
+            android:label="@string/title_activity_tech_profile_screen"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- Activities responsible for gathering payment info -->
+        <activity
+            android:name="io.card.payment.CardIOActivity"
+            android:configChanges="keyboardHidden|orientation" />
+        <activity android:name="io.card.payment.DataEntryActivity" />
+        <activity
+            android:name=".SlidingMenuActivity"
+            android:label="@string/title_activity_sliding_menu"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <!-- <activity -->
+        <!-- android:name=".BaseActivity" -->
+        <!-- android:label="@string/title_activity_base" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        <activity
+            android:name=".HomeScreenNew"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_home_screen_new"
+
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".SignatureActivity"
+            android:label="@string/title_activity_signature"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".BeatActivity"
+            android:label="@string/title_activity_beat"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ConfirmAssignTechActivity"
+            android:label="@string/title_activity_confirm_assign_tech"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".CancelScheduledJob"
+            android:label="@string/title_activity_cancel_scheduled_job"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".ChatActivity"
+            android:label="@string/title_activity_chat"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".fragment.ProblemImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+
+        <!-- <service -->
+        <!-- android:name=".gcm_components.MessageReceivingService" -->
+        <!-- android:label="fixtpro.com.fixtpro.MessageReceivingService"> -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="fixtpro.com.fixtpro.AndroidMobilePushApp" /> -->
+        <!-- <action android:name="fixtpro.com.fixtpro.ExternalReceiver" /> -->
+
+
+        <!-- <category android:name="fixtpro.com.fixtpro" /> -->
+        <!-- </intent-filter> -->
+        <!-- </service> -->
+        <!-- UnComment it for GCM -->
+        <!-- <receiver -->
+        <!-- android:name="fixdpro.com.fixdpro.gcm_components.ExternalReceiver" -->
+        <!-- android:permission="com.google.android.c2dm.permission.SEND" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.RECEIVE" /> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.REGISTRATION" /> -->
+        <!-- <action android:name="com.google.android.c2dm.intent.REGISTER" /> -->
+
+
+        <!-- <category android:name="fixtpro.com.fixtpro" /> -->
+        <!-- </intent-filter> -->
+        <!-- </receiver> -->
+
+        <activity
+            android:name=".AddCardScreen"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ChatActivityNew"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".AttachmentImageActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SignUp_AddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.New_Address_Activity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SignUp_Account_Activity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeSkills_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.CompanyInformation_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.LicensePicture_Activity"
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeLiecenseNo_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgroundCheck_Next_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgrounTap_ToSign_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.WorkingRadiusNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TapToSignActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddTechnicion_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TechnicianInformation_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.LastStep_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgroundCheck_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddBankAccountNew"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SetupCompleteAddressActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.BackgroundCheckDisclosure"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SignUp_Account_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".fragment.CompanyInformation_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.SetupCompleteAddressActivity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddBankAccountNewEdit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.WorkingRadiusNew_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeSkills_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TradeLiecenseNo_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddTechnicion_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".ForgotPasswordActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".round_image_cropper.ImageCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".round_image_cropper.New_LicensePicture_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.TermsAndConditions_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+
+        <service android:name=".firebase_utils.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- [END firebase_service] -->
+        <!-- [START firebase_iid_service] -->
+        <service android:name=".firebase_utils.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".activities.LicensePicture_Activity_Edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+
+        <service
+            android:name="main.java.com.mindscapehq.android.raygun4android.RaygunPostService"
+            android:exported="false"
+            android:process=":raygunpostservice" />
+
+        <meta-data
+            android:name="com.mindscapehq.android.raygun4android.apikey"
+            android:value="wWAQ7dppz/omulUa9zqgmA==" />
+
+        <activity
+            android:name=".ConfirmRescheduleActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
+            android:name=".activities.AddProTechnician_Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base"></activity>
+        <activity
+            android:name="fixdpro.com.fixdpro.circular_image_crop.ImageCropActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/app_name"
+            android:theme="@style/MyMaterialTheme.Base">
+        </activity>
+    </application>
+
+</manifest>

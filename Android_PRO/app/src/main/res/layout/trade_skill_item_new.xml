@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/skill_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_10_dp"
+    android:background="@drawable/whitebox_fill"
+    android:orientation="horizontal"
+    android:padding="@dimen/size_10_dp">
+
+    <ImageView
+        android:id="@+id/imgCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center"
+        android:src="@drawable/check"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/txtSkill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_5_dp"
+        android:gravity="center"
+        android:padding="@dimen/size_5_dp"
+        android:singleLine="true"
+        android:text=""
+        android:textAllCaps="true"
+        android:textColor="@color/text_color_dark_grey"
+        android:textSize="@dimen/size_14_sp"
+        android:textStyle="bold" />
+</LinearLayout>

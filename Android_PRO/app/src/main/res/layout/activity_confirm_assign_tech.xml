@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    android:orientation="vertical"
+    tools:context="fixdpro.com.fixdpro.ConfirmationActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:local="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/actionbar_bg"
+        android:minHeight="?attr/actionBarSize"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/done"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/size_5_dp"
+                android:text="@string/done"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/confirmation"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/size_10_dp"
+        android:src="@drawable/thumbs" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="@string/success"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_22_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:text="@string/confirmtext"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Sat, Jan 30, 2016"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_22_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:text="@string/between"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/time_interval"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:text="02:00PM - 04:00PM"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_20_sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="@string/fortext"
+        android:textSize="@dimen/size_16_sp"
+        android:textColor="@color/register_button_text" />
+
+    <TextView
+        android:id="@+id/contact_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:gravity="center"
+        android:text="Gurusharan"
+        android:textColor="@color/register_button_text"
+        android:textSize="@dimen/size_20_sp" />
+
+    <TextView
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:gravity="center"
+        android:textSize="@dimen/size_16_sp"
+        android:text="9952 Tanglevine - The Colony,Texas"
+        android:textColor="@color/register_button_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/size_16_dp"
+        android:layout_marginRight="@dimen/size_16_dp"
+        android:layout_marginTop="@dimen/size_32_dp"
+        android:orientation="horizontal">
+
+        <fixdpro.com.fixdpro.views.CircularImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/circleImage"
+            android:layout_width="@dimen/size_60_dp"
+            android:layout_height="@dimen/size_60_dp"
+            android:src="@drawable/addphoto_img"
+            app:civ_border_color="#ffffff" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textTitleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:paddingLeft="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textColorHint="@android:color/white"
+                android:textSize="@dimen/size_18_sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <fixdpro.com.fixdpro.views.RatingBarView
+                    android:id="@+id/cusRatingbar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.7"
+                    android:paddingLeft="@dimen/size_8_dp"
+                    app:starCount="5"
+                    app:starEmpty="@drawable/blank_star"
+                    app:starFill="@drawable/fill_star"
+                    app:starImageSize="@dimen/size_24_dp" />
+
+                <TextView
+                    android:id="@+id/textChange"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="0.8"
+                    android:background="@drawable/white_rectangle"
+                    android:gravity="center"
+                    android:padding="@dimen/size_5_dp"
+                    android:singleLine="true"
+                    android:text="Change"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="@dimen/size_12_sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textJobSchedule"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/size_8_dp"
+                    android:singleLine="true"
+                    android:text=" "
+                    android:textColor="@color/white"
+                    android:textColorHint="@android:color/white"
+                    android:textSize="@dimen/size_12_sp" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

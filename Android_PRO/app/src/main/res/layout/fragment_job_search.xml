@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fixdpro.com.fixdpro.fragment.JobSearchFragment">
+
+    <LinearLayout
+        android:id="@+id/layoutSearch"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/size_57_dp"
+        android:orientation="vertical">
+
+        <EditText
+            android:paddingLeft="@dimen/size_5_dp"
+            android:id="@+id/editSearch"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/size_18_dp"
+            android:layout_marginRight="@dimen/size_18_dp"
+            android:layout_marginTop="@dimen/size_18_dp"
+            android:background="@drawable/serach_box"
+            android:drawableLeft="@drawable/search_grey"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:singleLine="true"
+            android:textCursorDrawable="@drawable/cursor_drawable" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/availschedule_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layoutSearch"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/size_15_dp"
+        android:background="@drawable/search_completed">
+
+        <TextView
+            android:id="@+id/completed"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/scheduled"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/scheduleJob_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/availschedule_layout"
+        android:divider="@color/register_button_text"
+        android:dividerHeight="1dp"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/completeJob_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/availschedule_layout"
+        android:layout_marginTop="@dimen/size_5_dp"
+        android:divider="@color/register_button_text"
+        android:dividerHeight="1dp"
+        android:focusable="false" />
+
+</RelativeLayout>
