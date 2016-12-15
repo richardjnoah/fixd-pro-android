@@ -68,6 +68,7 @@ public class CalendarActivity extends AppCompatActivity {
     String selectedGridDate;
     String[] TYPES ;
     String[] IDS ;
+    Date dategot;
     CalanderEventsAdapter adapter;
     int posForRescheduled = 0;
     View viewRescheduled = null ;
@@ -178,7 +179,6 @@ public class CalendarActivity extends AppCompatActivity {
 //                    Show reschedule Dialog and call api
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date datenow = new Date();
-                    Date dategot = null;
                     sdf.format(datenow);
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
                     try {
@@ -239,6 +239,12 @@ public class CalendarActivity extends AppCompatActivity {
                 SelectedIndex[0] = selectedIndex;
             }
         });
+
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        String scheduledData = dateFormatter.format(dategot);
+        TextView txtScheduledDate = (TextView) dialog.findViewById(R.id.selected_date);
+
+        txtScheduledDate.setText(scheduledData);
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -485,7 +491,7 @@ public class CalendarActivity extends AppCompatActivity {
                 }
                 case 2:{
                     CalendarCollection.date_collection_arr.clear();
-                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    //CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     SharedPreferences _prefs = Utilities.getSharedPreferences(CalendarActivity.this);
                     _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", eventListener1, CalendarActivity.this, "Loading");
