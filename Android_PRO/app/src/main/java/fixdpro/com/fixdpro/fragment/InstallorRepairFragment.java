@@ -33,9 +33,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
@@ -848,8 +851,11 @@ public class InstallorRepairFragment extends Fragment {
         TextView txtDateTime = (TextView)dialog.findViewById(R.id.txtDateTime);
         txtDateTime.setText(Utilities.convertDate(availableJobModal.getRequest_date()));
 
-        String dateTime[] = Utilities.getDate(availableJobModal.getCreated_at()).split(" ");
-        String dateTime1[] = Utilities.getDate(availableJobModal.getFinished_at()).split(" ");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("MMMM,dd yyyy hh:mm a"); //this format changeable
+        dateFormatter.setTimeZone(TimeZone.getDefault());
+        String completeDate = dateFormatter.format(new Date());
+        String dateTime[] = Utilities.getDate(availableJobModal.getStarted_at()).split(" ");
+        String dateTime1[] = completeDate.split(" ");
         String actualDateTime = dateTime[0] +" "+ dateTime[1] + " at " + dateTime[2] +"" +dateTime[3];
         String actualDateTime1 = dateTime1[0] +" "+ dateTime1[1] + " at " + dateTime1[2] +"" +dateTime1[3];
         TextView txtArrivalTime = (TextView)dialog.findViewById(R.id.txtArrivalTime);
