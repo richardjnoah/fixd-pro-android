@@ -244,6 +244,8 @@ public class TradeLiecenseNo_Activity extends AppCompatActivity {
                         Intent i = new Intent(context,BackgroundCheck_Activity.class);
                         i.putExtra("ispro",ispro);
                         i.putExtra("finalRequestParams",finalRequestParams);
+                        i.putExtra("driver_image", selectedImagePathDriver);
+                        i.putExtra("user_image", selectedImagePathUser);
                         startActivity(i);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     }

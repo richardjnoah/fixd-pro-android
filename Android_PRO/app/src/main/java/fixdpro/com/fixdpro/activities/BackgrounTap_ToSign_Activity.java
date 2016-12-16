@@ -251,6 +251,28 @@ public class BackgrounTap_ToSign_Activity extends AppCompatActivity {
                 multipart.addFormField(key, finalRequestParams.get(key));
                 Log.e("" + key, "=" + finalRequestParams.get(key));
             }
+
+            if (ispro) {
+                if (selectedImagePathDriver != null) {
+                    multipart.addFilePart("data[technicians][driver_license_image]", new File(selectedImagePathDriver));
+                }
+                if (selectedImagePathUser != null) {
+                    multipart.addFilePart("data[technicians][profile_image]", new File(selectedImagePathUser));
+                }
+                if (selectedImagePathSignature != null) {
+                    multipart.addFilePart("data[technicians][e_signature_image]", new File(selectedImagePathSignature));
+                }
+            } else {
+                if (selectedImagePathDriver != null) {
+                    multipart.addFilePart("driver_license_image", new File(selectedImagePathDriver));
+                }
+                if (selectedImagePathUser != null) {
+                    multipart.addFilePart("profile_image", new File(selectedImagePathUser));
+                }
+                if (selectedImagePathSignature != null) {
+                    multipart.addFilePart("e_signature_image", new File(selectedImagePathSignature));
+                }
+            }
 //            if (ispro){
 //                if (selectedImagePathDriver != null){
 //                    multipart.addFilePart("data[technicians][driver_license_image]",new File(selectedImagePathDriver));

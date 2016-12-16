@@ -140,6 +140,8 @@ public class TradeSkills_Activity extends AppCompatActivity {
                     Intent intent = new Intent(TradeSkills_Activity.this,TradeLiecenseNo_Activity.class);
                     intent.putExtra("ispro",ispro);
                     finalRequestParams.putAll(getProRegisterParameters());
+                    intent.putExtra("driver_image", selectedImagePathDriver);
+                    intent.putExtra("user_image", selectedImagePathUser);
                     intent.putExtra("finalRequestParams", finalRequestParams);
                     startActivity(intent);
                     overridePendingTransition(R.anim.enter, R.anim.exit);
