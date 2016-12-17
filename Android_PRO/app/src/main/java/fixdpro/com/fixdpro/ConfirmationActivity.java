@@ -74,7 +74,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                 }else{
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
                     Intent intent = new Intent(ConfirmationActivity.this,HomeScreenNew.class);
-
+                    intent.putExtra("switch_tab", "Scheduled");
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();

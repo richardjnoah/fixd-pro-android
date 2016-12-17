@@ -242,7 +242,7 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
-                    handler.sendEmptyMessage(1);
+                    handler.sendEmptyMessage(0);
                 }else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
