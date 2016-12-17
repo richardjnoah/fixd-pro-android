@@ -294,6 +294,12 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         img_Edit = (ImageView)view.findViewById(R.id.img_Edit);
         img_Pic = (ImageView)view.findViewById(R.id.img_Pic);
         imgChat = (ImageView)view.findViewById(R.id.imgChat);
+        if (model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
+            imgChat.setVisibility(View.VISIBLE);
+        } else {
+            imgChat.setVisibility(View.GONE);
+        }
+
     }
     public void setListeners(){
         imgChat.setOnClickListener(this);
@@ -392,18 +398,18 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 break;
             case R.id.txtEnrouteJob:
 
-//                String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
-//                AvailableJobModal currentModel = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
-//                String userId = _prefs.getString(Preferences.ID, "");
-//
-//
+                String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
+                AvailableJobModal currentModel = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+                String userId = _prefs.getString(Preferences.ID, "");
+
+
 //                if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
 //                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
 //                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
 //                    return;
 //                }
 //
-//                if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
+//                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
 //                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
 //                    return;
 //                }
@@ -420,7 +426,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
 
 
-                if (!model.getTechnician_user_id().equals(_prefs.getString(Preferences.ID, ""))){
+                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
                     showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
                 }else {
                     // check if already enrouted job.
