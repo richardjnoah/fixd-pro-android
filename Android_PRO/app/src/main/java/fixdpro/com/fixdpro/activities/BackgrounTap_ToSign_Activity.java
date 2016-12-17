@@ -445,7 +445,10 @@ public class BackgrounTap_ToSign_Activity extends AppCompatActivity {
                         String last_name = technicians.getString("last_name");
                         String social_security_number = technicians.getString("social_security_number");
                         String years_in_business = technicians.getString("years_in_business");
+                        String isvarified = technicians.getString("verified");
+
 //                        String trade_license_number = technicians.getString("trade_license_number");
+                        editor.putString(Preferences.IS_VARIFIED, isvarified);
                         editor.putString(Preferences.FIRST_NAME, first_name);
                         editor.putString(Preferences.LAST_NAME, last_name);
                         editor.putString(Preferences.SOCIAL_SECURITY_NUMBER, social_security_number);
