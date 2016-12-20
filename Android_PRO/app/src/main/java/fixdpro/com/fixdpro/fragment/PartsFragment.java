@@ -113,13 +113,13 @@ public class PartsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parts, container, false);
         setWidgets(view);
         setListeners();
-        setView();
+        //setView();
         if (partsArrayList.size() > 0){
 //            partsArrayList.add(new Parts());
             setView();
             scrollView.setVisibility(View.VISIBLE);
             layout_bottom_view.setVisibility(View.VISIBLE);
-            layout_add_part.setVisibility(View.VISIBLE);
+            layout_plus.setVisibility(View.VISIBLE);
             layout_main.setVisibility(View.GONE);
             scrollView.post(new Runnable() {
                 @Override
@@ -127,10 +127,14 @@ public class PartsFragment extends Fragment {
                     scrollView.fullScroll(ScrollView.FOCUS_DOWN);
                 }
             });
+            ((HomeScreenNew)getActivity()).setRightToolBarText("Done");
+
         }else {
+            ((HomeScreenNew)getActivity()).hideRight();
             layout_main.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.GONE);
             layout_bottom_view.setVisibility(View.GONE);
+
         }
         txtTapAddParts.setText(Html.fromHtml(getResources().getString(R.string.tap_add_parts)));
         txtDisposalFees.setText(Html.fromHtml(getResources().getString(R.string.disposal_fess)));
@@ -164,7 +168,6 @@ public class PartsFragment extends Fragment {
                 container_layout.removeAllViews();
                 partsArrayList.add(new Parts());
                 setView();
-
             }
         });
         layout_no_part.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +215,7 @@ public class PartsFragment extends Fragment {
             txtPartDescription.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
+                    Log.e("eee", "aaa");
                 }
 
                 @Override
@@ -222,6 +225,7 @@ public class PartsFragment extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
+                    Log.e("eee", "aaa");
 
                 }
             });
@@ -284,7 +288,7 @@ public class PartsFragment extends Fragment {
 
     }
     private void setupToolBar(){
-        ((HomeScreenNew)getActivity()).hideRight();
+
         ((HomeScreenNew)getActivity()).setTitletext("Parts Used");
         ((HomeScreenNew)getActivity()).setLeftToolBarText("Back");
     }
@@ -315,7 +319,6 @@ public class PartsFragment extends Fragment {
 //        executeAddPartsRequest();
         GetApiResponseAsyncNew noPartsNeededAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST",addPartsResponseListener,addPartsExceptionListener,getActivity(),"");
         noPartsNeededAsync.execute(getAddPartsNeededRequestParams());
-
     }
 
     IHttpResponseListener addPartsResponseListener = new IHttpResponseListener() {
@@ -324,6 +327,7 @@ public class PartsFragment extends Fragment {
             Log.e("", "Response" + Response.toString());
             try {
                 if(Response.getString("STATUS").equals("SUCCESS")){
+                    //singleTon.getJobApplianceModal().getInstallOrRepairModal().getPartsContainer().setPartsArrayList(partsArrayList);
                     handler.sendEmptyMessage(2);
                 }
                 else{
@@ -349,7 +353,7 @@ public class PartsFragment extends Fragment {
         }
     };
     public void clearList(){
-        partsArrayList.clear();
+        //partsArrayList.clear();
     }
     /**
      * This interface must be implemented by activities that contain this
