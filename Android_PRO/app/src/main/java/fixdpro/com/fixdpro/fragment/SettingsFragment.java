@@ -638,7 +638,8 @@ public class SettingsFragment extends Fragment {
                 if (_prefs.edit().clear().commit()){
                     Singleton.getInstance().doLogout();
                     Intent intent = new Intent(getActivity(), Login_Register_Activity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    //intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     getActivity().startActivity(intent);
                     getActivity().finish();
                     getActivity().overridePendingTransition(R.anim.enter, R.anim.exit);
