@@ -432,7 +432,7 @@
     <string name="finish">Finish</string>
     <string name="backgroundcheck">Background Check</string>
     <string name="would">Would you like to add additional technicians under your account?</string>
-    <string name="would_as_tech">Would you like to add yourself as technicians?</string>
+    <string name="would_as_tech">Would you like to add yourself as technician?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="taptosign">TAP TO SIGN</string>
