@@ -319,6 +319,8 @@ public class CalendarActivity extends AppCompatActivity {
                                     mod.setJob_appliances_id(jsonObject.getString("id"));
                                     mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                     mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                    mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+
 
                                     if (!jsonObject.isNull("description")){
                                         mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
@@ -472,10 +474,16 @@ public class CalendarActivity extends AppCompatActivity {
     private void reScheduleJob(String index){
         GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerReschedule, CalendarActivity.this, "Loading");
         responseAsync.execute(getRequestParamsReschedule(index));
-    }private void getTimeSlotes(){
+
+    }
+
+
+    private void getTimeSlotes(){
         GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerTimeSlots, CalendarActivity.this, "Loading");
         responseAsync.execute(getRequestParamsTimeSlot());
     }
+
+
     Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -551,7 +559,9 @@ public class CalendarActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-    };ResponseListener responseListenerTimeSlots = new ResponseListener() {
+    };
+
+    ResponseListener responseListenerTimeSlots = new ResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
             Log.e("", "Response" + Response.toString());
@@ -589,6 +599,7 @@ public class CalendarActivity extends AppCompatActivity {
         hashMap.put("where[id]",JobId);
         hashMap.put("data[request_date]", selectedGridDate);
         hashMap.put("data[time_slot_id]", index+"");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
 
         return hashMap;
@@ -685,6 +696,8 @@ public class CalendarActivity extends AppCompatActivity {
                                     mod.setJob_appliances_id(jsonObject.getString("id"));
                                     mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                     mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                    mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+
                                     JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
                                     if (!jsonObject.isNull("description")){
                                         mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
