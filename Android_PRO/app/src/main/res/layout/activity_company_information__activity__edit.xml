@@ -137,7 +137,6 @@
             android:gravity="left"
             android:hint="@string/policyno"
             android:imeOptions="actionNext"
-            android:inputType="number"
             android:padding="@dimen/size_14_dp"
             android:singleLine="true"
             android:textColor="@color/text_color_dark_grey"
