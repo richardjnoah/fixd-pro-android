@@ -39,7 +39,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
     ImageView img_Cancel;
     TextView titletext,txtPayment,txtJobID,txtName,txtAddress,txtDateTime,txtArrivaltxt,txtArrivalTime,
             txtCompletedtxt,txtCompletedTime,txtSummary,txtTripCharges,txtTripChargesDoller, txtSubTotal,txtSubTotaldDoller,txtFixdFee,txtFixdFeeDoller,txtTotalEared,txtTotalEaredDoller;
-    LinearLayout applianceReceiptContainer;
+    LinearLayout applianceReceiptContainer, summaryContent;
     AvailableJobModal availableJobModal = null ;
     ArrayList<ApplianceReceipt> applianceReceipts = new ArrayList<>();
 
@@ -93,6 +93,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
                     txtTotalEaredDoller.setText("$"+availableJobModal.getJob_line_items_pro_cut());
                     break;
                 }case 1:{
+                    summaryContent.setVisibility(View.INVISIBLE);
                     showAlertDialog("Fixd-Pro",error_message);
                     break;
                 }
@@ -233,6 +234,7 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         txtFixdFeeDoller = (TextView)findViewById(R.id.txtFixdFeeDoller);
         txtTotalEared= (TextView)findViewById(R.id.txtTotalEared);
         txtTotalEaredDoller= (TextView)findViewById(R.id.txtTotalEaredDoller);
+        summaryContent = (LinearLayout)findViewById(R.id.layoutSummaryContent);
     }
     private void setTypeface(){
 //        txtPayment.setTypeface(fontfamily);
