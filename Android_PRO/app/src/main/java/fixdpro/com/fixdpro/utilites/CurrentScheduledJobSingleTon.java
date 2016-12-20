@@ -70,7 +70,7 @@ public class CurrentScheduledJobSingleTon {
         }else if (jobApplianceModal.getJob_appliances_service_type().equals("Install") || jobApplianceModal.getJob_appliances_service_type().equals("Re Key")){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_TYPE,installOrRepairModal.getRepairType().isCompleted()));
         }else {
-            repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_TYPE,installOrRepairModal.getRepairType().isCompleted()));
+            repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.MAINTAIN_TYPE,installOrRepairModal.getRepairType().isCompleted()));
         }
 
         repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.PARTS,installOrRepairModal.getPartsContainer().isCompleted()));
