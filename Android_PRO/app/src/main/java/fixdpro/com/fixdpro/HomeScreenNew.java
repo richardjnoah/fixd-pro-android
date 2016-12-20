@@ -571,6 +571,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                 mod.setJob_appliances_id(jsonObject.getString("id"));
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
 
                                 if (!jsonObject.isNull("description")){
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
@@ -721,6 +722,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                 mod.setJob_appliances_id(jsonObject.getString("id"));
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
 
                                 if (!jsonObject.isNull("description")){
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));

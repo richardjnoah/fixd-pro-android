@@ -282,6 +282,8 @@ public class JobSearchFragment extends Fragment implements View.OnClickListener 
                                 JobAppliancesModal mod = new JobAppliancesModal();
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+
                                 if (!jsonObject.isNull("appliance_types")){
                                     JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
                                     mod.setAppliance_type_id(appliance_type_obj.getString("id"));
@@ -485,6 +487,8 @@ public class JobSearchFragment extends Fragment implements View.OnClickListener 
                                 mod.setJob_appliances_id(jsonObject.getString("id"));
                                 mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
                                 mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                                mod.setJob_appliances_brand_name(jsonObject.getString("brand_name"));
+
                                 if (!jsonObject.isNull("description")){
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
                                 }
