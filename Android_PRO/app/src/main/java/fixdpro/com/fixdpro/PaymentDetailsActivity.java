@@ -1,10 +1,12 @@
 package fixdpro.com.fixdpro;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -91,11 +93,42 @@ public class PaymentDetailsActivity extends AppCompatActivity {
                     txtTotalEaredDoller.setText("$"+availableJobModal.getJob_line_items_pro_cut());
                     break;
                 }case 1:{
+                    showAlertDialog("Fixd-Pro",error_message);
                     break;
                 }
             }
         }
     };
+
+    private void showAlertDialog(String Title,String Message){
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                context);
+
+        // set title
+        alertDialogBuilder.setTitle(Title);
+
+        // set dialog message
+        alertDialogBuilder
+                .setMessage(Message)
+                .setCancelable(false)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // if this button is clicked, close
+                        // current activity
+                        dialog.cancel();
+                    }
+                });
+
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+
+
+
     private HashMap<String,String> getRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","details");
