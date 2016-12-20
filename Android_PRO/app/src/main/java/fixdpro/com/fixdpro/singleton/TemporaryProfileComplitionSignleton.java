@@ -7,7 +7,7 @@ import fixdpro.com.fixdpro.beans.ProfileComplitionValuesBean;
  */
 public class TemporaryProfileComplitionSignleton {
     ProfileComplitionValuesBean profileComplitionValuesBean = new ProfileComplitionValuesBean();
-    private static TemporaryProfileComplitionSignleton singleton = new TemporaryProfileComplitionSignleton();
+    public static TemporaryProfileComplitionSignleton singleton = new TemporaryProfileComplitionSignleton();
     public ProfileComplitionValuesBean getProfileComplitionValuesBean() {
         return profileComplitionValuesBean;
     }
@@ -15,7 +15,7 @@ public class TemporaryProfileComplitionSignleton {
     public void setProfileComplitionValuesBean(ProfileComplitionValuesBean profileComplitionValuesBean) {
         this.profileComplitionValuesBean = profileComplitionValuesBean;
     }
-    private TemporaryProfileComplitionSignleton(){ }
+    public TemporaryProfileComplitionSignleton(){ }
 
     /* Static 'instance' method */
     public static TemporaryProfileComplitionSignleton getInstance( ) {

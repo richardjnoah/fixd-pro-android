@@ -229,7 +229,7 @@ public class TradeLiecenseNo_Activity extends AppCompatActivity {
         imgNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!checkForEmptyValues()){
+                //if(!checkForEmptyValues()){
                     getFinalRequestParams();
                     if (ispro){
                         Intent i = new Intent(context,WorkingRadiusNew.class);
@@ -249,9 +249,9 @@ public class TradeLiecenseNo_Activity extends AppCompatActivity {
                         startActivity(i);
                         overridePendingTransition(R.anim.enter, R.anim.exit);
                     }
-                }else {
-                    showAlertDialog("Fixd","Please enter Trade's License Number before proceeding");
-                }
+//                }else {
+//                    showAlertDialog("Fixd","Please enter Trade's License Number before proceeding");
+//                }
 
 //                   Intent i = new Intent(context,BackgroundCheck_Next_Activity.class);
 //                    startActivity(i);

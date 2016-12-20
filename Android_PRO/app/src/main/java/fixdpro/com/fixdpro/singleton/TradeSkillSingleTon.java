@@ -36,4 +36,6 @@ public class TradeSkillSingleTon  {
     public  void setList(ArrayList<SkillTrade> arrayList ) {
         this.arrayList = arrayList;
     }
+
+    public void clear(){this.arrayList.clear();}
 }

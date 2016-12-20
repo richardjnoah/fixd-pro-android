@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.singleton.TechniciansListSinglton;
+import fixdpro.com.fixdpro.singleton.TemporaryProfileComplitionSignleton;
+import fixdpro.com.fixdpro.singleton.TradeSkillSingleTon;
 
 /**
  * Created by sahil on 02-03-2016.
@@ -123,6 +125,8 @@ public class Singleton {
         compltedpage = 1 ;
         progresspage = 1 ;
         CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+        TemporaryProfileComplitionSignleton.singleton = new TemporaryProfileComplitionSignleton();
+        TradeSkillSingleTon.getInstance().clear();
     }
 
     public ArrayList<AvailableJobModal> getProgressjoblist() {
