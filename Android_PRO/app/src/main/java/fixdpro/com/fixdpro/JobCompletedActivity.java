@@ -143,7 +143,9 @@ public class JobCompletedActivity extends AppCompatActivity {
         txtTechName.setText(availableJobModal.getTechnician_fname() +" "+availableJobModal.getTechnician_lname());
         txtTotalJobScheduled.setText(availableJobModal.getTechnician_fname() +" has" +" 0" +" jobs scheduled at this time." );
         txtTotal.setText("Total................$" + availableJobModal.getJob_line_items_pro_cut());
-        custom_ratingbar_tech.setStar((int)Float.parseFloat(availableJobModal.getTechnician_avg_rating()),true);
+        String avg_rating_string = availableJobModal.getTechnician_avg_rating();
+        if (avg_rating_string.length()== 0) avg_rating_string = "0.00";
+        custom_ratingbar_tech.setStar((int)Float.parseFloat(avg_rating_string),true);
         if (availableJobModal.getTechnician_profile_image().length() > 0)
         Picasso.with(this).load(availableJobModal.getTechnician_profile_image()).into(circleImage);
     }
