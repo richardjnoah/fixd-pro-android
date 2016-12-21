@@ -189,7 +189,10 @@ public class Utilities {
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             final Date dateObj = sdf.parse(date);
-            date1  = new SimpleDateFormat("EEE, MMM d, yyyy").format(dateObj);
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+            dateFormatter.setTimeZone(TimeZone.getDefault());
+            date1  = dateFormatter.format(dateObj);
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
