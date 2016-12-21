@@ -165,7 +165,7 @@ public class Utilities {
         try
         {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            //formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
             Date value = formatter.parse(OurDate);
 
             SimpleDateFormat dateFormatter = new SimpleDateFormat("MM-dd-yyyy"); //this format changeable
