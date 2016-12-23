@@ -13,9 +13,11 @@ import android.text.Editable;
 import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -65,7 +67,7 @@ public class PartsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     ImageView img_add;
-    LinearLayout container_layout;
+    LinearLayout container_layout, layout_bottom_container;
     ArrayList<Parts> partsArrayList = new ArrayList<Parts>();
     CurrentScheduledJobSingleTon singleTon = null;
     String error_message = "";
@@ -119,6 +121,7 @@ public class PartsFragment extends Fragment {
             setView();
             scrollView.setVisibility(View.VISIBLE);
             layout_bottom_view.setVisibility(View.VISIBLE);
+            layout_bottom_container.setVisibility(View.VISIBLE);
             layout_plus.setVisibility(View.VISIBLE);
             layout_main.setVisibility(View.GONE);
             scrollView.post(new Runnable() {
@@ -156,6 +159,7 @@ public class PartsFragment extends Fragment {
         layout_no_part = (LinearLayout)view.findViewById(R.id.layout_no_part);
         layout_main = (LinearLayout)view.findViewById(R.id.layout_main);
         layout_bottom_view = (LinearLayout)view.findViewById(R.id.layout_bottom_view);
+        layout_bottom_container = (LinearLayout)view.findViewById(R.id.bottom_container);
 
     }
     private void setListeners(){
@@ -229,6 +233,20 @@ public class PartsFragment extends Fragment {
 
                 }
             });
+
+            txtPartDescription.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if (hasFocus) {
+                        layout_bottom_container.setVisibility(View.GONE);
+                    } else {
+                    }
+                }
+            });
+
+
+
+
             txtPartNumber.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -237,7 +255,7 @@ public class PartsFragment extends Fragment {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    partsArrayList.get((int)txtPartNumber.getTag()).setNumber(s.toString());
+                    partsArrayList.get((int) txtPartNumber.getTag()).setNumber(s.toString());
                 }
 
                 @Override
@@ -277,6 +295,18 @@ public class PartsFragment extends Fragment {
 
                 }
             });
+
+            txtCost.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        layout_bottom_container.setVisibility(View.VISIBLE);
+                    }
+                    return false;
+                }
+            });
+
+
+
             container_layout.addView(addView);
         }
     }
@@ -298,6 +328,7 @@ public class PartsFragment extends Fragment {
             mListener.onFragmentInteraction(uri);
         }
     }
+
 
     @Override
     public void onAttach(Context context) {
