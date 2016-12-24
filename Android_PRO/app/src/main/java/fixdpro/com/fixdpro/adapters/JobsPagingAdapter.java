@@ -106,6 +106,7 @@ public class JobsPagingAdapter extends BaseAdapter {
             String contactname = tempValues.getContact_name();
 
             holder.contactName.setText(contactname);
+            String convertedDate = Utilities.convertDate(tempValues.getRequest_date());
             holder.day_request_date.setText(Utilities.convertDate(tempValues.getRequest_date()));
             holder.timeinterval.setText(tempValues.getTimeslot_name());
             if (state.equals("Open")){

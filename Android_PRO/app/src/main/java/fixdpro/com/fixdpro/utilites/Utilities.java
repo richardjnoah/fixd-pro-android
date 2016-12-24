@@ -181,15 +181,21 @@ public class Utilities {
         return OurDate;
     }
 
+    public static String convertToServerDate(Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String serverDate = formatter.format(date);
+        return serverDate;
+    }
+
 
 
     public static String convertDate(String date){
         String date1 = null;
-        final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
         try {
             final Date dateObj = sdf.parse(date);
-            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM d, yyyy");
+            SimpleDateFormat dateFormatter = new SimpleDateFormat("EEE, MMM dd, yyyy");
             dateFormatter.setTimeZone(TimeZone.getDefault());
             date1  = dateFormatter.format(dateObj);
 

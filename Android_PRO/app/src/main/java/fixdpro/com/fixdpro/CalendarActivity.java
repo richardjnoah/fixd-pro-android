@@ -37,6 +37,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.adapters.CalanderEventsAdapter;
 import fixdpro.com.fixdpro.adapters.CalendarAdapter;
@@ -69,10 +70,12 @@ public class CalendarActivity extends AppCompatActivity {
     String[] TYPES ;
     String[] IDS ;
     Date dategot;
+    String timerInterval;
     CalanderEventsAdapter adapter;
     int posForRescheduled = 0;
     View viewRescheduled = null ;
     boolean isJobRescheduled = false ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,6 +184,7 @@ public class CalendarActivity extends AppCompatActivity {
                     Date datenow = new Date();
                     sdf.format(datenow);
                     DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                    format.setTimeZone(TimeZone.getDefault());
                     try {
                         dategot = format.parse(selectedGridDate);
 
@@ -221,6 +225,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         final Dialog dialog = new Dialog(this);
         final int[] SelectedIndex = {0};
+
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_reschedule_new);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
@@ -237,11 +242,16 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onSelected(int selectedIndex, String item) {
                 SelectedIndex[0] = selectedIndex;
+                String aa = TYPES[selectedIndex];
+                timerInterval = item;
             }
         });
 
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yyyy");
+        dateFormatter.setTimeZone(TimeZone.getDefault());
         String scheduledData = dateFormatter.format(dategot);
+
+
         TextView txtScheduledDate = (TextView) dialog.findViewById(R.id.selected_date);
 
         txtScheduledDate.setText(scheduledData);
@@ -255,7 +265,10 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setTimeslot_name(timerInterval);
+                CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setRequest_date(Utilities.convertToServerDate(dategot));
                 reScheduleJob(IDS[SelectedIndex[0]]);
+
             }
         });
         dialog.show();
@@ -544,6 +557,7 @@ public class CalendarActivity extends AppCompatActivity {
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
+
                     isJobRescheduled = true;
                     handler.sendEmptyMessage(2);
                 }else {
