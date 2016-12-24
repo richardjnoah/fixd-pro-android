@@ -313,7 +313,7 @@
     <string name="title_activity_signature">SignatureActivity</string>
 
     <!--Signature Activity-->
-    <string name="acknowledge">i acknowledge and accept receipt of goods and/or services performed and agree to the total amount listed</string>
+    <string name="acknowledge">I acknowledge and accept receipt of goods and/or services performed and agree to the total amount listed.</string>
     <string name="title_activity_beat">BeatActivity</string>
     <string name="title_activity_confirm_assign_tech">ConfirmAssignTechActivity</string>
     <string name="title_activity_cancel_scheduled_job">CancelScheduledJob</string>

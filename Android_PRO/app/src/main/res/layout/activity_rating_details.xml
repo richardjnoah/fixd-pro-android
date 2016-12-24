@@ -43,6 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/toolbar"
+        android:layout_above="@+id/txtDispute"
         android:paddingBottom="@dimen/size_20_dp">
 
         <LinearLayout
@@ -398,21 +399,25 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/txtDispute"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:padding="12dp"
-                    android:singleLine="false"
-                    android:text="Comments"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/size_17_sp"
-                    android:visibility="gone" />
+
             </LinearLayout>
 
 
         </LinearLayout>
     </ScrollView>
+
+    <TextView
+        android:id="@+id/txtDispute"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:padding="12dp"
+        android:singleLine="false"
+        android:text="Dispute"
+        android:textColor="@color/white"
+        android:background="@color/orange_signin_back"
+        android:textSize="@dimen/size_22_sp"
+        android:visibility="visible" />
+
 </RelativeLayout>
