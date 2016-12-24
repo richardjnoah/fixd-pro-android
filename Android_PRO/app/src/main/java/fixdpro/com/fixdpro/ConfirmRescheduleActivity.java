@@ -10,7 +10,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
+import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
+import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class ConfirmRescheduleActivity extends AppCompatActivity implements View.OnClickListener {
@@ -68,9 +70,10 @@ public class ConfirmRescheduleActivity extends AppCompatActivity implements View
         switch (v.getId()){
             case R.id.done:
 
-                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-                    Intent intent = new Intent(ConfirmRescheduleActivity.this,HomeScreenNew.class);
-
+                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
+                Intent intent = new Intent(ConfirmRescheduleActivity.this,HomeScreenNew.class);
+                intent.putExtra("switch_tab", "Scheduled");
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();

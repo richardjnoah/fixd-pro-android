@@ -149,8 +149,9 @@ public class InstallorRepairFragment extends Fragment {
         setWidgets(view);
         setListeners();
         Gson gson = new Gson();
+        CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
         SharedPreferences.Editor editor = _prefs.edit();
-        editor.putString(Preferences.SCREEEN_NAME,Constants.INSTALL_OR_REPAIR_FRAGMENT);
+        editor.putString(Preferences.SCREEEN_NAME, Constants.INSTALL_OR_REPAIR_FRAGMENT);
         String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
         editor.putString(Preferences.JOB_MODAL, json);
         editor.commit();
@@ -827,8 +828,14 @@ public class InstallorRepairFragment extends Fragment {
         img_Finish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
+                    Gson gson = new Gson();
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    SharedPreferences.Editor editor = _prefs.edit();
+                    editor.putString(Preferences.SCREEEN_NAME, Constants.NO_JOB);
+                    String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
+                    editor.putString(Preferences.JOB_MODAL, json);
+                    editor.commit();
+
                     getActivity().finishAffinity();
                     Intent intent = new Intent(getActivity(),HomeScreenNew.class);
                     startActivity(intent);
@@ -913,6 +920,7 @@ public class InstallorRepairFragment extends Fragment {
     };
     private HashMap<String, String> getRequestParamsFinishJob() {
         HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
         hashMap.put("api", "finish");
         hashMap.put("object", "jobs");
         hashMap.put("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");

@@ -403,46 +403,52 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 String userId = _prefs.getString(Preferences.ID, "");
 
 
-//                if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
+                if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
+                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
+                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
+                    return;
+                }
+
+//                if ((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) &&
 //                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
 //                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
 //                    return;
 //                }
-//
-//                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
-//                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
-//                    return;
-//                }
-//
-//                if (!((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) && (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())))) {
-//                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-//                } else{
-//                    if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
-//                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-//                    }
-//                }
-//
-//                enrouteJob();
-
-
 
                 if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
                     showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
-                }else {
-                    // check if already enrouted job.
-                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
-                         // check if the same job is already enrouted
-                        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
-                            showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
-                        }else{
-                            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-                            enrouteJob();
-                        }
-                    }else {
+                    return;
+                }
+
+                if (!((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) && (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())))) {
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+                } else{
+                    if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
                         CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-                        enrouteJob();
                     }
                 }
+
+                enrouteJob();
+
+
+//
+//                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
+//                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
+//                }else {
+//                    // check if already enrouted job.
+//                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
+//                         // check if the same job is already enrouted
+//                        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
+//                            showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
+//                        }else{
+//                            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+//                            enrouteJob();
+//                        }
+//                    }else {
+//                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+//                        enrouteJob();
+//                    }
+//                }
 
 
                 break;
@@ -574,11 +580,13 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
     private void enrouteJob(){
         if (model.getStarted_at().equals("0000-00-00 00:00:00")){
             fragment = new StartJobFragment();
-            model.setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
+//            model.setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
+//            _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.START_JOB_FRAGMENT).commit();
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
         }else {
             fragment = new InstallorRepairFragment();
-            model.setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
+//            model.setCurrent_screen_tag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
+//            _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.INSTALL_OR_REPAIR_FRAGMENT).commit();
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
         }
     }

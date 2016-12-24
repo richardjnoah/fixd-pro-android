@@ -61,11 +61,13 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.LocationResponseListener;
@@ -227,6 +229,9 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 // show open direction Dialog....
                 layout_heading.setVisibility(View.GONE);
                 CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                SharedPreferences.Editor editor = _prefs.edit();
+                editor.putString(Preferences.SCREEEN_NAME, Constants.NO_JOB);
+                editor.commit();
                 ((HomeScreenNew) getActivity()).popStack();
 
             }
@@ -238,11 +243,13 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             public void onClick(View v) {
                 //                save screen for future use
                 Gson gson = new Gson();
+                CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
                 SharedPreferences.Editor editor = _prefs.edit();
                 editor.putString(Preferences.SCREEEN_NAME, Constants.START_JOB_FRAGMENT);
                 String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
                 editor.putString(Preferences.JOB_MODAL, json);
                 editor.commit();
+
                 layout_heading.setVisibility(View.GONE);
                 isEnRouteClicked = true;
 
@@ -631,7 +638,14 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         hashMap.put("api", "update");
         hashMap.put("object", "tech_routes");
         hashMap.put("data[travel_type]","CUSTOMER_HOME");
-        hashMap.put("data[job_id]",CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
+        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
+            hashMap.put("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
+        } else if(this.modal != null){
+            hashMap.put("data[job_id]", this.modal.getId());
+        } else{
+            Log.e("Errrrrroooorrr", "Null_CurrentJOB");
+            hashMap.put("data[job_id]", "222");
+        }
         hashMap.put("data[stream][0][lat]", this.location.getLatitude() + "");
         hashMap.put("data[stream][0][lng]", this.location.getLongitude() + "");
         hashMap.put("data[stream][0][utime]", System.currentTimeMillis() / 1000 + "");
@@ -648,10 +662,13 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             distance = this.location.distanceTo(loc);
         }
 
-        if (distance > 402){
-            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
-            return;
-        }
+
+        //For Development
+
+//        if (distance > 402){
+//            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
+//            return;
+//        }
 
         showStartJobDialog();
 
@@ -729,6 +746,10 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             try {
                 if(Response.getString("STATUS").equals("SUCCESS"))
                 {
+                    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                    String startDate = formatter.format(new Date());
+                    modal.setStarted_at(startDate);
                     handler.sendEmptyMessage(2);
                 }else {
                     JSONObject errors = Response.getJSONObject("ERRORS");

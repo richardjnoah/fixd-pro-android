@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
+import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
@@ -73,6 +74,7 @@ public class ConfirmationActivity extends AppCompatActivity implements View.OnCl
                     finish();
                 }else{
                     CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     Intent intent = new Intent(ConfirmationActivity.this,HomeScreenNew.class);
                     intent.putExtra("switch_tab", "Scheduled");
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);

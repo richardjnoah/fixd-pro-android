@@ -936,8 +936,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                                 dialog.dismiss();
                                 Bundle data = new Bundle();
                                 data.putSerializable("data", modal);
-                                if(modal != null && modal.getType().equals("cn"))
-                                switchFragment(new ChatUserFragment(), Constants.CHATUSER_FRAGMENT, true, data);
+                                if (modal != null && modal.getType().equals("cn"))
+                                    switchFragment(new ChatUserFragment(), Constants.CHATUSER_FRAGMENT, true, data);
 
                             }
                         }
@@ -1001,14 +1001,24 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         continue_job.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AvailableJobModal modal  = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
-                if (modal != null){
-                    if (modal.getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
-                        switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
-                    }else {
-                        switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
-                    }
+//                AvailableJobModal modal  = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+//                if (modal != null){
+//
+//                    if (modal.getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
+//                        switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+//                    }else if (modal.getCurrent_screen_tag().equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+//                        switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+//                    }
+//                }
+
+                String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
+                if(lastScreen.equals(Constants.START_JOB_FRAGMENT)){
+                    switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
+                } else if(lastScreen.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+                    switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
                 }
+
+
                 continue_job.setVisibility(View.GONE);
 //                continue_job.setVisibility(View.GONE);
 //                if (fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT) != null) {
@@ -1091,6 +1101,13 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             } else {
                 continue_job.setVisibility(View.GONE);
             }
+            if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
+                continue_job.setText("Return to En Route Job");
+            } else if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+                continue_job.setText("Return to Job in Progress");
+            }
+        } else {
+            continue_job.setVisibility(View.GONE);
         }
 
         new Handler().postDelayed(new Runnable() {
@@ -1452,6 +1469,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
                 if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
                     fragment = new StartJobFragment();
+                    // isEnrouteClicked = YES;
                     model.setCurrent_screen_tag(Constants.START_JOB_FRAGMENT);
                     switchFragment(fragment, Constants.START_JOB_FRAGMENT, true, null);
                 }else if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
