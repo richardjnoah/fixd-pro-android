@@ -148,8 +148,9 @@ public class AddServiceFragment extends Fragment {
             try {
                 String STATUS = jsonObject.getString("STATUS");
                 if (STATUS.equals("SUCCESS")){
-                    JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
-                    JSONArray results = RESPONSE.getJSONArray("results");
+                    JSONArray RESPONSE = jsonObject.getJSONArray("RESPONSE");
+                    JSONArray results = RESPONSE;  //.getJSONArray("results");
+                    skillTradesTemp.clear();
                     for (int i = 0 ; i < results.length() ; i++){
                         JSONObject object = results.getJSONObject(i);
                         SkillTrade skillTrade = new SkillTrade();
@@ -157,9 +158,9 @@ public class AddServiceFragment extends Fragment {
                         skillTrade.setTitle(object.getString("name"));
                         skillTrade.setDisplay_order(object.getString("display_order"));
                         skillTrade.setFor_consumer(object.getString("for_consumer"));
-                        arrayList.add(skillTrade);
+                        skillTradesTemp.add(skillTrade);
                     }
-                    TradeSkillSingleTon.getInstance().setList(arrayList);
+                    TradeSkillSingleTon.getInstance().setList(skillTradesTemp);
                     handler.sendEmptyMessage(0);
                 }else {
                     JSONObject errors = jsonObject.getJSONObject("ERRORS");
@@ -247,6 +248,8 @@ public class AddServiceFragment extends Fragment {
         hashMap.put("api","read");
         hashMap.put("object","services");
         hashMap.put("select","^*");
+        hashMap.put("where[status]","ACTIVE");
+        hashMap.put("_app_id","FIXD_ANDROID_PRO");
         hashMap.put("per_page","999");
         hashMap.put("page","1");
         hashMap.put("where[for_pro]", "1");
