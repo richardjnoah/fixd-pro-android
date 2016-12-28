@@ -119,7 +119,10 @@ public class RatingFragment extends Fragment {
                     hasgotOverView = true;
                     total_jobs = (Response.getJSONObject("job_count").getString("RESPONSE"));
                     if ((Response.getJSONObject("avg_rating").getString("STATUS")).equals("SUCCESS")){
-                        total_reviews = (Response.getJSONObject("avg_rating").getJSONObject("RESPONSE").getJSONArray("results")).getJSONObject(0).getString("avg_rating");
+                        JSONArray results = (Response.getJSONObject("avg_rating").getJSONObject("RESPONSE").getJSONArray("results"));
+                        if (results.length() > 0) {
+                            total_reviews = results.getJSONObject(0).getString("avg_rating");
+                        }
                         total_reviews = (int)Float.parseFloat(total_reviews) +"";
                         handler.sendEmptyMessage(1);
                     }
