@@ -183,6 +183,7 @@ public class Utilities {
 
     public static String convertToServerDate(Date date){
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
         String serverDate = formatter.format(date);
         return serverDate;
     }
