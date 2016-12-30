@@ -40,6 +40,7 @@ public class ChatService {
         if(instance == null) {
             QBChatService.setDebugEnabled(true);
             instance = new ChatService();
+
         }
         return instance;
     }
@@ -96,12 +97,11 @@ public class ChatService {
         chatService.logout(new QBEntityCallback<Void>() {
             @Override
             public void onSuccess(Void result, Bundle bundle) {
-
+                chatService.destroy();
             }
 
             @Override
             public void onError(QBResponseException list) {
-
             }
         });
     }

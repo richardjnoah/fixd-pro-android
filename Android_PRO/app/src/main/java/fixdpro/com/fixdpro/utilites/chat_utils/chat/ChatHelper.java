@@ -45,7 +45,7 @@ import fixdpro.com.fixdpro.utilites.chat_utils.qb.callback.QbEntityCallbackWrapp
 public class ChatHelper {
     private static final String TAG = ChatHelper.class.getSimpleName();
 
-    private static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 30;
+    private static final int AUTO_PRESENCE_INTERVAL_IN_SECONDS = 30000;
 
     public static final int DIALOG_ITEMS_PER_PAGE = 100;
     public static final int CHAT_HISTORY_ITEMS_PER_PAGE = 50;
@@ -60,6 +60,7 @@ public class ChatHelper {
             QBSettings.getInstance().setLogLevel(LogLevel.DEBUG);
             QBChatService.setDebugEnabled(true);
             QBChatService.setDefaultAutoSendPresenceInterval(AUTO_PRESENCE_INTERVAL_IN_SECONDS);
+
             instance = new ChatHelper();
         }
         return instance;

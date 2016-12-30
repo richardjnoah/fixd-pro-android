@@ -43,6 +43,7 @@ import fixdpro.com.fixdpro.activities.SetupCompleteAddressActivity_Edit;
 import fixdpro.com.fixdpro.activities.SignUp_Account_Activity_Edit;
 import fixdpro.com.fixdpro.activities.TradeSkills_Activity_Edit;
 import fixdpro.com.fixdpro.activities.WorkingRadiusNew_Edit;
+import fixdpro.com.fixdpro.utilites.ChatService;
 import fixdpro.com.fixdpro.utilites.CheckIfUserVarified;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
@@ -636,6 +637,7 @@ public class SettingsFragment extends Fragment {
 
                 dialog.dismiss();
                 if (_prefs.edit().clear().commit()){
+                    ChatService.getInstance().logout();
                     Singleton.getInstance().doLogout();
                     Intent intent = new Intent(getActivity(), Login_Register_Activity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
