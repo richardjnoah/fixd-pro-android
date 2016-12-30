@@ -265,6 +265,9 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+                if (timerInterval == null){
+                    timerInterval = TYPES[0];
+                }
                 CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setTimeslot_name(timerInterval);
                 CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().setRequest_date(Utilities.convertToServerDate(dategot));
                 reScheduleJob(IDS[SelectedIndex[0]]);
