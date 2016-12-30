@@ -967,6 +967,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
                     JSONObject pagination = Response.getJSONObject("RESPONSE").getJSONObject("pagination");
                     singleton.nextProgress = pagination.getString("next");
+                    progressJobList.clear();
                     for(int i = 0; i < results.length(); i++){
                         JSONObject obj = results.getJSONObject(i);
                         AvailableJobModal model = new AvailableJobModal();
@@ -1231,7 +1232,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 progresslayout.setVisibility(View.VISIBLE);
                 scheduleLayout.setVisibility(View.GONE);
                 availablelayout.setVisibility(View.GONE);
-                if (progressJobList.size() == 0){
+                if (true){  //progressJobList.size() == 0
                     GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
                     responseAsync1.execute(getRequestParamsPregressJob());
                 }else{

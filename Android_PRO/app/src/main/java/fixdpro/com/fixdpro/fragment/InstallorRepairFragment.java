@@ -324,6 +324,7 @@ public class InstallorRepairFragment extends Fragment {
 
     private HashMap<String, String> getRequestParams() {
         HashMap<String, String> hashMap = new HashMap<String, String>();
+
         hashMap.put("api", "read");
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
@@ -336,6 +337,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
         hashMap.put("per_page", "20");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+
         return hashMap;
     }
 
