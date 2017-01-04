@@ -46,7 +46,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
     SharedPreferences.Editor editor;
     EditText txtAddress;
     ImageView imgClose, imgNext;
-    TextView txtNext,txtdontSee;
+    TextView txtNext,txtdontSee, txt1;
     LinearLayout layoutNext;
     CircularProgressView progressView ;
     ArrayList<GoogleResponseBean> arrayList = new ArrayList<GoogleResponseBean>();
@@ -76,6 +76,7 @@ public class SignUp_AddressActivity extends AppCompatActivity {
     }
 
     private void setWidgets() {
+        txt1 = (TextView) findViewById(R.id.text1);
         txtAddress = (EditText) findViewById(R.id.txtAddress);
         imgNext = (ImageView) findViewById(R.id.imgNext);
         imgClose = (ImageView) findViewById(R.id.imgClose);
@@ -121,10 +122,12 @@ public class SignUp_AddressActivity extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 if (txtAddress.getText().toString().length() > 0) {
                     lstPlaces.setVisibility(View.VISIBLE);
+                    txt1.setVisibility(View.GONE);
                     arrayListTemp.clear();
                     getGoogleResults(s.toString());
                 } else {
                     lstPlaces.setVisibility(View.INVISIBLE);
+                    txt1.setVisibility(View.VISIBLE);
                 }
 
             }
