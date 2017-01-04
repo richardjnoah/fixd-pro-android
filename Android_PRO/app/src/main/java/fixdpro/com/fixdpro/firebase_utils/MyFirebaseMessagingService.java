@@ -142,6 +142,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if (modal.getDialogId().length() > 0 && !ChatActivityNew.inBackground && ChatSingleton.getInstance().getCurrentQbDialog() != null && ChatSingleton.getInstance().getCurrentQbDialog().getDialogId().equals(modal.getDialogId())){
                 return;
             }
+
+            if (modal.getDialogId().length() > 0){
+                for (int i = 0 ; i < ChatSingleton.getInstance().dataSourceUsers.size() ; i++){
+                    if (ChatSingleton.getInstance().dataSourceUsers.get(i).getDialogId().equals(modal.getDialogId())){
+                        int unreadMessageCount = ChatSingleton.getInstance().dataSourceUsers.get(i).getUnreadMessageCount();
+                        ChatSingleton.getInstance().dataSourceUsers.get(i).setUnreadMessageCount(unreadMessageCount+1);
+                        break;
+                    }
+                }
+            }
+
+
             if(!HomeScreenNew.inBackground){
                 Intent intent1 = new Intent("gcm_push_notification_receiver");
                 // You can also include some extra data.

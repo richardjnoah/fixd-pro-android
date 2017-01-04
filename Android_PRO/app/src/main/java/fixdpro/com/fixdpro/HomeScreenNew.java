@@ -52,9 +52,11 @@ import com.google.gson.Gson;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.quickblox.auth.QBAuth;
 import com.quickblox.auth.model.QBSession;
+import com.quickblox.chat.QBChatService;
 import com.quickblox.chat.model.QBDialog;
 import com.quickblox.core.QBEntityCallback;
 import com.quickblox.core.exception.QBResponseException;
+import com.quickblox.users.QBUsers;
 import com.quickblox.users.model.QBUser;
 
 import org.json.JSONArray;
@@ -201,6 +203,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     String error_message = "";
     String switch_tab_value = "Available" ;
     boolean isFirstTechReg = false;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -524,6 +528,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
         }
     };
+
+
     IHttpResponseListener responseListenerAvailable = new IHttpResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
@@ -675,6 +681,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
         }
     };
+
+
     IHttpResponseListener responseListenerScheduled = new IHttpResponseListener() {
         @Override
         public void handleResponse(JSONObject Response) {
@@ -836,6 +844,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             }
         }
     };
+
     IHttpExceptionListener exceptionListener = new IHttpExceptionListener() {
         @Override
         public void handleException(String exception) {
@@ -843,6 +852,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             handler.sendEmptyMessage(1);
         }
     };
+
     public AvailableJobModal getJobforId(String id){
         AvailableJobModal jobModal = null ;
         for (int i = 0 ; i < schedulejoblist.size() ; i++ ){
@@ -853,6 +863,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         }
         return jobModal;
     }
+
     public AvailableJobModal getJobforIdAvalable(String id){
         AvailableJobModal jobModal = null ;
         for (int i = 0 ; i < availablejoblist.size() ; i++ ){
@@ -863,6 +874,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         }
         return jobModal;
     }
+
     private void QBLogin(){
         QBAuth.createSession(new QBEntityCallback<QBSession>() {
             @Override
@@ -1012,9 +1024,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 //                }
 
                 String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
-                if(lastScreen.equals(Constants.START_JOB_FRAGMENT)){
+                if (lastScreen.equals(Constants.START_JOB_FRAGMENT)) {
                     switchFragment(fragmentManager.findFragmentByTag(Constants.START_JOB_FRAGMENT), Constants.START_JOB_FRAGMENT, true, null);
-                } else if(lastScreen.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+                } else if (lastScreen.equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)) {
                     switchFragment(fragmentManager.findFragmentByTag(Constants.INSTALL_OR_REPAIR_FRAGMENT), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
                 }
 
@@ -1054,7 +1066,19 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         } else {
             popStack();
         }
+        updateMessageCount();
     }
+
+
+    public void updateMessageCount(){
+        count =  0 ;
+        for (int i = 0 ; i < ChatSingleton.getInstance().dataSourceUsers.size() ; i++){
+            count = count + ChatSingleton.getInstance().dataSourceUsers.get(i).getUnreadMessageCount() ;
+        }
+        _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
+        setNotficationCounts();
+    }
+
 
     private void handleRightClick() {
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT)) {
@@ -1095,7 +1119,26 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             toggle();
         if (Tag.equals(currentFragmentTag))
             return;
-        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) {
+
+
+
+//        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) {
+//            if (Tag.equals(Constants.HOME_FRAGMENT) || Tag.equals(Constants.MYJOB_FRAGMENT) || Tag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
+//                continue_job.setVisibility(View.VISIBLE);
+//            } else {
+//                continue_job.setVisibility(View.GONE);
+//            }
+//            if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
+//                continue_job.setText("Return to En Route Job");
+//            } else if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)){
+//                continue_job.setText("Return to Job in Progress");
+//            }
+//        } else {
+//            continue_job.setVisibility(View.GONE);
+//        }
+
+
+        if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT) || _prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.INSTALL_OR_REPAIR_FRAGMENT)) {
             if (Tag.equals(Constants.HOME_FRAGMENT) || Tag.equals(Constants.MYJOB_FRAGMENT) || Tag.equals(Constants.SCHEDULED_LIST_DETAILS_FRAGMENT)) {
                 continue_job.setVisibility(View.VISIBLE);
             } else {
@@ -1133,6 +1176,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+
                 Utilities.getSharedPreferences(HomeScreenNew.this).edit().clear().commit();
                 Intent j = new Intent(HomeScreenNew.this, Login_Register_Activity.class);
                 startActivity(j);
@@ -1452,15 +1496,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         } else {
 
         }
-        count =  0 ;
-        for (int i = 0 ; i < ChatSingleton.getInstance().dataSourceUsers.size() ; i++){
-            count = count + ChatSingleton.getInstance().dataSourceUsers.get(i).getUnreadMessageCount() ;
-        }
-        if (count > 0){
+        updateMessageCount();
 
-            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
-        }
-        setNotficationCounts();
         if (currentFragmentTag.equals(Constants.HOME_FRAGMENT) || currentFragmentTag.equals("")){
             Gson gson = new Gson();
             String json = _prefs.getString(Preferences.JOB_MODAL, "");
@@ -1541,10 +1578,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         mCurrentLocation = location;
         if (locationResponseListener != null) {
             locationResponseListener.handleLocationResponse(location);
-            locationResponseListener = null;
+//            locationResponseListener = null;
         }
-
-
     }
 
     @Override
@@ -1554,6 +1589,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         Log.i(TAG, "Connection suspended");
         mGoogleApiClient.connect();
     }
+
 
     /**
      * Stores activity data in the Bundle.
@@ -1814,11 +1850,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                         for (int i = 0; i < dialogs.size(); i++) {
                             count = count + dialogs.get(i).getUnreadMessageCount();
                         }
-                        if (count > 0) {
-                            _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
-                            setNotficationCounts();
-                        }
-
+                        _prefs.edit().putInt(Preferences.CHAT_NOTI_COUNT,count).commit();
+                        setNotficationCounts();
                     }
                 });
             }
