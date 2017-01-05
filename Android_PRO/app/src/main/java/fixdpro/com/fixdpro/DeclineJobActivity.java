@@ -2,6 +2,7 @@ package fixdpro.com.fixdpro;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -18,6 +19,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
+import fixdpro.com.fixdpro.utilites.Constants;
+import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Singleton;
@@ -102,6 +105,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("data[job_id]",JobId);
         hashMap.put("data[reason]",editText.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
 
         return hashMap;
     }
@@ -112,6 +116,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("data[job_id]",JobId);
         hashMap.put("data[reason]",editText.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
 
         return hashMap;
     }
@@ -128,7 +133,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                     }else {
                         handler.sendEmptyMessage(0);
                     }
-                                    }else {
+                }else {
                     JSONObject errors = Response.getJSONObject("ERRORS");
                     Iterator<String> keys = errors.keys();
                     if (keys.hasNext()){
@@ -170,6 +175,8 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
             switch (msg.what){
                 case 0:{
 //                    Toast.makeText(getApplicationContext(),"Job is Scheduled",2000).show();
+
+
                     removeJobFromList();
                     Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -182,7 +189,16 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
                     showAlertDialog("FAILED", error_message);
                     break;
                 }
+
                 case 2:{
+
+                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null && CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(JobId)){
+                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                        SharedPreferences.Editor editor =  Utilities.getSharedPreferences(DeclineJobActivity.this).edit();
+                        editor.putString(Preferences.SCREEEN_NAME, Constants.NO_JOB);
+                        editor.commit();
+                    }
+
                     removeJobFromScheduledList();
                     finishAffinity();
                     Intent intent = new Intent(DeclineJobActivity.this,HomeScreenNew.class);

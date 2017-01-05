@@ -4,21 +4,24 @@ package fixdpro.com.fixdpro.utilites;
  * Created by sony on 08-02-2016.
  */
 public class Constants {
-//    public static  final String BASE_URL = "http://api.test.fixdrepair.com/v1/r";
-//    public static  final String BASE_URL = "http://api-staging.fixdrepair.com/v1/r";
-//    public static  final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
-//    public static  final String BASE_URL_BATCH = "http://api.test.fixdrepair.com/v1/b";
-//    public static  final String BASE_URL_BATCH = "http://api-staging.fixdrepair.com/v1/b";
-//    public static  final String BASE_URL_BATCH = "https://stage.fixdrepair.com/v1/b";
+
+    // Production
+//    public static  final String BASE_URL = "https://api.fixdrepair.com/v1.05/r";
+//    public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.05/b";
+
 
 //      public static final String BASE_URL = "https://dev.api.fixdrepair.com/v1/r";
 //      public static final String BASE_URL_BATCH = "https://dev.api.fixdrepair.com/v1/b";
 
 //      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
 //      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1/b";
-//
+
+
+// Staging
       public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.02/r";
       public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.02/b";
+
+
 
     public static  final String CHARSET = "UTF-8";
 

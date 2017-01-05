@@ -1,7 +1,7 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="@dimen/size_57_dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/actionbar_bg"
     android:gravity="center">
 
@@ -24,18 +24,20 @@
         android:textSize="@dimen/size_18_sp"
         android:visibility="gone" />
 
-    <TextView
+    <fixdpro.com.fixdpro.views.AutoScaleTextView
         android:id="@+id/titletext"
-        android:layout_width="wrap_content"
+        android:layout_width="@dimen/size_200_dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:maxLength="15"
         android:padding="@dimen/size_12_sp"
         android:singleLine="true"
+        app:minTextSize="@dimen/size_11_sp"
         android:text="Title"
         android:textColor="@color/register_button_text"
-        android:textSize="@dimen/size_22_sp" />
+        android:textSize="@dimen/size_22_sp"
+        />
+
     <ImageView
         android:id="@+id/img_Right"
         android:layout_width="wrap_content"

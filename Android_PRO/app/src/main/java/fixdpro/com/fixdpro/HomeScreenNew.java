@@ -104,6 +104,7 @@ import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Singleton;
 import fixdpro.com.fixdpro.utilites.Utilities;
 import fixdpro.com.fixdpro.utilites.chat_utils.SharedPreferencesUtil;
+import fixdpro.com.fixdpro.views.AutoScaleTextView;
 
 //http://stackoverflow.com/questions/13895149/sliding-menu-locks-touch-event-on-upper-view
 public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener, StartJobFragment.OnFragmentInteractionListener, ConnectionCallbacks,
@@ -114,7 +115,8 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     public String currentFragmentTag = "";
     int CONTACTUS_REQUESTCODE = 1;
     private ImageView img_Toggle, img_Right;
-    private TextView titletext, txtDone, txtBack, continue_job,badge_home;
+    private TextView  txtDone, txtBack, continue_job,badge_home;
+    private AutoScaleTextView titletext;
     FragmentManager fragmentManager;
     SlidingMenu slidingMenu = null;
     String token = "";
@@ -1106,7 +1108,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         img_Toggle = (ImageView) findViewById(R.id.img_Toggle);
         img_Right = (ImageView) findViewById(R.id.img_Right);
         badge_home = (TextView) findViewById(R.id.badge_home);
-        titletext = (TextView) findViewById(R.id.titletext);
+        titletext = (AutoScaleTextView) findViewById(R.id.titletext);
         txtBack = (TextView) findViewById(R.id.txtBack);
         txtDone = (TextView) findViewById(R.id.txtDone);
         continue_job = (TextView) findViewById(R.id.continue_job);
@@ -1420,13 +1422,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP_MR1) {
             PERMISSION_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(this,
                     android.Manifest.permission.ACCESS_FINE_LOCATION);
-            PERMISSION_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(this,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION);
             List<String> permissionsNeeded = new ArrayList<String>();
             if (PERMISSION_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED)
                 permissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            if (PERMISSION_ACCESS_COARSE_LOCATION != PackageManager.PERMISSION_GRANTED)
-                permissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
 
             if (permissionsNeeded.size() > 0) {
                 requestPermissions(permissionsNeeded.toArray(new String[permissionsNeeded.size()]),
