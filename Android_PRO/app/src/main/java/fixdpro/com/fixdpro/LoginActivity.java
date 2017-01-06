@@ -425,11 +425,13 @@ public class LoginActivity extends AppCompatActivity {
     private HashMap<String,String> getLoginRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
 
-		 hashMap.put("api", "login");
+		hashMap.put("api", "login");
         hashMap.put("data[phone_email]", Phone);
         hashMap.put("object","users");
         hashMap.put("data[password]", Password);
         hashMap.put("data[role]", "pro");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     // Our handler for received Intents. This will be called whenever an Intent

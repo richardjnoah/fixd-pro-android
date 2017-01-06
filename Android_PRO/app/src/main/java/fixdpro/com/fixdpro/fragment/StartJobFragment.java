@@ -132,13 +132,16 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     boolean isJobStarted = false ;
     GPSTracker gpsTracker = null ;
     boolean isnotificationClicked = false;
-    boolean isEnRouteClicked = false;
+    public static Boolean isEnRouteClicked = false;
     boolean isNotificationShown = false; // Arrived Notification is fired
 
     GetLocationRecursivelyTask getLocationRecursivelyTask = null ;
     SharedPreferences _prefs = null ;
 
     Handler locationRecursiveHandler;
+    public static Boolean inActive = true;
+    boolean isCameraIn = false;
+
 
     public StartJobFragment() {
         // Required empty public constructor
@@ -223,6 +226,14 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 showAlertDialogForDirection("Fixd-Pro", "Open Direction with:");
             }
         });
+
+        if (_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
+            layout_heading.setVisibility(View.GONE);
+        }else{
+            layout_heading.setVisibility(View.VISIBLE);
+        }
+
+
         imgYes.setOnClickListener(new View.OnClickListener() { // No Clicked
             @Override
             public void onClick(View v) {
@@ -233,7 +244,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 editor.putString(Preferences.SCREEEN_NAME, Constants.NO_JOB);
                 editor.commit();
                 ((HomeScreenNew) getActivity()).popStack();
-
+                isEnRouteClicked = false;
             }
         });
 
@@ -253,15 +264,16 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 layout_heading.setVisibility(View.GONE);
                 isEnRouteClicked = true;
 
-                if (checkIfProArrived()) {
-                    showStartJobDialog();
-                   // showNotification();
-                } else {
+//                if (checkIfProArrived()) {
+//                    getLocationRecursively();
+//                    showStartJobDialog();
+//                   // showNotification();
+//                } else {
                     if (locationRecursiveHandler != null ){
                         locationRecursiveHandler.removeCallbacksAndMessages(null);
                     }
                     getLocationRecursively();
-                }
+//                }
 //                // show open direction Dialog....
 //                layout_heading.setVisibility(View.GONE);
 //                ((HomeScreenNew) getActivity()).switchFragment(new HomeFragment(), Constants.HOME_FRAGMENT, false, null);
@@ -309,13 +321,15 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         loc.setLatitude(modal.getJob_customer_addresses_latitude());
         loc.setLongitude(modal.getJob_customer_addresses_longitude());//
 
+
         float distance = 0;
         if (this.location != null && loc != null) {
             distance = this.location.distanceTo(loc);
         }
+//        Toast.makeText(getContext(), "Distance :  " + distance, Toast.LENGTH_LONG).show();
 
-        if (distance < 61){
-            return true;
+        if (distance < 100){
+            return true ;
         }else {
             return false ;
         }
@@ -336,7 +350,9 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     public void onDetach() {
         super.onDetach();
         mListener = null;
-
+        if (locationRecursiveHandler != null ){
+            locationRecursiveHandler.removeCallbacksAndMessages(null);
+        }
     }
 
     @Override
@@ -348,6 +364,8 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             handler.sendEmptyMessage(0);
         }
     }
+
+
 
 
     /**
@@ -373,16 +391,15 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         /**
          * Get Location to show Path on map
          */
+
+        inActive = true;
+        isCameraIn = false;
         if (Build.VERSION.SDK_INT> Build.VERSION_CODES.LOLLIPOP_MR1) {
             List<String> permissionsNeeded = new ArrayList<String>();
             PERMISSION_ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(getActivity(),
                     android.Manifest.permission.ACCESS_FINE_LOCATION);
-            PERMISSION_ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(getActivity(),
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION);
             if (PERMISSION_ACCESS_FINE_LOCATION != PackageManager.PERMISSION_GRANTED)
                 permissionsNeeded.add(android.Manifest.permission.ACCESS_FINE_LOCATION);
-            if (PERMISSION_ACCESS_COARSE_LOCATION != PackageManager.PERMISSION_GRANTED)
-                permissionsNeeded.add(android.Manifest.permission.ACCESS_COARSE_LOCATION);
 
             if (permissionsNeeded.size() > 0) {
                 requestPermissions(permissionsNeeded.toArray(new String[permissionsNeeded.size()]),
@@ -410,10 +427,16 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        inActive = false;
+
+    }
 
     private void setupToolBar(){
         ((HomeScreenNew)getActivity()).setRightToolBarText("Start Job");
-        ((HomeScreenNew)getActivity()).setTitletext(modal.getContact_name() + " - " + modal.getJob_appliances_arrlist().get(0).getAppliance_type_name()+"..");
+        ((HomeScreenNew)getActivity()).setTitletext(modal.getContact_name() + " - " + modal.getJob_appliances_arrlist().get(0).getAppliance_type_name());
         ((HomeScreenNew)getActivity()).setLeftToolBarImage(R.drawable.menu_icon);
     }
 
@@ -459,7 +482,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         protected String doInBackground(String... urls) {
             //Get All Route values
 
-            response = v2GetRouteDirection.getDocument(fromPosition, toPosition, GMapV2GetRouteDirection.MODE_DRIVING);;
+            response = v2GetRouteDirection.getDocument(fromPosition, toPosition, GMapV2GetRouteDirection.MODE_DRIVING);
             return response;
 
         }
@@ -504,28 +527,22 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                     // Adding route on the map
                     mMap.addPolyline(rectLine);
 
-                    markerOptions.position(toPosition);
-                    markerOptions.draggable(false);
-                    mMap.addMarker(markerOptions);
+
+                    updateMarker();
 
 
-                    if (myLocationMarker != null){
-                        myLocationMarker.remove();
+                    if (!isCameraIn){
+                        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                        builder.include(fromPosition);
+                        builder.include(toPosition);
+                        final LatLngBounds bounds = builder.build();
+                        final int padding = 96; // offset from edges of the map in pixels
+                        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                        mMap.animateCamera(cu);
+                        isCameraIn = true;
+//                        Toast.makeText(getContext(), "Camera Updated", Toast.LENGTH_LONG).show();
                     }
-                    myLocationMarker = mMap.addMarker(new MarkerOptions()
-                                .position(fromPosition)
-                                .title("My Location")
-                                .draggable(false)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_truck3x)));
 
-
-                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
-                    builder.include(fromPosition);
-                    builder.include(toPosition);
-                    final LatLngBounds bounds = builder.build();
-                    final int padding = 96; // offset from edges of the map in pixels
-                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-                    mMap.animateCamera(cu);
                     String newDuration = "";
 //                    if (document != null){
                         txtDistance.setText("("+distance+")");
@@ -543,6 +560,8 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                     }
                         txtfromlocation.setText(location);
                         txttime.setText(newDuration);
+
+                    Log.e("Updated", "Map");
 //                        showHeadingTowardsJobDialog();
 //                    if (!isnotificationClicked)
 //                        layout_heading.setVisibility(View.VISIBLE);
@@ -589,6 +608,25 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         }
     }
 
+    private void updateMarker(){
+
+        markerOptions.position(toPosition);
+        markerOptions.draggable(false);
+        mMap.addMarker(markerOptions);
+
+        if (myLocationMarker != null){
+            myLocationMarker.remove();
+        }
+        myLocationMarker = mMap.addMarker(new MarkerOptions()
+                .position(fromPosition)
+                .title("My Location")
+                .draggable(false)
+//                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_truck3x)));
+    }
+
+
+
     private void doSomething(Node node){
         NodeList nodeList = node.getChildNodes();
         for (int i = 0; i < nodeList.getLength(); i++) {
@@ -606,6 +644,8 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
         getLocationRecursivelyTask = new GetLocationRecursivelyTask();
         getLocationRecursivelyTask.execute();
+
+        Log.e("Updated", "LocationUpdate");
     }
 
     private class GetLocationRecursivelyTask extends AsyncTask<Void, Void, Void> {
@@ -635,6 +675,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
     };
     private HashMap<String,String> getEnrouteParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
+
         hashMap.put("api", "update");
         hashMap.put("object", "tech_routes");
         hashMap.put("data[travel_type]","CUSTOMER_HOME");
@@ -642,16 +683,21 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
             hashMap.put("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
         } else if(this.modal != null){
             hashMap.put("data[job_id]", this.modal.getId());
-        } else{
-            Log.e("Errrrrroooorrr", "Null_CurrentJOB");
-            hashMap.put("data[job_id]", "222");
         }
+
+//        hashMap.put("data[stream][0][lat]", "48.212829");
+//        hashMap.put("data[stream][0][lng]", "-112.869043");
         hashMap.put("data[stream][0][lat]", this.location.getLatitude() + "");
         hashMap.put("data[stream][0][lng]", this.location.getLongitude() + "");
         hashMap.put("data[stream][0][utime]", System.currentTimeMillis() / 1000 + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+
         return hashMap;
     }
+
+
+
     public void submitPost(){
         Location loc = new Location("dummyprovider");
         loc.setLatitude(modal.getJob_customer_addresses_latitude());
@@ -665,10 +711,10 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
         //For Development
 
-//        if (distance > 402){
-//            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
-//            return;
-//        }
+        if (distance > 100){
+            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
+            return;
+        }
 
         showStartJobDialog();
 
@@ -722,6 +768,9 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 //                    handler.sendEmptyMessage(2);
                 if (getLocationRecursivelyTask != null ){
                     getLocationRecursivelyTask.cancel(false);
+                }
+                if (locationRecursiveHandler != null ){
+                    locationRecursiveHandler.removeCallbacksAndMessages(null);
                 }
                     isJobStarted = true;
                     GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerStartJob, getActivity(), "Loading");
@@ -790,15 +839,19 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
                     fromPosition = new LatLng(location.getLatitude(), location.getLongitude());
                     toPosition = new LatLng(modal.getJob_customer_addresses_latitude(), modal.getJob_customer_addresses_longitude());
-                    //toPosition = new LatLng(40.0151, 124.3374);
-                    GetRouteTask getRoute = new GetRouteTask();
-                    getRoute.execute();
 
+
+                    if (inActive && !isJobStarted) {
+//                        updateMarker();
+//                        Toast.makeText(getContext(), "Lat :" + fromPosition.latitude + " Lon:  " + fromPosition.longitude + "Distance : " + distance, Toast.LENGTH_LONG).show();
+                        GetRouteTask getRoute = new GetRouteTask();
+                        getRoute.execute();
+                    }
                     break;
                 }
                 case 3:{
                     if (checkIfProArrived()){
-                        if(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.START_JOB_FRAGMENT)){
+                        if(!HomeScreenNew.inBackground){
                             isNotificationShown = true;
                             showStartJobDialog();
                         }else if(!isNotificationShown){
@@ -812,7 +865,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                                 public void run() {
                                     getLocationRecursively();
                                 }
-                            }, 30000);
+                            }, 15000);
                         }
                     }
 
@@ -847,8 +900,11 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
     private HashMap<String,String> getRequestParams(){
         HashMap<String,String> hashMap = new HashMap<String,String>();
+
         hashMap.put("api", "start");
         hashMap.put("object", "jobs");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         hashMap.put("data[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
 
