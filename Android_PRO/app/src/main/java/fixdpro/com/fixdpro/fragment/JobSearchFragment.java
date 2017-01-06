@@ -704,6 +704,8 @@ public class JobSearchFragment extends Fragment implements View.OnClickListener 
         hashMap.put("per_page", "20");
         hashMap.put("where[status]", Type);
         hashMap.put("search", editSearch.getText().toString());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

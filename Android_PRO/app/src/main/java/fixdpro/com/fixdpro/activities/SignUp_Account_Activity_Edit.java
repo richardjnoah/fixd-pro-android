@@ -211,7 +211,8 @@ public class SignUp_Account_Activity_Edit extends AppCompatActivity {
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("data[technicians][first_name]", FirstName);
         hashMap.put("data[technicians][last_name]", LastName);
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
 
         return hashMap;
     }

@@ -364,6 +364,8 @@ public class WhatsWrongFragment extends Fragment {
         hashMap.put("page", "1");
         hashMap.put("appliance_type_id", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getAppliance_type_id());
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void getBrands(){

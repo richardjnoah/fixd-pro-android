@@ -221,7 +221,8 @@ public class WorkingRadiusActivity extends AppCompatActivity {
         hashMap.put("object", "pros");
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("data[pros][working_radius_miles]", radius_to_send);
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void setUpMap() {

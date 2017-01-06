@@ -573,7 +573,8 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         hashMap.put("object", "jobs");
         hashMap.put("job_id", model.getId());
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

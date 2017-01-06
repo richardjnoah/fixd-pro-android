@@ -136,6 +136,8 @@ public class PaymentDetailsActivity extends AppCompatActivity {
         hashMap.put("object","jobs");
         hashMap.put("data[job_id]",availableJobModal.getId());
         hashMap.put("token",Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     IHttpResponseListener iHttpResponseListener = new IHttpResponseListener() {

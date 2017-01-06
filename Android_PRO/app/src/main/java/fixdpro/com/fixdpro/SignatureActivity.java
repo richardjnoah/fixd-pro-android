@@ -136,7 +136,8 @@ public class SignatureActivity extends AppCompatActivity {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
                     multipart.addFormField("api", "update_customer_signature");
 //                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
-
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
                         multipart.addFormField("object", "job_appliances");
 
 //                    }else{

@@ -341,6 +341,8 @@ public class TellUsWhatsWrongFragment extends Fragment {
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN,""));
                     multipart.addFormField("data[diagnosis_and_resolution]", DiagnosAndResolution);
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
                     multipart.addFilePart("data[image]", new File(Path));
                 } catch (IOException e) {
                     e.printStackTrace();

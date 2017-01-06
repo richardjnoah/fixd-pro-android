@@ -324,6 +324,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         else
             hashMap.put("page", pageAvaileble+"");
         hashMap.put("per_page", "15");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
 
         return hashMap;
     }
@@ -494,7 +496,8 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         hashMap.put("api", "signup_complete");
         hashMap.put("object", "pros");
         hashMap.put("with_token", "1");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     HandlePagingResponse handlePagingResponseAvailable = new HandlePagingResponse() {

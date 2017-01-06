@@ -400,6 +400,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", 1+"");
         hashMap.put("per_page", "15");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     Handler handler = new Handler(){

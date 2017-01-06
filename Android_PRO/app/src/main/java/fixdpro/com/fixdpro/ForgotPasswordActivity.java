@@ -81,6 +81,8 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         hashMap.put("api", "send_token");
         hashMap.put("data[phone_email]", Phone);
         hashMap.put("object","password");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     Handler handler = new Handler(){

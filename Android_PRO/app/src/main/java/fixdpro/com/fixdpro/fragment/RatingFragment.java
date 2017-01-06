@@ -273,6 +273,8 @@ public class RatingFragment extends Fragment {
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("per_page", "15");
         hashMap.put("page", pageRating + "");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         for ( String key : hashMap.keySet() ) {
             Log.e(""+key,"="+hashMap.get(key));
         }
@@ -287,6 +289,8 @@ public class RatingFragment extends Fragment {
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("avg_rating[select]", "avg_rating");
         hashMap.put("avg_rating[where][user_id]", TechId + "");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         for ( String key : hashMap.keySet() ) {
             Log.e(""+key,"="+hashMap.get(key));
         }

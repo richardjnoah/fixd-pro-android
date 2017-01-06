@@ -276,6 +276,8 @@ public class SetupCompleteAddressActivity_Edit extends AppCompatActivity impleme
         hashMap.put("per_page", 20 + "");
         hashMap.put("page", 1 + "");
         hashMap.put("where[zipcode]", txtZipCode.getText().toString());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

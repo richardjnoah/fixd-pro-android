@@ -367,6 +367,8 @@ public class FixdProApplication  extends Application {
         hashMap.put("page", "1");
         hashMap.put("where[status]", "ACTIVE");
         hashMap.put("where[for_pro]", "1");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -386,6 +388,8 @@ public class FixdProApplication  extends Application {
         hashMap.put("per_page", "15");
         hashMap.put("order_by", "finished_at");
         hashMap.put("order", "DESC");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String, String> getreadUserFromServer() {
@@ -395,7 +399,8 @@ public class FixdProApplication  extends Application {
         hashMap.put("select", "^*,technicians.^*");
         hashMap.put("where[id]", _prefs.getString(Preferences.ID,""));
         hashMap.put("token", Utilities.getSharedPreferences(getApplicationContext()).getString(Preferences.AUTH_TOKEN, ""));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String,String> getRequestParamsScheduled(){
@@ -414,6 +419,8 @@ public class FixdProApplication  extends Application {
         hashMap.put("per_page", "15");
         hashMap.put("order_by", "date_time_combined");
         hashMap.put("order", "ASC");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener responseListenerCompleted = new ResponseListener() {

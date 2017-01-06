@@ -192,6 +192,8 @@ public class RepairFragment extends Fragment {
             hashMap.put("data[items][0][maintain_type_id]", install_or_repair_type_id);
         }
         hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap ;
     }
     private HashMap<String,String>  getRequestParamsForSaveType(String hours,String Desc){
@@ -203,6 +205,8 @@ public class RepairFragment extends Fragment {
         hashMap.put("data[hours]", hours);
         hashMap.put("data[name]", Desc);
         hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap ;
     }
     private void setListeners(){
@@ -271,6 +275,8 @@ public class RepairFragment extends Fragment {
         }
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener getRepairTypesListener = new ResponseListener() {
@@ -478,6 +484,8 @@ public class RepairFragment extends Fragment {
                         multipart.addFormField("data[repair_type_id]", install_or_repair_type_id);
                     }
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

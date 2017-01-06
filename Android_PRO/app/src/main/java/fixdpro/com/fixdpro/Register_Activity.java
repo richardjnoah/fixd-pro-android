@@ -224,6 +224,8 @@ public class Register_Activity extends AppCompatActivity {
         hashMap.put("object","users");
         hashMap.put("select","id");
         hashMap.put("where[phone]",Phone);
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 }

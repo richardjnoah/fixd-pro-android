@@ -252,6 +252,9 @@ public class BackgrounTap_ToSign_Activity extends AppCompatActivity {
                 Log.e("" + key, "=" + finalRequestParams.get(key));
             }
 
+            multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+            multipart.addFormField("_company_id", "FIXD");
+
             if (ispro) {
                 if (selectedImagePathDriver != null) {
                     multipart.addFilePart("data[technicians][driver_license_image]", new File(selectedImagePathDriver));

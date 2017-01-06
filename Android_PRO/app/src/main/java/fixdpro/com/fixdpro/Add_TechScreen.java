@@ -222,6 +222,8 @@ public class Add_TechScreen extends AppCompatActivity {
         paramHashMap.put("data[last_name]", last_name);
         paramHashMap.put("data[email]", email);
         paramHashMap.put("data[phone]", phone);
+        paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        paramHashMap.put("_company_id", "FIXD");
         if (ispickUp_jobs)
             paramHashMap.put("data[pickup_jobs]", "1");
         else
@@ -237,6 +239,8 @@ public class Add_TechScreen extends AppCompatActivity {
         paramHashMap.put("api", "update");
         paramHashMap.put("data[user_id]", technician_id);
         paramHashMap.put("token", token);
+        paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        paramHashMap.put("_company_id", "FIXD");
 //        if (profile_image_file  != null)
 //        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
 
@@ -650,6 +654,8 @@ public class Add_TechScreen extends AppCompatActivity {
         hashMap.put("per_page","999");
         hashMap.put("where[user_id@!=]",Utilities.getSharedPreferences(this).getString(Preferences.ID,""));
         hashMap.put("page", "1");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

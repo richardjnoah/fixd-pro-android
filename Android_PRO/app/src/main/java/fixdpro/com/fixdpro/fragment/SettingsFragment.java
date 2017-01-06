@@ -519,6 +519,8 @@ public class SettingsFragment extends Fragment {
         hashMap.put("data[job_lost_notification]", notif_JobLost);
         hashMap.put("data[job_won_notification]", notif_JobWon);
         hashMap.put("data[available_jobs_notification]", notif_AvlJobs);
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void saveSettings(){
@@ -710,7 +712,8 @@ public class SettingsFragment extends Fragment {
         hashMap.put("api", "primary_card");
         hashMap.put("object", "cards");
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private boolean checkForProfileCompletion(){
@@ -727,7 +730,8 @@ public class SettingsFragment extends Fragment {
         hashMap.put("api", "signup_complete");
         hashMap.put("object", "pros");
         hashMap.put("with_token", "1");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void showAccountSetupDialog(){

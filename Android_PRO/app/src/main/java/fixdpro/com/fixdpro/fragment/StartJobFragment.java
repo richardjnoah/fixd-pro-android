@@ -692,7 +692,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
         hashMap.put("data[stream][0][utime]", System.currentTimeMillis() / 1000 + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
-
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

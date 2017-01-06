@@ -308,7 +308,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         hashMap.put("api", "signup_complete");
         hashMap.put("object", "pros");
         hashMap.put("with_token", "1");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void showAccountSetupDialog(){
@@ -1157,6 +1158,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         }
         hashMap.put("object","jobs");
+
         if (!role.equals("pro"))
             hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         else
@@ -1167,7 +1169,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         else
         hashMap.put("page", pageSheduled+"");
         hashMap.put("per_page", "15");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String,String> getRequestParamsPregressJob(){
@@ -1184,7 +1187,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", pageProgress+"");
         hashMap.put("per_page", "15");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

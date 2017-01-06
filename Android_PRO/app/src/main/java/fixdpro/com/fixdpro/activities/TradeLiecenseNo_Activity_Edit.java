@@ -156,6 +156,8 @@ public class TradeLiecenseNo_Activity_Edit extends AppCompatActivity {
                         finalRequestParams.put("data[user_services]["+i+"]",arrayList.get(i).getId()+"");
                     }
                     finalRequestParams.put("api", "update");
+                    finalRequestParams.put("_app_id", "FIXD_ANDROID_PRO");
+                    finalRequestParams.put("_company_id", "FIXD");
                     if (ispro)
                         finalRequestParams.put("object", "pros");
                     else

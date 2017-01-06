@@ -359,6 +359,8 @@ public class RepairInfoFragment extends Fragment {
                     multipart.addFormField("data[work_description]", description);
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

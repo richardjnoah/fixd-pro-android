@@ -121,6 +121,9 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
                     finalRequestParams.put("data[pros][insurance_policy]", PolicyNumber);
                     finalRequestParams.put("data[pros][hourly_rate]", HourlyRate);
                     finalRequestParams.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+                    finalRequestParams.put("_app_id", "FIXD_ANDROID_PRO");
+                    finalRequestParams.put("_company_id", "FIXD");
+
                     if (HourlyRate.equals("125") || HourlyRate.equals(("125.00"))){
                         showAlertDialogRate("Fixd-Pro","Keep in mind Pros with lower labor ates will see available job first.Higher labor rates may limit your job availability");
                     }else{

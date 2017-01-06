@@ -137,6 +137,8 @@ public class WhichApplianceAddServiceFragment extends Fragment {
         hashMap.put("select","^*");
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
         hashMap.put("where[service_id]", CurrentServiceAddingSingleTon.getInstance().getSkillTrade().getId()+"");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener getAppliancesListener = new ResponseListener() {
@@ -212,7 +214,8 @@ public class WhichApplianceAddServiceFragment extends Fragment {
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN, ""));
         hashMap.put("data[service_type]", CurrentServiceAddingSingleTon.getInstance().getSelectedServicetype() + "");
         hashMap.put("job_id", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener addServiceResponseListener = new ResponseListener() {

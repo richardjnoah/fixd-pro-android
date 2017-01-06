@@ -290,6 +290,8 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         hashMap.put("per_page", 20 + "");
         hashMap.put("page", 1 + "");
         hashMap.put("where[zipcode]", txtZipCode.getText().toString());
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -304,6 +306,8 @@ public class New_Address_Activity extends AppCompatActivity  implements TextView
         hashMap.put("data[pros][zip]", ZipCode);
         hashMap.put("data[pros][city]", City);
         hashMap.put("data[pros][state]", State);
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

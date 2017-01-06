@@ -35,6 +35,7 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -93,6 +94,8 @@ public class EquipmentInfoFragment extends Fragment {
     EditText editMOdalNum, editSerialNum, editDescription;
     TextView edit_Brand;
     ImageView imgMain, img_Camra;
+    LinearLayout multiPicView, singlePicView;
+    ImageView pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8;
     TextView txtTakepic;
     Typeface fontfamily;
     Dialog dialog = null;
@@ -289,6 +292,17 @@ public class EquipmentInfoFragment extends Fragment {
         img_Camra = (ImageView) view.findViewById(R.id.img_Camra);
         txtTakepic = (TextView) view.findViewById(R.id.txtTakepic);
         fontfamily = Typeface.createFromAsset(getActivity().getAssets(), "HelveticaNeue-Thin.otf");
+        singlePicView = (LinearLayout) view.findViewById(R.id.singlePicView);
+        multiPicView = (LinearLayout) view.findViewById(R.id.multiPicView);
+        pic1 = (ImageView) view.findViewById(R.id.pic1);
+        pic2 = (ImageView) view.findViewById(R.id.pic2);
+        pic3 = (ImageView) view.findViewById(R.id.pic3);
+        pic4 = (ImageView) view.findViewById(R.id.pic4);
+        pic5 = (ImageView) view.findViewById(R.id.pic5);
+        pic6 = (ImageView) view.findViewById(R.id.pic6);
+        pic7 = (ImageView) view.findViewById(R.id.pic7);
+        pic8 = (ImageView) view.findViewById(R.id.pic8);
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -800,17 +814,10 @@ public class EquipmentInfoFragment extends Fragment {
             protected String doInBackground(Void... params) {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
-//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
-
-
-//                    }else{
-//                        multipart.addFormField("api", "repair_info");
-//                        multipart.addFormField("object", "repair_flow");
-//
-//                    }
                     multipart.addFormField("api", "save_slot");
                     multipart.addFormField("object", "equipment_images");
                     multipart.addFormField("data[slot]", "1");
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
                     multipart.addFormField("_company_id", "FIXD");
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());

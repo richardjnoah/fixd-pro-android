@@ -118,6 +118,8 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
         hashMap.put("data[technician_id]", modal.getTech_User_id());
         hashMap.put("data[id]", FixdProApplication.SelectedAvailableJobId);
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener assignTechListener = new ResponseListener() {
@@ -344,6 +346,8 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
         hashMap.put("token", Utilities.getSharedPreferences(ConfirmAssignTechActivity.this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
         hashMap.put("per_page", "20");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 }

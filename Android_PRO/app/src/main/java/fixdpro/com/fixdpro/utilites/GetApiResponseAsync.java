@@ -46,6 +46,8 @@ public class GetApiResponseAsync extends AsyncTask<HashMap<String, String>, Void
 
         try {
             JSONParser jsonParser = new JSONParser();
+            arg0[0].put("_app_id", "FIXD_ANDROID_PRO");
+            arg0[0].put("_company_id", "FIXD");
             result = jsonParser.makeHttpRequest(Constants.BASE_URL,Method,arg0[0]);
         } catch (Exception e) {
             e.printStackTrace();

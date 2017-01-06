@@ -177,7 +177,8 @@ public class CancelScheduledJob extends AppCompatActivity {
         hashMap.put("data[job_id]", JobId);
         hashMap.put("data[reason]", txtCancelReason.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -246,7 +247,8 @@ public class CancelScheduledJob extends AppCompatActivity {
                     multipart.addFormField("api", "cancel");
                     multipart.addFormField("object", "job_appliances");
                     multipart.addFormField("data[reason]", reason);
-
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
 //                    }else{
 //                        multipart.addFormField("api", "repair_info");
 //                        multipart.addFormField("object", "repair_flow");

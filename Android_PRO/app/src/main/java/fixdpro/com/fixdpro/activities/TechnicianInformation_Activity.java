@@ -219,6 +219,8 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         HashMap<String,String> paramHashMap = new HashMap<String,String>();
         paramHashMap.put("object", "technicians");
         paramHashMap.put("api", "register");
+        paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        paramHashMap.put("_company_id", "FIXD");
         paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
 //        if (profile_image_file  != null)
 //        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
@@ -237,7 +239,8 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
     private HashMap<String,String> getUpdateTechParam(){
         HashMap<String,String> paramHashMap = new HashMap<String,String>();
         paramHashMap.put("object", "technicians");
-
+        paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        paramHashMap.put("_company_id", "FIXD");
         paramHashMap.put("data[first_name]", firstName);
         paramHashMap.put("data[last_name]", lastName);
         paramHashMap.put("api", "update");
@@ -262,6 +265,8 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         paramHashMap.put("api", "deactivate");
         paramHashMap.put("data[tech_user_id]", modal.getId());
         paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        paramHashMap.put("_company_id", "FIXD");
         return paramHashMap;
     }
 

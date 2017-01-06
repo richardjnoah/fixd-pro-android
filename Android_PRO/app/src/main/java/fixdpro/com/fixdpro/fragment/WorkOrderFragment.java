@@ -199,6 +199,8 @@ public class WorkOrderFragment extends Fragment {
 //            hashMap.put("object","repair_flow");
         hashMap.put("data[job_appliance_id]",singleTon.getJobApplianceModal().getJob_appliances_id());
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     @Override
@@ -628,6 +630,8 @@ public class WorkOrderFragment extends Fragment {
 //            hashMap.put("object","repair_flow");
         hashMap.put("data[job_appliance_id]",singleTon.getJobApplianceModal().getJob_appliances_id());
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener getSendOwnerRequestResponse = new ResponseListener() {
@@ -723,6 +727,8 @@ public class WorkOrderFragment extends Fragment {
             hashMap.put("data[stream]["+i+"][utime]",System.currentTimeMillis() / 1000 + "");
         }
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

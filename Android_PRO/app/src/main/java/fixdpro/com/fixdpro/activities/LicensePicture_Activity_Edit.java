@@ -254,6 +254,8 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity implements P
                 multipart.addFormField(key, finalRequestParams.get(key));
                 Log.e("" + key, "=" + finalRequestParams.get(key));
             }
+            multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+            multipart.addFormField("_company_id", "FIXD");
             if (Utilities.getSharedPreferences(this).getString(Preferences.ROLE,"pro").equals("pro")) {
                 if (selectedImagePathDriver != null) {
                     multipart.addFilePart("data[technicians][driver_license_image]", new File(selectedImagePathDriver));

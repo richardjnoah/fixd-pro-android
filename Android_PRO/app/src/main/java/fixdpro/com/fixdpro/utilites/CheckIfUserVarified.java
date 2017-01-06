@@ -30,7 +30,8 @@ public class CheckIfUserVarified {
         hashMap.put("select", "^*,technicians.^*");
         hashMap.put("where[id]", _prefs.getString(Preferences.ID,""));
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void getVarifiedStatus(){

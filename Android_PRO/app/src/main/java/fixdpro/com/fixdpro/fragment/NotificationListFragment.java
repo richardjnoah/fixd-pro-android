@@ -403,6 +403,8 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
         hashMap.put("per_page", "20");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String,String> getNotificationParams(){
@@ -416,6 +418,8 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("order","DESC");
         hashMap.put("page",page+"");
         hashMap.put("per_page",10+"");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -793,6 +797,8 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("data[is_read]","1");
         hashMap.put("where[id]",notificationlist.get(position).getID());
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -802,7 +808,8 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("object", "alerts");
         hashMap.put("data[id]", id);
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
 
         return hashMap;
     }

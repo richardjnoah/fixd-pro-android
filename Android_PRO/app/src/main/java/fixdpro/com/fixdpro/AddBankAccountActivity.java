@@ -255,7 +255,8 @@ public class AddBankAccountActivity extends AppCompatActivity {
         hashMap.put("data[pros][bank_name]", bank_name);
         hashMap.put("data[pros][bank_account_number]", account_number);
         hashMap.put("data[pros][bank_routing_number]", routing_number);
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 }

@@ -106,7 +106,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("data[reason]",editText.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
-
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String,String> getRequestParamsScheduled(){
@@ -117,7 +117,7 @@ public class DeclineJobActivity extends AppCompatActivity implements View.OnClic
         hashMap.put("data[reason]",editText.getText().toString());
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
-
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

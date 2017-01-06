@@ -178,6 +178,8 @@ public class HasPowerSourceFragment extends Fragment {
         hashMap.put("data[service_type]", CurrentServiceAddingSingleTon.getInstance().getSelectedServicetype() + "");
         hashMap.put("job_id", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("data[power_source]", CurrentServiceAddingSingleTon.getInstance().getSelectedPowerSource() + "");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener addServiceResponseListener = new ResponseListener() {

@@ -294,7 +294,8 @@ public class Login_Register_Activity extends AppCompatActivity implements View.O
         hashMap.put("select", "^*,users.^*");
         hashMap.put("where[invite_code]", varification_code);
         hashMap.put("where[is_used]", "0");
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     ResponseListener responseListenerAddTechInvite = new ResponseListener(){

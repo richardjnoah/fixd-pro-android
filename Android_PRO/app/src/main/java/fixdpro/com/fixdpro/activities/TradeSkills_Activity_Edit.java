@@ -206,6 +206,8 @@ public class TradeSkills_Activity_Edit extends AppCompatActivity {
         hashMap.put("per_page", "999");
         hashMap.put("page", "1");
         hashMap.put("where[status]", "ACTIVE");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

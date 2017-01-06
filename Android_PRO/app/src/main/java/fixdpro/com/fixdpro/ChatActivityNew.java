@@ -881,6 +881,8 @@ public class ChatActivityNew extends BaseActivityChat implements OnImagePickedLi
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("api", "chatroom");
         hashMap.put("object", "jobs");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         hashMap.put("job_id", current_job_id);
         hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
         return hashMap;

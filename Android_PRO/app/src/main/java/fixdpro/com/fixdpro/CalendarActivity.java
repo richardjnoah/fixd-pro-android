@@ -484,6 +484,8 @@ public class CalendarActivity extends AppCompatActivity {
         hashMap.put("month",cal_month.get(GregorianCalendar.MONTH) + 1 + "");
         hashMap.put("year", cal_month.get(GregorianCalendar.YEAR) + "");
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -618,7 +620,8 @@ public class CalendarActivity extends AppCompatActivity {
         hashMap.put("data[time_slot_id]", index+"");
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private HashMap<String,String> getRequestParamsTimeSlot(){
@@ -628,7 +631,8 @@ public class CalendarActivity extends AppCompatActivity {
         hashMap.put("per_page","20");
         hashMap.put("page", "1");
         hashMap.put("token", Utilities.getSharedPreferences(this).getString(Preferences.AUTH_TOKEN, null));
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void showAlertDialog(String Title,String Message, final boolean success){

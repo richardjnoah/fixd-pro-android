@@ -224,6 +224,8 @@ public class TradeSkills_Activity extends AppCompatActivity {
         hashMap.put("page", "1");
         hashMap.put("where[for_pro]", "1");
         hashMap.put("where[status]", "ACTIVE");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 
@@ -424,6 +426,8 @@ public class TradeSkills_Activity extends AppCompatActivity {
         for (int i = 0 ; i < TradeSkillSingleTon.getInstance().getListChecked().size() ; i++){
             finalRequestParams.put("data[services]["+i+"]",TradeSkillSingleTon.getInstance().getListChecked().get(i).getId()+"");
         }
+        finalRequestParams.put("_app_id", "FIXD_ANDROID_PRO");
+        finalRequestParams.put("_company_id", "FIXD");
         return finalRequestParams;
     }
     private MultipartUtility createMultiPartRequest(HashMap<String,String> hashMap){

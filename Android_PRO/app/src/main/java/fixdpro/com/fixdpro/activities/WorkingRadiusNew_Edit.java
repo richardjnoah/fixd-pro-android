@@ -195,6 +195,8 @@ public class WorkingRadiusNew_Edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finalRequestParams.put("api", "update");
+                finalRequestParams.put("_app_id", "FIXD_ANDROID_PRO");
+                finalRequestParams.put("_company_id", "FIXD");
                 if (ispro)
                     finalRequestParams.put("object", "pros");
                 else

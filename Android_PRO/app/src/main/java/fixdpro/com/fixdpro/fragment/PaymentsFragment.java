@@ -221,6 +221,8 @@ public class PaymentsFragment extends Fragment {
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","completed_jobs_stats");
         hashMap.put("object","jobs");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         return hashMap;
     }
@@ -391,6 +393,8 @@ public class PaymentsFragment extends Fragment {
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", compltedpage + "");
         hashMap.put("per_page", "20");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private ViewGroup addHeader(){

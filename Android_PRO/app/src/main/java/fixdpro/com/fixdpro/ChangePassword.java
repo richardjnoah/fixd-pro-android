@@ -202,6 +202,8 @@ public class ChangePassword extends AppCompatActivity {
         hashMap.put("new_password",new_password);
         hashMap.put("password", current_password);
         hashMap.put("token", authToken);
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
 

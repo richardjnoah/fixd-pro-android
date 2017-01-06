@@ -291,7 +291,9 @@ public class InstallorRepairFragment extends Fragment {
             hashMap.put("data[stream]["+i+"][lng]",locations_list.get(i).getLongitude()+"");
             hashMap.put("data[stream]["+i+"][utime]",System.currentTimeMillis() / 1000 + "");
         }
-        hashMap.put("token",Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN,""));
+        hashMap.put("token",Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void setupToolBar() {
@@ -925,6 +927,7 @@ public class InstallorRepairFragment extends Fragment {
     private HashMap<String, String> getRequestParamsFinishJob() {
         HashMap<String, String> hashMap = new HashMap<String, String>();
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         hashMap.put("api", "finish");
         hashMap.put("object", "jobs");
         hashMap.put("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
@@ -937,6 +940,8 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     private void getTotalCost(){

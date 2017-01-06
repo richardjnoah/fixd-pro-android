@@ -183,7 +183,8 @@ public class AddCardScreen extends AppCompatActivity {
         hashMap.put("data[lastname]", last_name);
         hashMap.put("data[year]", year);
         hashMap.put("data[cvv]", cvv);
-
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         hashMap.put("id", _prefs.getString(Preferences.ID, ""));
 
         return hashMap;

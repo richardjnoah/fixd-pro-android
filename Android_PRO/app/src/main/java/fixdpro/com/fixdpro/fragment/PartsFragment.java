@@ -415,6 +415,8 @@ public class PartsFragment extends Fragment {
 
         }
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
         return hashMap;
     }
     public void executeAddPartsRequest(){
@@ -432,6 +434,8 @@ public class PartsFragment extends Fragment {
 //                    }
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
                     multipart.addFormField("api", "save");
+                    multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
+                    multipart.addFormField("_company_id", "FIXD");
                     for (int i = 0 ; i < partsArrayList.size() ; i++){
                         multipart.addFormField("data[items][" + i + "][part_num]", partsArrayList.get(i).getNumber());
                         multipart.addFormField("data[items][" + i + "][part_cost]", partsArrayList.get(i).getCost());
