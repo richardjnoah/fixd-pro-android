@@ -1,6 +1,7 @@
 package fixdpro.com.fixdpro.beans.install_repair_beans;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by sahil on 21-06-2016.
@@ -14,6 +15,10 @@ public class EquipmentInfo implements Serializable{
     String brand_name = "";
     String model_number = "";
     String serial_number = "";
+    ArrayList<String> imgServerUrls = new ArrayList<String>();
+    ArrayList<String> imgLocalUrls = new ArrayList<String>();
+
+
 
     public boolean isLocal() {
         return isLocal;
@@ -21,6 +26,22 @@ public class EquipmentInfo implements Serializable{
 
     public void setIsLocal(boolean isLocal) {
         this.isLocal = isLocal;
+    }
+
+    public ArrayList<String> getImgServerUrls() {
+        return imgServerUrls;
+    }
+
+    public void setImgServerUrls(ArrayList<String> imgServerUrls) {
+        this.imgServerUrls = imgServerUrls;
+    }
+
+    public void setImgLocalUrls(ArrayList<String> imgLocalUrls) {
+        this.imgLocalUrls = imgLocalUrls;
+    }
+
+    public ArrayList<String> getImgLocalUrls() {
+        return imgLocalUrls;
     }
 
     public String getImage() {

@@ -331,9 +331,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,time_slots.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,time_slots.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*");
 
         hashMap.put("where[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -534,8 +534,20 @@ public class InstallorRepairFragment extends Fragment {
                                                 String  original = image.getString("original");
                                                 installOrRepairModal.getEquipmentInfo().setImage(original);
                                             }
-
-
+                                        }
+                                        if (!jsonObject.isNull("equipment_images")){
+                                            JSONArray images =  jsonObject.getJSONArray("equipment_images");
+                                            if (images.length() > 0){
+                                                ArrayList<String> imgServerUrls = new ArrayList<String>();
+                                                ArrayList<String> imgLocalUrls = new ArrayList<String>();
+                                                for (int imageIndex = 0 ; imageIndex < images.length() ; imageIndex++){
+                                                    String originalImageUrl = images.getJSONObject(imageIndex).getJSONObject("image").getString("original");
+                                                    imgServerUrls.add(originalImageUrl);
+                                                    imgLocalUrls.add("");
+                                                }
+                                                installOrRepairModal.getEquipmentInfo().setImgServerUrls(imgServerUrls);
+                                                installOrRepairModal.getEquipmentInfo().setImgLocalUrls(imgLocalUrls);
+                                            }
                                         }
                                         if(jsonObject.getString("model_number").length() > 0)
                                         installOrRepairModal.getEquipmentInfo().setIsCompleted(true);

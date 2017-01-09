@@ -37,6 +37,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -95,6 +96,7 @@ public class EquipmentInfoFragment extends Fragment {
     TextView edit_Brand;
     ImageView imgMain, img_Camra;
     LinearLayout multiPicView, singlePicView;
+    RelativeLayout picHolder1, picHolder2, picHolder3, picHolder4, picHolder5, picHolder6, picHolder7, picHolder8;
     ImageView pic1, pic2, pic3, pic4, pic5, pic6, pic7, pic8;
     TextView txtTakepic;
     Typeface fontfamily;
@@ -116,6 +118,11 @@ public class EquipmentInfoFragment extends Fragment {
     private static final int REQUEST_READ_STORAGE = 111;
     private static final String CAMERA_FILE_NAME_PREFIX = "FIXD_";
     File photoFile ;
+    boolean isPhoto1Changed, isPhoto2Changed, isPhoto3Changed, isPhoto4Changed, isPhoto5Changed, isPhoto6Changed, isPhoto7Changed, isPhoto8Changed;
+    int currentImageIndex = 0 ;
+    int uploadImageIndex = 0;
+    ArrayList<String> localImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
+    ArrayList<String> serverImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
 
     public EquipmentInfoFragment() {
         // Required empty public constructor
@@ -170,6 +177,7 @@ public class EquipmentInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_equipment_info, container, false);
+        resetLocalImageUrl();
         setWidgets(view);
         setListener();
         initLayout();
@@ -197,7 +205,56 @@ public class EquipmentInfoFragment extends Fragment {
             }
         }
 
+        // Reset Pics
+        for (int imageIndex = 0; imageIndex < serverImageUrls.size() ; imageIndex ++){
+            switch (imageIndex + 1){
+                case 1:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic1);
+                    break;
+                case 2:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic2);
+                    break;
+                case 3:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic3);
+                    break;
+                case 4:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic4);
+                    break;
+                case 5:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic5);
+                    break;
+                case 6:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic6);
+                    break;
+                case 7:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic7);
+                    break;
+                case 8:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic8);
+                    break;
+            }
+        }
+
+        hideUnhidePhotoButtons();
     }
+
+    private void resetLocalImageUrl(){
+        int serverImageUrlCount = serverImageUrls.size();
+        if (localImageUrls.size() > 0 && localImageUrls.size() > serverImageUrlCount){
+            for (int i = localImageUrls.size() ; i < serverImageUrlCount ; i++){
+                localImageUrls.set(i, null);
+            }
+        }
+    }
+
     private void setListener() {
         txtTakepic.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -223,8 +280,62 @@ public class EquipmentInfoFragment extends Fragment {
                 setDropDownWithDialog();
             }
         });
+        picHolder1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder7.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
+        picHolder8.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addPhotoClicked(v);
+            }
+        });
 
     }
+
+    private void addPhotoClicked(View v){
+        currentImageIndex = Integer.valueOf((String)v.getTag());
+        showCamraGalleryPopUp();
+    }
+
 
     private void setDropDownWithDialog() {
         final String[] selectedBrand = {""};
@@ -302,7 +413,14 @@ public class EquipmentInfoFragment extends Fragment {
         pic6 = (ImageView) view.findViewById(R.id.pic6);
         pic7 = (ImageView) view.findViewById(R.id.pic7);
         pic8 = (ImageView) view.findViewById(R.id.pic8);
-
+        picHolder1 = (RelativeLayout) view.findViewById(R.id.picHolder1);
+        picHolder2 = (RelativeLayout) view.findViewById(R.id.picHolder2);
+        picHolder3 = (RelativeLayout) view.findViewById(R.id.picHolder3);
+        picHolder4 = (RelativeLayout) view.findViewById(R.id.picHolder4);
+        picHolder5 = (RelativeLayout) view.findViewById(R.id.picHolder5);
+        picHolder6 = (RelativeLayout) view.findViewById(R.id.picHolder6);
+        picHolder7 = (RelativeLayout) view.findViewById(R.id.picHolder7);
+        picHolder8 = (RelativeLayout) view.findViewById(R.id.picHolder8);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -343,16 +461,15 @@ public class EquipmentInfoFragment extends Fragment {
         } else if (description.length() == 0) {
             showAlertDialog("Fixd-Pro", "please enter unit work description");
         } else if (equipmentInfo.getImage().length() == 0) {
-            if (Path != null && Path.length() > 0){
-                executeRepairInfoSaveingRequest();
+            if (localImageUrls.size() > 0){
+                uploadEquipmentInfoToServer();
             }else {
                 showAlertDialog("Fixd-Pro", "please add image");
             }
 
         } else {
-            executeRepairInfoSaveingRequest();
+            uploadEquipmentInfoToServer();
         }
-
     }
 
     /**
@@ -531,77 +648,10 @@ public class EquipmentInfoFragment extends Fragment {
                 Path = SiliCompressor.with(getActivity()).compress(uri1.toString(), true);
                 photoFile = new File(Path);
 
-
-//                txtTakepic.setVisibility(View.INVISIBLE);
                 img_Camra.setVisibility(View.INVISIBLE);
                 Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
                         .into(imgMain);
-//                                    Path = imageFilePath;
-////                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
-//                    txtTakepic.setVisibility(View.INVISIBLE);
-//                    img_Camra.setVisibility(View.INVISIBLE);
-////                    Picasso.with(getActivity()).load(Uri.fromFile(new File(imageFilePath)))
-////                            .into(imgMain);
-////                Uri uri = Uri.fromFile(photoFile);
-//                Bitmap d = new BitmapDrawable(getActivity().getResources() , Path).getBitmap();
-//                int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
-//                Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
-//                imgMain.setImageBitmap(scaled);
-//                imgMain.setImageURI(uri);
             }
-//            if (requestCode == CAMERA_REQUEST) {
-//                try {
-//                    selectedImageUri = data.getData();
-//
-//                    Path = getPath(getActivity(), selectedImageUri);
-////                    Path = ImageHelper2.compressImage(selectedImageUri, getActivity());
-//                    txtTakepic.setVisibility(View.INVISIBLE);
-//                    img_Camra.setVisibility(View.INVISIBLE);
-//                    Picasso.with(getActivity()).load(selectedImageUri)
-//                            .into(imgMain);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            } else if (requestCode == GALLERY_REQUEST) {
-//                Uri selectedImageUri = data.getData();
-////                if (android.os.Build.VERSION.SDK_INT <19 ){
-//                    Path = getPath(getActivity(),selectedImageUri);
-////                }else {
-////
-////// Will return "image:x*"
-////                    String wholeID = DocumentsContract.getDocumentId(selectedImageUri);
-////
-////// Split at colon, use second item in the array
-////                    String id = wholeID.split(":")[1];
-////
-////                    String[] column = { MediaStore.Images.Media.DATA };
-////
-////// where id is equal to
-////                    String sel = MediaStore.Images.Media._ID + "=?";
-////
-////                    Cursor cursor = getActivity().getContentResolver().
-////                            query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-////                                    column, sel, new String[]{id}, null);
-////
-////
-////
-////                    int columnIndex = cursor.getColumnIndex(column[0]);
-////
-////                    if (cursor.moveToFirst()) {
-////                        Path = cursor.getString(columnIndex);
-////                    }
-////
-////                    cursor.close();
-////                }
-//
-//                txtTakepic.setVisibility(View.INVISIBLE);
-//                img_Camra.setVisibility(View.INVISIBLE);
-////                imgMain.getLayoutParams().height = finalHeight;
-////                imgMain.getLayoutParams().width = finalWidth;
-////                imgDriver.setImageBitmap(ImageHelper2.decodeSampledBitmapFromFile(Path, finalWidth, finalHeight));
-//                Picasso.with(getActivity()).load(selectedImageUri)
-//                        .into(imgMain);
-//            }
         }
         else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode){
             Path = photoFile.getPath() ;
@@ -610,25 +660,164 @@ public class EquipmentInfoFragment extends Fragment {
             Path = SiliCompressor.with(getActivity()).compress(uri.toString(), true);
             photoFile = new File(Path);
 
-
-//            txtTakepic.setVisibility(View.INVISIBLE);
             img_Camra.setVisibility(View.INVISIBLE);
             Picasso.with(getActivity()).load(Uri.fromFile(photoFile))
                     .into(imgMain);
+        }
 
-//            Uri uri = Uri.fromFile(photoFile);
-//            Bitmap d = new BitmapDrawable(getActivity().getResources() , photoFile.getAbsolutePath()).getBitmap();
-//            int nh = (int) ( d.getHeight() * (512.0 / d.getWidth()) );
-//            Bitmap scaled = Bitmap.createScaledBitmap(d, 512, nh, true);
-//            imgMain.setImageBitmap(scaled);
-//            Picasso.with(getActivity())
-//                    .load(uri)
-//                    .resize(size, size)
-//                    .centerInside()
-//                    .into(imgMain);
-//            imgMain.setImageURI(uri);
+        // Save Image
+        if (localImageUrls.size() > currentImageIndex){
+            localImageUrls.set(currentImageIndex, Path);
+        } else {
+            localImageUrls.add(Path);
+        }
+        hideUnhidePhotoButtons();
+        setImageOnPhotoButton();
+        resetBoolForImageChanged();
+    }
+
+    private void hideUnhidePhotoButtons(){
+
+        singlePicView.setVisibility(View.GONE);
+        multiPicView.setVisibility(View.VISIBLE);
+        int count = localImageUrls.size();
+
+        picHolder1.setVisibility(View.INVISIBLE);
+        picHolder2.setVisibility(View.INVISIBLE);
+        picHolder3.setVisibility(View.INVISIBLE);
+        picHolder4.setVisibility(View.INVISIBLE);
+        picHolder5.setVisibility(View.INVISIBLE);
+        picHolder6.setVisibility(View.INVISIBLE);
+        picHolder7.setVisibility(View.INVISIBLE);
+        picHolder8.setVisibility(View.INVISIBLE);
+
+        switch (count){
+            case 0:
+                multiPicView.setVisibility(View.GONE);
+                singlePicView.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                break;
+            case 2:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                break;
+            case 3:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                picHolder4.setVisibility(View.VISIBLE);
+                break;
+            case 4:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                picHolder4.setVisibility(View.VISIBLE);
+                picHolder5.setVisibility(View.VISIBLE);
+                break;
+            case 5:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                picHolder4.setVisibility(View.VISIBLE);
+                picHolder5.setVisibility(View.VISIBLE);
+                picHolder6.setVisibility(View.VISIBLE);
+                break;
+            case 6:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                picHolder4.setVisibility(View.VISIBLE);
+                picHolder5.setVisibility(View.VISIBLE);
+                picHolder6.setVisibility(View.VISIBLE);
+                picHolder7.setVisibility(View.VISIBLE);
+                break;
+            case 7:
+            case 8:
+                picHolder1.setVisibility(View.VISIBLE);
+                picHolder2.setVisibility(View.VISIBLE);
+                picHolder3.setVisibility(View.VISIBLE);
+                picHolder4.setVisibility(View.VISIBLE);
+                picHolder5.setVisibility(View.VISIBLE);
+                picHolder6.setVisibility(View.VISIBLE);
+                picHolder7.setVisibility(View.VISIBLE);
+                picHolder8.setVisibility(View.VISIBLE);
+                break;
         }
     }
+
+
+    private void setImageOnPhotoButton(){
+
+        switch (currentImageIndex + 1){
+            case 1:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(0))))
+                        .into(pic1);
+                break;
+            case 2:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(1))))
+                        .into(pic2);
+                break;
+            case 3:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(2))))
+                        .into(pic3);
+                break;
+            case 4:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(3))))
+                        .into(pic4);
+                break;
+            case 5:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(4))))
+                        .into(pic5);
+                break;
+            case 6:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(5))))
+                        .into(pic6);
+                break;
+            case 7:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(6))))
+                        .into(pic7);
+                break;
+            case 8:
+                Picasso.with(getActivity()).load(Uri.fromFile(new File(localImageUrls.get(7))))
+                        .into(pic8);
+                break;
+        }
+    }
+
+    private void resetBoolForImageChanged(){
+        switch (currentImageIndex){
+            case 0:
+                isPhoto1Changed = true;
+                break;
+            case 1:
+                isPhoto2Changed = true;
+                break;
+            case 2:
+                isPhoto3Changed = true;
+                break;
+            case 3:
+                isPhoto4Changed = true;
+                break;
+            case 4:
+                isPhoto5Changed = true;
+                break;
+            case 5:
+                isPhoto6Changed = true;
+                break;
+            case 6:
+                isPhoto7Changed = true;
+                break;
+            case 7:
+                isPhoto8Changed = true;
+                break;
+        }
+    }
+
+
     /**
      * Get a file path from a Uri. This will get the the path for Storage Access
      * Framework Documents, as well as the _data field for the MediaStore and
@@ -807,16 +996,29 @@ public class EquipmentInfoFragment extends Fragment {
         alertDialog.show();
     }
 
-    public void executeRepairInfoSaveingRequest() {
-        new AsyncTask<Void, Void, String>() {
+
+
+    public void uploadEquipmentInfoToServer(){
+        if (isPhoto1Changed || isPhoto2Changed || isPhoto3Changed || isPhoto4Changed || isPhoto5Changed || isPhoto6Changed || isPhoto7Changed || isPhoto8Changed){
+            checkAndUploadImagesSequentially();
+        } else {
+            saveEquipmentInfoServer();
+        }
+    }
+
+    private void uploadImageAtIndex(int imageIndex){
+
+        uploadImageIndex = imageIndex;
+
+        new AsyncTask<Integer, Void, String>() {
 
             @Override
-            protected String doInBackground(Void... params) {
+            protected String doInBackground(Integer... params) {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
                     multipart.addFormField("api", "save_slot");
                     multipart.addFormField("object", "equipment_images");
-                    multipart.addFormField("data[slot]", "1");
+                    multipart.addFormField("data[slot]", String.valueOf(params[0]+1));
                     multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
                     multipart.addFormField("_company_id", "FIXD");
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
@@ -835,10 +1037,41 @@ public class EquipmentInfoFragment extends Fragment {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
+
                 GetApiResponseAsyncMutipart getApiResponseAsync = new GetApiResponseAsyncMutipart(multipart, repairTypeResponseListener, repairTypeexceptionListener, getActivity(), "Uploading");
                 getApiResponseAsync.execute();
             }
-        }.execute();
+        }.execute(imageIndex);
+    }
+
+    private void saveEquipmentInfoServer() {
+
+        GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerSaveEquipmentInfo, getActivity(), "Saving");
+        responseAsyncCompleted.execute(getRequestParams());
+    }
+
+    public void checkAndUploadImagesSequentially() {
+
+        if (isPhoto1Changed){
+            uploadImageAtIndex(0);
+        } else if (isPhoto2Changed){
+            uploadImageAtIndex(1);
+        } else if (isPhoto3Changed){
+            uploadImageAtIndex(2);
+        } else if (isPhoto4Changed){
+            uploadImageAtIndex(3);
+        } else if (isPhoto5Changed){
+            uploadImageAtIndex(4);
+        } else if (isPhoto6Changed){
+            uploadImageAtIndex(5);
+        } else if (isPhoto7Changed){
+            uploadImageAtIndex(6);
+        } else if (isPhoto8Changed){
+            uploadImageAtIndex(7);
+        } else {
+            saveEquipmentInfoServer();
+        }
+
     }
 
     Handler handler = new Handler() {
@@ -868,7 +1101,6 @@ public class EquipmentInfoFragment extends Fragment {
                     equipmentInfo.setDescription(description);
                     singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setEquipmentInfo(equipmentInfo);
-                    ;
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.EQUIPMENT_FRAGMENT);
                     break;
                 }
@@ -883,9 +1115,33 @@ public class EquipmentInfoFragment extends Fragment {
             try {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
 
-                    GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerSaveEquipmentInfo, getActivity(), "Saving");
-                    responseAsyncCompleted.execute(getRequestParams());
+                    if (isPhoto1Changed){
+                        isPhoto1Changed = false;
+                    } else if (isPhoto2Changed){
+                        isPhoto2Changed = false;
+                    } else if (isPhoto3Changed){
+                        isPhoto3Changed = false;
+                    } else if (isPhoto4Changed){
+                        isPhoto4Changed = false;
+                    } else if (isPhoto5Changed){
+                        isPhoto5Changed = false;
+                    } else if (isPhoto6Changed){
+                        isPhoto6Changed = false;
+                    } else if (isPhoto7Changed){
+                        isPhoto7Changed = false;
+                    } else if (isPhoto8Changed){
+                        isPhoto8Changed = false;
+                    }
 
+                    String uploadedImageUrl = Response.getJSONObject("RESPONSE").getJSONObject("image").getString("original");
+
+                    if (serverImageUrls.size() > uploadImageIndex){
+                        serverImageUrls.set(uploadImageIndex, uploadedImageUrl);
+                    } else {
+                        serverImageUrls.add(uploadedImageUrl);
+                    }
+
+                    checkAndUploadImagesSequentially();
 //                    handler.sendEmptyMessage(2);
 
                 } else {
