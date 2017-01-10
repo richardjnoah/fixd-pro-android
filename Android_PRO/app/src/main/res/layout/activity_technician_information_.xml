@@ -180,12 +180,12 @@
                 android:id="@+id/checkJobPickUp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_20_dp"
                 android:buttonTint="@color/white"
                 android:drawablePadding="@dimen/size_18_dp"
                 android:text="@string/techcanpick"
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_13_sp" />
+                android:textSize="@dimen/size_13_sp"
+                android:layout_gravity="center_horizontal" />
 
             <TextView
                 android:id="@+id/txtNote"
@@ -197,7 +197,8 @@
                 android:text="@string/note"
                 android:textColor="@color/white"
                 android:textSize="@dimen/size_13_sp"
-                android:textStyle="italic" />
+                android:textStyle="italic"
+                android:gravity="center_horizontal" />
 
         </LinearLayout>
 
@@ -208,34 +209,55 @@
             android:layout_below="@+id/layout2"
             android:layout_margin="@dimen/size_5_dp"
             android:gravity="center"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:visibility="gone">
 
-            <ImageView
-                android:id="@+id/imgCard"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_5_dp"
-                android:src="@drawable/card_default" />
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_5_dp"
+                    android:src="@drawable/card_default" />
+
+                <TextView
+                    android:id="@+id/txtCardNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/size_5_dp"
+                    android:gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16_dp" />
+
+                <TextView
+                    android:id="@+id/txtEditCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_5_dp"
+                    android:text="Edit"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/size_16_dp" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/txtCardNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/size_5_dp"
-                android:gravity="center_vertical"
-                android:text=""
-                android:textColor="@color/white"
-                android:textSize="@dimen/size_16_dp" />
-
-            <TextView
-                android:id="@+id/txtEditCard"
+                android:id="@+id/txtPromo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/size_5_dp"
-                android:text="Edit"
+                android:layout_gravity="center_horizontal"
+                android:text="I have a promo."
                 android:textColor="@color/white"
-                android:textSize="@dimen/size_16_dp" />
+                android:textSize="@dimen/size_16_dp"
+                android:textStyle="italic" />
+
+
+
         </LinearLayout>
 
         <LinearLayout

@@ -1,16 +1,20 @@
 package fixdpro.com.fixdpro.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,19 +31,21 @@ import java.util.Iterator;
 
 import fixdpro.com.fixdpro.AddCardScreen;
 import fixdpro.com.fixdpro.R;
+import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.beans.TechnicianModal;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.singleton.TechniciansListSinglton;
 import fixdpro.com.fixdpro.utilites.Constants;
+import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
 
 public class TechnicianInformation_Activity extends AppCompatActivity {
     Context context = this;
     ImageView imgClose, imgNext;
-    EditText txtFirstName, txtLastName, txtEmailAdd, txtMobile,txtExperiance;
+    EditText txtFirstName, txtLastName, txtEmailAdd, txtMobile,txtExperiance, inputPromoCode;
     CheckBox checkJobPickUp;
     public String firstName ="", lastName ="", email ="", mobileNumber ="", middleName ="",technician_id ="",YearsExp = "";
     boolean ispickUp_jobs = false;
@@ -47,12 +53,14 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
     SharedPreferences _prefs = null ;
     ArrayList<TechnicianModal> technicianModalsList = TechniciansListSinglton.getInstance().technicianModalsList;
     TechnicianModal modal;
-    String Error = "";
+    String Error = "", promo_id = "", promo_code = "", promoSuccessMsg = "";
     int position = 0 ;
     LinearLayout layout_card;
     ImageView imgCard;
-    TextView txtDeactivate, txtCardNumber, txtEditCard;
+    TextView txtDeactivate, txtCardNumber, txtEditCard, txtPromo;
     private boolean iscompleting = false ;
+    private Dialog dialog;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,14 +68,22 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_technician_information_);
         _prefs = Utilities.getSharedPreferences(this);
         setWidgets();
-        if (_prefs.getString(Preferences.IS_VARIFIED,"0").equals("1")){
-            layout_card.setVisibility(View.VISIBLE);
-            txtExperiance.setVisibility(View.GONE);
-        }
+
+
+//        if (_prefs.getString(Preferences.IS_VARIFIED,"0").equals("1")){
+//            layout_card.setVisibility(View.VISIBLE);
+//            txtExperiance.setVisibility(View.GONE);
+//        }
+
         if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
             txtExperiance.setVisibility(View.GONE);
             iscompleting = true ;
         }
+        if (!_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")){
+            layout_card.setVisibility(View.VISIBLE);
+            txtExperiance.setVisibility(View.GONE);
+        }
+
         setCLickListner();
         if (getIntent().getExtras() != null){
             if (getIntent().getExtras().containsKey("isedit"))
@@ -91,6 +107,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         txtEmailAdd.setText(modal.getEmail());
         txtMobile.setText(modal.getPhone());
         txtExperiance.setText(modal.getExperience());
+        txtPromo.setVisibility(View.GONE);
 //        imgCard.setImageResource(Utilities.getCreditCardImage(modal.get));
         if (modal.ispickjob()){
             checkJobPickUp.setChecked(true);
@@ -113,16 +130,27 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         txtEditCard = (TextView) findViewById(R.id.txtEditCard);
         layout_card = (LinearLayout) findViewById(R.id.layout_card);
         checkJobPickUp = (CheckBox) findViewById(R.id.checkJobPickUp);
-
+        txtPromo = (TextView) findViewById(R.id.txtPromo);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        txtCardNumber.setText("\u25CF\u25CF\u25CF\u25CF"+_prefs.getString(Preferences.CREDIT_CARD_NUMBER,""));
+        String fullCardNumber = _prefs.getString(Preferences.CREDIT_CARD_NUMBER, "");
+        String finalNumber = fullCardNumber;
+        if (fullCardNumber.length() > 4){
+            finalNumber = fullCardNumber.substring(fullCardNumber.length() - 4);
+        }
+        txtCardNumber.setText("\u25CF\u25CF\u25CF\u25CF" + finalNumber);
     }
 
     private void setCLickListner() {
+        txtPromo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAddPromoDialog();
+            }
+        });
         txtEditCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,7 +204,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                 } else if ((mobileNumber.length() < 10)) {
                     showAlertDialog(TechnicianInformation_Activity.this.getResources().getString(R.string.alert_title),
                             "Your phone number seems to invalid, Please try again.");
-                } else if (YearsExp.equals("") &&  !_prefs.getString(Preferences.ROLE,"pro").equals("pro")) {
+                } else if (YearsExp.equals("") && !_prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
                     showAlertDialog(TechnicianInformation_Activity.this.getResources().getString(R.string.alert_title), "Please enter experience.");
                 } else {
                     if (!isedit) {
@@ -188,6 +216,90 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
             }
         });
     }
+
+    private void showAddPromoDialog(){
+        dialog = new Dialog(TechnicianInformation_Activity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_add_promo);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        TextView txtRedeem = (TextView)dialog.findViewById(R.id.txt_Redeem);
+        inputPromoCode = (EditText) dialog.findViewById(R.id.inputPromo);
+        inputPromoCode.requestFocus();
+
+        txtRedeem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                promo_code = inputPromoCode.getText().toString().trim();
+                if (promo_code.length() == 0){
+                    showAlertDialog("Fixd-pro", "Please enter the Promo Code.");
+                    return;
+                }
+                promo_id = "";
+                txtPromo.setText("I have a promo.");
+
+                GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerPromoCode, TechnicianInformation_Activity.this, "Loading");
+                responseAsync.execute(getRequestParams());
+
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    private HashMap<String,String> getRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "apply");
+        hashMap.put("object", "promo_codes");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        hashMap.put("data[code]", promo_code);
+        hashMap.put("token", Utilities.getSharedPreferences(TechnicianInformation_Activity.this).getString(Preferences.AUTH_TOKEN, null));
+
+        return hashMap;
+    }
+
+    ResponseListener responseListenerPromoCode = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+
+            try {
+                if (Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONObject response = Response.getJSONObject("RESPONSE");
+                    promo_id = response.getString("id");
+                    promoSuccessMsg = response.getJSONObject("promo_code").getString("success_msg");
+                    handler.sendEmptyMessage(3);
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        Error = errors.getString(key);
+                        if (key.equals("716"))
+                        {
+                            handler.sendEmptyMessage(2);
+                            return;
+                        }
+                    }
+                    handler.sendEmptyMessage(2);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                handler.sendEmptyMessage(500);
+            }
+        }
+    };
+
+
+
 
     IHttpResponseListener iHttpResponseListenerDeactivate = new IHttpResponseListener() {
         @Override
@@ -222,12 +334,12 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         paramHashMap.put("_app_id", "FIXD_ANDROID_PRO");
         paramHashMap.put("_company_id", "FIXD");
         paramHashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN,""));
-//        if (profile_image_file  != null)
-//        paramHashMap.put("profile_image",new String(Utilities.convertFileToBytes(profile_image_file)));
         paramHashMap.put("data[first_name]", firstName);
         paramHashMap.put("data[last_name]", lastName);
         paramHashMap.put("data[email]", email);
         paramHashMap.put("data[phone]", mobileNumber);
+        if (promo_id.length() > 0) paramHashMap.put("data[user_promo_code_id]", promo_id);
+
         if (!_prefs.getString(Preferences.ROLE,"pro").equals("pro"))
         paramHashMap.put("data[years_in_business]",YearsExp);
         if (ispickUp_jobs)
@@ -350,6 +462,15 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                 case 2:{
 
                     showAlertDialog("Fixd-Pro", Error);
+                    if (Error.equals("Invalid promo code.")){
+                        inputPromoCode.setText("");
+                        inputPromoCode.requestFocus();
+                    }
+                    break;
+                }
+                case 3:{
+                    showAlertDialog("Fixd-Pro", promoSuccessMsg);
+                    txtPromo.setText("Promo Applied.");
                     break;
                 }
                 case 500: {
@@ -374,7 +495,7 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
         finish();
     }
 
-    private void showAlertDialog(String Title, String Message) {
+    private void showAlertDialog(String Title, final String Message) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 TechnicianInformation_Activity.this);
 
@@ -390,6 +511,9 @@ public class TechnicianInformation_Activity extends AppCompatActivity {
                         // if this button is clicked, close
                         // current activity
                         dialog.cancel();
+                        if (Message.equals(promoSuccessMsg)){
+                            TechnicianInformation_Activity.this.dialog.dismiss();
+                        }
                     }
                 });
 
