@@ -711,10 +711,10 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
 
         //For Development
 
-        if (distance > 100){
-            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
-            return;
-        }
+//        if (distance > 100){
+//            showAlertDialog("Fixed-Pro", "You are unable to start this job until you have arrived at " + txttolocation.getText());
+//            return;
+//        }
 
         showStartJobDialog();
 

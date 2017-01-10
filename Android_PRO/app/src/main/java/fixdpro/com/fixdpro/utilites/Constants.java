@@ -6,8 +6,8 @@ package fixdpro.com.fixdpro.utilites;
 public class Constants {
 
     // Production
-    public static  final String BASE_URL = "https://api.fixdrepair.com/v1.04/r";
-    public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.04/b";
+//    public static  final String BASE_URL = "https://api.fixdrepair.com/v1.04/r";
+//    public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.04/b";
 
 
 //      public static final String BASE_URL = "https://dev.api.fixdrepair.com/v1/r";
@@ -18,8 +18,8 @@ public class Constants {
 
 
 // Staging
-//      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.04/r";
-//      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.04/b";
+      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.04/r";
+      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.04/b";
 
 
 
