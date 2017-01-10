@@ -207,7 +207,7 @@ public class BackgroundCheck_Activity extends AppCompatActivity {
             public void onClick(View v) {
                 dialog.dismiss();
                 String year = datePicker.getYear() + "";
-                String month = datePicker.getMonth() + "";
+                String month = datePicker.getMonth() + 1 + "";
                 String day = datePicker.getDayOfMonth() + "";
                 if (month.length() == 1)
                     month = "0" + month;
