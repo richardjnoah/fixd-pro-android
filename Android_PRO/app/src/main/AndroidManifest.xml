@@ -372,7 +372,8 @@
         <activity
             android:name=".activities.LastStep_Activity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme.Base" />
+            android:theme="@style/MyMaterialTheme.Base"
+            android:windowSoftInputMode="adjustPan|stateAlwaysHidden"/>
         <activity
             android:name=".activities.BackgroundCheck_Activity"
             android:screenOrientation="portrait"

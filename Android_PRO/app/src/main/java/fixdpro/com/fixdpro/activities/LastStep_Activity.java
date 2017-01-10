@@ -33,8 +33,10 @@ import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncMutipartNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
+import fixdpro.com.fixdpro.singleton.TechniciansListSinglton;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
+import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.MultipartUtility;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
@@ -55,11 +57,12 @@ public class LastStep_Activity extends AppCompatActivity {
     String selectedImagePathDriver = null;
     String selectedImagePathSignature = null;
     String selectedImageDriver = null;
-    String card_number = "", month = "", year = "", cvv = "", zip_code = "", first_name = "", last_name = "", error_message = "";
+    String card_number = "", month = "", year = "", cvv = "", zip_code = "", first_name = "", last_name = "", error_message = "", promo_code = "", promo_id = "";
     MultipartUtility multipart = null;
     SharedPreferences _prefs = null;
     Dialog progressDialog;
     private static final int MY_SCAN_REQUEST_CODE = 200;
+    float mTotalValue = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +70,6 @@ public class LastStep_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_last_step_);
         _prefs = Utilities.getSharedPreferences(this);
         setWidgets();
-
         setCLickListner();
         if (getIntent().getExtras() != null) {
             Bundle bundle = getIntent().getExtras();
@@ -90,7 +92,11 @@ public class LastStep_Activity extends AppCompatActivity {
                 selectedImagePathSignature = bundle.getString("user_image_sign");
             }
         }
+        setInitLayout();
+
     }
+
+
 
     private void setWidgets() {
         imgClose = (ImageView) findViewById(R.id.imgClose);
@@ -116,24 +122,7 @@ public class LastStep_Activity extends AppCompatActivity {
     }
 
     private void setCLickListner() {
-//        txtCardNumber.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//            if (txtCardNumber.getText().length() >5){
-//                txtCardNumber.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.new_visa, 0);
-//            }
-//            }
-//        });
+
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,14 +194,34 @@ public class LastStep_Activity extends AppCompatActivity {
                     finalRequestParams.put("data[credit_card][last_name]", last_name);
                     finalRequestParams.put("data[credit_card][month]", month);
                     finalRequestParams.put("data[credit_card][year]", year);
+                    if (promo_id.length() > 0) finalRequestParams.put("data[user_promo_code_id]", promo_id);
                     sendRequest();
                 }
-
 
 //                GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST",iHttpResponseListener,iHttpExceptionListener,LastStep_Activity.this,"");
 //                getApiResponseAsyncNew.execute(finalRequestParams);
             }
         });
+
+        txtApply.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                applyPromoCodeClicked();
+            }
+        });
+    }
+
+    private void setInitLayout(){
+        String isProATechAlso = finalRequestParams.get("data[technicians][field_work]").toString();
+        int totalChecks;
+        if (isProATechAlso.equals("0")){
+            totalChecks = TechniciansListSinglton.getInstance().technicianModalsList.size();
+        }else {
+            totalChecks = TechniciansListSinglton.getInstance().technicianModalsList.size() + 1;
+        }
+        mTotalValue = totalChecks * 50;
+        txtTotalDoller.setText("$" + mTotalValue);
+        txtCheckforPrice.setText("Background Check (" + totalChecks + ")");
     }
 
     public void onScanPress(View v) {
@@ -226,6 +235,90 @@ public class LastStep_Activity extends AppCompatActivity {
         overridePendingTransition(R.anim.enter, R.anim.exit);
     }
 
+    private void applyPromoCodeClicked(){
+
+        promo_code = txtDiscountCode.getText().toString().trim();
+        if (promo_code.length() == 0){
+            showAlertDialog("Fixd-pro", "Please enter the Promo Code.");
+            txtDiscountCode.requestFocus();
+            return;
+        }
+        promo_id = "";
+        GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerPromoCode, LastStep_Activity.this, "Loading");
+        responseAsync.execute(getRequestParams());
+
+    }
+
+    private HashMap<String,String> getRequestParams(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "apply");
+        hashMap.put("object", "promo_codes");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        hashMap.put("data[code]", promo_code);
+        hashMap.put("token", Utilities.getSharedPreferences(LastStep_Activity.this).getString(Preferences.AUTH_TOKEN, null));
+
+        return hashMap;
+    }
+
+    ResponseListener responseListenerPromoCode = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+
+            String isProATechAlso = finalRequestParams.get("data[technicians][field_work]").toString();
+            int totalChecks = TechniciansListSinglton.getInstance().technicianModalsList.size();
+            float totalValue = 0;
+            if (isProATechAlso.equals("1")){
+                ++totalChecks;
+            }
+            totalValue = 50 * totalChecks;
+            mTotalValue = totalValue;
+
+            try {
+                if (Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONObject response = Response.getJSONObject("RESPONSE");
+                    promo_id = response.getString("id");
+
+                    if (response.getJSONObject("promo_code").getString("calculated_as").equals("FIXED_OFF")){
+                        mTotalValue = totalValue - Float.valueOf(response.getJSONObject("promo_code").getString("discount"));
+                    }
+                    else if (response.getJSONObject("promo_code").getString("calculated_as").equals("PERCENTAGE_OFF")){
+                        float discountPer = Float.valueOf(response.getJSONObject("promo_code").getString("discount"));
+                        float discount = (discountPer/100)*totalValue;
+                        mTotalValue = totalValue - discount;
+                    }
+                    else if (response.getJSONObject("promo_code").getString("calculated_as").equals("FIXED_TOTAL")){
+                        mTotalValue = Float.valueOf(response.getJSONObject("promo_code").getString("discount"));
+                    }
+                    else if (response.getJSONObject("promo_code").getString("calculated_as").equals("FREE")){
+                        mTotalValue = 0;
+                    }
+
+                    handler.sendEmptyMessage(1);
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                        if (key.equals("716"))
+                        {
+                            handler.sendEmptyMessage(0);
+                            return;
+                        }
+                    }
+                    handler.sendEmptyMessage(0);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                handler.sendEmptyMessage(500);
+            }
+        }
+    };
+
+
     private MultipartUtility createMultiPartRequest() {
 
         try {
@@ -236,6 +329,9 @@ public class LastStep_Activity extends AppCompatActivity {
             }
             multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
             multipart.addFormField("_company_id", "FIXD");
+
+
+
             if (ispro) {
                 if (selectedImagePathDriver != null) {
                     multipart.addFilePart("data[technicians][driver_license_image]", new File(selectedImagePathDriver));
@@ -286,12 +382,15 @@ public class LastStep_Activity extends AppCompatActivity {
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
 
-
                 GetApiResponseAsyncMutipartNoProgress getApiResponseAsync = new GetApiResponseAsyncMutipartNoProgress(multipart, responseListener, exceptionListener, LastStep_Activity.this, "Registering");
                 getApiResponseAsync.execute();
             }
         }.execute();
     }
+
+
+
+
 
     IHttpResponseListener iHttpResponseListener = new IHttpResponseListener() {
         @Override
@@ -322,14 +421,23 @@ public class LastStep_Activity extends AppCompatActivity {
             switch (msg.what) {
 
                 case 0: {
+                    if (error_message.equals("Invalid promo code.")){
+                        txtDiscountCode.setText("");
+                        txtDiscountCode.requestFocus();
+                    }
                     showAlertDialog("Fixd-pro", error_message);
+                    break;
+                }
+                case 1:{
+                    txtTotalDoller.setText("$" + mTotalValue);
                     break;
                 }
                 case 500: {
                     showAlertDialog("Fixd-pro", "Server Error 500");
                     break;
-
                 }
+
+
                 default: {
 
                 }
