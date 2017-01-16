@@ -1028,7 +1028,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 if (Utilities.getApplianceImageByName(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name()) != -1){
                     imgType.setImageResource(Utilities.getApplianceImageByName(modal.getJob_appliances_arrlist().get(i).getAppliance_type_name()));
                 }else{
-                    imageLoader.loadImage(modal.getJob_appliances_arrlist().get(i).getImg_original(), defaultOptions, new SimpleImageLoadingListener() {
+                    imageLoader.loadImage(modal.getJob_appliances_arrlist().get(i).getAppliance_type_image_original(), defaultOptions, new SimpleImageLoadingListener() {
                         @Override
                         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                             // Do whatever you want with Bitmap
