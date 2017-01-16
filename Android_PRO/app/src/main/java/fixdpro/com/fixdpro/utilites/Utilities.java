@@ -124,12 +124,13 @@ public class Utilities {
         String time1 = null;
         try {
             final SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+//            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
             final Date dateObj = sdf.parse(time);
             System.out.println(dateObj);
 //            System.out.println(new SimpleDateFormat("k:mm a").format(dateObj));
             final SimpleDateFormat pstFormat =  new SimpleDateFormat("k:mm a");
-//            pstFormat.setTimeZone(TimeZone.getTimeZone("PST"));
+//            pstFormat.setTimeZone(TimeZone.getDefault());
+
             time1 = pstFormat.format(dateObj);
 
         } catch (final ParseException e) {

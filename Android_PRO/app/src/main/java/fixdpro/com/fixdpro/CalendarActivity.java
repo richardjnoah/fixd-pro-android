@@ -241,7 +241,7 @@ public class CalendarActivity extends AppCompatActivity {
         wheelView.setOnWheelViewListener(new WheelView.OnWheelViewListener() {
             @Override
             public void onSelected(int selectedIndex, String item) {
-                SelectedIndex[0] = selectedIndex;
+                SelectedIndex[0] = selectedIndex - 1;
                 String aa = TYPES[selectedIndex];
                 timerInterval = item;
             }
