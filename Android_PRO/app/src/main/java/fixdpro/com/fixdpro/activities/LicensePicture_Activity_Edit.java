@@ -266,12 +266,11 @@ public class LicensePicture_Activity_Edit extends AppCompatActivity implements P
 
             } else {
                 if (selectedImagePathDriver != null) {
-                    multipart.addFilePart("driver_license_image", new File(selectedImagePathDriver));
+                    multipart.addFilePart("data[driver_license_image]", new File(selectedImagePathDriver));
                 }
                 if (selectedImagePathUser != null) {
-                    multipart.addFilePart("profile_image", new File(selectedImagePathUser));
+                    multipart.addFilePart("data[profile_image]", new File(selectedImagePathUser));
                 }
-
             }
 
         } catch (IOException e) {
