@@ -388,6 +388,7 @@ public class WhatsWrongFragment extends Fragment {
                         String STATUS = jsonObject.getString("STATUS");
                         if (STATUS.equals("SUCCESS")) {
 //                            JSONObject RESPONSE = jsonObject.getJSONObject("RESPONSE");
+                            arrayListBrands.clear();
                             JSONArray results = jsonObject.getJSONArray("RESPONSE");
                             for (int i = 0; i < results.length(); i++) {
                                 Brands brands = new Brands();
