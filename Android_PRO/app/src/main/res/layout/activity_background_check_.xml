@@ -141,8 +141,7 @@
                 android:background="@drawable/whitebox_fill"
                 android:gravity="left"
                 android:hint="@string/driverliecenseno"
-                android:imeOptions="actionNext"
-
+                android:imeOptions="actionDone"
                 android:padding="@dimen/size_12_dp"
                 android:singleLine="true"
                 android:textColor="@color/text_color_dark_grey"
