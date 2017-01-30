@@ -104,6 +104,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
         availablejoblist = singleton.getAvailablejoblist();
         schedulejoblist = singleton.getSchedulejoblist();
         completedjoblist = singleton.getCompletedjoblist();
+        completedjoblist.clear();
         _prefs = Utilities.getSharedPreferences(_context);
         role = _prefs.getString(Preferences.ROLE, "pro");
         setWidgets(view);
@@ -876,7 +877,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                                 mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
                                 mod.setAppliance_type_name(appliance_type_obj.getString("name"));
                                 mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
-                                if (!jsonObject.isNull("image")){
+                                if (!appliance_type_obj.isNull("image")){
                                     JSONObject image_obj = appliance_type_obj.getJSONObject("image");
                                     if (!image_obj.isNull("original")){
                                         mod.setImg_original(image_obj.getString("original"));

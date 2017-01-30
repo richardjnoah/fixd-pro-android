@@ -9,8 +9,8 @@ android {
         applicationId "fixdpro.com.fixdpro"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.56"
+        versionCode 4
+        versionName "1.0.5"
         multiDexEnabled true
     }
     buildTypes {

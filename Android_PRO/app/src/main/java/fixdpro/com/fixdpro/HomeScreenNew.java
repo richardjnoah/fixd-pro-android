@@ -120,7 +120,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     FragmentManager fragmentManager;
     SlidingMenu slidingMenu = null;
     String token = "";
-    public static Boolean inBackground = true;
+    public static int inBackground = 0;
 
     //    Location Service Variable Declaration
     protected static final String TAG = "location-updates";
@@ -1470,7 +1470,10 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         }
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mMessageReceiver, new IntentFilter("gcm_token_receiver"));
-        inBackground = false;
+       // inBackground = false;
+        inBackground++;
+        Log.e("NewBackground", "resume"+inBackground);
+
         LocalBroadcastManager.getInstance(this).registerReceiver(
                 mGcmPushReceiver, new IntentFilter("gcm_push_notification_receiver"));
 //        if (mGoogleApiClient.isConnected() && mRequestingLocationUpdates) {
@@ -1539,7 +1542,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     protected void onStop() {
         if (mGoogleApiClient != null)
             mGoogleApiClient.disconnect();
-        inBackground = true;
+        //inBackground = true;
+        inBackground--;
+        Log.e("NewBackground", "stop" + inBackground);
         super.onStop();
     }
 

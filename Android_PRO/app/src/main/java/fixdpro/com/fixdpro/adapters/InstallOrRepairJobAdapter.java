@@ -105,7 +105,9 @@ public class InstallOrRepairJobAdapter extends BaseAdapter {
             holder.txtInstaller.setText(tempValues.getAppliance_type_name() + " " +tempValues.getJob_appliances_service_type());
             if (tempValues.isProcessCompleted()){
                 holder.imgStatus.setBackgroundResource(R.drawable.green_check);
-            }else {
+            } else if (tempValues.isCanceled()){
+                holder.imgStatus.setBackgroundResource(R.drawable.red_cross);
+            } else {
                 holder.imgStatus.setBackgroundResource(R.drawable.explanation);
             }
         }

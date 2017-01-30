@@ -177,6 +177,11 @@ public class InstallorRepairFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (id==-1) return; // Header is tapped
+                if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(position - 1).isCanceled()){
+                    showAlertDialog("Fixd-Pro", "This repair has been cancelled by you.", false);
+                    return;
+                }
+
                 fragment = new WhatsWrongFragment();
                 CurrentScheduledJobSingleTon.getInstance().setSelectedJobApplianceModal(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(position - 1));
 
@@ -396,6 +401,12 @@ public class InstallorRepairFragment extends Fragment {
 
                                 if (!jsonObject.isNull("description")) {
                                     mod.setJob_appliances_appliance_description(jsonObject.getString("description"));
+                                }
+                                if (!jsonObject.isNull("canceled_job_appliances")){
+                                    String cancelerId = jsonObject.getJSONObject("canceled_job_appliances").getString("canceled_by_user_id");
+                                    if (cancelerId.equals(_prefs.getString(Preferences.ID, ""))) {
+                                        mod.setIsCanceled(true);
+                                    }
                                 }
                                 if (!jsonObject.isNull("service_type")) {
                                     mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
@@ -749,7 +760,8 @@ public class InstallorRepairFragment extends Fragment {
     private void isJobCompleted(){
         boolean isAllCompleted = true ;
         for (int i = 0 ; i < CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().size() ; i++){
-                if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isProcessCompleted()){
+                if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isProcessCompleted() &&
+                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isCanceled()){
                     isAllCompleted = false ;
                     break;
                 }

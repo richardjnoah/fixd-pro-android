@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
 
@@ -77,11 +78,15 @@ public class JobCompletedActivity extends AppCompatActivity {
             ImageView imageView = (ImageView)addView.findViewById(R.id.imgType);
             TextView txtTypeTitle = (TextView)addView.findViewById(R.id.txtTypeTitle);
             txtTypeTitle.setText(jobapplianceslist.get(i).getAppliance_type_name());
+
             if (Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()) != -1){
                 imageView.setImageResource(Utilities.getApplianceImageByName(jobapplianceslist.get(i).getAppliance_type_name()));
             }else {
-                if (jobapplianceslist.get(i).getAppliance_type_image_original().length() > 0){
-                    Picasso.with(context).load(jobapplianceslist.get(i).getAppliance_type_image_original()).into(imageView);
+                if (jobapplianceslist.get(i).getImg_original().length() > 0){
+                    Glide.with(context)
+                            .load(jobapplianceslist.get(i).getImg_original())
+                            .into(imageView);
+//                    Picasso.with(context).load(jobapplianceslist.get(i).getImg_original()).into(imageView);
                 }
             }
 

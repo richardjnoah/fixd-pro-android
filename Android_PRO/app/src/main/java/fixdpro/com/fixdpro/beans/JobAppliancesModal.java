@@ -42,6 +42,14 @@ public class JobAppliancesModal implements Serializable{
         this.isProcessCompleted = isProcessCompleted;
     }
 
+    public boolean isCanceled() {
+        return isCanceled;
+    }
+
+    public void setIsCanceled(boolean isCanceled) {
+        this.isCanceled = isCanceled;
+    }
+
     String job_appliances_appliance_description;
     String job_appliances_service_type = "";
     String job_appliances_power_source = "";
@@ -87,6 +95,7 @@ public class JobAppliancesModal implements Serializable{
     String appliance_type_service_id = "";
     String appliance_type_has_power_source = "";
     boolean isProcessCompleted = false ;
+    boolean isCanceled = false;
     public String getJob_appliances_appliance_description() {
         return job_appliances_appliance_description;
     }

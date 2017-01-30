@@ -23,9 +23,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Locale;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.PaymentDetailsActivity;
@@ -416,7 +418,9 @@ public class PaymentsFragment extends Fragment {
         txtnumhours.setTypeface(fontfamily);
         txtnumtotaljobAccepted.setText(jobs_accepted);
         txtnumhours.setText(hours_worked);
-        txtTotalEarningNum.setText("$" + total_earnings + ".00");
+        int earnings = Math.round(Float.parseFloat(total_earnings));
+        String total_earning_string = NumberFormat.getNumberInstance(Locale.US).format(earnings);
+        txtTotalEarningNum.setText("$" + total_earning_string);
         return header;
     }
     @Override

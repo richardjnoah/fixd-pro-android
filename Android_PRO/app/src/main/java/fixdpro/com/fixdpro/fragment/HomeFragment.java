@@ -243,7 +243,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        if (availablejoblist.size() > 0){
+        if (false){    //availablejoblist.size() > 0
             handler.sendEmptyMessage(0);
         }else {
             if (getInternetStatus()){
@@ -357,6 +357,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (map!= null )
             map.clear();
             pageAvaileble  = 1 ;
+            isStateAvailable = true;
             availablejoblist.clear();
             adapterAvailable.notifyDataSetChanged();
             if (getInternetStatus()){
@@ -368,6 +369,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (map!= null )
             map.clear();
             pageSheduled  = 1 ;
+            isStateAvailable = false;
             schedulejoblist.clear();
             adapterSchedule.notifyDataSetChanged();
             if (getInternetStatus()){
@@ -379,6 +381,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (map!= null )
                 map.clear();
             pageProgress  = 1 ;
+            isStateAvailable = false;
             progressJobList.clear();
             adapterProgress.notifyDataSetChanged();
             if (getInternetStatus()){
@@ -1209,40 +1212,39 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 setMarkers(availablejoblist);
                 break;
             case R.id.scheduled:
-                if (map != null)
-                    map.clear();
-                isStateAvailable  = false ;
                 tab_selected = "Scheduled";
                 availScheduleLayout.setBackgroundResource(R.drawable.scheduled);
 //                inProgresslayout.setVisibility(View.GONE);
                 progresslayout.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.VISIBLE);
                 availablelayout.setVisibility(View.GONE);
-                if (schedulejoblist.size() == 0){
-                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
-                    responseAsync1.execute(getRequestParams("Scheduled"));
-                }else{
-//                    setMarkers(schedulejoblist);
-                    handler.sendEmptyMessage(2);
-                }
+                refresh();
+//                if (true){
+//                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
+//                    responseAsync1.execute(getRequestParams("Scheduled"));
+//                }else{
+////                    setMarkers(schedulejoblist);
+//                    handler.sendEmptyMessage(2);
+//                }
 
                 break;
             case R.id.inProgress:
-                if (map != null)
-                    map.clear();
+
                 tab_selected = "Progress";
                 availScheduleLayout.setBackgroundResource(R.drawable.in_progress);
 //                inProgresslayout.setVisibility(View.VISIBLE);
                 progresslayout.setVisibility(View.VISIBLE);
                 scheduleLayout.setVisibility(View.GONE);
                 availablelayout.setVisibility(View.GONE);
-                if (true){  //progressJobList.size() == 0
-                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
-                    responseAsync1.execute(getRequestParamsPregressJob());
-                }else{
-//                    setMarkers(schedulejoblist);
-                    handler.sendEmptyMessage(4);
-                }
+                refresh();
+
+//                if (true){  //progressJobList.size() == 0
+//                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
+//                    responseAsync1.execute(getRequestParamsPregressJob());
+//                }else{
+////                    setMarkers(schedulejoblist);
+//                    handler.sendEmptyMessage(4);
+//                }
                 break;
             case R.id.viewall:
                 Intent i = new Intent(getActivity(), CalendarActivity.class);

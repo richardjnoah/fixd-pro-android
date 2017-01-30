@@ -154,13 +154,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
 
 
-            if(!HomeScreenNew.inBackground){
+            if(HomeScreenNew.inBackground>0 && modal.getDialogId().length()==0){//!HomeScreenNew.inBackground
                 Intent intent1 = new Intent("gcm_push_notification_receiver");
                 // You can also include some extra data.
                 intent1.putExtra("data", modal);
                 LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
             }
             else{
+                Log.d(TAG, "Message Arrived in background " + modal.getDialogId().length());
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
                 NotificationManager notificationManager = (NotificationManager)getSystemService(this.NOTIFICATION_SERVICE);
                 Date now = new Date();

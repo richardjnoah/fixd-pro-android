@@ -83,7 +83,7 @@ public class ExternalReceiver extends BroadcastReceiver {
             if (modal.getDialogId().length() > 0 && !ChatActivityNew.inBackground && ChatSingleton.getInstance().getCurrentQbDialog() != null && ChatSingleton.getInstance().getCurrentQbDialog().getDialogId().equals(modal.getDialogId())){
                 return;
             }
-            if(!HomeScreenNew.inBackground){
+            if(HomeScreenNew.inBackground>0){
                 Intent intent1 = new Intent("gcm_push_notification_receiver");
                 // You can also include some extra data.
                 intent1.putExtra("data", modal);

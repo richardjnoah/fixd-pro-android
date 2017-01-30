@@ -72,6 +72,8 @@ public class WhatsWrongFragment extends Fragment {
     int progress = 0;
     ArrayList<Brands> arrayListBrands = BrandNamesSingleton.getInstance().getBrands();
     boolean isAutoNotiForWorkOrder = false ;
+    public static Boolean fromCancelJob = false;
+
     public WhatsWrongFragment() {
         // Required empty public constructor
     }
@@ -106,6 +108,11 @@ public class WhatsWrongFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        if (fromCancelJob){
+            fromCancelJob = false;
+            ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
+            return;
+        }
         ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.WHATS_WRONG_FRAGMENT);
         setupToolBar();
         if (adapter != null){

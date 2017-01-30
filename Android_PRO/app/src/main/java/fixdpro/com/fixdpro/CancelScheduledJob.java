@@ -3,7 +3,6 @@ package fixdpro.com.fixdpro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -26,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.fragment.WhatsWrongFragment;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
@@ -148,9 +148,9 @@ public class CancelScheduledJob extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-                    SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
-                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
+//                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+//                    SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
+//                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
                     showAlertDialog("SUCCESS", "Job is Cancelled.",true);
                     break;
                 }
@@ -199,10 +199,7 @@ public class CancelScheduledJob extends AppCompatActivity {
                         // current activity
                         dialog.cancel();
                         if (success) {
-                            finishAffinity();
-                            Intent intent = new Intent(CancelScheduledJob.this, HomeScreenNew.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            startActivity(intent);
+                            WhatsWrongFragment.fromCancelJob = true;
                             finish();
                         }
                     }

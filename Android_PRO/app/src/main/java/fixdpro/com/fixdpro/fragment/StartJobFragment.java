@@ -851,7 +851,7 @@ public class StartJobFragment extends Fragment implements OnMapReadyCallback,Loc
                 }
                 case 3:{
                     if (checkIfProArrived()){
-                        if(!HomeScreenNew.inBackground){
+                        if(HomeScreenNew.inBackground>0){//!HomeScreenNew.inBackground
                             isNotificationShown = true;
                             showStartJobDialog();
                         }else if(!isNotificationShown){
