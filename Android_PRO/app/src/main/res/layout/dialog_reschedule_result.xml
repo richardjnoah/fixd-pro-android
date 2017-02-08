@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@drawable/orange_background">
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_27_dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imgThumb"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/thumb" />
+
+        <TextView
+            android:id="@+id/titletext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_27_dp"
+            android:gravity="center"
+            android:singleLine="true"
+            android:text="Oh no!"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_22_sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/size_5_dp"
+            android:gravity="center"
+            android:text="We&apos;re sorry this job doesn&apos;t fit your schedule.\n\n Don&apos;t worry more jobs are on the way!"
+            android:textColor="@color/register_button_text"
+            android:textSize="@dimen/size_20_sp"
+            android:paddingLeft="@dimen/size_20_dp"
+            android:paddingTop="@dimen/size_20_dp"
+            android:paddingRight="@dimen/size_20_dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_27_dp"
+        android:orientation="vertical"
+        android:layout_below="@+id/layout1">
+
+        <TextView
+            android:id="@+id/txtGotIt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Got It"
+            android:gravity="center"
+            android:textSize="@dimen/size_22_sp"
+            android:textColor="@color/white"
+            android:background="@drawable/delete_box" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:padding="@dimen/size_10_dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/screen_cross" />
+</RelativeLayout>

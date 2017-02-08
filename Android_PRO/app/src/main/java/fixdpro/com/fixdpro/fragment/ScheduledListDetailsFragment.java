@@ -6,6 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -91,24 +93,28 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
     AvailableJobModal model;
     private static GoogleMap mMap;
-    TextView contactName, address, date, timeinterval, txtUserName, txtJobDetails, txtCancelJob, txtEnrouteJob;
+    TextView contactName, address, txtPreviousDateTitle, date, timeinterval, txtNewDate, txtNewTimeInterval, txtUserName, txtJobDetails, txtCancelJob, txtEnrouteJob;
     ImageView  en_routeimg, cancel_jobimg, transparentImageView ,img_Edit, img_Pic, imgChat;
     HorizontalScrollView horizontalScrollView  = null ;
     LayoutInflater inflater ;
     ImageLoader imageLoader = null ;
     DisplayImageOptions defaultOptions;
-    LinearLayout scrollViewLatout,layout_problem ,techView,layoutServiceDescription;
+    LinearLayout scrollViewLatout,layout_problem ,techView,layoutServiceDescription, layoutNewDate;
     ScrollView scrollViewParent  ;
     RatingBarView custom_ratingbar ;
     Fragment fragment = null ;
     SupportMapFragment mMapFragment = null ;
-    View techDivider;
+    View techDivider, newDateDivider;
     SharedPreferences _prefs = null ;
     Context _context = null ;
     String error_message = "";
-    String room_id  = "";
-    Dialog progressDialog;
+    String room_id  = "", new_date = "", new_time_interval = "";
+    Dialog progressDialog, dialog;
     private static final String EXTRA_DIALOG = "dialog";
+    boolean isRescheduleFlow = false;
+
+
+
     public ScheduledListDetailsFragment() {
         // Required empty public constructor
     }
@@ -210,6 +216,11 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         setTechView();
 //        setUpHorizontalScrollView();
         setUpApplianceDescription();
+
+        GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerGetRescheduleJobDetail, exceptionListener, getActivity(), "Loading");
+        responseAsync.execute(getRequestParamsForRescheduleJob());
+
+
         return rootView;
     }
 
@@ -271,8 +282,13 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
         cancel_jobimg = (ImageView) view.findViewById(R.id.canceljob);
         contactName = (TextView) view.findViewById(R.id.contactname);
         address = (TextView) view.findViewById(R.id.address);
+        txtPreviousDateTitle = (TextView)view.findViewById(R.id.previous_date_title);
         date = (TextView) view.findViewById(R.id.date);
         timeinterval = (TextView) view.findViewById(R.id.timeinterval);
+        newDateDivider = (View) view.findViewById(R.id.new_date_divider);
+        layoutNewDate = (LinearLayout) view.findViewById(R.id.layout_new_date);
+        txtNewDate = (TextView) view.findViewById(R.id.new_date);
+        txtNewTimeInterval = (TextView) view.findViewById(R.id.new_timeinterval);
         scrollViewLatout = (LinearLayout)view.findViewById(R.id.scrollViewLatout);
         layout_problem = (LinearLayout)view.findViewById(R.id.layout_problem);
         scrollViewParent = (ScrollView)view.findViewById(R.id.scrollViewParent);
@@ -397,69 +413,55 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
 
                 break;
             case R.id.txtEnrouteJob:
-
-                String lastScreen = _prefs.getString(Preferences.SCREEEN_NAME, "");
-                AvailableJobModal currentModel = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
-                String userId = _prefs.getString(Preferences.ID, "");
-
-
-                if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
-                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
-                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
-                    return;
+                if (isRescheduleFlow){
+                    onDeclineRescheduleClicked();
+                } else {
+                    onEnrouteClicked();
                 }
-
-//                if ((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) &&
-//                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
-//                    showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
-//                    return;
-//                }
-
-                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
-                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
-                    return;
-                }
-
-                if (!((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) && (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())))) {
-                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-                } else{
-                    if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
-                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-                    }
-                }
-
-                enrouteJob();
-
-
-//
-//                if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
-//                    showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
-//                }else {
-//                    // check if already enrouted job.
-//                    if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
-//                         // check if the same job is already enrouted
-//                        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getCurrent_screen_tag().equals(Constants.START_JOB_FRAGMENT)){
-//                            showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
-//                        }else{
-//                            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-//                            enrouteJob();
-//                        }
-//                    }else {
-//                        CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
-//                        enrouteJob();
-//                    }
-//                }
-
-
                 break;
             case R.id.txtcancelJob:
-                Intent intent = new Intent(getActivity(), DeclineJobActivity.class);
-                intent.putExtra("JobType","Scheduled");
-                intent.putExtra("JobId",model.getId());
-                startActivity(intent);
-
+                if (isRescheduleFlow){
+                    onAcceptRescheduleClicked();
+                } else {
+                    onCancelClicked();
+                }
                 break;
         }
+    }
+
+    public void onEnrouteClicked(){
+        AvailableJobModal currentModel = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+        if (!(_prefs.getString(Preferences.SCREEEN_NAME,"").equals(Constants.NO_JOB)) && !(_prefs.getString(Preferences.SCREEEN_NAME,"").equals("")) &&
+                !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())){
+            showAlertDialog("Fixd-Pro","You were heading towards a different job already, Please press the top-bar to continue.");
+            return;
+        }
+        if (!model.getTechnician_id().equals(_prefs.getString(Preferences.ID, ""))){
+            showAlertDialog("Fixd-pro","This job is assigned to your Tech, You are not authorized to start this job , you may Re-Assign tech to assign to your self");
+            return;
+        }
+        if (!((CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null) && (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId().equals(model.getId())))) {
+            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+        } else{
+            if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
+                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+            }
+        }
+        enrouteJob();
+    }
+    public void onCancelClicked(){
+        Intent intent = new Intent(getActivity(), DeclineJobActivity.class);
+        intent.putExtra("JobType","Scheduled");
+        intent.putExtra("JobId",model.getId());
+        startActivity(intent);
+    }
+    public void onAcceptRescheduleClicked(){
+        GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerAcceptReschedule, exceptionListener, getActivity(), "Loading");
+        responseAsync.execute(getRequestParamsForAcceptReschedule());
+    }
+    public void onDeclineRescheduleClicked(){
+        GetApiResponseAsyncNew responseAsync = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerDeclineReschedule, exceptionListener, getActivity(), "Loading");
+        responseAsync.execute(getRequestParamsForDeclineReschedule());
     }
 
     IHttpResponseListener responseListenerChatDetails = new IHttpResponseListener() {
@@ -556,11 +558,30 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                     break;
                 }
                 case 2:{
+                    newDateDivider.setVisibility(View.VISIBLE);
+                    txtPreviousDateTitle.setVisibility(View.VISIBLE);
+                    txtNewTimeInterval.setText(new_time_interval);
+                    txtNewDate.setText(new_date);
+                    layoutNewDate.setVisibility(View.VISIBLE);
+                    layoutServiceDescription.setVisibility(View.GONE);
+                    techDivider.setVisibility(View.GONE);
+                    txtEnrouteJob.setText("Decline");
+                    txtCancelJob.setText("Accept");
+                    ((HomeScreenNew)getActivity()).setTitletext("Reschedule Request");
                     break;
-                } case 3:{
+                }
+                case 3:{
                     if (progressDialog != null && progressDialog.isShowing()){
                         progressDialog.dismiss();
                     }
+                    break;
+                }
+                case 4:{
+                    showRescheduleAcceptSuccess();
+                    break;
+                }
+                case 5:{
+                    showRescheduleDeclineSuccess();
                     break;
                 }
 
@@ -685,6 +706,205 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 layoutServiceDescription.addView(child);
             }
         }
-
     }
+
+
+
+    private HashMap<String,String> getRequestParamsForRescheduleJob(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "read_reschedule_request");
+        hashMap.put("object", "jobs");
+        hashMap.put("data[job_id]", model.getId());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        return hashMap;
+    }
+
+    IHttpResponseListener responseListenerGetRescheduleJobDetail = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    JSONObject responseDict = Response.getJSONObject("RESPONSE");
+                    if (responseDict.getString("status").toUpperCase().equals("PENDING")){
+                        new_date = Utilities.convertDate(responseDict.getString("request_start"));
+                        if (!responseDict.isNull("time_slot")){
+                            new_time_interval = responseDict.getJSONObject("time_slot").getString("name");
+                        }
+                        isRescheduleFlow = true;
+                        handler.sendEmptyMessage(2);
+                    } else {
+                        isRescheduleFlow = false;
+                    }
+
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
+                        if (key.equals("434") || key.equals("121")){
+                            isRescheduleFlow = false;
+                        } else {
+                            error_message = errors.getString(key);
+                            handler.sendEmptyMessage(1);
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+
+    private HashMap<String,String> getRequestParamsForAcceptReschedule(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "accept_reschedule_request");
+        hashMap.put("object", "jobs");
+        hashMap.put("data[job_id]", model.getId());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        return hashMap;
+    }
+
+    IHttpResponseListener responseListenerAcceptReschedule = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    handler.sendEmptyMessage(4);
+
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
+                            error_message = errors.getString(key);
+                            handler.sendEmptyMessage(1);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+
+    private HashMap<String,String> getRequestParamsForDeclineReschedule(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "decline_reschedule_request");
+        hashMap.put("object", "jobs");
+        hashMap.put("data[job_id]", model.getId());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        return hashMap;
+    }
+
+    IHttpResponseListener responseListenerDeclineReschedule = new IHttpResponseListener() {
+        @Override
+        public void handleResponse(JSONObject Response) {
+            Log.e("", "Response" + Response.toString());
+            try {
+                if(Response.getString("STATUS").equals("SUCCESS"))
+                {
+                    handler.sendEmptyMessage(5);
+                }else {
+                    JSONObject errors = Response.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()) {
+                        String key = (String) keys.next();
+                            error_message = errors.getString(key);
+                            handler.sendEmptyMessage(1);
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
+    public void showRescheduleAcceptSuccess(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_reschedule_result);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        TextView txtMessage = (TextView)dialog.findViewById(R.id.message);
+        TextView txtTitle = (TextView)dialog.findViewById(R.id.titletext);
+        TextView txtGotIt = (TextView)dialog.findViewById(R.id.txtGotIt);
+
+        txtTitle.setText("Hooray!");
+        txtMessage.setText("The job has been rescheduled!");
+
+        txtGotIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+
+                model.setTimeslot_name(new_time_interval);
+                model.setRequest_date(new_date);
+                newDateDivider.setVisibility(View.GONE);
+                txtPreviousDateTitle.setVisibility(View.GONE);
+                timeinterval.setText(new_time_interval);
+                date.setText(new_date);
+                layoutNewDate.setVisibility(View.GONE);
+                layoutServiceDescription.setVisibility(View.VISIBLE);
+                techDivider.setVisibility(View.VISIBLE);
+                if (!_prefs.getString(Preferences.ROLE,"").equals("pro")){
+                    techDivider.setVisibility(View.GONE);
+                }
+                txtEnrouteJob.setText("En route");
+                txtCancelJob.setText("Cancel Job");
+                ((HomeScreenNew)getActivity()).setTitletext("Scheduled Job");
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void showRescheduleDeclineSuccess(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_reschedule_result);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        ImageView img_close = (ImageView)dialog.findViewById(R.id.img_close);
+        ImageView imgThumb = (ImageView)dialog.findViewById(R.id.imgThumb);
+        imgThumb.setScaleX(-1);
+        imgThumb.setScaleY(-1);
+        TextView txtMessage = (TextView)dialog.findViewById(R.id.message);
+        TextView txtTitle = (TextView)dialog.findViewById(R.id.titletext);
+        TextView txtGotIt = (TextView)dialog.findViewById(R.id.txtGotIt);
+//
+//        txtTitle.setText("Hooray!");
+//        txtMessage.setText("The job has been rescheduled!");
+
+        txtGotIt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                ((HomeScreenNew)_context).popStack();
+            }
+        });
+        img_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+
 }
