@@ -81,8 +81,8 @@ import main.java.com.mindscapehq.android.raygun4android.RaygunClient;
 public class HomeFragment extends Fragment implements View.OnClickListener{
     MapView mapView;
     GoogleMap map;
-    LinearLayout availScheduleLayout, calenderviewall,inProgresslayout;
-    TextView available, scheduled,inProgress;
+    LinearLayout availScheduleLayout, calenderviewall, progressBottomLayout, availableBottomLayout;
+    TextView available, scheduled,inProgress, txtStartInAvailable, txtStartInProgress;
     ListView availableJob_listView;
     ListView scheduleJob_listView;
     ListView inProgressJob_list_view;
@@ -252,6 +252,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         }
 
+        if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+            showWelcomeDialog();
+            if (availablejoblist.size() == 0){
+                availableBottomLayout.setVisibility(View.VISIBLE);
+            }
+        }
+
         if (switch_tab.equals("Scheduled")){
             schedulejoblist.clear();
             onClick(scheduled);
@@ -337,6 +344,37 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             }
         });
         dialog.show();
+    }
+
+    private void showWelcomeDialog(){
+        dialog = new Dialog(_context);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_welcom);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextView txtNotNow = (TextView)dialog.findViewById(R.id.txtNotNow);
+        TextView txtStart = (TextView)dialog.findViewById(R.id.txtStart);
+        txtStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCompleteAddress();
+                dialog.dismiss();
+            }
+        });
+        txtNotNow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
+    public void startCompleteAddress(){
+        Intent intent = new Intent(getActivity(), SetupCompleteAddressActivity.class);
+        intent.putExtra("finalRequestParams", getIncompleteAccountParams());
+        intent.putExtra("ispro", true);
+        intent.putExtra("iscompleting", true);
+        startActivity(intent);
     }
 
     @Override
@@ -440,6 +478,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         scheduleLayout = (RelativeLayout) view.findViewById(R.id.schedulelayout);
         progresslayout = (RelativeLayout) view.findViewById(R.id.progresslayout);
         availablelayout = (RelativeLayout) view.findViewById(R.id.availablelayout);
+        availableBottomLayout = (LinearLayout) view.findViewById(R.id.layout_available_bottom);
+        progressBottomLayout = (LinearLayout) view.findViewById(R.id.layout_progress_bottom);
+        txtStartInAvailable = (TextView) view.findViewById(R.id.txt_start_available);
+        txtStartInProgress = (TextView) view.findViewById(R.id.txt_start_progress);
         calenderviewall = (LinearLayout) view.findViewById(R.id.viewall);
         swipe_refresh_layout_available = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_available);
         swipe_refresh_layout_schedule = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_layout_schedule);
@@ -514,6 +556,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         scheduled.setOnClickListener(this);
         inProgress.setOnClickListener(this);
         calenderviewall.setOnClickListener(this);
+        txtStartInProgress.setOnClickListener(this);
+        txtStartInAvailable.setOnClickListener(this);
         swipe_refresh_layout_schedule.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -764,6 +808,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 case 0:{
                     adapterAvailable.notifyDataSetChanged();
                     setMarkers(availablejoblist);
+                    if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro") && availablejoblist.size() == 0) {
+                        availableBottomLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        availableBottomLayout.setVisibility(View.GONE);
+                    }
 //                    if (_prefs.getBoolean(Preferences.IS_ACCOUNT_SETUP_COMPLETD_SHOWED,false)){
 //                        showAccountSetupCompletdDialog();
 //                    }
@@ -777,23 +826,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                     break;
                 }
                 case 2:{
-
-                        adapterSchedule.notifyDataSetChanged();
-//                    }
-
+                    adapterSchedule.notifyDataSetChanged();
                     setMarkers(schedulejoblist);
-
                     break;
                 }
                 case 3:{
-
                     break;
                 } case 4:{
                     adapterProgress.notifyDataSetChanged();
-//                    }
-
                     setMarkers(progressJobList);
-
+                    if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro") && progressJobList.size() == 0) {
+                        progressBottomLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        progressBottomLayout.setVisibility(View.GONE);
+                    }
                     break;
                 }
             }
@@ -1205,46 +1251,40 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                 isStateAvailable  = true ;
                 tab_selected = "Available";
                 availScheduleLayout.setBackgroundResource(R.drawable.available);
-//                inProgresslayout.setVisibility(View.GONE);
                 progresslayout.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.GONE);
                 availablelayout.setVisibility(View.VISIBLE);
                 setMarkers(availablejoblist);
+                if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro") && availablejoblist.size() == 0) {
+                    availableBottomLayout.setVisibility(View.VISIBLE);
+                } else {
+                    availableBottomLayout.setVisibility(View.GONE);
+                }
                 break;
             case R.id.scheduled:
                 tab_selected = "Scheduled";
                 availScheduleLayout.setBackgroundResource(R.drawable.scheduled);
-//                inProgresslayout.setVisibility(View.GONE);
                 progresslayout.setVisibility(View.GONE);
                 scheduleLayout.setVisibility(View.VISIBLE);
                 availablelayout.setVisibility(View.GONE);
                 refresh();
-//                if (true){
-//                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerScheduled,iHttpExceptionListener, getActivity(), "Loading");
-//                    responseAsync1.execute(getRequestParams("Scheduled"));
-//                }else{
-////                    setMarkers(schedulejoblist);
-//                    handler.sendEmptyMessage(2);
-//                }
-
                 break;
             case R.id.inProgress:
-
                 tab_selected = "Progress";
                 availScheduleLayout.setBackgroundResource(R.drawable.in_progress);
-//                inProgresslayout.setVisibility(View.VISIBLE);
                 progresslayout.setVisibility(View.VISIBLE);
                 scheduleLayout.setVisibility(View.GONE);
                 availablelayout.setVisibility(View.GONE);
+                if (_prefs.getString(Preferences.ACCOUNT_STATUS, "").equals("DEMO_PRO") && _prefs.getString(Preferences.ROLE, "pro").equals("pro")) {
+                    progressBottomLayout.setVisibility(View.VISIBLE);
+                } else {
+                    progressBottomLayout.setVisibility(View.GONE);
+                }
                 refresh();
-
-//                if (true){  //progressJobList.size() == 0
-//                    GetApiResponseAsyncNew responseAsync1 = new GetApiResponseAsyncNew(Constants.BASE_URL,"POST", responseListenerProgress,iHttpExceptionListener, getActivity(), "Loading");
-//                    responseAsync1.execute(getRequestParamsPregressJob());
-//                }else{
-////                    setMarkers(schedulejoblist);
-//                    handler.sendEmptyMessage(4);
-//                }
+                break;
+            case R.id.txt_start_available:
+            case R.id.txt_start_progress:
+                startCompleteAddress();
                 break;
             case R.id.viewall:
                 Intent i = new Intent(getActivity(), CalendarActivity.class);

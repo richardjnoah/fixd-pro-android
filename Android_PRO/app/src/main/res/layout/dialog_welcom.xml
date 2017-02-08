@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_12_dp"
+    android:background="@android:color/transparent">
+
+    <RelativeLayout
+        android:id="@+id/relative1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/white_background">
+
+        <LinearLayout
+            android:id="@+id/layout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/size_10_dp">
+
+            <ImageView
+                android:id="@+id/imgThumbLuck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tool_circle" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout1"
+            android:layout_marginLeft="@dimen/size_24_dp"
+            android:layout_marginRight="@dimen/size_24_dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtYouHave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/size_12_dp"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:padding="@dimen/size_8_dp"
+                android:singleLine="true"
+                android:text="Welcome to Fixd Pro!"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/size_22_sp" />
+
+            <TextView
+                android:id="@+id/txtUserName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:gravity="center_horizontal"
+                android:text="@string/view_only_mode_message"
+                android:textColor="@color/text_color_medium_dark_grey"
+                android:textSize="@dimen/size_19_sp" />
+
+            <TextView
+                android:id="@+id/txtStart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="GET STARTED"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:textSize="@dimen/size_20_sp"
+                android:padding="@dimen/size_10_dp"
+                android:background="@drawable/full_orange_rounded_rectangle"
+                />
+
+            <TextView
+                android:id="@+id/txtNotNow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="NOT NOW"
+                android:gravity="center_horizontal"
+                android:textColor="@color/white"
+                android:layout_marginTop="@dimen/size_20_dp"
+                android:layout_marginBottom="@dimen/size_20_dp"
+                android:textSize="@dimen/size_20_sp"
+                android:padding="@dimen/size_10_dp"
+                android:background="@drawable/full_grey_rounded_rectangle"
+                />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

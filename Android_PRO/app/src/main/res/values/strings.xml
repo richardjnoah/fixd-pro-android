@@ -125,6 +125,7 @@
     <string name="viewall">View All</string>
     <string name="title_activity_calendar">CalendarActivity</string>
     <string name="title_activity_my_jobs_search">MyJobsSearchActivity</string>
+    <string name="view_only_mode_message">Your account is in View Only Mode. To pick up jobs you must complete your account setup.</string>
 
     <!--<string name="google_app_id">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
     <string name="cancel">Cancel</string>
