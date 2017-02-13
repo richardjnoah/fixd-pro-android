@@ -68,6 +68,7 @@ import fixdpro.com.fixdpro.adapters.MyInfoWindowAdapter;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
+import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
 import fixdpro.com.fixdpro.net.IHttpResponseListener;
 import fixdpro.com.fixdpro.utilites.CheckIfUserVarified;
@@ -115,7 +116,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
     JobsPagingAdapter adapterProgress ;
     fixdpro.com.fixdpro.views.CircularProgressView progressView ;
     SwipeRefreshLayout swipe_refresh_layout_schedule, swipe_refresh_layout_available,swipe_refresh_layout_inProgress;
-    String switch_tab = "Available";
+    String switch_tab = "Available", pendingRescheduleJobId = "";
     boolean isFirstTechReg = false ;
     public HomeFragment() {
         // Required empty public constructor
@@ -257,6 +258,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
             if (availablejoblist.size() == 0){
                 availableBottomLayout.setVisibility(View.VISIBLE);
             }
+        } else {
+            checkIfAnActionsIsPendingForUser();
         }
 
         if (switch_tab.equals("Scheduled")){
@@ -375,6 +378,68 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         intent.putExtra("ispro", true);
         intent.putExtra("iscompleting", true);
         startActivity(intent);
+    }
+
+    public void checkIfAnActionsIsPendingForUser(){
+
+        GetApiResponseAsyncNoProgress getApiResponseAsyncNoProgress = new GetApiResponseAsyncNoProgress(Constants.BASE_URL, "POST", new IHttpResponseListener() {
+            @Override
+            public void handleResponse(JSONObject Response) {
+                try {
+                    String STATUS = Response.getString("STATUS");
+                    if (STATUS.equals("SUCCESS")) {
+                        JSONArray results = Response.getJSONObject("RESPONSE").getJSONArray("results");
+
+                        for (int i = 0; i < results.length(); i++) {
+                            JSONObject jsonObject = results.getJSONObject(i);
+                            JSONArray dataArray = jsonObject.getJSONArray("data");
+                            HashMap<String, String> dataHashMap = new HashMap<String, String>();
+                            for (int j = 0 ; j < dataArray.length() ; j++){
+                                JSONObject object = dataArray.getJSONObject(j);
+                                String key = object.getString("key");
+                                String value = object.getString("value");
+                                dataHashMap.put(key, value);
+                            }
+                            if (dataHashMap.get("t").equals("rjc")){
+                                pendingRescheduleJobId = dataHashMap.get("j");
+                                handler.sendEmptyMessage(5);
+                                break;
+                            }
+                        }
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
+                new IHttpExceptionListener() {
+                    @Override
+                    public void handleException(String exception) {
+                    }
+                },
+                getActivity(),  "Loading");
+
+        getApiResponseAsyncNoProgress.execute(getNotificationParams());
+
+
+    }
+
+    private HashMap<String, String> getNotificationParams() {
+        HashMap<String, String> hashMap = new HashMap<String, String>();
+        hashMap.put("api", "read");
+        hashMap.put("object", "alerts");
+        hashMap.put("select", "^*");
+        hashMap.put("token", _prefs.getString(Preferences.AUTH_TOKEN, ""));
+        hashMap.put("order_by", "created_at");
+        hashMap.put("order", "DESC");
+        hashMap.put("where[is_read]", "0");
+        hashMap.put("where[is_active]", "1");
+        hashMap.put("_app_id", "FIXD_ANDROID_CONSUMER");
+        hashMap.put("_company_id", "FIXD");
+//        hashMap.put("page", "1");
+//        hashMap.put("per_page", 30 + "");
+        return hashMap;
     }
 
     @Override
@@ -841,6 +906,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         progressBottomLayout.setVisibility(View.GONE);
                     }
                     break;
+                }
+                case 5:{
+                    AvailableJobModal job_detail = ((HomeScreenNew)getActivity()).getJobforId(pendingRescheduleJobId);
+                    if (job_detail != null) {
+                        ScheduledListDetailsFragment fragment = new ScheduledListDetailsFragment();
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("modal", job_detail);
+                        ((HomeScreenNew)getActivity()).switchFragment(fragment, Constants.SCHEDULED_LIST_DETAILS_FRAGMENT, true, bundle);
+                    }
                 }
             }
         }

@@ -108,7 +108,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
     SharedPreferences _prefs = null ;
     Context _context = null ;
     String error_message = "";
-    String room_id  = "", new_date = "", new_time_interval = "";
+    String room_id  = "", new_date = "", new_time_interval = "", old_date="", old_time_interval="";
     Dialog progressDialog, dialog;
     private static final String EXTRA_DIALOG = "dialog";
     boolean isRescheduleFlow = false;
@@ -555,6 +555,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                     break;
                 }
                 case 1:{
+                    showAlertDialog("Fixd", error_message);
                     break;
                 }
                 case 2:{
@@ -562,6 +563,8 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                     txtPreviousDateTitle.setVisibility(View.VISIBLE);
                     txtNewTimeInterval.setText(new_time_interval);
                     txtNewDate.setText(new_date);
+                    date.setText(old_date);
+                    timeinterval.setText(old_time_interval);
                     layoutNewDate.setVisibility(View.VISIBLE);
                     layoutServiceDescription.setVisibility(View.GONE);
                     techDivider.setVisibility(View.GONE);
@@ -730,10 +733,12 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
                 {
                     JSONObject responseDict = Response.getJSONObject("RESPONSE");
                     if (responseDict.getString("status").toUpperCase().equals("PENDING")){
+                        old_date = Utilities.convertDate(responseDict.getString("old_request_start"));
                         new_date = Utilities.convertDate(responseDict.getString("request_start"));
                         if (!responseDict.isNull("time_slot")){
                             new_time_interval = responseDict.getJSONObject("time_slot").getString("name");
                         }
+                        old_time_interval = responseDict.getJSONObject("old_time_slot").getString("name");
                         isRescheduleFlow = true;
                         handler.sendEmptyMessage(2);
                     } else {

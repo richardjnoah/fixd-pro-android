@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "75614332204",
-    "firebase_url": "https://fixd-pro.firebaseio.com",
-    "project_id": "fixd-pro",
-    "storage_bucket": "fixd-pro.appspot.com"
+    "project_number": "692647133854",
+    "firebase_url": "https://fixd-android-pro.firebaseio.com",
+    "project_id": "fixd-android-pro",
+    "storage_bucket": "fixd-android-pro.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:75614332204:android:0c9227d8640e532e",
+        "mobilesdk_app_id": "1:692647133854:android:0c9227d8640e532e",
         "android_client_info": {
           "package_name": "fixdpro.com.fixdpro"
         }
       },
       "oauth_client": [
         {
-          "client_id": "75614332204-0vhm82kgntfnqk739elu8d4svri0t91g.apps.googleusercontent.com",
+          "client_id": "692647133854-ue18qlin8v37o9pr0jijdv1vpp0hqo3l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCp-StXvu1UAoQ5-MOvGfTbyZpWnUPJuMg"
+          "current_key": "AIzaSyAMKFWwVNHMJDuMuaSKy-qBnAptI3ZgZyY"
         }
       ],
       "services": {

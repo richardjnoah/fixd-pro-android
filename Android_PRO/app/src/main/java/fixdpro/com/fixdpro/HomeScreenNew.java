@@ -186,6 +186,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
     int count  = 0 ;
     ArrayList<AvailableJobModal>  schedulejoblist;
     ArrayList<AvailableJobModal>  availablejoblist;
+    String pendingRescheduleJobId = "";
+
+
     public HomeScreenNew() {
         super();
     }
@@ -531,6 +534,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 //                MessageReceivingService.sendToApp(extras, context);
                     LocalBroadcastManager.getInstance(HomeScreenNew.this).sendBroadcast(intent1);
                 }
+
             }
         }
     };
@@ -1521,7 +1525,11 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                 }
             }
         }
+
     }
+
+
+
 
     @Override
     protected void onPause() {
