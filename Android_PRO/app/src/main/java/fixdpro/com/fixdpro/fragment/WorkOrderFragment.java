@@ -43,6 +43,7 @@ import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.SignatureActivity;
+import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.beans.NotificationModal;
 import fixdpro.com.fixdpro.beans.install_repair_beans.RepairType;
 import fixdpro.com.fixdpro.beans.install_repair_beans.WorkOrder;
@@ -82,6 +83,7 @@ public class WorkOrderFragment extends Fragment {
     String error_message = "";
     WorkOrder workOrder ;
     RepairType repairType ;
+    JobAppliancesModal jobAppliancesModal;
     TextView txtDiagnosticDoller,txtSubTotalDoller,txtTaxDoller,txtTotalDoller,txtJob,txtJobType,txtUserNameAddress,txtRepairType,txtReapirTypeCost,partstxtType,partstxtDollerT, typeHeading,txtDiagnostic;
     EditText txtcomplaint,txtDescValue;
     Dialog dialog = null ;
@@ -126,17 +128,15 @@ public class WorkOrderFragment extends Fragment {
         _context = getActivity();
         _prefs = Utilities.getSharedPreferences(_context);
         singleTon = CurrentScheduledJobSingleTon.getInstance();
-        workOrder = singleTon.getJobApplianceModal().getInstallOrRepairModal().getWorkOrder();
-        repairType = singleTon.getJobApplianceModal().getInstallOrRepairModal().getRepairType();
+        workOrder = singleTon.getCurrentJonModal().getJob_appliances_arrlist().get(0).getInstallOrRepairModal().getWorkOrder();
+        repairType = singleTon.getCurrentJonModal().getJob_appliances_arrlist().get(0).getInstallOrRepairModal().getRepairType();
+        jobAppliancesModal = singleTon.getCurrentJonModal().getJob_appliances_arrlist().get(0);
         gpsTracker = new GPSTracker(getActivity());
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_work_order, container, false);
         setWidgets(view);
         setListeners();
@@ -161,30 +161,28 @@ public class WorkOrderFragment extends Fragment {
         txtDiagnostic = (TextView)view.findViewById(R.id.txtDiagnostic);
         txtJob = (TextView)view.findViewById(R.id.txtJob);
         txtJob.setText("Job #"+singleTon.getCurrentJonModal().getId());
-        txtJobType.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
+        txtJobType.setText(jobAppliancesModal.getAppliance_type_name() + " - " + jobAppliancesModal.getJob_appliances_service_type());
         txtUserNameAddress.setText((singleTon.getCurrentJonModal().getContact_name() +" - " +singleTon.getCurrentJonModal().getJob_customer_addresses_address()));
-        txtcomplaint.setText(singleTon.getJobApplianceModal().getJob_appliances_customer_compalint());
-//        txtDescValue.setText(singleTon.getJobApplianceModal().getJob_appliances_appliance_description());
-        if (singleTon.getInstallOrRepairModal().getRepairType().getType().length() > 0)
-        txtRepairType.setText( singleTon.getInstallOrRepairModal().getRepairType().getType());
-        txtDescValue.setText(singleTon.getInstallOrRepairModal().getEquipmentInfo().getDescription());
+        txtcomplaint.setText(jobAppliancesModal.getJob_appliances_customer_compalint());
+        if (repairType.getType().length() > 0)
+        txtRepairType.setText( repairType.getType());
+        txtDescValue.setText(jobAppliancesModal.getInstallOrRepairModal().getEquipmentInfo().getDescription());
         String parts = "" ;
         float cost = 0;
-        for (int i = 0 ; i < singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().size() ; i++){
-            if (!(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription().length() == 0)){
-                partstxtType.setText(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription()+"\n");
-                parts = singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription() +"," + parts;
+        for (int i = 0 ; i < jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().size() ; i++){
+            if (!(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription().length() == 0)){
+                partstxtType.setText(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription()+"\n");
+                parts = jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getDescription() +"," + parts;
             }
 
-
-            if (!(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost().length() == 0)){
-                cost = cost + Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost());
-                float parts_Cost = Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost()) * Float.parseFloat(singleTon.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getQuantity());
+            if (!(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost().length() == 0)){
+                cost = cost + Float.parseFloat(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost());
+                float parts_Cost = Float.parseFloat(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getCost()) * Float.parseFloat(jobAppliancesModal.getInstallOrRepairModal().getPartsContainer().getPartsArrayList().get(i).getQuantity());
                 partstxtDollerT.setText("$"+df.format(parts_Cost)+"" +"\n");
             }
 
         }
-        typeHeading.setText(singleTon.getJobApplianceModal().getJob_appliances_service_type() +" Type");
+        typeHeading.setText(jobAppliancesModal.getJob_appliances_service_type() +" Type");
     }
     private void setListeners(){
 
@@ -193,11 +191,7 @@ public class WorkOrderFragment extends Fragment {
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","work_order");
         hashMap.put("object","job_appliances");
-//        if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install"))
-//            hashMap.put("object","install_flow");
-//        else
-//            hashMap.put("object","repair_flow");
-        hashMap.put("data[job_appliance_id]",singleTon.getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("data[job_appliance_id]",jobAppliancesModal.getJob_appliances_id());
         hashMap.put("token",_prefs.getString(Preferences.AUTH_TOKEN,""));
         hashMap.put("_app_id", "FIXD_ANDROID_PRO");
         hashMap.put("_company_id", "FIXD");
@@ -226,7 +220,6 @@ public class WorkOrderFragment extends Fragment {
                 if (notificationModal.getType().equals("woa")){
                     if (dialog != null && dialog.isShowing())
                         dialog.dismiss();
-//                        Show work order approved dialog
                     showDialogWorkOrderApproved();
                 }else {
                     showDialogWorkOrderResend();
@@ -366,7 +359,6 @@ public class WorkOrderFragment extends Fragment {
         }else {
             showCustomDialog();
         }
-//        ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WORK_ORDER_FRAGMENT);
     }
 
     @Override
@@ -375,16 +367,7 @@ public class WorkOrderFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
@@ -520,9 +503,6 @@ public class WorkOrderFragment extends Fragment {
                     public void run() {
                         dialog.dismiss();
                         singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
-//                        CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
-//                        Intent intent = new Intent(getActivity(), SignatureActivity.class);
-//                        startActivity(intent);
                         ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
                     }
                 }, 300);
@@ -545,7 +525,6 @@ public class WorkOrderFragment extends Fragment {
                             CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setWorkOrder(workOrder);
                             Intent intent = new Intent(getActivity(), SignatureActivity.class);
                             CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().getSignature().setIsCompleted(true);
-//                            startActivity(intent);
                             ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
                         }
                     }, 300);

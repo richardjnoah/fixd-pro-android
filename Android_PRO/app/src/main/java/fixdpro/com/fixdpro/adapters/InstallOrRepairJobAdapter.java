@@ -103,7 +103,7 @@ public class InstallOrRepairJobAdapter extends BaseAdapter {
             tempValues=null;
             tempValues = ( JobAppliancesModal ) data.get( position );
             holder.txtInstaller.setText(tempValues.getAppliance_type_name() + " " +tempValues.getJob_appliances_service_type());
-            if (tempValues.isProcessCompleted()){
+            if (tempValues.getInstallOrRepairModal().getPartsContainer().isCompleted()){
                 holder.imgStatus.setBackgroundResource(R.drawable.green_check);
             } else if (tempValues.isCanceled()){
                 holder.imgStatus.setBackgroundResource(R.drawable.red_cross);

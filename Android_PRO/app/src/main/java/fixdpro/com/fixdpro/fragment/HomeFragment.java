@@ -1120,6 +1120,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                         model.setUpdated_at(obj.getString("updated_at"));
 //                        model.setWarranty(obj.getString("warranty"));
                         model.setIs_claim(obj.getString("is_claim"));
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    model.setIs_fe_job("1");
+                                } else {
+                                    model.setIs_fe_job("0");
+                                }
+                            }
+                        }
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                             JSONArray jobAppliances = obj.getJSONArray("job_appliances");
                             ArrayList<JobAppliancesModal>  jobapplianceslist = new ArrayList<JobAppliancesModal>();
@@ -1283,9 +1292,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         hashMap.put("object","jobs");
 
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
+            hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,customers.users.company_id");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         if (isStateAvailable)
         hashMap.put("page", pageAvaileble+"");

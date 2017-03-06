@@ -85,12 +85,9 @@ public class ServiceTicketActivity extends AppCompatActivity {
             txtAddresss.setText(availableJobModal.getJob_customer_addresses_address() + " " + availableJobModal.getJob_customer_addresses_address_2());
             GetApiResponseAsync responseAsyncCompleted = new GetApiResponseAsync("POST", responseListenerCompleted, this, "Loading");
             responseAsyncCompleted.execute(getRequestParams(jobId));
-            if (availableJobModal.getIs_claim().equals("1") && availableJobModal.getJob_line_items_is_covered().equals("1")){
+            if (availableJobModal.getIs_fe_job().equals("0") && availableJobModal.getIs_claim().equals("1") && availableJobModal.getJob_line_items_is_covered().equals("1")){
                 txtWarrenty.setText("Warrenty");
                 txtSubTotalDoller.setPaintFlags(txtSubTotalDoller.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-            }
-            if (availableJobModal.getJob_line_items_diagnostic_fee().equals("0") || availableJobModal.getJob_line_items_diagnostic_fee().equals("0.0")){
-                txtWarrentyDoller.setText("$50.00");
             }
         }
 
@@ -392,7 +389,7 @@ public class ServiceTicketActivity extends AppCompatActivity {
         hashMap.put("api", "read");
         hashMap.put("object","jobs");
 //        if (Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro"))
-        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*");
+        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,customers.users.company_id");
 //        else
 //        hashMap.put("select", "^*,job_parts_used.^*,job_images.^*,job_repair.^*,job_repair.repair_types.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         hashMap.put("where[id]", Jobid);
@@ -488,10 +485,7 @@ public class ServiceTicketActivity extends AppCompatActivity {
                     txtRepairTypeDollarText.setText("$"+value);
 //                    txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getPrice());
                 }
-
             }
-
-
 
             if (jobapplianceslist.get(i).getJob_appliances_appliance_description().length() > 0)
                 txtDescriptionTExt.setText(jobapplianceslist.get(i).getJob_appliances_appliance_description());

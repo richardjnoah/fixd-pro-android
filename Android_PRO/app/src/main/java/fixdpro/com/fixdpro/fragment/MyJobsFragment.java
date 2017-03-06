@@ -302,7 +302,7 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
 //        if (!role.equals("pro"))
 //            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
 //        else
-        hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*");
+        hashMap.put("select", "^*,job_appliances.^*,technicians.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*,job_line_items.^*,customers.users.company_id");
 
         if (Status.equals("Scheduled")){
             hashMap.put("where[status@NOT_IN]", "Complete,Open,Canceled");
@@ -367,6 +367,15 @@ public class MyJobsFragment extends Fragment implements View.OnClickListener{
                         model.setTitle(obj.getString("title"));
 //                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    model.setIs_fe_job("1");
+                                } else {
+                                    model.setIs_fe_job("0");
+                                }
+                            }
+                        }
 //                        model.setWarranty(obj.getString("warranty"));
 //                      if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");

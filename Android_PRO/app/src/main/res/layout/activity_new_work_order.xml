@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_grey_blur"
+    tools:context="fixdpro.com.fixdpro.ServiceTicketActivity">
+
+    <android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:local="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/actionbar_bg"
+        android:minHeight="?attr/actionBarSize"
+        android:visibility="gone"
+        local:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        local:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/screen_cross" />
+
+            <TextView
+                android:id="@+id/txtToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/serviceticket"
+                android:textColor="@color/register_button_text"
+                android:textSize="@dimen/size_20_sp" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/txtBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_18_dp"
+        android:padding="@dimen/size_5_dp"
+        android:text="Back"
+        android:layout_marginLeft="@dimen/size_5_dp"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_18_sp" />
+
+    <TextView
+        android:id="@+id/txtTotalCost"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/size_10_dp"
+        android:padding="@dimen/size_5_dp"
+        android:text="Work Order"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_27_sp" />
+
+    <TextView
+        android:id="@+id/txtDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/size_18_dp"
+        android:padding="@dimen/size_5_dp"
+        android:text="Done"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/size_5_dp"
+        android:textColor="@color/white"
+        android:textSize="@dimen/size_18_sp" />
+
+    <TextView
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtTotalCost"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/size_5_dp"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_22_sp" />
+
+    <TextView
+        android:id="@+id/txtAddresss"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtName"
+        android:layout_centerHorizontal="true"
+        android:padding="@dimen/size_5_dp"
+        android:text=""
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_16_sp" />
+
+    <TextView
+        android:id="@+id/txtJobId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtAddresss"
+        android:layout_gravity="left"
+        android:background="@color/orange_signin_back"
+        android:gravity="center"
+        android:padding="@dimen/size_5_dp"
+        android:paddingLeft="@dimen/size_7_dp"
+        android:singleLine="true"
+        android:text="Job #"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/size_16_sp"
+        android:textStyle="bold" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/txtJobId"
+        android:background="@android:color/white"></View>
+
+    <LinearLayout
+        android:id="@+id/layout_appliances"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txtJobId"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="center">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Air Conditionar Repair"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/size_20_sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/imgArrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_16_dp"
+                android:src="@drawable/next_arrow_orange" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <!--<include-->
+    <!-- -->
+    <!--android:id="@+id/layout_workorder"-->
+    <!--layout="@layout/layout_worker_anim"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/layout_appliances"></include>-->
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_appliances">
+
+        <LinearLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/layout_appliances"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/layout_workorder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"></LinearLayout>
+
+            <View
+                android:id="@+id/divider_cost"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/scroll"
+                android:background="@android:color/white"></View>
+            <LinearLayout
+                android:id="@+id/layoutWarrenty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtWarrenty"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="Diagnostic"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtWarrentyDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/subTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtSubTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/subtotal"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <TextView
+                    android:id="@+id/txtSubTotalDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subTotal"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTax"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="@string/tax"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_21_sp" />
+
+                <TextView
+                    android:id="@+id/txtTaxDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+            </LinearLayout>
+            <View
+                android:layout_marginLeft="@dimen/size_57_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/scroll"
+                android:background="@android:color/white"></View>
+            <LinearLayout
+                android:id="@+id/layoutTotal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/subTotal"
+                android:layout_marginLeft="@dimen/size_10_dp"
+                android:layout_marginRight="@dimen/size_10_dp"
+                android:padding="@dimen/size_5_dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/txtTotal"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.6"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text="Your Cut:"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_21_sp" />
+
+                <TextView
+                    android:id="@+id/txtTotalDoller"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.4"
+                    android:gravity="right"
+                    android:singleLine="true"
+                    android:text=""
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_18_sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</RelativeLayout>

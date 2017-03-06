@@ -172,6 +172,16 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
                         jobModal.setTitle(obj.getString("title"));
 //                        jobModal.setTotal_cost(obj.getString("total_cost"));
                         jobModal.setUpdated_at(obj.getString("updated_at"));
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    jobModal.setIs_fe_job("1");
+                                } else {
+                                    jobModal.setIs_fe_job("0");
+                                }
+                            }
+                        }
+
 //                        jobModal.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
@@ -338,10 +348,7 @@ public class ConfirmAssignTechActivity extends AppCompatActivity {
         hashMap.put("api", api);
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
-        if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
-        else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,customers.users.company_id");
         hashMap.put("where[id]", id + "");
         hashMap.put("token", Utilities.getSharedPreferences(ConfirmAssignTechActivity.this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");

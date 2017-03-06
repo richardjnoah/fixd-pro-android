@@ -25,9 +25,11 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 
+import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
@@ -56,8 +58,17 @@ public class SignatureActivity extends AppCompatActivity {
         if (getIntent().getExtras() != null){
             isCancel = true ;
         }
-        txtTitle.setText(singleTon.getJobApplianceModal().getAppliance_type_name() + " - " + singleTon.getJobApplianceModal().getJob_appliances_service_type());
-        txtTotal.setText("$"+singleTon.getInstallOrRepairModal().getWorkOrder().getTotal());
+        txtTitle.setText(groupedAppliancesNames());
+        txtTotal.setText("$"+singleTon.getCurrentJonModal().getJob_line_items_pro_cut());
+    }
+    private String groupedAppliancesNames(){
+        ArrayList<JobAppliancesModal> appliances = singleTon.getCurrentJonModal().getJob_appliances_arrlist();
+        String groupedName = "";
+        for (int i=0; i<appliances.size(); i++){
+            groupedName = appliances.get(i).getAppliance_type_name() + " " + appliances.get(i).getJob_appliances_service_type();
+            if (i != (appliances.size() -1)) groupedName = groupedName + ",";
+        }
+        return groupedName;
     }
     private void setWidgets(){
         imgClose = (ImageView)findViewById(R.id.imgClose);
@@ -134,20 +145,13 @@ public class SignatureActivity extends AppCompatActivity {
             protected String doInBackground(Void... params) {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
-                    multipart.addFormField("api", "update_customer_signature");
-//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
+                    multipart.addFormField("api", "work_order_update");
                     multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
                     multipart.addFormField("_company_id", "FIXD");
-                        multipart.addFormField("object", "job_appliances");
-
-//                    }else{
-//                        multipart.addFormField("object", "repair_flow");
-//
-//                    }
-
+                    multipart.addFormField("object", "jobs");
                     multipart.addFilePart("data[customer_signature]", new File(mPath));
                     multipart.addFormField("token", Utilities.getSharedPreferences(SignatureActivity.this).getString(Preferences.AUTH_TOKEN, ""));
-                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    multipart.addFormField("data[job_id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -174,7 +178,7 @@ public class SignatureActivity extends AppCompatActivity {
                     showAlertDialog("Fixd-Pro", error_message);
                     break;
                 }case 2:{
-                    singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+//                    singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     Intent intent = new Intent();
                     setResult(200, intent);
                     finish();
@@ -234,7 +238,7 @@ public class SignatureActivity extends AppCompatActivity {
             outputStream.flush();
             outputStream.close();
             if (!isCancel){
-                singleTon.getInstallOrRepairModal().getSignature().setSignature_path(mPath);
+                //singleTon.getInstallOrRepairModal().getSignature().setSignature_path(mPath);
                 executeRepairInfoSaveingRequest();
             }else {
                 Intent intent = new Intent();

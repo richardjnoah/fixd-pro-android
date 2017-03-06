@@ -318,11 +318,11 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         String title = "";
         String message = modal.getMessage();
         if (showPopup) {
-            if (modal.getType().equals("woa")) {
+            if (modal.getType().equals("woafj")) {
                 title = "Work Order Approved!";
                 // define alert...
             }
-            if (modal.getType().equals("wod")) {
+            if (modal.getType().equals("wodfj")) {
                 title = "Work Order Declined!";
                 // define alert...
             }
@@ -385,7 +385,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
 
 
     private void executeNoti(){
-        if (modal.getType().equals("woa") || modal.getType().equals("wod")) {
+        if (modal.getType().equals("woafj") || modal.getType().equals("wodfj")) {
             Bundle bundle = new Bundle();
             bundle.putString("job_id", modal.getJobId());
             bundle.putString("appliance_id", modal.getJobAppliance());
@@ -464,9 +464,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,time_slots.^*,customers.users.company_id");
         hashMap.put("where[id]", id + "");
         hashMap.put("token", Utilities.getSharedPreferences(HomeScreenNew.this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
@@ -481,9 +481,9 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,customers.users.company_id");
         hashMap.put("where[id]", id + "");
         hashMap.put("token", Utilities.getSharedPreferences(HomeScreenNew.this).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");
@@ -576,6 +576,15 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                         jobModal.setTitle(obj.getString("title"));
 //                        jobModal.setTotal_cost(obj.getString("total_cost"));
                         jobModal.setUpdated_at(obj.getString("updated_at"));
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    jobModal.setIs_fe_job("1");
+                                } else {
+                                    jobModal.setIs_fe_job("0");
+                                }
+                            }
+                        }
 //                        jobModal.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
@@ -729,6 +738,15 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                         jobModal.setTitle(obj.getString("title"));
 //                        jobModal.setTotal_cost(obj.getString("total_cost"));
                         jobModal.setUpdated_at(obj.getString("updated_at"));
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    jobModal.setIs_fe_job("1");
+                                } else {
+                                    jobModal.setIs_fe_job("0");
+                                }
+                            }
+                        }
 //                        jobModal.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
@@ -1623,7 +1641,7 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
             // Get extra data included in the Intent
             if (intent != null) {
                 NotificationModal notificationModal = (NotificationModal) intent.getSerializableExtra("data");
-                if (notificationModal.getType().equals("woa") || notificationModal.getType().equals("wod")) {
+                if (notificationModal.getType().equals("woafj") || notificationModal.getType().equals("wodfj")) {
                     Intent intent1 = new Intent("gcm_push_notification_work_order_approved");
                     // You can also include some extra data.
                     intent1.putExtra("data", notificationModal);
@@ -1796,7 +1814,6 @@ public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsF
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 return null;

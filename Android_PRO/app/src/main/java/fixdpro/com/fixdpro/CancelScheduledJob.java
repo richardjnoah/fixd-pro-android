@@ -3,6 +3,7 @@ package fixdpro.com.fixdpro;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,7 +26,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import fixdpro.com.fixdpro.fragment.WhatsWrongFragment;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
 import fixdpro.com.fixdpro.utilites.ExceptionListener;
@@ -46,6 +46,7 @@ public class CancelScheduledJob extends AppCompatActivity {
     String DiagnosticFee = "";
     String DiagnosticName ="";
     String Total ="";
+    boolean cancelWholeJob = false;
     MultipartUtility multipart = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,7 @@ public class CancelScheduledJob extends AppCompatActivity {
             DiagnosticFee = getIntent().getStringExtra("fees");
             DiagnosticName = getIntent().getStringExtra("name");
             Total = getIntent().getStringExtra("total");
+            cancelWholeJob = getIntent().getBooleanExtra("is_whole_cancel", false);
             initValues();
         }
         JobId = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() ;
@@ -148,10 +150,11 @@ public class CancelScheduledJob extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-//                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
-//                    SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
-//                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
-                    showAlertDialog("SUCCESS", "Job is Cancelled.",true);
+                    CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(null);
+                    SharedPreferences _prefs = Utilities.getSharedPreferences(CancelScheduledJob.this);
+                    _prefs.edit().putString(Preferences.SCREEEN_NAME, Constants.NO_JOB).commit();
+                    showAlertDialog("SUCCESS", "Job is Cancelled.", true);
+
                     break;
                 }
                 case 1:{
@@ -199,8 +202,11 @@ public class CancelScheduledJob extends AppCompatActivity {
                         // current activity
                         dialog.cancel();
                         if (success) {
-                            WhatsWrongFragment.fromCancelJob = true;
-                            finish();
+                            finishAffinity();
+                            Intent intent = new Intent(CancelScheduledJob.this, HomeScreenNew.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            startActivity(intent);
+
                         }
                     }
                 });
@@ -240,21 +246,24 @@ public class CancelScheduledJob extends AppCompatActivity {
             protected String doInBackground(Void... params) {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
-//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
                     multipart.addFormField("api", "cancel");
-                    multipart.addFormField("object", "job_appliances");
                     multipart.addFormField("data[reason]", reason);
                     multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
                     multipart.addFormField("_company_id", "FIXD");
-//                    }else{
-//                        multipart.addFormField("api", "repair_info");
-//                        multipart.addFormField("object", "repair_flow");
-//
-//                    }
+
                     if (Path != null && !Path.equals(""))
                         multipart.addFilePart("data[customer_signature]", new File(Path));
                     multipart.addFormField("token", Utilities.getSharedPreferences(CancelScheduledJob.this).getString(Preferences.AUTH_TOKEN, ""));
-                    multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+
+                    if (cancelWholeJob){
+                        multipart.addFormField("object", "jobs");
+                        multipart.addFormField("data[job_id]", JobId);
+                    } else {
+                        multipart.addFormField("object", "job_appliances");
+                        multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+                    }
+
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

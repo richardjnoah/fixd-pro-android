@@ -29,5 +29,19 @@
             android:src="@drawable/finish_job" />
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/txtWordOrderBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="Proceed To Work Order"
+        android:textColor="@color/white"
+        android:padding="@dimen/size_14_dp"
+        android:textSize="@dimen/size_22_dp"
+        android:background="@color/orange_signin_back"
+        android:gravity="center"
+        android:visibility="gone"
+        />
+
 
 </RelativeLayout>

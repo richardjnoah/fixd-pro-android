@@ -202,6 +202,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />
         <activity
+            android:name=".NewWorkOrderActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme.Base" />
+        <activity
             android:name=".WorkingRadiusActivity"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme.Base" />

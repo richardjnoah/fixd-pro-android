@@ -6,12 +6,12 @@ import java.io.Serializable;
  * Created by sahil on 05-04-2016.
  */
 public class WorkOrder implements Serializable {
-    String disgnostic = "";
-    String sub_total = "";
-    String tax = "";
-    String total = "";
+    String disgnostic = "0.0";
+    String sub_total = "0.0";
+    String tax = "0.0";
+    String total = "0.0";
     String status = "";
-    String hourly_rate = "";
+    String hourly_rate = "0.0";
     String is_claim = "0";
     String warranty_fee = "0.0";
     boolean is_covered = false ;

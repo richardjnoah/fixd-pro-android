@@ -25,6 +25,7 @@ public class AvailableJobModal implements Serializable{
     String service_type = "";
     String started_at = "";
     String status = "";
+    String isWorkOrderApproved = "";
 
     String time_slot_id = "";
     String title = "";
@@ -32,6 +33,7 @@ public class AvailableJobModal implements Serializable{
     String updated_at = "";
     String warranty = "";
     String is_claim = "";
+    String is_fe_job="";
     boolean start_going_to_get_parts_process = false;
     public   String current_screen_tag = "";
 
@@ -695,5 +697,21 @@ public class AvailableJobModal implements Serializable{
 
     public void setJob_customer_addresses_longitude(Double job_customer_addresses_longitude) {
         this.job_customer_addresses_longitude = job_customer_addresses_longitude;
+    }
+
+    public String getIsWorkOrderApproved() {
+        return isWorkOrderApproved;
+    }
+
+    public void setIsWorkOrderApproved(String isWorkOrderApproved) {
+        this.isWorkOrderApproved = isWorkOrderApproved;
+    }
+
+    public String getIs_fe_job() {
+        return is_fe_job;
+    }
+
+    public void setIs_fe_job(String is_fe_job) {
+        this.is_fe_job = is_fe_job;
     }
 }

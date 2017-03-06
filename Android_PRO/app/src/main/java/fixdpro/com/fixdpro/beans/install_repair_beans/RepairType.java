@@ -9,7 +9,7 @@ public class RepairType implements Serializable {
     String Type = "";
     String Price = "0";
     String Id  = "";
-    String labor_hours  = "";
+    String labor_hours  = "0.0";
     String calculatedBy = "";
     String fixed_cost = "0";
 

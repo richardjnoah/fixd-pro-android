@@ -499,7 +499,7 @@ public class PartsFragment extends Fragment {
                     container_layout.removeAllViews();
 //                    partsArrayList.add(new Parts());
                      singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
-                    ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.PARTS_FRAGMENT);
+                    ((HomeScreenNew) getActivity()).switchFragment(new InstallorRepairFragment(), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
                     break;
                 }
             }

@@ -74,13 +74,7 @@ public class CurrentScheduledJobSingleTon {
         }
 
         repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.PARTS,installOrRepairModal.getPartsContainer().isCompleted()));
-        repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.WORK_ORDER,installOrRepairModal.getWorkOrder().isCompleted()));
-//        if (!jobApplianceModal.getJob_appliances_service_type().equals("Install")){
-//            repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.REPAIR_INFO,installOrRepairModal.getRepairInfo().isCompleted()));
-//        }else {
-//            repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_INFO,installOrRepairModal.getRepairType().isCompleted()));
-//        }
-
-        repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.SIGNATURE,installOrRepairModal.getSignature().isCompleted()));
+//        repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.WORK_ORDER,installOrRepairModal.getWorkOrder().isCompleted()));
+//        repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.SIGNATURE,installOrRepairModal.getSignature().isCompleted()));
     }
 }

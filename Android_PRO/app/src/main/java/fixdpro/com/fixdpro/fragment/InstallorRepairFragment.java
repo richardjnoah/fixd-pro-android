@@ -41,6 +41,7 @@ import java.util.Iterator;
 import java.util.TimeZone;
 
 import fixdpro.com.fixdpro.HomeScreenNew;
+import fixdpro.com.fixdpro.NewWorkOrderActivity;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.adapters.InstallOrRepairJobAdapter;
@@ -80,6 +81,7 @@ public class InstallorRepairFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     ListView lstInstallRepair;
     ImageView img_finishjob;
+    TextView txtWordOrderBtn;
     String role = "pro";
     Context _context;
     SharedPreferences _prefs = null;
@@ -169,6 +171,7 @@ public class InstallorRepairFragment extends Fragment {
         lstInstallRepair = (ListView) view.findViewById(R.id.lstInstallRepair);
         img_finishjob = (ImageView) view.findViewById(R.id.img_finishjob);
         layout_finish_job = (LinearLayout)view.findViewById(R.id.layout_finish_job);
+        txtWordOrderBtn = (TextView) view.findViewById(R.id.txtWordOrderBtn);
     }
 
     private void setListeners() {
@@ -186,6 +189,13 @@ public class InstallorRepairFragment extends Fragment {
                 CurrentScheduledJobSingleTon.getInstance().setSelectedJobApplianceModal(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(position - 1));
 
                 ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHATS_WRONG_FRAGMENT, true, null);
+            }
+        });
+        txtWordOrderBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(),NewWorkOrderActivity.class);
+                startActivity(i);
             }
         });
         img_finishjob.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +230,7 @@ public class InstallorRepairFragment extends Fragment {
         super.onResume();
         ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.INSTALL_OR_REPAIR_FRAGMENT);
         setupToolBar();
+        isJobCompleted();
 //        start_going_to_get_parts_process = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().isStart_going_to_get_parts_process();
         if (start_going_to_get_parts_process){
             start_time = System.currentTimeMillis();
@@ -336,9 +347,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*,customers.users.company_id");
 
         hashMap.put("where[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -386,6 +397,20 @@ public class InstallorRepairFragment extends Fragment {
 //                        model.setTotal_cost(obj.getString("total_cost"));
                         model.setUpdated_at(obj.getString("updated_at"));
                         model.setIs_claim(obj.getString("is_claim"));
+                        if (obj.getString("work_order_status").equals("APPROVED")){
+                            model.setIsWorkOrderApproved("1");
+                        } else {
+                            model.setIsWorkOrderApproved("0");
+                        }
+                        if (!obj.isNull("customers")){
+                            if (!obj.getJSONObject("customers").isNull("users")){
+                                if (obj.getJSONObject("customers").getJSONObject("users").getString("company_id").equals("FE")){
+                                    model.setIs_fe_job("1");
+                                } else {
+                                    model.setIs_fe_job("0");
+                                }
+                            }
+                        }
 //                        model.setWarranty(obj.getString("warranty"));
 //                        if(Utilities.getSharedPreferences(getContext()).getString(Preferences.ROLE, null).equals("pro")) {
                         JSONArray jobAppliances = obj.getJSONArray("job_appliances");
@@ -587,9 +612,15 @@ public class InstallorRepairFragment extends Fragment {
                                         if (!workorderObject.getString("status").equals("NOT_SENT"))
                                         installOrRepairModal.getWorkOrder().setIsCompleted(true);
                                     }
-                                    if (partsArrayList.size()>0){
+                                    if (partsArrayList.size()>0 ){
                                         installOrRepairModal.getPartsContainer().setIsCompleted(true);
                                     }
+                                    ///// new work order
+                                    if (model.getIsWorkOrderApproved().equals("1")){
+                                        installOrRepairModal.getPartsContainer().setIsCompleted(true);
+                                        installOrRepairModal.getRepairType().setIsCompleted(true);
+                                    }
+                                    /////////////
                                     if (!jsonObject.isNull("customer_signature")) {
                                         installOrRepairModal.getSignature().setSignature_path(jsonObject.getString("customer_signature"));
                                         if (jsonObject.getString("customer_signature").length() > 0) {
@@ -758,16 +789,33 @@ public class InstallorRepairFragment extends Fragment {
         }
     };
     private void isJobCompleted(){
-        boolean isAllCompleted = true ;
-        for (int i = 0 ; i < CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().size() ; i++){
-                if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isProcessCompleted() &&
-                        !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isCanceled()){
-                    isAllCompleted = false ;
-                    break;
-                }
+        boolean shouldShowFinishBtn = true ; boolean shouldShowWorkOrderBtn = true;
+        AvailableJobModal currentJonModal = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+        for (int i = 0 ; i < currentJonModal.getJob_appliances_arrlist().size() ; i++){
+//            if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isProcessCompleted() &&
+//                    !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isCanceled()){
+//                shouldShowFinishBtn = false ;
+//                break;
+//            }
+            if (!currentJonModal.getJob_appliances_arrlist().get(i).getInstallOrRepairModal().getPartsContainer().isCompleted() &&
+                    !currentJonModal.getJob_appliances_arrlist().get(i).isCanceled()){
+                shouldShowFinishBtn = false ;
+                shouldShowWorkOrderBtn = false;
+                break;
+            }
         }
-        if (isAllCompleted){
+        if (currentJonModal.getIsWorkOrderApproved().equals("1")){
+            shouldShowWorkOrderBtn = false;
+        }
+        if (shouldShowWorkOrderBtn){
+            txtWordOrderBtn.setVisibility(View.VISIBLE);
+            layout_finish_job.setVisibility(View.GONE);
+        } else if(shouldShowFinishBtn){
+            txtWordOrderBtn.setVisibility(View.GONE);
             layout_finish_job.setVisibility(View.VISIBLE);
+        } else {
+            txtWordOrderBtn.setVisibility(View.GONE);
+            layout_finish_job.setVisibility(View.GONE);
         }
     }
     private void showAlertDialog(String Title,String Message, final boolean doSomeThing){
@@ -838,7 +886,20 @@ public class InstallorRepairFragment extends Fragment {
         TextView txtMileage = (TextView)dialog.findViewById(R.id.txtMileage);
         TextView txtGovtCutValue = (TextView)dialog.findViewById(R.id.txtGovtCutValue);
         TextView txtBigTotal = (TextView)dialog.findViewById(R.id.txtBigTotal);
-        LinearLayout LinearLayout = (LinearLayout)dialog.findViewById(R.id.layout_mileage);
+        LinearLayout layout_mileage = (LinearLayout)dialog.findViewById(R.id.layout_mileage);
+        LinearLayout layout_ourFee = (LinearLayout)dialog.findViewById(R.id.layoutOurFee);
+
+        if(Float.parseFloat(fixd_cut)>0){
+            layout_ourFee.setVisibility(View.VISIBLE);
+        } else {
+            layout_ourFee.setVisibility(View.GONE);
+        }
+        if(Float.parseFloat(job_mileage)>0){
+            layout_mileage.setVisibility(View.VISIBLE);
+        } else {
+            layout_mileage.setVisibility(View.GONE);
+        }
+
 
         txtBigTotal.setText("$"+pro_cut);
         txtJobTotal1.setText("$"+total);
@@ -846,9 +907,7 @@ public class InstallorRepairFragment extends Fragment {
         txtYourCut.setText("$"+pro_cut);
         txtMileage.setText("$"+job_mileage);
         txtGovtCutValue.setText("$"+govt_cut);
-        if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getIs_claim().equals("1")){
-            LinearLayout.setVisibility(View.GONE);
-        }
+
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

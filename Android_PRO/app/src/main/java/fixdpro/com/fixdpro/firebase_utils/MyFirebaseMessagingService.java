@@ -105,13 +105,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 if (jsonPayload.has("ja"))
                                     modal.setJobAppliance(jsonPayload.getString("ja"));
                             }
-                            if (modal.getType().equals("woa")){
+                            if (modal.getType().equals("woa") || modal.getType().equals("woafj")){
                                 if (jsonPayload.has("ja"))
                                     modal.setJobAppliance(jsonPayload.getString("ja"));
                                 if (jsonPayload.has("j"))
                                     modal.setJobId(jsonPayload.getString("j"));
                             }
-                            if (modal.getType().equals("wod")){
+                            if (modal.getType().equals("wod")|| modal.getType().equals("wodfj")){
                                 if (jsonPayload.has("ja"))
                                     modal.setJobAppliance(jsonPayload.getString("ja"));
                                 if (jsonPayload.has("j"))
@@ -151,6 +151,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         break;
                     }
                 }
+            }
+
+            if (modal.getType().equals("woafj")|| modal.getType().equals("wodfj")){ // Work order approved (because work order is activity now)
+                Intent intent1 = new Intent("gcm_push_notification_work_order_approved");
+                // You can also include some extra data.
+                intent1.putExtra("data", modal);
+                LocalBroadcastManager.getInstance(this).sendBroadcast(intent1);
+                return;
             }
 
 

@@ -108,11 +108,6 @@ public class WhatsWrongFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (fromCancelJob){
-            fromCancelJob = false;
-            ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
-            return;
-        }
         ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.WHATS_WRONG_FRAGMENT);
         setupToolBar();
         if (adapter != null){
@@ -169,7 +164,7 @@ public class WhatsWrongFragment extends Fragment {
                 }
                 if (completedCount>0){
                     progress = (int)(100 / (size) * completedCount);
-                    progressText =  (float)(100 / (size) * completedCount);
+                    progressText =  (int)(100 / (size) * completedCount);
                     txtProgress.setText(progressText + "%");
 
                     new Handler().postDelayed(new Runnable() {
