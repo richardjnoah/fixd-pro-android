@@ -321,6 +321,9 @@ public class NewWorkOrderActivity extends AppCompatActivity {
         float subtotal =0;
 
         for (int i = 0 ; i < jobapplianceslist.size() ; i++){
+            if(jobapplianceslist.get(i).isCanceled()){
+                continue;
+            }
             LayoutInflater layoutInflater =
                     (LayoutInflater) getBaseContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             final View view = layoutInflater.inflate(R.layout.layout_worker_anim, null);
@@ -366,16 +369,16 @@ public class NewWorkOrderActivity extends AppCompatActivity {
             if (jobapplianceslist.get(i).getJob_appliances_customer_compalint().length() > 0)
                 txtDisplaingError.setText(jobapplianceslist.get(i).getJob_appliances_customer_compalint());
 
-            if (jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getType().length() > 0){
-                txtRepairTypeText.setText(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getType());
-                if (jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getCalculatedBy().equals("FIXED")){
-                    txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getFixed_cost());
-                }else {
-                    float value = Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getHourly_rate()) * Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getLabor_hours());
-                    txtRepairTypeDollarText.setText("$"+value);
+            txtRepairTypeText.setText(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getType());
+            if (jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getCalculatedBy().equals("FIXED")){
+                txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getFixed_cost());
+            }else {
+                float value = Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getHourly_rate()) * Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getLabor_hours());
+                txtRepairTypeDollarText.setText("$"+value);
 //                    txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getPrice());
-                }
             }
+
+            txtDescriptionTExt.setText(jobapplianceslist.get(i).getInstallOrRepairModal().getEquipmentInfo().getDescription());
 
             if (jobapplianceslist.get(i).getJob_appliances_appliance_description().length() > 0)
                 txtDescriptionTExt.setText(jobapplianceslist.get(i).getJob_appliances_appliance_description());

@@ -368,6 +368,7 @@ public class RepairFragment extends Fragment {
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setId(install_or_repair_type_id);
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setType(install_or_repair_type_type);
                     CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setPrice(install_or_repair_type_price);
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getRepairType().setIsCompleted(true);
                     CurrentScheduledJobSingleTon.getInstance().getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.REPAIR_TYPE_FRAGMENT);
                     break;
@@ -397,6 +398,7 @@ public class RepairFragment extends Fragment {
                     subDialog.dismiss();
                     install_or_repair_labour_hour  = editHour.getText().toString();
                     install_or_repair_type_id  = editDesc.getText().toString();
+                    install_or_repair_type_type = editDesc.getText().toString();
                     GetApiResponseAsyncNew getApiResponseAsyncNew = new GetApiResponseAsyncNew(Constants.BASE_URL, "POST", iHttpResponseListener, exceptionListener, getActivity(), "");
                     getApiResponseAsyncNew.execute(getRequestParamsForSaveType(editHour.getText().toString(),editDesc.getText().toString()));
                 }

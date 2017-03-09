@@ -427,11 +427,7 @@ public class PartsFragment extends Fragment {
                 try {
                     multipart = new MultipartUtility(Constants.BASE_URL, Constants.CHARSET);
                     multipart.addFormField("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, ""));
-//                    if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Install")){
-//                        multipart.addFormField("object", "install_flow");
-//                    }else{
-                        multipart.addFormField("object", "job_parts_used");
-//                    }
+                    multipart.addFormField("object", "job_parts_used");
                     multipart.addFormField("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
                     multipart.addFormField("api", "save");
                     multipart.addFormField("_app_id", "FIXD_ANDROID_PRO");
@@ -498,8 +494,11 @@ public class PartsFragment extends Fragment {
                 }case 2:{
                     container_layout.removeAllViews();
 //                    partsArrayList.add(new Parts());
-                     singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
-                    ((HomeScreenNew) getActivity()).switchFragment(new InstallorRepairFragment(), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, null);
+                    singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
+                    singleTon.getJobApplianceModal().getInstallOrRepairModal().getPartsContainer().setIsCompleted(true);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("should_get_from_server", "0");
+                    ((HomeScreenNew) getActivity()).switchFragment(new InstallorRepairFragment(), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, bundle);
                     break;
                 }
             }

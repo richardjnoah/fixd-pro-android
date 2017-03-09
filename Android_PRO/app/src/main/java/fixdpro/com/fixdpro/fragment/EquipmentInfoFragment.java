@@ -1101,6 +1101,9 @@ public class EquipmentInfoFragment extends Fragment {
                     equipmentInfo.setDescription(description);
                     singleTon.getCurrentReapirInstallProcessModal().setIsCompleted(true);
                     CurrentScheduledJobSingleTon.getInstance().getInstallOrRepairModal().setEquipmentInfo(equipmentInfo);
+
+                    singleTon.getJobApplianceModal().getInstallOrRepairModal().setEquipmentInfo(equipmentInfo);
+                    singleTon.getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().setIsCompleted(true);
                     ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.EQUIPMENT_FRAGMENT);
                     break;
                 }

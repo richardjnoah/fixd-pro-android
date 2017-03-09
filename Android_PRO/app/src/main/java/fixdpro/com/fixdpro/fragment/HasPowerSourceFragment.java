@@ -19,6 +19,7 @@ import android.widget.ListView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -26,6 +27,8 @@ import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.adapters.HasPowerSourceAdapter;
+import fixdpro.com.fixdpro.beans.JobAppliancesModal;
+import fixdpro.com.fixdpro.beans.install_repair_beans.InstallOrRepairModal;
 import fixdpro.com.fixdpro.singleton.CurrentServiceAddingSingleTon;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
@@ -188,7 +191,42 @@ public class HasPowerSourceFragment extends Fragment {
             Log.e("","Response"+Response.toString());
             try {
                 if (Response.getString("STATUS").equals("SUCCESS")) {
-                    message = Response.getString("RESPONSE");
+                    JSONObject jsonObject = Response.getJSONObject("RESPONSE");
+                    ArrayList<JobAppliancesModal> appliancesModals = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist();
+
+                    JobAppliancesModal mod = new JobAppliancesModal();
+                    mod.setJob_appliances_id(jsonObject.getString("id"));
+                    mod.setJob_appliances_job_id(jsonObject.getString("job_id"));
+                    mod.setJob_appliances_appliance_id(jsonObject.getString("appliance_id"));
+                    if (!jsonObject.isNull("service_type")) {
+                        mod.setJob_appliances_service_type(jsonObject.getString("service_type"));
+                        InstallOrRepairModal installOrRepairModal = mod.getInstallOrRepairModal();
+                        installOrRepairModal.getWorkOrder().setHourly_rate(appliancesModals.get(0).getInstallOrRepairModal().getWorkOrder().getHourly_rate());
+                    }
+                    if (!jsonObject.isNull("appliance_types")){
+                        JSONObject appliance_type_obj = jsonObject.getJSONObject("appliance_types");
+                        mod.setAppliance_type_id(appliance_type_obj.getString("id"));
+                        mod.setAppliance_type_has_power_source(appliance_type_obj.getString("has_power_source"));
+                        mod.setAppliance_type_service_id(appliance_type_obj.getString("service_id"));
+                        mod.setAppliance_type_name(appliance_type_obj.getString("name"));
+                        if (mod.getAppliance_type_name().equals("Re Key")){
+                            mod.getInstallOrRepairModal().getEquipmentInfo().setIsCompleted(true);
+                        }
+                        mod.setAppliance_type_soft_deleted(appliance_type_obj.getString("_soft_deleted"));
+                        if (!appliance_type_obj.isNull("image")) {
+                            JSONObject image_obj = appliance_type_obj.getJSONObject("image");
+                            Log.e("", "-----" + image_obj.toString());
+                            if (!image_obj.isNull("original")) {
+                                mod.setImg_original(image_obj.getString("original"));
+                                mod.setImg_160x170(image_obj.getString("160x170"));
+                                mod.setImg_150x150(image_obj.getString("150x150"));
+                                mod.setImg_75x75(image_obj.getString("75x75"));
+                                mod.setImg_30x30(image_obj.getString("30x30"));
+                            }
+                        }
+                    }
+                    appliancesModals.add(mod);
+
                     handler.sendEmptyMessage(0);
                 } else {
                     JSONObject errors = Response.getJSONObject("ERRORS");

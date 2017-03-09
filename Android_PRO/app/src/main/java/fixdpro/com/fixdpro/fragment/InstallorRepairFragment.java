@@ -102,6 +102,8 @@ public class InstallorRepairFragment extends Fragment {
     long start_time = 0;
     boolean start_going_to_get_parts_process = false;
     String total ="0",pro_cut="0",job_mileage="0",fixd_cut="0",govt_cut="0";
+    String shouldGetFromServer="1";
+
 
     public InstallorRepairFragment() {
         // Required empty public constructor
@@ -129,13 +131,16 @@ public class InstallorRepairFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            isAutoNotiForWorkOrder = true ;
-            AvailableJobModal availableJobModal = new AvailableJobModal();
-
-            appliance_id = getArguments().getString("appliance_id");
-            job_id = getArguments().getString("job_id");
-            availableJobModal.setId(job_id);
-            CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(availableJobModal);
+            if (getArguments().getString("should_get_from_server")!=null){ // When complete parts
+                shouldGetFromServer = "0";
+            }else {
+                isAutoNotiForWorkOrder = true;
+                AvailableJobModal availableJobModal = new AvailableJobModal();
+                appliance_id = getArguments().getString("appliance_id");
+                job_id = getArguments().getString("job_id");
+                availableJobModal.setId(job_id);
+                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(availableJobModal);
+            }
         }
         _context = getActivity();
         gpsTracker = new GPSTracker(getActivity());
@@ -157,13 +162,12 @@ public class InstallorRepairFragment extends Fragment {
         String json = gson.toJson(CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal()); // myObject - instance of MyObject
         editor.putString(Preferences.JOB_MODAL, json);
         editor.commit();
-//        if (CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal() != null){
-//            handler.sendEmptyMessage(0);
-//        }else{
+        if (shouldGetFromServer.equals("0")){
+            handler.sendEmptyMessage(0);
+        }else{
             GetApiResponseAsync responseAsync = new GetApiResponseAsync("POST", responseListenerScheduled, getActivity(), "Loading");
             responseAsync.execute(getRequestParams());
-
-//        }
+        }
         return view;
     }
 
@@ -606,6 +610,7 @@ public class InstallorRepairFragment extends Fragment {
                                         JSONObject workorderObject = jsonObject.getJSONObject("work_order");
                                         installOrRepairModal.getWorkOrder().setTotal(workorderObject.getString("total"));
                                         installOrRepairModal.getWorkOrder().setTax(workorderObject.getString("tax"));
+                                        installOrRepairModal.getWorkOrder().setHourly_rate(workorderObject.getString("hourly_rate"));
                                         if (workorderObject.has("sub_total"))
                                         installOrRepairModal.getWorkOrder().setSub_total(workorderObject.getString("sub_total"));
                                         Jobtotal = Jobtotal + Float.parseFloat(workorderObject.getString("total"));
@@ -792,11 +797,6 @@ public class InstallorRepairFragment extends Fragment {
         boolean shouldShowFinishBtn = true ; boolean shouldShowWorkOrderBtn = true;
         AvailableJobModal currentJonModal = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
         for (int i = 0 ; i < currentJonModal.getJob_appliances_arrlist().size() ; i++){
-//            if (!CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isProcessCompleted() &&
-//                    !CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getJob_appliances_arrlist().get(i).isCanceled()){
-//                shouldShowFinishBtn = false ;
-//                break;
-//            }
             if (!currentJonModal.getJob_appliances_arrlist().get(i).getInstallOrRepairModal().getPartsContainer().isCompleted() &&
                     !currentJonModal.getJob_appliances_arrlist().get(i).isCanceled()){
                 shouldShowFinishBtn = false ;
@@ -899,7 +899,6 @@ public class InstallorRepairFragment extends Fragment {
         } else {
             layout_mileage.setVisibility(View.GONE);
         }
-
 
         txtBigTotal.setText("$"+pro_cut);
         txtJobTotal1.setText("$"+total);

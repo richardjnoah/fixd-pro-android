@@ -1171,7 +1171,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         JSONObject image_obj = appliance_type_obj.getJSONObject("image");
                                         if( !image_obj.isNull("original")){
                                             mod.setAppliance_type_image_original(image_obj.getString("original"));
-
                                         }
                                     }
                                     if (!appliance_type_obj.isNull("services")){
@@ -1181,14 +1180,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
                                         mod.setService_created_at(services_obj.getString("created_at"));
                                         mod.setService_updated_at(services_obj.getString("updated_at"));
                                     }
-
                                 }
-
-
-
                                 jobapplianceslist.add(mod);
                             }
-//                            }
                             model.setJob_appliances_arrlist(jobapplianceslist);
                         }
                         if (!obj.isNull("technicians")){

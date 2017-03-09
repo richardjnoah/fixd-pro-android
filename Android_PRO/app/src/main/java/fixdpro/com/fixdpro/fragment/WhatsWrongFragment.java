@@ -27,18 +27,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import fixdpro.com.fixdpro.CalendarActivity;
 import fixdpro.com.fixdpro.CancelScheduledJob;
 import fixdpro.com.fixdpro.HomeScreenNew;
 import fixdpro.com.fixdpro.R;
+import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.SignatureActivity;
 import fixdpro.com.fixdpro.adapters.WhatsWrongAdapter;
+import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.Brands;
 import fixdpro.com.fixdpro.beans.install_repair_beans.ReapirInstallProcessModal;
 import fixdpro.com.fixdpro.singleton.BrandNamesSingleton;
 import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.CurrentScheduledJobSingleTon;
+import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.JSONParser;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
@@ -68,11 +72,12 @@ public class WhatsWrongFragment extends Fragment {
     Fragment fragment = null ;
     TextView txtProgress, txtCancelJOb,txtRescheduleJob;
     WhatsWrongAdapter adapter = null ;
-    float progressText = 0 ;
+    double progressText = 0 ;
     int progress = 0;
     ArrayList<Brands> arrayListBrands = BrandNamesSingleton.getInstance().getBrands();
     boolean isAutoNotiForWorkOrder = false ;
     public static Boolean fromCancelJob = false;
+    String error_message;
 
     public WhatsWrongFragment() {
         // Required empty public constructor
@@ -148,14 +153,14 @@ public class WhatsWrongFragment extends Fragment {
 
             fragment = new WorkOrderFragment();
             Bundle bundle = new Bundle();
-            bundle.putBoolean("isAutoNotiForWorkOrder",isAutoNotiForWorkOrder);
+            bundle.putBoolean("isAutoNotiForWorkOrder", isAutoNotiForWorkOrder);
 
             ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WORK_ORDER_FRAGMENT, true, bundle);
         }
         return view;
     }
     private void setProgress(){
-            int size  = CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().size();
+            double size  = (double)CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().size();
                 int completedCount = 0;
                 for (int i = 0 ; i < size ; i++){
                     if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(i).isCompleted()){
@@ -164,7 +169,7 @@ public class WhatsWrongFragment extends Fragment {
                 }
                 if (completedCount>0){
                     progress = (int)(100 / (size) * completedCount);
-                    progressText =  (int)(100 / (size) * completedCount);
+                    progressText =  Math.ceil(100 / (size) * completedCount);
                     txtProgress.setText(progressText + "%");
 
                     new Handler().postDelayed(new Runnable() {
@@ -260,8 +265,19 @@ public class WhatsWrongFragment extends Fragment {
         txtCancelJOb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), CancelScheduledJob.class);
-                startActivity(intent);
+                AvailableJobModal jobData = CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal();
+                int totalActiveRepairs = 0;
+                for(int i=0; i<jobData.getJob_appliances_arrlist().size(); i++){
+                    if (!jobData.getJob_appliances_arrlist().get(i).isCanceled()){
+                        totalActiveRepairs++;
+                    }
+                }
+                if (totalActiveRepairs>1){
+                    cancelAppliance();
+                }else {
+                    Intent intent = new Intent(getActivity(), CancelScheduledJob.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -424,7 +440,61 @@ public class WhatsWrongFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            progressDialog.dismiss();
+            switch (msg.what){
+                case 0:{
+                    progressDialog.dismiss();
+                    break;
+                }
+                case 1:{
+                    CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().setIsCanceled(true);
+                    ((HomeScreenNew) getActivity()).popInclusiveFragment(Constants.WHATS_WRONG_FRAGMENT);
+                    break;
+                }
+                case 2:{
+                    showAlertDialog("FAILED", error_message,false);
+                }
+            }
+
+
+        }
+    };
+
+    private void cancelAppliance(){
+        GetApiResponseAsync getApiResponseAsync = new GetApiResponseAsync("POST", cancelApplianceRequestResponse, getActivity(), "Getting.");
+        getApiResponseAsync.execute(cancelApplianceRequest());
+    }
+
+    private HashMap<String,String> cancelApplianceRequest(){
+        HashMap<String,String> hashMap = new HashMap<String,String>();
+        hashMap.put("api", "cancel");
+        hashMap.put("object", "job_appliances");
+        hashMap.put("data[job_appliance_id]", CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_id());
+        hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
+        hashMap.put("data[reason]","");
+        hashMap.put("_app_id", "FIXD_ANDROID_PRO");
+        hashMap.put("_company_id", "FIXD");
+        return hashMap;
+    }
+    ResponseListener cancelApplianceRequestResponse = new ResponseListener() {
+        @Override
+        public void handleResponse(JSONObject jsonObject) {
+            Log.e("", "Response" + jsonObject);
+            try {
+                String STATUS = jsonObject.getString("STATUS");
+                if (STATUS.equals("SUCCESS")){
+                    handler.sendEmptyMessage(1);
+                }else {
+                    JSONObject errors = jsonObject.getJSONObject("ERRORS");
+                    Iterator<String> keys = errors.keys();
+                    if (keys.hasNext()){
+                        String key = (String)keys.next();
+                        error_message = errors.getString(key);
+                    }
+                    handler.sendEmptyMessage(2);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
 }

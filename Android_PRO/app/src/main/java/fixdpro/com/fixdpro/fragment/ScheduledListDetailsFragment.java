@@ -444,7 +444,7 @@ public class ScheduledListDetailsFragment extends Fragment implements View.OnCli
             CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
         } else{
             if (model.getJob_appliances_arrlist().size() != currentModel.getJob_appliances_arrlist().size()){
-                CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
+             CurrentScheduledJobSingleTon.getInstance().setCurrentJonModal(model);
             }
         }
         enrouteJob();
