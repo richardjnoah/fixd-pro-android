@@ -191,7 +191,11 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                     JSONArray applianceArray = response.getJSONArray("appliances");
 
                     workOrderStatus = response.getString("work_order_status");
-                    availableJobModal.setJob_line_items_diagnostic_fee(response.getString("diagnostic_fee"));
+                    if (response.getString("warranty_fee").equals("0")){
+                        availableJobModal.setJob_line_items_diagnostic_fee(response.getString("customer_diagnostic_fee"));
+                    } else {
+                        availableJobModal.setJob_line_items_diagnostic_fee(response.getString("warranty_fee"));
+                    }
                     availableJobModal.setJob_line_items_sub_total(response.getString("sub_total"));
                     availableJobModal.setJob_line_items_tax(response.getString("tax"));
                     availableJobModal.setJob_line_items_pro_cut(response.getString("total"));
