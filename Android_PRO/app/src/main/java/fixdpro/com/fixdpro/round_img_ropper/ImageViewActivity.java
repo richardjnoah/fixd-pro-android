@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import fixdpro.com.fixdpro.R;
@@ -24,14 +25,14 @@ public class ImageViewActivity extends AppCompatActivity implements PicModeSelec
     public static final String TEMP_PHOTO_FILE_NAME = "temp_photo.jpg";
     public static final int REQUEST_CODE_UPDATE_PIC = 0x1;
 
-    private Button mBtnUpdatePic;
+    private LinearLayout mBtnUpdatePic;
     private ImageView mImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_view);
-        mBtnUpdatePic = (Button) findViewById(R.id.btnUpdatePic);
+        mBtnUpdatePic = (LinearLayout) findViewById(R.id.btnUpdatePic);
         mImageView = (ImageView) findViewById(R.id.iv_user_pic);
         mBtnUpdatePic.setOnClickListener(new View.OnClickListener() {
             @Override
