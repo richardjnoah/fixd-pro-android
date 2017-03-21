@@ -139,8 +139,8 @@ public class WhatsWrongFragment extends Fragment {
         setProgress();
         adapter = new WhatsWrongAdapter(getActivity(),CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList(),getResources());
         listWhatsWrong.setAdapter(adapter);
-        if (arrayListBrands.size() <= 1)
-            getBrands();
+        ///if (arrayListBrands.size() <= 1)
+            getBrands();/////// TODO -> MH
         if (isAutoNotiForWorkOrder){
             ArrayList<ReapirInstallProcessModal> modalList = CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList();
             for(int i = 0 ; i< modalList.size();i++){

@@ -91,7 +91,7 @@ public class AddServiceFragment extends Fragment {
         _context = getActivity();
         skillTrades = TradeSkillSingleTon.getInstance().getList();
         for (int i = 0; i < skillTrades.size() ; i++){
-            if (skillTrades.get(i).getFor_consumer().equals("1"))
+            ///if (skillTrades.get(i).getFor_consumer().equals("1"))
             skillTradesTemp.add(skillTrades.get(i));
         }
     }

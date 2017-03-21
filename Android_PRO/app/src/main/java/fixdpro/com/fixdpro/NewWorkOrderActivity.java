@@ -384,8 +384,10 @@ public class NewWorkOrderActivity extends AppCompatActivity {
 
             txtDescriptionTExt.setText(jobapplianceslist.get(i).getInstallOrRepairModal().getEquipmentInfo().getDescription());
 
-            if (jobapplianceslist.get(i).getJob_appliances_appliance_description().length() > 0)
-                txtDescriptionTExt.setText(jobapplianceslist.get(i).getJob_appliances_appliance_description());
+            if (jobapplianceslist.get(i).getJob_appliances_appliance_description() != null) {
+                if (jobapplianceslist.get(i).getJob_appliances_appliance_description().length() > 0)
+                    txtDescriptionTExt.setText(jobapplianceslist.get(i).getJob_appliances_appliance_description());
+            }
 
             ArrayList<Parts> partsArrayList = jobapplianceslist.get(i).getInstallOrRepairModal().getPartsContainer().getPartsArrayList();
             String parts_total =  "";

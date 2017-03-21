@@ -121,7 +121,7 @@ public class EquipmentInfoFragment extends Fragment {
     boolean isPhoto1Changed, isPhoto2Changed, isPhoto3Changed, isPhoto4Changed, isPhoto5Changed, isPhoto6Changed, isPhoto7Changed, isPhoto8Changed;
     int currentImageIndex = 0 ;
     int uploadImageIndex = 0;
-    ArrayList<String> localImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
+    ArrayList<String> localImageUrls;
     ArrayList<String> serverImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
 
     public EquipmentInfoFragment() {
@@ -153,6 +153,9 @@ public class EquipmentInfoFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls() != null)
+            localImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
+
         singleTon = CurrentScheduledJobSingleTon.getInstance();
         equipmentInfo = singleTon.getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo();
         _context = getActivity();

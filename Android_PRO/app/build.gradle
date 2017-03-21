@@ -9,8 +9,8 @@ android {
         applicationId "fixdpro.com.fixdpro"
         minSdkVersion 17
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0.70"
+        versionCode 4
+        versionName "1.0.72"
         multiDexEnabled true
     }
     buildTypes {
@@ -21,8 +21,14 @@ android {
     }
 
     dexOptions {
-        preDexLibraries = false
         javaMaxHeapSize "4g"
+        preDexLibraries = false
+        jumboMode = true
+        incremental true
+    }
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
     }
 }
 

@@ -308,7 +308,7 @@
                     android:layout_weight="1.6"
                     android:gravity="right"
                     android:singleLine="true"
-                    android:text="Your Cut:"
+                    android:text="Total:"
                     android:textColor="@color/register_button_text"
                     android:textSize="@dimen/size_21_sp" />
 
