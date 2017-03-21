@@ -340,7 +340,7 @@ public class NotificationListFragment extends Fragment {
                     ((HomeScreenNew) getActivity()).switchFragment(new InstallorRepairFragment(), Constants.INSTALL_OR_REPAIR_FRAGMENT, true, bundle);
                 } else if (value.equals("woafj")) {//work order approved
                     modal.setJobId(listModal.getData().get("j").getValue());
-                    modal.setJobAppliance(listModal.getData().get("ja").getValue());
+                    modal.setJobAppliance(listModal.getData().get("t").getValue()); // Older value was "ja"
                     Bundle bundle = new Bundle();
                     bundle.putString("job_id", modal.getJobId());
                     bundle.putString("appliance_id", modal.getJobAppliance());

@@ -57,6 +57,7 @@ import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.adapters.BrandDialogAdapter;
 import fixdpro.com.fixdpro.beans.Brands;
+import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.beans.install_repair_beans.EquipmentInfo;
 import fixdpro.com.fixdpro.singleton.BrandNamesSingleton;
 import fixdpro.com.fixdpro.utilites.Constants;
@@ -122,7 +123,7 @@ public class EquipmentInfoFragment extends Fragment {
     int currentImageIndex = 0 ;
     int uploadImageIndex = 0;
     ArrayList<String> localImageUrls;
-    ArrayList<String> serverImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
+    ArrayList<String> serverImageUrls;
 
     public EquipmentInfoFragment() {
         // Required empty public constructor
@@ -153,11 +154,17 @@ public class EquipmentInfoFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls() != null)
-            localImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
+
 
         singleTon = CurrentScheduledJobSingleTon.getInstance();
-        equipmentInfo = singleTon.getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo();
+        JobAppliancesModal jobApplianceModal = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal();
+
+        if (jobApplianceModal != null) {
+            serverImageUrls = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
+            equipmentInfo = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo();
+            if (jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls() != null)
+                localImageUrls = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
+        }
         _context = getActivity();
     }
 
@@ -656,7 +663,7 @@ public class EquipmentInfoFragment extends Fragment {
                         .into(imgMain);
             }
         }
-        else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode){
+        else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode) {
             Path = photoFile.getPath() ;
             photoFile = new File(Path);
             Uri uri = Uri.fromFile(photoFile);
