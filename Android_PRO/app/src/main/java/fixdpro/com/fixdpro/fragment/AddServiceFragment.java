@@ -182,9 +182,7 @@ public class AddServiceFragment extends Fragment {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    if (isAdded()) {
-                        setListAdapter();
-                    }
+                    setListAdapter();
                     break;
                 }case 1:{
                     showAlertDialog("Fixd-Pro",error_message);

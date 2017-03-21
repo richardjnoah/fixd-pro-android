@@ -57,7 +57,6 @@ import fixdpro.com.fixdpro.R;
 import fixdpro.com.fixdpro.ResponseListener;
 import fixdpro.com.fixdpro.adapters.BrandDialogAdapter;
 import fixdpro.com.fixdpro.beans.Brands;
-import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.beans.install_repair_beans.EquipmentInfo;
 import fixdpro.com.fixdpro.singleton.BrandNamesSingleton;
 import fixdpro.com.fixdpro.utilites.Constants;
@@ -123,7 +122,7 @@ public class EquipmentInfoFragment extends Fragment {
     int currentImageIndex = 0 ;
     int uploadImageIndex = 0;
     ArrayList<String> localImageUrls;
-    ArrayList<String> serverImageUrls;
+    ArrayList<String> serverImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
 
     public EquipmentInfoFragment() {
         // Required empty public constructor
@@ -154,17 +153,11 @@ public class EquipmentInfoFragment extends Fragment {
 //            mParam1 = getArguments().getString(ARG_PARAM1);
 //            mParam2 = getArguments().getString(ARG_PARAM2);
         }
-
+        if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls() != null)
+            localImageUrls = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
 
         singleTon = CurrentScheduledJobSingleTon.getInstance();
-        JobAppliancesModal jobApplianceModal = CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal();
-
-        if (jobApplianceModal != null) {
-            serverImageUrls = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgServerUrls();
-            equipmentInfo = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo();
-            if (jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls() != null)
-                localImageUrls = jobApplianceModal.getInstallOrRepairModal().getEquipmentInfo().getImgLocalUrls();
-        }
+        equipmentInfo = singleTon.getJobApplianceModal().getInstallOrRepairModal().getEquipmentInfo();
         _context = getActivity();
     }
 
@@ -216,42 +209,40 @@ public class EquipmentInfoFragment extends Fragment {
         }
 
         // Reset Pics
-        if (serverImageUrls != null) {
-            for (int imageIndex = 0; imageIndex < serverImageUrls.size(); imageIndex++) {
-                switch (imageIndex + 1) {
-                    case 1:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic1);
-                        break;
-                    case 2:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic2);
-                        break;
-                    case 3:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic3);
-                        break;
-                    case 4:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic4);
-                        break;
-                    case 5:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic5);
-                        break;
-                    case 6:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic6);
-                        break;
-                    case 7:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic7);
-                        break;
-                    case 8:
-                        Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
-                                .into(pic8);
-                        break;
-                }
+        for (int imageIndex = 0; imageIndex < serverImageUrls.size() ; imageIndex ++){
+            switch (imageIndex + 1){
+                case 1:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic1);
+                    break;
+                case 2:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic2);
+                    break;
+                case 3:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic3);
+                    break;
+                case 4:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic4);
+                    break;
+                case 5:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic5);
+                    break;
+                case 6:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic6);
+                    break;
+                case 7:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic7);
+                    break;
+                case 8:
+                    Picasso.with(getActivity()).load(serverImageUrls.get(imageIndex))
+                            .into(pic8);
+                    break;
             }
         }
 
@@ -259,12 +250,10 @@ public class EquipmentInfoFragment extends Fragment {
     }
 
     private void resetLocalImageUrl(){
-        if (serverImageUrls != null) {
-            int serverImageUrlCount = serverImageUrls.size();
-            if (localImageUrls.size() > 0 && localImageUrls.size() > serverImageUrlCount) {
-                for (int i = localImageUrls.size(); i < serverImageUrlCount; i++) {
-                    localImageUrls.set(i, null);
-                }
+        int serverImageUrlCount = serverImageUrls.size();
+        if (localImageUrls.size() > 0 && localImageUrls.size() > serverImageUrlCount){
+            for (int i = localImageUrls.size() ; i < serverImageUrlCount ; i++){
+                localImageUrls.set(i, null);
             }
         }
     }
@@ -667,7 +656,7 @@ public class EquipmentInfoFragment extends Fragment {
                         .into(imgMain);
             }
         }
-        else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode) {
+        else if (requestCode == CAMERA_REQUEST && Activity.RESULT_OK == resultCode){
             Path = photoFile.getPath() ;
             photoFile = new File(Path);
             Uri uri = Uri.fromFile(photoFile);
