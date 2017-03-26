@@ -89,6 +89,7 @@ import fixdpro.com.fixdpro.fragment.TellUsWhatsWrongFragment;
 import fixdpro.com.fixdpro.fragment.WhatTypeOfServiceFragment;
 import fixdpro.com.fixdpro.fragment.WhatsWrongFragment;
 import fixdpro.com.fixdpro.fragment.WhichApplianceAddServiceFragment;
+import fixdpro.com.fixdpro.fragment.WhichInstallAddServiceFragment;
 import fixdpro.com.fixdpro.fragment.WorkOrderFragment;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNew;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
@@ -108,7 +109,7 @@ import fixdpro.com.fixdpro.views.AutoScaleTextView;
 
 //http://stackoverflow.com/questions/13895149/sliding-menu-locks-touch-event-on-upper-view
 public class HomeScreenNew extends BaseActivity implements ScheduledListDetailsFragment.OnFragmentInteractionListener, FragmentManager.OnBackStackChangedListener, StartJobFragment.OnFragmentInteractionListener, ConnectionCallbacks,
-        OnConnectionFailedListener, LocationListener, InstallorRepairFragment.OnFragmentInteractionListener, AddServiceFragment.OnFragmentInteractionListener, WhatTypeOfServiceFragment.OnFragmentInteractionListener, WhichApplianceAddServiceFragment.OnFragmentInteractionListener, HasPowerSourceFragment.OnFragmentInteractionListener,
+        OnConnectionFailedListener, LocationListener, InstallorRepairFragment.OnFragmentInteractionListener, AddServiceFragment.OnFragmentInteractionListener, WhatTypeOfServiceFragment.OnFragmentInteractionListener, WhichApplianceAddServiceFragment.OnFragmentInteractionListener, WhichInstallAddServiceFragment.OnFragmentInteractionListener, HasPowerSourceFragment.OnFragmentInteractionListener,
         WhatsWrongFragment.OnFragmentInteractionListener, TellUsWhatsWrongFragment.OnFragmentInteractionListener, RepairFragment.OnFragmentInteractionListener, PartsFragment.OnFragmentInteractionListener, WorkOrderFragment.OnFragmentInteractionListener, RepairInfoFragment.OnFragmentInteractionListener, SignatureFragment.OnFragmentInteractionListener,
         ChatUserFragment.OnFragmentInteractionListener, EquipmentInfoFragment.OnFragmentInteractionListener, JobSearchFragment.OnFragmentInteractionListener,
         ResultCallback<LocationSettingsResult> {

@@ -2,8 +2,10 @@
     <string name="app_name">Fixd-Pro</string>
 
     <!--Develop-->
-    <string name="api_key">AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g</string>
-    <!--Release-->
+    <!--<string name="api_key">AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g</string>-->
+    <string name="api_key">AIzaSyBRyIm5RXNGjg8msiAxlPb-OuXRfqVM61Q</string> <!-- New Key-->
+
+    <!--Release not in use-->
     <!--<string name="api_key">AIzaSyAi1UWkyvHrxIei9z0vMnEb6AXATBHlJHw</string>-->
 
     <string name="hello_world">Hello world!</string>

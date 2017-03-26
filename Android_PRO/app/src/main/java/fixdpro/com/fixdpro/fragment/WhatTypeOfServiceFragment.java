@@ -89,7 +89,7 @@ public class WhatTypeOfServiceFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 CurrentServiceAddingSingleTon.getInstance().setSelectedServicetype(CurrentServiceAddingSingleTon.getInstance().getServiceTypeList().get(position));
                 fragment = new WhichApplianceAddServiceFragment();
-                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_APPLIANCE_SERVICE_FGRAGMENT, true, null);
+                ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_APPLIANCE_SERVICE_FRAGMENT, true, null);
             }
         });
     }
@@ -118,7 +118,7 @@ public class WhatTypeOfServiceFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.WHAT_TYPE_OF_SERVICE_FGRAGMENT);
+        ((HomeScreenNew) getActivity()).setCurrentFragmentTag(Constants.WHAT_TYPE_OF_SERVICE_FRAGMENT);
         setupToolBar();
     }
 

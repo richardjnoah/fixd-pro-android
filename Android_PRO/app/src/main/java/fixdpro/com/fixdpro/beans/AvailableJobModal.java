@@ -159,8 +159,18 @@ public class AvailableJobModal implements Serializable{
     String job_line_items_fixd_cut = "0";
     String job_line_items_govt_cut = "0";
     String job_line_items_diagnostic_fee = "0";
-    String job_line_items_is_covered = "0";
+    String job_line_items_is_covered = "0"; //This is for Flat Rate Repairs
+    /////// MH ///////
+    String job_line_items_is_price_adjusted = "0";
 
+    public String getjob_line_items_is_price_adjusted() {
+        return job_line_items_is_price_adjusted;
+    }
+
+    public void setjob_line_items_is_price_adjusted(String job_line_items_is_price_adjusted) {
+        this.job_line_items_is_price_adjusted = job_line_items_is_price_adjusted;
+    }
+    //////////////////
     public String getJob_line_items_is_covered() {
         return job_line_items_is_covered;
     }

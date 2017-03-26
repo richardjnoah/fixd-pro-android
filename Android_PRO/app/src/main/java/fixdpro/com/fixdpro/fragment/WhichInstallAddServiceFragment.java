@@ -41,12 +41,12 @@ import fixdpro.com.fixdpro.utilites.Utilities;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link WhichApplianceAddServiceFragment.OnFragmentInteractionListener} interface
+ * {@link WhichInstallAddServiceFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link WhichApplianceAddServiceFragment#newInstance} factory method to
+ * Use the {@link WhichInstallAddServiceFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class WhichApplianceAddServiceFragment extends Fragment {
+public class WhichInstallAddServiceFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -63,7 +63,7 @@ public class WhichApplianceAddServiceFragment extends Fragment {
     String error_message = "";
     ArrayList<AppliancesModal> appliancesModalArrayList = new ArrayList<AppliancesModal>();
     Fragment fragment = null;
-    public WhichApplianceAddServiceFragment() {
+    public WhichInstallAddServiceFragment() {
         // Required empty public constructor
     }
 
@@ -76,8 +76,8 @@ public class WhichApplianceAddServiceFragment extends Fragment {
      * @return A new instance of fragment WhichApplianceAddServiceFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static WhichApplianceAddServiceFragment newInstance(String param1, String param2) {
-        WhichApplianceAddServiceFragment fragment = new WhichApplianceAddServiceFragment();
+    public static WhichInstallAddServiceFragment newInstance(String param1, String param2) {
+        WhichInstallAddServiceFragment fragment = new WhichInstallAddServiceFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -100,7 +100,7 @@ public class WhichApplianceAddServiceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_which_appliance_add, container, false);
+        View view = inflater.inflate(R.layout.fragment_which_install_add, container, false);
         setWidgets(view);
         setListeners();
         getAppliances();

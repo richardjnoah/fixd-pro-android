@@ -145,9 +145,17 @@ public class NewWorkOrderActivity extends AppCompatActivity {
         jobId = availableJobModal.getId();
         txtName.setText(availableJobModal.getContact_name());
         txtJobId.setText("Job#"+jobId  );
-        txtSubTotalDoller.setText("$"+availableJobModal.getJob_line_items_sub_total());
-        txtWarrentyDoller.setText("$"+availableJobModal.getJob_line_items_diagnostic_fee());
-        txtTaxDoller.setText("$"+availableJobModal.getJob_line_items_tax());
+
+        if (availableJobModal.getjob_line_items_is_price_adjusted().equals("1")) {
+            txtSubTotalDoller.setText(Constants.COVERED);
+            txtWarrentyDoller.setText(Constants.COVERED);
+            txtTaxDoller.setText("-");
+        } else {
+            txtSubTotalDoller.setText("$" + availableJobModal.getJob_line_items_sub_total());
+            txtWarrentyDoller.setText("$" + availableJobModal.getJob_line_items_diagnostic_fee());
+            txtTaxDoller.setText("$"+availableJobModal.getJob_line_items_tax());
+        }
+
         txtTotalDoller.setText("$"+availableJobModal.getJob_line_items_pro_cut());
         txtAddresss.setText(availableJobModal.getJob_customer_addresses_address() + " " + availableJobModal.getJob_customer_addresses_address_2());
 
@@ -155,7 +163,7 @@ public class NewWorkOrderActivity extends AppCompatActivity {
             txtWarrenty.setText("Warrenty");
             txtSubTotalDoller.setPaintFlags(txtSubTotalDoller.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
         }
-
+        // TODO Need To Implement for FE as well
 
     }
 
@@ -201,6 +209,7 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                     availableJobModal.setJob_line_items_pro_cut(response.getString("total"));
 
         //         mNotCoveredView.setVisibility(View.VISIBLE);
+                    availableJobModal.setjob_line_items_is_price_adjusted(response.getBoolean("price_adjusted") ? "1" : "0"); //This is for Flat Rate Repairs
 
                     String isWorkOrderApproved = "1";
                     if (!workOrderStatus.equals("APPROVED")){
@@ -211,7 +220,7 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                         for (int j=0; j<applianceArray.length();j++){
                             if (applianceArray.getJSONObject(j).getString("id").equals(appliancesModal.getJob_appliances_id())){
                                 JSONObject costDict = applianceArray.getJSONObject(j).getJSONObject("cost");
-                                if (costDict.getString("is_claim").equals("1") && costDict.getString("is_covered").equals("0")){
+                                if (costDict.getString("is_claim").equals("1") && !costDict.getBoolean("is_covered")){
 //                                    mNotCoveredView.setVisibility(View.VISIBLE);
 
                                 }
@@ -294,7 +303,7 @@ public class NewWorkOrderActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what){
                 case 0:{
-                    //initLayout();
+                    initLayout();
                     initValue();
                     break;
                 }
@@ -378,7 +387,11 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                 txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getFixed_cost());
             }else {
                 float value = Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getHourly_rate()) * Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getLabor_hours());
-                txtRepairTypeDollarText.setText("$"+value);
+                if (availableJobModal.getjob_line_items_is_price_adjusted().equals("1")) {
+                    txtRepairTypeDollarText.setText(Constants.COVERED); // TODO Need to test Coverage
+                } else {
+                    txtRepairTypeDollarText.setText("$"+value);
+                }
 //                    txtRepairTypeDollarText.setText("$"+jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getPrice());
             }
 
@@ -400,7 +413,12 @@ public class NewWorkOrderActivity extends AppCompatActivity {
             }
             if (parts_desc.length() != 0)
             txtHomeandConnectionText.setText(parts_desc);
-            txtPartsDollerTxxt.setText(parts_total);
+
+            if (availableJobModal.getjob_line_items_is_price_adjusted().equals("1")) {
+                txtPartsDollerTxxt.setText(Constants.COVERED); // TODO Need to test Coverage
+            } else {
+                txtPartsDollerTxxt.setText(parts_total);
+            }
             subtotal = subtotal +Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getSub_total());
             tax = tax + Float.parseFloat(jobapplianceslist.get(i).getInstallOrRepairModal().getWorkOrder().getTax());
 

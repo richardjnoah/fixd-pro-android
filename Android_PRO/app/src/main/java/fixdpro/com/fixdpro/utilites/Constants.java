@@ -11,23 +11,18 @@ public class Constants {
     public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.07/b";
     //*/
 
-//      public static final String BASE_URL = "https://dev.api.fixdrepair.com/v1/r";
-//      public static final String BASE_URL_BATCH = "https://dev.api.fixdrepair.com/v1/b";
-
-//      public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1/r";
-//      public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1/b";
-
-
     //---Staging---//
     //*/
-    public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.04/r";
-    public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.04/b";
+    public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.07/r";
+    public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.07/b";
     //*/
 
 
     public static  final String CHARSET = "UTF-8";
 
-    public static final String GOOGLE_PLACE_SERVER_KEY = "AIzaSyAGCo1xR0P1YiW1gRuXiZJKskIcN5ONTCI";
+    ///public static final String GOOGLE_PLACE_SERVER_KEY = "AIzaSyAGCo1xR0P1YiW1gRuXiZJKskIcN5ONTCI";\
+    public static final String GOOGLE_PLACE_SERVER_KEY = "AIzaSyBRyIm5RXNGjg8msiAxlPb-OuXRfqVM61Q";
+
 //    Fragment Tag Constants
     public static  final String HOME_FRAGMENT = "home_fragment";
     public static  final String MYJOB_FRAGMENT = "myjob_fragment";
@@ -40,8 +35,9 @@ public class Constants {
     public static  final String START_JOB_FRAGMENT = "start_job_fragment";
     public static  final String INSTALL_OR_REPAIR_FRAGMENT = "install_or_repair_fragment";
     public static  final String ADD_SERVICE_FRAGMENT = "add_service_fragment";
-    public static  final String WHAT_TYPE_OF_SERVICE_FGRAGMENT = "what_type_of_service_fragment";
-    public static  final String WHICH_APPLIANCE_SERVICE_FGRAGMENT = "which_appliance_service_fragment";
+    public static  final String WHAT_TYPE_OF_SERVICE_FRAGMENT = "what_type_of_service_fragment";
+    public static  final String WHICH_APPLIANCE_SERVICE_FRAGMENT = "which_appliance_service_fragment";
+    public static  final String WHICH_INSTALL_SERVICE_FRAGMENT = "which_install_service_fragment";
     public static  final String HAS_POWERSOURCE_FRAGMENT = "has_power_source_fragment";
     public static  final String WHATS_WRONG_FRAGMENT = "whats_wrong_fragment";
     public static  final String TELL_US_WHATS_WRONG_FRAGMENT = "tell_us_whats_wrong_fragment";
@@ -70,5 +66,7 @@ public class Constants {
     public static  final String INSTALL_INFO = "Install Info";
     public static  final String MAINTAIN_INFO = "Maintain Info";
     public static  final String SIGNATURE = "Homeowner Signature";
+
+    public static  final String COVERED = "Covered";
 
 }

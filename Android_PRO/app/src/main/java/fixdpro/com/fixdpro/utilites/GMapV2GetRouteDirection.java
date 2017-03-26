@@ -26,7 +26,7 @@ public class GMapV2GetRouteDirection {
 
 //    public final static String API_KEY = "AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g";
 
-    public final static String API_KEY = "AIzaSyDUDg_cvjblMGMab5hVag1s4D96mC5yE8g";
+    public final static String API_KEY = "AIzaSyBRyIm5RXNGjg8msiAxlPb-OuXRfqVM61Q";
     StringBuilder total = new StringBuilder();
     String responseStr = "";
 

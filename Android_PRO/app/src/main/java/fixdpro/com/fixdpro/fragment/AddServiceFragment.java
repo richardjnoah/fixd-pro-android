@@ -130,14 +130,21 @@ public class AddServiceFragment extends Fragment {
                 {
                     fragment = new WhatTypeOfServiceFragment();
                     CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
-                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHAT_TYPE_OF_SERVICE_FGRAGMENT, true, null);
-                }else {
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHAT_TYPE_OF_SERVICE_FRAGMENT, true, null);
+
+                } else if (TradeSkillSingleTon.getInstance().getList().get(position).getTitle().equals("Locksmith") ||
+                        TradeSkillSingleTon.getInstance().getList().get(position).getTitle().equals("LockSmith")) {
+                    CurrentServiceAddingSingleTon.getInstance().setSelectedServicetype("Install");
+                    CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
+                    fragment = new WhichInstallAddServiceFragment();
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_INSTALL_SERVICE_FRAGMENT, true, null);
+
+                } else {
                     CurrentServiceAddingSingleTon.getInstance().setSelectedServicetype("Repair");
                     CurrentServiceAddingSingleTon.getInstance().setSkillTrade(TradeSkillSingleTon.getInstance().getList().get(position));
                     fragment = new WhichApplianceAddServiceFragment();
-                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_APPLIANCE_SERVICE_FGRAGMENT, true, null);
+                    ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.WHICH_APPLIANCE_SERVICE_FRAGMENT, true, null);
                 }
-
             }
         });
     }
