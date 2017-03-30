@@ -40,6 +40,7 @@ import java.util.Iterator;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.beans.NotificationModal;
+import fixdpro.com.fixdpro.beans.install_repair_beans.InstallOrRepairModal;
 import fixdpro.com.fixdpro.beans.install_repair_beans.Parts;
 import fixdpro.com.fixdpro.net.GetApiResponseAsyncNoProgress;
 import fixdpro.com.fixdpro.net.IHttpExceptionListener;
@@ -215,22 +216,34 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                     if (!workOrderStatus.equals("APPROVED")){
                         isWorkOrderApproved = "0";
                     }
+
+                    boolean isCovered = false;
+
                     for (int i=0; i<availableJobModal.getJob_appliances_arrlist().size();i++){
                         JobAppliancesModal appliancesModal = availableJobModal.getJob_appliances_arrlist().get(i);
                         for (int j=0; j<applianceArray.length();j++){
                             if (applianceArray.getJSONObject(j).getString("id").equals(appliancesModal.getJob_appliances_id())){
                                 JSONObject costDict = applianceArray.getJSONObject(j).getJSONObject("cost");
-                                if (costDict.getString("is_claim").equals("1") && !costDict.getBoolean("is_covered")){
-//                                    mNotCoveredView.setVisibility(View.VISIBLE);
 
+                                if (availableJobModal.getIs_fe_job().equals("1")
+                                        && costDict.getString("is_claim").equals("1")
+                                        && !costDict.getBoolean("is_covered")) {
+                                    // TODO: Show popup about warranty claim - Also in FE-Con App
+                                    //showNotCoveredDialog();
+                                    isCovered = true;
                                 }
                                 break;
                             }
                         }
                     }
 
+                    if (isCovered) {
+                        showNotCoveredDialog();
+                    }
+
                     availableJobModal.setIsWorkOrderApproved(isWorkOrderApproved);
-                    if (isWorkOrderApproved.equals(1)){
+
+                    if (isWorkOrderApproved.equals(1)) {
                         showDialogWorkOrderApproved();
                     }
 
@@ -770,7 +783,7 @@ public class NewWorkOrderActivity extends AppCompatActivity {
         }
     };
 
-    private void showNotCoveredDialog(){
+    private void showNotCoveredDialog() {
         dialog = new Dialog(_context);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_not_covered);
@@ -893,6 +906,4 @@ public class NewWorkOrderActivity extends AppCompatActivity {
             });
             dialog.show();
     }
-
-
 }

@@ -203,7 +203,10 @@ public class WhatsWrongFragment extends Fragment {
                         ((HomeScreenNew) getActivity()).switchFragment(fragment, Constants.EQUIPMENT_FRAGMENT, true, null);
 //                    }
 
-                }else if (modal.getName().equals(Constants.REPAIR_TYPE) || modal.getName().equals(Constants.INSTALL_TYPE) || modal.getName().equals(Constants.MAINTAIN_TYPE)){
+                }else if (modal.getName().equals(Constants.REPAIR_TYPE)
+                        || modal.getName().equals(Constants.INSTALL_TYPE)
+                        || modal.getName().equals(Constants.MAINTAIN_TYPE)
+                        || modal.getName().equals(Constants.INSPECTION_TYPE)) {
 //                    if (CurrentScheduledJobSingleTon.getInstance().getReapirInstallProcessModalList().get(position - 1).isCompleted()) {
                     if (checkIfAboveStepsCompleted(position)) {
                         fragment = new RepairFragment();

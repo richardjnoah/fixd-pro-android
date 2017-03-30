@@ -3,6 +3,7 @@ package fixdpro.com.fixdpro.singleton;
 import java.util.ArrayList;
 
 import fixdpro.com.fixdpro.beans.SkillTrade;
+import fixdpro.com.fixdpro.utilites.Constants;
 
 /**
  * Created by sahil on 05-04-2016.
@@ -55,12 +56,13 @@ public class CurrentServiceAddingSingleTon {
         this.skillTrade = skillTrade ;
         arrayList1.clear();
         if (skillTrade.getTitle().equals("Electronics") || skillTrade.getTitle().equals("Plumbing") || skillTrade.getTitle().equals("Electrical")){
-            arrayList1.add("Repair");
+            arrayList1.add(Constants.REPAIR);
 //            arrayList1.add("Install");
         }else {
-            arrayList1.add("Repair");
-//            arrayList1.add("Install");
-            arrayList1.add("Maintenance");
+            arrayList1.add(Constants.REPAIR);
+            //arrayList1.add("Maintenance");
+            arrayList1.add(Constants.MAINTAIN);
+            arrayList1.add(Constants.INSPECTION);
         }
     }
     public SkillTrade getSkillTrade(){

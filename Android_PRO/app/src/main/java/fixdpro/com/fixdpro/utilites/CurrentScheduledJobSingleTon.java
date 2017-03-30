@@ -62,13 +62,15 @@ public class CurrentScheduledJobSingleTon {
     public void setInstallOrRepairModal(InstallOrRepairModal installOrRepairModal) {
         this.installOrRepairModal = installOrRepairModal;
         repairInstallProceessList.clear();
-        if (!jobApplianceModal.getAppliance_type_name().equals("Re Key")){
+        if (!jobApplianceModal.getAppliance_type_name().equals(Constants.RE_KEY)){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.EQUIPMENT_INFO,installOrRepairModal.getEquipmentInfo().isCompleted()));
         }
-        if (jobApplianceModal.getJob_appliances_service_type().equals("Repair")){
+        if (jobApplianceModal.getJob_appliances_service_type().equals(Constants.REPAIR)){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.REPAIR_TYPE,installOrRepairModal.getRepairType().isCompleted()));
-        }else if (jobApplianceModal.getJob_appliances_service_type().equals("Install") || jobApplianceModal.getJob_appliances_service_type().equals("Re Key")){
+        }else if (jobApplianceModal.getJob_appliances_service_type().equals(Constants.INSTALL) || jobApplianceModal.getJob_appliances_service_type().equals(Constants.RE_KEY)){
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSTALL_TYPE,installOrRepairModal.getRepairType().isCompleted()));
+        }else if (jobApplianceModal.getJob_appliances_service_type().equals(Constants.INSPECTION)){
+            repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.INSPECTION_TYPE,installOrRepairModal.getRepairType().isCompleted()));
         }else {
             repairInstallProceessList.add(new ReapirInstallProcessModal(Constants.MAINTAIN_TYPE,installOrRepairModal.getRepairType().isCompleted()));
         }

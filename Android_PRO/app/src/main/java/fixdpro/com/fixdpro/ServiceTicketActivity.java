@@ -169,8 +169,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculate_by")){
-                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculated_by")){
+                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
@@ -202,8 +202,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculate_by")){
-                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculated_by")){
+                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
@@ -228,7 +228,28 @@ public class ServiceTicketActivity extends AppCompatActivity {
                                         }
 
 
-                                    }else {
+                                    } else if(jsonObject.getString("service_type").equals("Inspection")){
+                                        // for Inspection
+                                        // TODO -> Need to test this check for Inspection fetching Service Ticket data
+                                        if (!jsonObject.isNull("job_appliance_inspection_types")){
+                                            JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_inspection_types");
+                                            JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("inspection_types");
+                                            installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
+                                            installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
+                                            installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
+                                            installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
+//                                            installOrRepairModal.getRepairType().setIsCompleted(true);
+                                            if (!inner_object_repair_types.isNull("calculated_by")){
+                                                if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
+                                                    installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
+                                                    if (!inner_object_repair_types.isNull("fixed_cost")){
+                                                        installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
+                                                    }
+                                                }
+                                            }
+
+                                        }
+                                    } else {
                                         // for maintain
                                         if (!jsonObject.isNull("job_appliance_maintain_types")){
                                             JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_maintain_types");
@@ -239,8 +260,8 @@ public class ServiceTicketActivity extends AppCompatActivity {
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
 //                                            installOrRepairModal.getRepairType().setIsCompleted(true);
-                                                if (!inner_object_repair_types.isNull("calculate_by")){
-                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculated_by")){
+                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
@@ -389,7 +410,15 @@ public class ServiceTicketActivity extends AppCompatActivity {
         hashMap.put("api", "read");
         hashMap.put("object","jobs");
 //        if (Utilities.getSharedPreferences(this).getString(Preferences.ROLE, null).equals("pro"))
-        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,customers.users.company_id");
+        hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*," +
+                "job_appliances.job_parts_used.^*," +
+                "job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*," +
+                "technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*," +
+                "job_appliances.job_appliance_repair_types.repair_types.^*," +
+
+                "job_appliances.job_appliance_inspection_types.inspection_types.^*," +
+
+                "job_appliances.job_appliance_maintain_types.maintain_types.^*,customers.users.company_id");
 //        else
 //        hashMap.put("select", "^*,job_parts_used.^*,job_images.^*,job_repair.^*,job_repair.repair_types.^*,job_appliances.appliance_types.services.^*,job_appliances.appliance_types.^*,time_slots.^*,job_customer_addresses.^*");
         hashMap.put("where[id]", Jobid);
