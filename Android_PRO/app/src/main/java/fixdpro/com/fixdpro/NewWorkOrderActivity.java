@@ -392,8 +392,12 @@ public class NewWorkOrderActivity extends AppCompatActivity {
                 }
             });
 
-            if (jobapplianceslist.get(i).getJob_appliances_customer_compalint().length() > 0)
+            if (!jobapplianceslist.get(i).getJob_appliances_customer_compalint().isEmpty()) {
+                txtDisplaingError.setVisibility(View.VISIBLE);
                 txtDisplaingError.setText(jobapplianceslist.get(i).getJob_appliances_customer_compalint());
+            } else {
+                txtDisplaingError.setVisibility(View.INVISIBLE);
+            }
 
             txtRepairTypeText.setText(jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getType());
             if (jobapplianceslist.get(i).getInstallOrRepairModal().getRepairType().getCalculatedBy().equals("FIXED")){
