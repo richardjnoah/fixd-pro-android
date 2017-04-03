@@ -35,7 +35,7 @@ import fixdpro.com.fixdpro.views.WheelView;
 
 public class CompanyInformation_Activity_Edit extends AppCompatActivity {
     EditText txtCompanyName, txtYearInBusiness, txtEniNumber, txtInsuranceCarr, txtPolicyNumber;
-    ///TextView txtHourlyRate;
+    TextView txtHourlyRate;
     ImageView imgNext, imgClose;
     String CompanyName = "", YearInBusiness = "", EniNumber = "", InsuranceCarrier = "", PolicyNumber = "", HourlyRate = "";
     HashMap<String,String> finalRequestParams = new HashMap<String,String>(); ;
@@ -62,8 +62,8 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         txtInsuranceCarr.setText(_prefs.getString(Preferences.INSURANCE, ""));
         txtPolicyNumber.setText(_prefs.getString(Preferences.INSURANCE_POLICY, ""));
         HourlyRate = _prefs.getString(Preferences.HOURLY_RATE, "");
-        ///if (!HourlyRate.contains("$")) txtHourlyRate.setText("$"+Math.round(Float.parseFloat(HourlyRate)));
-        ///else txtHourlyRate.setText(HourlyRate);
+        if (!HourlyRate.contains("$")) txtHourlyRate.setText("$"+Math.round(Float.parseFloat(HourlyRate)));
+        else txtHourlyRate.setText(HourlyRate);
     }
 
     private void setCLickListner() {
@@ -73,14 +73,12 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
                 onBackPressed();
             }
         });
-        /*//
         txtHourlyRate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showHourlyRateDialog();
             }
         });
-        //*/
         imgNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -203,7 +201,7 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         txtEniNumber = (EditText) findViewById(R.id.txtEniNumber);
         txtInsuranceCarr = (EditText) findViewById(R.id.txtInsuranceCarr);
         txtPolicyNumber = (EditText) findViewById(R.id.txtPolicyNumber);
-        ///txtHourlyRate = (TextView) findViewById(R.id.txtHourlyRate);
+        txtHourlyRate = (TextView) findViewById(R.id.txtHourlyRate);
 
     }
 
@@ -227,7 +225,6 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
         wheelView.setOffset(1);
         wheelView.setSeletion(2);
         wheelView.setItems(Arrays.asList(TYPES));
-        /*
         if (HourlyRate.length() == 0) {
             HourlyRate = TYPES_NUMERIC[1].toString();
             txtHourlyRate.setText(TYPES[1].toString());
@@ -241,7 +238,6 @@ public class CompanyInformation_Activity_Edit extends AppCompatActivity {
                 txtHourlyRate.setText(TYPES[selectedIndex - 1].toString());
             }
         });
-        //*/
         img_close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

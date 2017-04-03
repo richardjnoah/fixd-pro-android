@@ -7,14 +7,14 @@ public class Constants {
 
     //---Production---//
     /*/
-    public static  final String BASE_URL = "https://api.fixdrepair.com/v1.08/r";
-    public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.08/b";
+    public static  final String BASE_URL = "https://api.fixdrepair.com/v1.07/r";
+    public static  final String BASE_URL_BATCH = "https://api.fixdrepair.com/v1.07/b";
     //*/
 
     //---Staging---//
     //*/
-    public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.08/r";
-    public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.08/b";
+    public static final String BASE_URL = "https://stage.api.fixdrepair.com/v1.07/r";
+    public static final String BASE_URL_BATCH = "https://stage.api.fixdrepair.com/v1.07/b";
     //*/
 
 
