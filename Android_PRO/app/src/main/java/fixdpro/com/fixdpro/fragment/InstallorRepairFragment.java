@@ -351,31 +351,9 @@ public class InstallorRepairFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*," +
-                    "job_appliances.job_parts_used.^*," +
-                    "job_appliances.job_appliance_install_types.install_types.^*," +
-                    "job_customer_addresses.^*,technicians.^*," +
-                    "job_appliances.job_appliance_repair_whats_wrong.^*," +
-                    "job_appliances.job_appliance_repair_types.repair_types.^*," +
-
-                    "job_appliances.job_appliance_inspection_types.inspection_types.^*," +
-
-                    "job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*," +
-                    "job_appliances.canceled_job_appliances.^*," +
-                    "job_appliances.equipment_images.^*,customers.users.company_id");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*," +
-                    "job_appliances.job_parts_used.^*," +
-                    "job_appliances.job_appliance_install_types.install_types.^*," +
-                    "job_customer_addresses.^*,technicians.^*," +
-                    "job_appliances.job_appliance_repair_whats_wrong.^*," +
-                    "job_appliances.job_appliance_repair_types.repair_types.^*," +
-
-                    "job_appliances.job_appliance_inspection_types.inspection_types.^*," +
-
-                    "job_appliances.job_appliance_maintain_types.maintain_types.^*," +
-                    "job_line_items.^*,job_appliances.canceled_job_appliances.^*," +
-                    "job_appliances.equipment_images.^*,customers.users.company_id");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,job_appliances.canceled_job_appliances.^*,job_appliances.equipment_images.^*,customers.users.company_id");
 
         hashMap.put("where[id]", CurrentScheduledJobSingleTon.getInstance().getCurrentJonModal().getId() + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
@@ -486,8 +464,8 @@ public class InstallorRepairFragment extends Fragment {
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculated_by")){ // TO DO
-                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
@@ -520,8 +498,8 @@ public class InstallorRepairFragment extends Fragment {
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculated_by")){
-                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
@@ -545,33 +523,7 @@ public class InstallorRepairFragment extends Fragment {
                                             installOrRepairModal.getWorkOrder().setIsCompleted(true);
 
                                         }
-                                    } else if (jsonObject.getString("service_type").equals("Inspection")){
-                                        // For Inspection
-                                        // TODO -> Need to test this check for Inspection data on Pro Side
-                                        if (!jsonObject.isNull("job_appliance_inspection_types")){
-
-                                            JSONObject jsonObjectRepairType  = jsonObject.getJSONObject("job_appliance_inspection_types");
-                                            if (!jsonObjectRepairType.isNull("inspection_types")){
-                                                JSONObject inner_object_repair_types = jsonObjectRepairType.getJSONObject("inspection_types");
-                                                installOrRepairModal.getRepairType().setId(inner_object_repair_types.getString("id"));
-                                                installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
-                                                installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
-                                                installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculated_by")){
-                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
-                                                        installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
-                                                        if (!inner_object_repair_types.isNull("fixed_cost")){
-                                                            installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));
-                                                        }
-                                                    }
-                                                }
-                                                installOrRepairModal.getRepairType().setIsCompleted(true);
-                                            }
-
-
-
-                                        }
-                                    } else {
+                                    }else {
                                     // for maintain
                                         if (!jsonObject.isNull("job_appliance_maintain_types")){
 
@@ -582,8 +534,8 @@ public class InstallorRepairFragment extends Fragment {
                                                 installOrRepairModal.getRepairType().setPrice(inner_object_repair_types.getString("part_cost"));
                                                 installOrRepairModal.getRepairType().setType(inner_object_repair_types.getString("name"));
                                                 installOrRepairModal.getRepairType().setLabor_hours(inner_object_repair_types.getString("labor_hours"));
-                                                if (!inner_object_repair_types.isNull("calculated_by")){
-                                                    if(inner_object_repair_types.getString("calculated_by").equals("FIXED")){
+                                                if (!inner_object_repair_types.isNull("calculate_by")){
+                                                    if(inner_object_repair_types.getString("calculate_by").equals("FIXED")){
                                                         installOrRepairModal.getRepairType().setCalculatedBy("FIXED");
                                                         if (!inner_object_repair_types.isNull("fixed_cost")){
                                                             installOrRepairModal.getRepairType().setFixed_cost(inner_object_repair_types.getString("fixed_cost"));

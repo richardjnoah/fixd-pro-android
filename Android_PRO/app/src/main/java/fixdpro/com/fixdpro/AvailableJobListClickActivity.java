@@ -47,7 +47,6 @@ import fixdpro.com.fixdpro.adapters.HorizontalScrollApplianceAdapter;
 import fixdpro.com.fixdpro.beans.AvailableJobModal;
 import fixdpro.com.fixdpro.beans.JobAppliancesModal;
 import fixdpro.com.fixdpro.fragment.ProblemImageActivity;
-import fixdpro.com.fixdpro.utilites.Constants;
 import fixdpro.com.fixdpro.utilites.GetApiResponseAsync;
 import fixdpro.com.fixdpro.utilites.Preferences;
 import fixdpro.com.fixdpro.utilites.Utilities;
@@ -454,12 +453,9 @@ public class AvailableJobListClickActivity extends AppCompatActivity implements 
                 final ImageView imgShowProblem = (ImageView)child.findViewById(R.id.imgShowProblem);
                 imgShowProblem.setTag(i + "");
                 txtServiceType.setText( arrayList.get(i).getJob_appliances_service_type() +":");
+                txtPowerSourceName.setText(" "+arrayList.get(i).getJob_appliances_power_source());
                 txtApplianceName.setText(" "+arrayList.get(i).getAppliance_type_name());
-
-                if (!arrayList.get(i).getAppliance_type_name().equals(Constants.RE_KEY)) {
-                    txtPowerSourceName.setText(" " + arrayList.get(i).getJob_appliances_power_source());
-                    txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
-                }
+                txtBrand.setText(" "+arrayList.get(i).getJob_appliances_brand_name());
                 txtDesc.setText(arrayList.get(i).getJob_appliances_appliance_description());
                 txtProblem.setText(" " + arrayList.get(i).getJob_appliances_customer_compalint());
                 if (arrayList.get(i).getImg_original().length() == 0)

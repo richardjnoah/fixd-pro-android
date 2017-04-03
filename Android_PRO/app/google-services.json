@@ -15,30 +15,6 @@
       },
       "oauth_client": [
         {
-          "client_id": "692647133854-r96rhmf5pob14jtn27o4n14lh4o60hak.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fixdpro.com.fixdpro",
-            "certificate_hash": "9671e83201d6af2e64c84bcac01b251f2778a15b"
-          }
-        },
-        {
-          "client_id": "692647133854-8qlspe30llobln4rs41tg749pg4rhepf.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fixdpro.com.fixdpro",
-            "certificate_hash": "0dcb5275795bdd04deb65d03dfa84d4c35b62d06"
-          }
-        },
-        {
-          "client_id": "692647133854-q0ibg8al7kadbo4ttb8jujqdlg4u9p83.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fixdpro.com.fixdpro",
-            "certificate_hash": "11f160c2cbb6d31f339dc4cdfead4f70fb38dba6"
-          }
-        },
-        {
           "client_id": "692647133854-ue18qlin8v37o9pr0jijdv1vpp0hqo3l.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -53,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "692647133854-ue18qlin8v37o9pr0jijdv1vpp0hqo3l.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

@@ -35,7 +35,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/txtTitle"
+                android:id="@+id/txtYouHave"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
@@ -43,19 +43,19 @@
                 android:gravity="center_horizontal"
                 android:padding="@dimen/size_8_dp"
                 android:singleLine="true"
-                android:text="@string/oh_no"
+                android:text="Hang Tight!"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/size_22_sp" />
 
             <TextView
-                android:id="@+id/txtMessage"
+                android:id="@+id/txtUserName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/size_24_dp"
                 android:layout_marginRight="@dimen/size_24_dp"
                 android:background="@android:color/transparent"
                 android:gravity="center_horizontal"
-                android:text="@string/warranty_coverage_limit_msg_fe"
+                android:text="It looks like this repair type not covered under the terms of home warranty. Please call us if you have questions at 844.349.3669 or approve the work order to take advantage of our low warranty service rate."
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/size_18_sp" />
 

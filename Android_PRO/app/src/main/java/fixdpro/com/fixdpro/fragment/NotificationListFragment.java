@@ -396,27 +396,9 @@ public class NotificationListFragment extends Fragment {
         hashMap.put("object", "jobs");
         hashMap.put("expand[0]", "work_order");
         if (!role.equals("pro"))
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*," +
-                    "job_appliances.job_parts_used.^*," +
-                    "job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*," +
-                    "technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*," +
-                    "job_appliances.job_appliance_repair_types.repair_types.^*," +
-
-                    "job_appliances.job_appliance_inspection_types.inspection_types.^*," +
-
-                    "job_appliances.job_appliance_maintain_types.maintain_types.^*," +
-                    "job_line_items.^*,customers.users.company_id");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,customers.users.company_id");
         else
-            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*," +
-                    "job_appliances.job_parts_used.^*," +
-                    "job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*," +
-                    "technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*," +
-                    "job_appliances.job_appliance_repair_types.repair_types.^*," +
-
-                    "job_appliances.job_appliance_inspection_types.inspection_types.^*," +
-
-                    "job_appliances.job_appliance_maintain_types.maintain_types.^*," +
-                    "job_line_items.^*,customers.users.company_id");
+            hashMap.put("select", "^*,job_appliances.^*,job_appliances.appliance_types.^*,job_appliances.job_parts_used.^*,job_appliances.job_appliance_install_info.^*,job_appliances.job_appliance_install_types.install_types.^*,job_customer_addresses.^*,technicians.^*,job_appliances.job_appliance_repair_whats_wrong.^*,job_appliances.job_appliance_repair_types.repair_types.^*,job_appliances.job_appliance_maintain_info.^*,job_appliances.job_appliance_maintain_types.maintain_types.^*,job_line_items.^*,customers.users.company_id");
         hashMap.put("where[id]", id + "");
         hashMap.put("token", Utilities.getSharedPreferences(getActivity()).getString(Preferences.AUTH_TOKEN, null));
         hashMap.put("page", "1");

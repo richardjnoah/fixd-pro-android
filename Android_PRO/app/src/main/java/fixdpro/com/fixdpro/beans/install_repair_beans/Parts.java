@@ -36,7 +36,7 @@ public class Parts implements Serializable{
     }
 
     public String getCost() {
-        return Cost.isEmpty() ? "0" : Cost;
+        return Cost;
     }
 
     public void setCost(String cost) {

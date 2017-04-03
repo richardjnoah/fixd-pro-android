@@ -518,8 +518,4 @@
     <string name="undo">Undo</string>
     <string name="undoall">Undo All</string>
     <string name="notideleted">Notification Deleted.</string>
-
-    <string name="oh_no">Oh no!</string>
-    <string name="warranty_coverage_limit_msg_fe">It looks like your repair cost exceed the per claim limit of your plan. Please call us if you have questions at 844.349.3669 or approve the work order to take advantage of our low warranty service rate.</string>
-    <string name="over_limit_msg_fixd">It looks like your repair cost exceed the per claim limit of your plan. Please call us if you have questions at 844.349.3669 or approve the work order to take advantage of our low warranty service rate.</string>
 </resources>

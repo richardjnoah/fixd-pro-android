@@ -62,7 +62,6 @@ public class Constants {
     public static  final String EQUIPMENT_INFO = "Equipment Info";
     public static  final String REPAIR_TYPE = "Repair Type";
     public static  final String INSTALL_TYPE = "Install Type";
-    public static  final String INSPECTION_TYPE = "Inspection Type";
     public static  final String MAINTAIN_TYPE = "Maintain Type";
     public static  final String INSTALL_INFO = "Install Info";
     public static  final String MAINTAIN_INFO = "Maintain Info";
@@ -70,9 +69,4 @@ public class Constants {
 
     public static  final String COVERED = "Covered";
 
-    public static  final String REPAIR = "Repair";
-    public static  final String INSTALL = "Install";
-    public static  final String MAINTAIN = "Maintain";
-    public static  final String RE_KEY = "Re Key";
-    public static  final String INSPECTION = "Inspection";
 }
