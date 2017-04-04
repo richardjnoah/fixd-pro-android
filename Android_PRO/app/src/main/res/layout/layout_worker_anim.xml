@@ -67,35 +67,42 @@
             android:orientation="vertical"
             android:visibility="gone">
 
-            <TextView
-                android:id="@+id/txtCustomerComplaint"
+            <LinearLayout
+                android:id="@+id/ll_customer_complaint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/size_10_dp"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="@string/customercomplaint"
-                android:textColor="@color/register_button_text"
-                android:textSize="@dimen/size_21_sp" />
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/txtDisplaingError"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/size_10_dp"
-                android:layout_marginRight="@dimen/size_10_dp"
-                android:enabled="false"
-                android:gravity="top"
-                android:padding="@dimen/size_10_dp"
-                android:text="None"
-                android:textColor="@android:color/white"
-                android:textColorHint="@color/lb_tv_white"
-                android:textSize="@dimen/size_18_sp" />
+                <TextView
+                    android:id="@+id/txtCustomerComplaint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/size_10_dp"
+                    android:gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/customercomplaint"
+                    android:textColor="@color/register_button_text"
+                    android:textSize="@dimen/size_21_sp" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/white"></View>
+                <TextView
+                    android:id="@+id/txtDisplaingError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/size_10_dp"
+                    android:layout_marginRight="@dimen/size_10_dp"
+                    android:enabled="false"
+                    android:gravity="top"
+                    android:padding="@dimen/size_10_dp"
+                    android:text="None"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/lb_tv_white"
+                    android:textSize="@dimen/size_18_sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@android:color/white" />
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/txtDescriptionOfWork"

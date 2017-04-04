@@ -186,7 +186,12 @@ public class RepairFragment extends Fragment {
             hashMap.put("api", "update_repair_types");
             hashMap.put("object", "repair_flow");
             hashMap.put("data[items][0][repair_type_id]", install_or_repair_type_id);
-        }else {
+        }else if (CurrentScheduledJobSingleTon.getInstance().getJobApplianceModal().getJob_appliances_service_type().equals("Inspection")){
+            // TODO -> Need to test this check for Inspection call on Pro Side
+            hashMap.put("api", "update_inspection_types");
+            hashMap.put("object", "inspection_flow");
+            hashMap.put("data[items][0][inspection_type_id]", install_or_repair_type_id);
+        } else {
             hashMap.put("api", "update_maintain_types");
             hashMap.put("object", "maintain_flow");
             hashMap.put("data[items][0][maintain_type_id]", install_or_repair_type_id);
@@ -261,15 +266,16 @@ public class RepairFragment extends Fragment {
         HashMap<String,String> hashMap = new HashMap<String,String>();
         hashMap.put("api","read");
 //
-        if (modal.getJob_appliances_service_type().equals("Install")){
+        if (modal.getJob_appliances_service_type().equals("Install")) {
             hashMap.put("select","install_types.name,install_types.labor_hours,install_types.id");
             hashMap.put("object","install_types");
-        }
-        else if (modal.getJob_appliances_service_type().equals("Repair")){
+        } else if (modal.getJob_appliances_service_type().equals("Repair")) {
             hashMap.put("select","repair_types.name,repair_types.labor_hours,repair_types.id");
             hashMap.put("object","repair_types");
-        }
-        else{
+        } else if (modal.getJob_appliances_service_type().equals("Inspection")){
+            hashMap.put("select","inspection_types.name,inspection_types.labor_hours,inspection_types.id");
+            hashMap.put("object","inspection_types");
+        } else {
             hashMap.put("select","maintain_types.name,maintain_types.labor_hours,maintain_types.id");
             hashMap.put("object","maintain_types");
         }
@@ -296,12 +302,14 @@ public class RepairFragment extends Fragment {
 //                        JSONObject jsonObject = results.getJSONObject(i);
 
                         JSONArray jsonArrayRepairType = null;
-                        if (!jsonObject.isNull("repair_types")){
+                        if (!jsonObject.isNull("repair_types")) {
                             jsonArrayRepairType = jsonObject.getJSONArray("repair_types");
-                        }else if (!jsonObject.isNull("install_types")){
+                        } else if (!jsonObject.isNull("install_types")) {
                             jsonArrayRepairType = jsonObject.getJSONArray("install_types");
-                        }else if (!jsonObject.isNull("maintain_types")){
+                        } else if (!jsonObject.isNull("maintain_types")) {
                             jsonArrayRepairType = jsonObject.getJSONArray("maintain_types");
+                        } else if (!jsonObject.isNull("inspection_types")){
+                            jsonArrayRepairType = jsonObject.getJSONArray("inspection_types");
                         }
                         for (int j = 0 ; j < jsonArrayRepairType.length() ; j++){
                             JSONObject jsonObjectRepairType =  jsonArrayRepairType.getJSONObject(j);
